@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .product-details-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .product-details-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .product-details-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .product-details-container .price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .product-details-container .description {
+            margin-top: 20px;
+        }
+
+        .product-details-container .add-to-cart {
+            margin-top: 20px;
+        }
+
+        .similar-products {
+            margin-top: 40px;
+        }
+
+        .similar-products h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .similar-products .product-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .similar-products .product-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .similar-products .product-item .price {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="product-details-container">
+        <h2 th:text="${product.name}">Product Name</h2>
+        <div class="text-center">
+            <img th:src="@{${product.imageUrl}}" alt="Product Image">
+        </div>
+        <div class="price" th:text="${product.price}">Price</div>
+        <div class="description" th:text="${product.description}">
+            This is a detailed description of the product.
+        </div>
+        <div class="add-to-cart">
+            <button class="btn btn-primary">Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="similar-products">
+        <h3>Similar Products</h3>
+        <div class="row">
+            <div class="col-md-4" th:each="similarProduct : ${similarProducts}">
+                <div class="product-item">
+                    <img th:src="@{${similarProduct.imageUrl}}" alt="Similar Product Image">
+                    <div th:text="${similarProduct.name}">Similar Product Name</div>
+                    <div class="price" th:text="${similarProduct.price}">Price</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
