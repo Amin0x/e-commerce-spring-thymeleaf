@@ -65,6 +65,25 @@
             font-weight: bold;
             color: #e74c3c;
         }
+
+        .user-reviews {
+            margin-top: 40px;
+        }
+
+        .user-reviews h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .review-item {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .review-form {
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
@@ -93,6 +112,31 @@
                     <div class="price" th:text="${similarProduct.price}">Price</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="user-reviews">
+        <h3>User Reviews</h3>
+        <div th:each="review : ${product.reviews}">
+            <div class="review-item">
+                <h5 th:text="${review.userName}">User Name</h5>
+                <p th:text="${review.comment}">Review comment here</p>
+                <small th:text="${review.date}">Review date</small>
+            </div>
+        </div>
+        <div class="review-form">
+            <h4>Add Your Review</h4>
+            <form th:action="@{/product/${product.id}/review}" method="post">
+                <div class="form-group">
+                    <label for="userName">Name:</label>
+                    <input type="text" class="form-control" id="userName" name="userName" required>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment:</label>
+                    <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
         </div>
     </div>
 
