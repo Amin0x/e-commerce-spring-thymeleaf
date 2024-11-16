@@ -11,35 +11,24 @@
 <div class="container mt-5">
     <div class="row">
         <!-- Product Card -->
+        <div th:fragment="productCard(product)">
         <div class="col-md-4">
             <div class="card">
                 <!-- Product Image -->
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
+                <img th:src="@{${product.imageUrl}}" src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
                 
                 <!-- Product Details -->
                 <div class="card-body">
-                    <h5 class="card-title">Product Title</h5>
-                    <p class="card-text">This is a short description of the product. It's a great product that provides many features.</p>
-                    <p class="card-text"><strong>$49.99</strong></p>
+                    <h5 th:text="${product.name}" class="card-title">Product Title</h5>
+                    <p th:text="${product.description}" class="card-text">This is a short description of the product. It's a great product that provides many features.</p>
+                    <p th:text="${product.price}" class="card-text"><strong>$49.99</strong></p>
                     <a href="#" class="btn btn-primary">Add to Cart</a>
                 </div>
             </div>
         </div>
-
-        <!-- You can repeat the product cards for more items -->
-        <div class="col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image">
-                <div class="card-body">
-                    <h5 class="card-title">Another Product</h5>
-                    <p class="card-text">This is another amazing product you would love to buy. Limited stock available!</p>
-                    <p class="card-text"><strong>$79.99</strong></p>
-                    <a href="#" class="btn btn-primary">Add to Cart</a>
-                </div>
-            </div>
         </div>
 
-        <!-- Add more products here if needed -->
+        
     </div>
 </div>
 
