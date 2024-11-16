@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .cart-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
 
+        .cart-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-container .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .cart-container .cart-item .item-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-container .cart-item .item-price {
+            font-weight: bold;
+        }
+
+        .cart-container .cart-item .item-quantity {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-container .total {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .cart-container button {
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cart-container">
+        <h2>Shopping Cart</h2>
+
+        <div class="cart-item" th:each="item : ${cart.items}">
+            <div class="item-details">
+                <span th:text="${item.productName}">Product Name</span>
+                <span>Quantity: <span th:text="${item.quantity}">1</span></span>
+            </div>
+            <div class="item-price" th:text="${item.price}">100.00</div>
+        </div>
+
+        <div class="total">
+            Total: $<span th:text="${cart.totalPrice}">0.00</span>
+        </div>
+
+        <button class="btn btn-primary">Checkout</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
