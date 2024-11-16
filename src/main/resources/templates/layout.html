@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Application</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/" th:href="@{/}">Home</a></li>
+                <li><a href="/about" th:href="@{/about}">About</a></li>
+                <li><a href="/contact" th:href="@{/contact}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div th:replace="~{::body}"></div> <!-- Placeholder for content -->
+    </main>
+
+    <footer>
+        <p>© 2024 My Application</p>
+    </footer>
+</body>
+</html>
