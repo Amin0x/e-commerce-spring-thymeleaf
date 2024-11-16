@@ -18,6 +18,7 @@ public class SignupController {
     @PostMapping("/signup")
     public String processSignup(SignupForm signupForm) {
         // Add your form processing logic here (e.g., saving user data)
-        return "signup_success";
+        //return "signup_success";
+        return "login";
     }
 } 
