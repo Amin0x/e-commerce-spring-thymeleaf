@@ -9,6 +9,9 @@ public class HomeController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/") // Handles requests to the root URL ("/")
     public String home(Model model) {
         List<Category> categories = categoryService.getRandomCategories();
@@ -22,7 +25,7 @@ public class HomeController {
 
         model.addAttribute("data", mapData);
 
-        List<Product> newProducts = getNewArrivalProducts();
+        List<Product> newProducts = productService.getNewArrivalProducts();
         model.addAttribute("newProducts", newProducts);
         // Return the name of the HTML view (without .html extension)
         return "home"; // This will resolve to src/main/resources/templates/home.html
