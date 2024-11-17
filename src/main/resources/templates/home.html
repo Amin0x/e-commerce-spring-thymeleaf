@@ -27,14 +27,20 @@
 
     <title th:text="title">Home</title>
 
-    <!-- Bootstrap CSS (via CDN) -->
+    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqVx8gld6OKx9I4ZrjzQ29zJ3pVZP9G8d3B/e5Q1kgl5F" crossorigin="anonymous">
     <link href="/css/style.css" rel="stylesheet">
     <!-- Additional Meta Tags for Compatibility -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- For IE browser compatibility -->
 </head>
 <body>
-    <!-- Content goes here -->
+    <!-- Content  -->
+    <div class="content-warper">
+    <div th:replace="fragments :: navbar"></div>
+    <div th:replace="fragments :: banner"></div>
+
+        
+    </div>
 
     <!-- Bootstrap JS and dependencies (via CDN) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zyvc3YxaJ6t3k3zF49F8i1f7l9Qy5G5/6CCnRi2J" crossorigin="anonymous"></script>
