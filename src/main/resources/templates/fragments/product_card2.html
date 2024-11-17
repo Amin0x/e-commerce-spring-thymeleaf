@@ -14,7 +14,7 @@
 	width: 900px;
 }
 
-.card{
+.card2_container .card{
 
 	background-color: #fff;
 	border:none;
@@ -24,17 +24,17 @@
 
 }
 
-.image-container{
+.card2_container .image-container{
 
 	position: relative;
 }
 
-.thumbnail-image{
+.card2_container .thumbnail-image{
 	border-radius: 10px !important;
 }
 
 
-.discount{
+.card2_container .discount{
 
 	background-color: red;
 	padding-top: 1px;
@@ -46,7 +46,7 @@
 	color: #fff;
 }
 
-.wishlist{
+.card2_container .wishlist{
 
 	height: 25px;
 	width: 25px;
@@ -58,7 +58,7 @@
 	box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.first{
+.card2_container .first{
 
 	position: absolute;
 	width: 100%;
@@ -66,99 +66,99 @@
 }
 
 
-.dress-name{
+.card2_container .dress-name{
 	font-size: 13px;
 	font-weight: bold;
 	width: 75%;
 }
 
 
-.new-price{
+.card2_container .new-price{
 	font-size: 13px;
 	font-weight: bold;
 	color: red;
 	
 }
-.old-price{
+.card2_container .old-price{
 	font-size: 8px;
 	font-weight: bold;
 	color: grey;
 }
 
 
-.btn{
+.card2_container .btn{
 	width: 14px;
 	height: 14px;
 	border-radius: 50%;
 	padding: 3px;
 }
 
-.creme{
+.card2_container .creme{
 	background-color: #fff;
 	border: 2px solid grey;
 	
 
 }
-.creme:hover {
+.card2_container .creme:hover {
 	border: 3px solid grey;
 }
 
-.creme:focus {
+.card2_container .creme:focus {
 	background-color: grey;
 
 }
 
 
-.red{
+.card2_container .red{
 	background-color: #fff;
 	border: 2px solid red;
 	
 }
 
 
-.red:hover {
+.card2_container .red:hover {
 	border: 3px solid red;
 }
-.red:focus {
+.card2_container .red:focus {
 	background-color: red;
 }
 
 
 
-.blue{
+.card2_container .blue{
 	background-color: #fff;
 	border: 2px solid #40C4FF;
 }
 
-.blue:hover {
+.card2_container .blue:hover {
 	border: 3px solid #40C4FF;
 }
-.blue:focus {
+.card2_container .blue:focus {
 	background-color: #40C4FF;
 }
-.darkblue{
+.card2_container .darkblue{
 	background-color: #fff;
 	border: 2px solid #01579B;
 }
-.darkblue:hover {
+.card2_container .darkblue:hover {
 	border: 3px solid #01579B;
 }
-.darkblue:focus {
+.card2_container .darkblue:focus {
 	background-color: #01579B;
 }
-.yellow{
+.card2_container .yellow{
 	background-color: #fff;
 	border: 2px solid #FFCA28;
 }
-.yellow:hover {
+.card2_container .yellow:hover {
 	border-radius: 3px solid #FFCA28;
 }
-.yellow:focus {
+.card2_container .yellow:focus {
 	background-color: #FFCA28;
 }
 
 
-.item-size{
+.card2_container .item-size{
 	width: 15px;
 	height: 15px;
 	border-radius: 50%;
@@ -173,21 +173,21 @@
 }
 
 
-.rating-star{
+.card2_container .rating-star{
 	font-size: 10px !important;
 }
-.rating-number{
+.card2_container .rating-number{
 	font-size: 10px;
 	color: grey;
 
 }
-.buy{
+.card2_container .buy{
 	font-size: 12px;
 	color: purple;
 	font-weight: 500;
 }
 
-.voutchers{
+.card2_container .voutchers{
 	background-color: #fff;
 	border:none;
 	border-radius: 10px;
@@ -196,37 +196,37 @@
 	overflow: hidden;
 
 }
-.voutcher-divider{
+.card2_container .voutcher-divider{
 
 	display: flex;
 
 }
-.voutcher-left{
+.card2_container .voutcher-left{
 	width: 60%
 }
-.voutcher-name{
+.card2_container .voutcher-name{
 	color: grey;
 	font-size: 9px;
 	font-weight: 500;
 }
-.voutcher-code{
+.card2_container .voutcher-code{
 	color: red;
 	font-size: 11px;
 	font-weight: bold;
 }
-.voutcher-right{
+.card2_container .voutcher-right{
 	width: 40%;	 
 	background-color: purple;
 	color: #fff;
 }
 
-.discount-percent{
+.card2_container .discount-percent{
 	font-size: 12px;
 	font-weight: bold;
 	position: relative;
 	top: 5px;
 }
-.off{
+.card2_container .off{
 	font-size: 14px;
 	position: relative;
 	bottom: 5px;
@@ -236,9 +236,9 @@
 </head>
 <body>
 
-<div class="container mt-5">
-    <div class="row" th:each="product : ${products}">
-        <div class="col-md-3">
+<div class="container card2_container mt-5">
+    <div class="row">
+        <div class="col-md-3" th:each="product : ${products}" >
             <div class="card">
                 <div class="image-container">
                     <div class="first">
