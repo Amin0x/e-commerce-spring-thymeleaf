@@ -16,4 +16,8 @@ public class ProductService {
     public List<Product> getRandomProductsByCategory(String category) {
         return productRepository.findRandomProductsByCategory(category);
     }
+
+    public List<Product> getNewArrivalProducts() {
+        return productRepository.findNewArrivalProducts();
+    }
 }
