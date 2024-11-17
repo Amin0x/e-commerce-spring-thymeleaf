@@ -15,7 +15,9 @@ public class HomeController {
         Map<String, List<Category>> mapData = new HashMap<>();
         for (Category category:categories){
             List<Product> products = productService.getRandomProductsByCategory(category.getName());
-            mapData.add(category.getName(), products);
+
+            if(products != null)
+                mapData.add(category.getName(), products);
         }
 
         model.addAttribute("data", mapData);
