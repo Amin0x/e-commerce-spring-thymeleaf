@@ -20,4 +20,9 @@ public class ProductService {
     public List<Product> getNewArrivalProducts() {
         return productRepository.findNewArrivalProducts();
     }
+
+    public Page<Product> getProducts(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 20);  // 20 products per page
+        return productRepository.findAll(pageable);
+    }
 }
