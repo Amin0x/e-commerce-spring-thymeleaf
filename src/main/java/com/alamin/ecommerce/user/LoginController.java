@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController {
 
+    @Autowired
+    private HttpSession session;
+
     @GetMapping("/login")
     public String showLoginForm(@RequestParam(require = false) String url, Model model) {
         model.addAttribute("loginForm", new LoginForm());
