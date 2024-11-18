@@ -16,7 +16,7 @@
     
     <div class="row">
         <div class="col-6 col-md-3" th:each="product : ${products}">
-            
+            <div th:replace="fragments/product_card :: productCard(${product})"></div>
         </div>
     </div>
 </div>
