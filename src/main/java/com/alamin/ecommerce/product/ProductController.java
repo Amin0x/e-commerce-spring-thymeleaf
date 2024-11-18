@@ -48,16 +48,28 @@ public class ProductController {
     // Get all products
     @GetMapping("/web/products")
     public String getAllProducts(@RequestParam(required = false) String category, Model model) {
-        //filter by category 
-        List<Product> products = productRepository.findAll();
-        if (category == null || category.isEmpty()){
-            products = null;
+    
+        List<Product> products;
+
+        if (category == null || category.isEmpty()) {
+            // Handle null or empty category
+            products = productRepository.findAll();
+    
         } else {
-            products = productRepository.findByCategory(category);
+        
+            try {
+                products = productRepository.findByCategory(category);
+            } catch (Exception e) {
+                // Handle exceptions, e.g., category not found
+                throw new CategoryNotFoundException("Category not found: " + category);
+            }
         }
+    
         model.addAttribute("products", products);
         return "products";
+
     }
+
 
     // Get a product by ID
     @GetMapping("/api/products/{id}")
