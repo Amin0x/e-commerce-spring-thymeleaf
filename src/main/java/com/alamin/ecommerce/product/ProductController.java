@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/api/products")
+@Controller
 public class ProductController {
 
     @Autowired
@@ -18,6 +17,7 @@ public class ProductController {
 
     // Create a new product
     @PostMapping("/api/products")
+    @ResponseBody 
     public Product createProduct(@RequestBody Product product) {
         return productRepository.save(product);
     }
@@ -40,6 +40,7 @@ public class ProductController {
 
     // Get all products
     @GetMapping("/api/products")
+    @ResponseBody
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -60,6 +61,7 @@ public class ProductController {
 
     // Get a product by ID
     @GetMapping("/api/products/{id}")
+    @ResponseBody
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Optional<Product> product = productRepository.findById(id);
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -67,6 +69,7 @@ public class ProductController {
 
     // Update an existing product
     @PutMapping("/api/products/{id}")
+    @ResponseBody
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         if (!productRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -78,6 +81,7 @@ public class ProductController {
 
     // Delete a product by ID
     @DeleteMapping("/api/products/{id}")
+    @ResponseBody
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         if (!productRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
