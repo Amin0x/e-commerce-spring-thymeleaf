@@ -36,42 +36,42 @@
 <body>
     <!-- Content  -->
     <div class="content-warper">
-    <div th:replace="fragments :: navbar"></div>
-    <div th:replace="fragments :: banner"></div>
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="fragments/banner :: banner"></div>
 
     <div class="container mt-5">
     <div class="row">
-    <div th:replace="fragments :: productCard(${products1})"></div>
-    </div>
-    </div>
-
-    <div class="container mt-5">
-    <div class="row">
-    <div th:replace="fragments :: productCard(${products2})"></div>
+    <div th:replace="fragments/product_card :: productCard(${products1})"></div>
     </div>
     </div>
 
     <div class="container mt-5">
     <div class="row">
-    <div th:replace="fragments :: productCard(${products3})"></div>
+    <div th:replace="fragments/product_card :: productCard(${products2})"></div>
     </div>
     </div>
 
     <div class="container mt-5">
     <div class="row">
-    <div th:replace="fragments :: productCard(${products4})"></div>
+    <div th:replace="fragments/product_card :: productCard(${products3})"></div>
+    </div>
+    </div>
+
+    <div class="container mt-5">
+    <div class="row">
+    <div th:replace="fragments/product_card :: productCard(${products4})"></div>
     </div>
     </div>
 
         
     <div class="container mt-5">
     <div class="row">
-    <div th:replace="fragments :: productCard(${newProducts})"></div>
+    <div th:replace="fragments/product_card:: productCard(${newProducts})"></div>
     </div>
     </div>
 
-    <div th:replace="fragments :: subscribeForm"></div>
-    <div th:replace="fragments :: footer"></div>
+    <div th:replace="fragments/subscription :: subscribeForm"></div>
+    <div th:replace="fragments/footer :: footer"></div>
         
     </div>
 
