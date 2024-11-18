@@ -244,3 +244,41 @@
 @media screen and (max-width: 990px){
     .product-grid{ margin-bottom: 30px; }
 }
+
+.checkout-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .checkout-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .checkout-container .form-group {
+            margin-bottom: 15px;
+        }
+
+        .checkout-container .order-summary {
+            margin-bottom: 20px;
+        }
+
+        .checkout-container .order-summary .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .checkout-container .order-summary .total {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .checkout-container button {
+            width: 100%;
+            margin-top: 20px;
+        }
