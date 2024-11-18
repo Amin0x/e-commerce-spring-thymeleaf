@@ -60,4 +60,9 @@ public class HomeController {
         return "about"; // Resolves to about.html in templates
     }
 
+    @PostMapping("/subscribe")
+    public ResponseEntity<Map<String,Object>> subscribe() {
+        return ResponseEntity.ok();
+    }
+
 }
