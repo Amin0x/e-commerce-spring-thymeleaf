@@ -32,6 +32,8 @@
 </head>
 <body>
 
+    <div class="page-warper">
+        
     <div class="signup-container">
         <h2>Signup</h2>
         <form th:action="@{/signup}" th:object="${signupForm}" method="post" id="signupForm">
@@ -49,6 +51,8 @@
             </div>
             <button type="submit" class="btn btn-primary">Signup</button>
         </form>
+    </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
