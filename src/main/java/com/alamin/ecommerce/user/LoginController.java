@@ -16,8 +16,22 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String processLogin(@RequestParam(require = false) String url, LoginForm loginForm) {
-        // Add your form processing logic here (e.g., authentication)
-        return "redirect:home";
+    public String processLogin(
+        @RequestParam(require = false) String url, 
+        @Valid LoginForm loginForm, 
+        BindingResult bindingResult, 
+        Model model, 
+        RedirectAttributes redirectAttributes 
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
+
+        if (authenticationFailed) {
+            model.addAttribute("errorMessage", "Invalid username or password");
+            return "login";
+        }
+        
+        return "redirect:" + (url != null ? url : "/");
     }
 }
