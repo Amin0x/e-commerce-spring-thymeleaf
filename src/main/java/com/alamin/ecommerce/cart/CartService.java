@@ -28,7 +28,19 @@ public class CartService {
 
     public Cart addItemToCart(Long cartId, CartItem item) {
         Cart cart = getCart(cartId);
-        cart.getItems().add(item);
+        boolean isExisting = false ;
+
+        for (CartItem cartitem : cart.getItems()) {
+            if (cartitem.getProductId().equals(item.getProductId())) {
+                is Existing = true;
+                cartitem.setQuantity(cartitem.getQuantity() + item.getQuantity())
+                break;
+            }
+        }
+
+        if(!isExisting)
+            cart.getItems().add(item);
+        
         updateCartTotals(cart);
         return saveCart(cart);
     }
