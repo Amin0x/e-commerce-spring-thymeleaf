@@ -50,6 +50,21 @@
                 <label for="category">Category:</label>
                 <input type="text" class="form-control" th:field="*{category}" id="category" required>
             </div>
+            <div>
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+            <option value="electronics">Electronics</option>
+            <option value="clothing">Clothing</option>
+            <option value="books">Books</option>
+            </select>
+            </div>
+
+            <div>
+            <label for="productImage">Product Image:</label>
+            <input type="file" id="productImage" name="productImage" accept="image/*" required>
+            </div>
+
+            
             <button type="submit" class="btn btn-primary">Create Product</button>
         </form>
     </div>
