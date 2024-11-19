@@ -33,7 +33,7 @@
 
     <div class="create-user-container">
         <h2>Create New User</h2>
-        <form th:action="@{/users}" th:object="${user}" method="post">
+        <form id="createUserForm" th:object="${user}" >
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" class="form-control" th:field="*{name}" id="name" required>
@@ -56,5 +56,35 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('createUserForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                admin: document.getElementById('admin').checked,
+                passwordExpired: document.getElementById('passwordExpired').checked
+            };
+
+            fetch('/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Handle success
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // Handle error
+            });
+        });
+    </script>
 </body>
 </html>
