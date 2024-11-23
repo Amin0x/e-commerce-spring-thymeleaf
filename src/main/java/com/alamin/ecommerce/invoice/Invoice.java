@@ -1,3 +1,5 @@
+package com.alamin.ecommerce.invoice;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
