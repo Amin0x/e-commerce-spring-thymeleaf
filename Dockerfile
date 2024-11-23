@@ -12,7 +12,7 @@ COPY src /app/src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Create the runtime image
-FROM openjdk:17-jdk-slim
+FROM openjdk:17
 
 # Set the working directory for the runtime image
 WORKDIR /app
