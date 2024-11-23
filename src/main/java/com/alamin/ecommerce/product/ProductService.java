@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.alamin.ecommerce.product;
 
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
