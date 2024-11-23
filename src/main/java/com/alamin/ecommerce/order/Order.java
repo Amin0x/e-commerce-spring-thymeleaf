@@ -34,11 +34,13 @@ public class Order {
 
     // Constructors, Getters, Setters
 
+    // Default constructor
     public Order() {
-        this.orderDate = LocalDateTime.now();
-        this.status = OrderStatus.PENDING;
+        this.orderDate = LocalDateTime.now(); // Set order date to current time by default
+        this.status = OrderStatus.PENDING; // Default status is PENDING
     }
 
+    // Constructor with parameters
     public Order(Customer customer, List<OrderItem> orderItems, Address shippingAddress, BigDecimal totalAmount, String paymentMethod, String transactionId) {
         this.customer = customer;
         this.orderItems = orderItems;
@@ -46,8 +48,8 @@ public class Order {
         this.totalAmount = totalAmount;
         this.paymentMethod = paymentMethod;
         this.transactionId = transactionId;
-        this.orderDate = LocalDateTime.now();
-        this.status = OrderStatus.PENDING;
+        this.orderDate = LocalDateTime.now(); // Set order date to current time by default
+        this.status = OrderStatus.PENDING; // Default status is PENDING
     }
 
     // Getters and Setters
@@ -97,3 +99,48 @@ public class Order {
     }
 
     public void setOrderDate(LocalDateTime orderDate) {
+        // Prevent changing the order date after creation, if not necessary
+        if (this.orderDate == null) {
+            this.orderDate = orderDate != null ? orderDate : LocalDateTime.now();
+        }
+    }
+
+    public LocalDateTime getShippingDate() {
+        return shippingDate;
+    }
+
+    public void setShippingDate(LocalDateTime shippingDate) {
+        this.shippingDate = shippingDate;
+    }
+
+    public Address getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(Address shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    // Helper method to mark the order as shipped and set the shipping date
+    public void markAsShipped() {
+        this.status = OrderStatus.SHIPPED;
+        this.shippingDate = LocalDateTime.now();
+    }
+
+}
