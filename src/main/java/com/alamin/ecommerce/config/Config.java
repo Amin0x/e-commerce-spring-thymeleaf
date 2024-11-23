@@ -1,3 +1,5 @@
+package com.alamin.ecommerce.config;
+
 @Configuration(proxyBeanMethods = false)
 @EnableJdbcHttpSession 
 public class Config {
