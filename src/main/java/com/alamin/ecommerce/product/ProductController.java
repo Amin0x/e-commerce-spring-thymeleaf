@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.alamin.ecommerce.product;
 
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
