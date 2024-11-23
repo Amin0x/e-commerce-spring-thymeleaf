@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.alamin.ecommerce.product;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
