@@ -1,4 +1,4 @@
-package com.example.ecommerce.model;
+package com.alamin.ecommerce.order;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
