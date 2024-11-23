@@ -1,4 +1,4 @@
-package com.example.ecommerce.model;
+package com.alamin.ecommerce.order;
 
 public enum OrderStatus {
     PENDING,
