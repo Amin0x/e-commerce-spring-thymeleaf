@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.alamin.ecommerce.cart;
 
 import javax.persistence.*;
 import java.util.List;
