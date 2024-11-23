@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim as build
 WORKDIR /app
 
 # Copy the jar file into the container
-COPY target/e-commerce-spring-thymeleaf.jar /app/app.jar
+COPY target/ecommerce-0.0.1-SNAPSHOT.jar /app/app.jar
 
 # Expose the port on which the Spring Boot app will run (default is 8080)
 EXPOSE 8080
