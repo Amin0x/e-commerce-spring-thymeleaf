@@ -33,7 +33,8 @@ public class CartService {
         for (CartItem cartitem : cart.getItems()) {
             if (cartitem.getProductId().equals(item.getProductId())) {
                 is Existing = true;
-                cartitem.setQuantity(cartitem.getQuantity() + item.getQuantity())
+                long quan = cartitem.getQuantity() + item.getQuantity();
+                cartitem.setQuantity(quan);
                 break;
             }
         }
