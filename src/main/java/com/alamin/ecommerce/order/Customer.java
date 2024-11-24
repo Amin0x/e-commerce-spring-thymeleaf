@@ -1,7 +1,7 @@
 package com.alamin.ecommerce.order;
 
 import jakarta.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 public class Customer {
