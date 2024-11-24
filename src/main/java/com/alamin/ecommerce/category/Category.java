@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 
+import com.alamin.ecommerce.product.Product;
+
 @Entity
 @Table(name = "categories")
 public class Category {
