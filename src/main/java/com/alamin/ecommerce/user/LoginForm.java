@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.alamin.ecommerce.user;
 
 public class LoginForm {
     private String email;
