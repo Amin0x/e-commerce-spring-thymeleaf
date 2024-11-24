@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.alamin.ecommerce.category;
 
 import com.example.demo.model.Category;
 import com.example.demo.repository.CategoryRepository;
