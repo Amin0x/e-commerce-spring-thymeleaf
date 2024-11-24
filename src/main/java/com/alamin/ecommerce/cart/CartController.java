@@ -1,8 +1,5 @@
 package com.alamin.ecommerce.cart;
 
-import com.example.demo.model.Cart;
-import com.example.demo.model.CartItem;
-import com.example.demo.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
