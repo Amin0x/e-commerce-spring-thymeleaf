@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.alamin.ecommerce.user;
 
 import com.example.demo.model.SignupForm;
 import org.springframework.stereotype.Controller;
