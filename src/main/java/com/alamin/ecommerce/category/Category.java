@@ -1,6 +1,6 @@
-package com.example.demo.model;
+package com.alamin.ecommerce.category;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
