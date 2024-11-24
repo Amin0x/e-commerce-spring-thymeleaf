@@ -1,6 +1,6 @@
 package com.alamin.ecommerce.order;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Embeddable
