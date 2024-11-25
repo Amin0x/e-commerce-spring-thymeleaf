@@ -2,6 +2,7 @@ package com.alamin.ecommerce.order;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import com.alamin.ecommerce.user.User;
 
 @Entity
 public class Customer {
