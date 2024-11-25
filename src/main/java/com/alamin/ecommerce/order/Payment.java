@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.order;
 
+import com.alamin.ecommerce.user.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
