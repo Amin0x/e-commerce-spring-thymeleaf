@@ -9,7 +9,9 @@ import org.springframework.ui.Model;
 import java.util.Map;
 import java.util.List;
 import com.alamin.ecommerce.category.CategoryService;
+import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.product.ProductService;
+import com.alamin.ecommerce.product.Product;
 
 
 @Controller
