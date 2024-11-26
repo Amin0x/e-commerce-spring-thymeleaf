@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import jakarta.sql.DataSource;
