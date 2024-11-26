@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
