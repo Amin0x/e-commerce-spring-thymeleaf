@@ -18,7 +18,10 @@ public class LoginController {
     private HttpSession session;
 
     @GetMapping("/login")
-    public String showLoginForm(@RequestParam(required = false) String url, Model model) {
+    public String showLoginForm(
+        @RequestParam(required = false) String url, 
+        Model model
+    ) {
         model.addAttribute("loginForm", new LoginForm());
         return "login";
     }
