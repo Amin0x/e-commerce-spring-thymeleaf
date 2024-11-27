@@ -32,7 +32,7 @@ public class InvoiceService {
         // Title
         document.add(new Paragraph("Invoice")
             .setTextAlignment(TextAlignment.CENTER)
-            .setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD, 16))
+            .setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD))
             .setSpacingAfter(20));
 
         // Customer information
@@ -56,7 +56,7 @@ public class InvoiceService {
 
         // Add total amount
         document.add(new Paragraph("Total Amount: $" + totalAmount)
-            .setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD, 12))
+            .setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD))
             .setSpacingBefore(20)
             .setTextAlignment(TextAlignment.RIGHT));
 
