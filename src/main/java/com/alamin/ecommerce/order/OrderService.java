@@ -32,9 +32,6 @@ public class OrderService {
         Optional<Order> existingOrder = orderRepository.findById(id);
         if (existingOrder.isPresent()) {
             Order order = existingOrder.get();
-            order.setCustomerName(orderDetails.getCustomerName());
-            order.setProductName(orderDetails.getProductName());
-            order.setQuantity(orderDetails.getQuantity());
             order.setPrice(orderDetails.getPrice());
             order.setOrderDate(orderDetails.getOrderDate());
             return orderRepository.save(order);
