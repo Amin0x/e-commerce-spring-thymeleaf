@@ -25,14 +25,14 @@ public class InvoiceService {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         // Creating a PDF document
-        Document document = new Document();
-        PdfWriter.getInstance(document, baos);
-        document.open();
+        PdfWriter writer = new PdfWriter(baos);
+        PdfDocument pdf = new PdfDocument(writer);
+        Document document = new Document(pdf);
 
         // Title
         document.add(new Paragraph("Invoice")
             .setTextAlignment(TextAlignment.CENTER)
-            .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD, 16))
+            .setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD, 16))
             .setSpacingAfter(20));
 
         // Customer information
@@ -56,7 +56,7 @@ public class InvoiceService {
 
         // Add total amount
         document.add(new Paragraph("Total Amount: $" + totalAmount)
-            .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD, 12))
+            .setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD, 12))
             .setSpacingBefore(20)
             .setTextAlignment(TextAlignment.RIGHT));
 
