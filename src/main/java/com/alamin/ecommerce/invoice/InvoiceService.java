@@ -23,7 +23,7 @@ public class InvoiceService {
     // Method to generate an invoice PDF
     public byte[] generateInvoicePdf(Long orderId, String customerName, List<String> productList, double totalAmount) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
+/*
         // Creating a PDF document
         PdfWriter writer = new PdfWriter(baos);
         PdfDocument pdf = new PdfDocument(writer);
@@ -61,7 +61,7 @@ public class InvoiceService {
             .setTextAlignment(TextAlignment.RIGHT));
 
         document.close();
-
+*/
         // Return the PDF as a byte array
         return baos.toByteArray();
     }
