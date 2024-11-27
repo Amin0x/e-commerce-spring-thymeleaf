@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 
