@@ -1,6 +1,10 @@
 package com.alamin.ecommerce.invoice;
 
-import com.itextpdf.io.font.constants.StandardFonts;
+//import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.font.FontConstants; 
+import com.itextpdf.kernel.color.Color; 
+import com.itextpdf.kernel.font.PdfFontFactory; 
+import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
@@ -28,7 +32,7 @@ public class InvoiceService {
         // Title
         document.add(new Paragraph("Invoice")
             .setTextAlignment(TextAlignment.CENTER)
-            .setFont(com.itextpdf.text.FontFactory.getFont(StandardFonts.HELVETICA_BOLD, 16))
+            .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD, 16))
             .setSpacingAfter(20));
 
         // Customer information
@@ -52,7 +56,7 @@ public class InvoiceService {
 
         // Add total amount
         document.add(new Paragraph("Total Amount: $" + totalAmount)
-            .setFont(com.itextpdf.text.FontFactory.getFont(StandardFonts.HELVETICA_BOLD, 12))
+            .setFont(PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD, 12))
             .setSpacingBefore(20)
             .setTextAlignment(TextAlignment.RIGHT));
 
