@@ -18,7 +18,7 @@ public class StockNotificationService {
         for (Inventory inventory : inventories) {
             if (inventory.getQuantity() < 10) {
                 // Notify that stock is low (you can send an email here)
-                System.out.println("Stock is low for product: " + inventory.getProductId());
+                System.out.println("Stock is low for product: " + inventory.getProduct().getId());
             }
         }
     }
