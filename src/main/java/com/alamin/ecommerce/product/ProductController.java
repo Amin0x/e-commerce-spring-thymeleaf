@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import com.alamin.ecommerce.exception.CategoryNotFoundException;
 
 @Controller
 public class ProductController {
