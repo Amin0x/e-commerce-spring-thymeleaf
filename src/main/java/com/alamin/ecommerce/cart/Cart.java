@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.*;
 
 @Entity
+@Data
 public class Cart {
 
     @Id
