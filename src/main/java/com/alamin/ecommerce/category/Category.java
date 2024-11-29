@@ -10,7 +10,7 @@ import com.alamin.ecommerce.product.Product;
 
 @Data
 @Entity
-@Table(name = "categories")
+@Table(name = "category")
 public class Category {
 
     @Id
