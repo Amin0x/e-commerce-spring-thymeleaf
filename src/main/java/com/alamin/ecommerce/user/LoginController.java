@@ -34,6 +34,8 @@ public class LoginController {
         Model model, 
         RedirectAttributes redirectAttributes 
     ) {
+        boolean authenticationFailed = false;
+        
         if (bindingResult.hasErrors()) {
             return "login";
         }
