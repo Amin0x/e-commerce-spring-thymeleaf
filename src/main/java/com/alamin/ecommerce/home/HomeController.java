@@ -72,8 +72,8 @@ public class HomeController {
     }
 
     @PostMapping("/subscribe")
-    public ResponseEntity<Map<String,Object>> subscribe() {
-        return ResponseEntity.ok();
+    public ResponseEntity<String> subscribe() {
+        return ResponseEntity.ok("success");
     }
 
 }
