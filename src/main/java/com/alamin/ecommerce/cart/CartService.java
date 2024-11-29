@@ -31,7 +31,7 @@ public class CartService {
         for (CartItem cartitem : cart.getItems()) {
             if (cartitem.getProductId().equals(item.getProductId())) {
                 isExisting = true;
-                long quan = cartitem.getQuantity() + item.getQuantity();
+                int quan = cartitem.getQuantity() + item.getQuantity();
                 cartitem.setQuantity(quan);
                 break;
             }
