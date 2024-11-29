@@ -2,7 +2,9 @@ package com.alamin.ecommerce.invoice;
 
 import jakarta.persistence.*;
 import java.util.Date;
+import lombok.*;
 
+@Data
 @Entity
 public class Invoice {
 
