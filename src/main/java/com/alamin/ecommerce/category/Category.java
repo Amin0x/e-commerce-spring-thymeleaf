@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
+import lombok.*;
 
 import com.alamin.ecommerce.product.Product;
 
+@Data
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -23,8 +25,8 @@ public class Category {
     private String description;
 
     // One-to-many relationship: A category can have many products
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    //@OneToMany(mappedBy = "category")
+    //private List<Product> products;
 
     // Default constructor (required by JPA)
     public Category() {}
