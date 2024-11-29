@@ -1,6 +1,6 @@
 package com.alamin.ecommerce.user;
 
-
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
