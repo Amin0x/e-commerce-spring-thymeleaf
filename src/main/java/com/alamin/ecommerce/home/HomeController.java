@@ -62,6 +62,12 @@ public class HomeController {
 
         List<Product> newProducts = productService.getNewArrivalProducts();
         model.addAttribute("newProducts", newProducts);
+
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "");
+        
         // Return the name of the HTML view (without .html extension)
         return "home"; // This will resolve to src/main/resources/templates/home.html
     }
