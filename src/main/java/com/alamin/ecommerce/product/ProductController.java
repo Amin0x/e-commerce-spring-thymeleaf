@@ -19,10 +19,12 @@ public class ProductController {
 
     // Create a new product
     @PostMapping("/api/products")
-    @ResponseBody 
-    public Product createProduct(@RequestBody Product product) {
-        return productRepository.save(product);
-    }
+	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+   		Product savedProduct = productRepository.save(product);
+   		return ResponseEntity
+            .status(HttpStatus.CREATED)  // HTTP status 201 Created
+            .body(savedProduct);         // The saved product as the response body
+	}
 
     @GetMapping("/web/products/new")
     public String showCreateProductForm(Model model) {
@@ -42,10 +44,10 @@ public class ProductController {
 
     // Get all products
     @GetMapping("/api/products")
-    @ResponseBody
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
+	public ResponseEntity<List<Product>> getAllProducts() {
+   		List<Product> products = productRepository.findAll();
+   		return ResponseEntity.ok(products);  // HTTP status 200 OK with the list of products
+	}
 
     // Get all products
     @GetMapping("/web/products")
