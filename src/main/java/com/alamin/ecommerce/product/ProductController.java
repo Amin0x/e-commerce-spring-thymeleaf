@@ -29,6 +29,10 @@ public class ProductController {
     @GetMapping("/web/products/new")
     public String showCreateProductForm(Model model) {
         model.addAttribute("product", new Product());
+	model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "");
         return "create_product";
     }
 
@@ -70,6 +74,10 @@ public class ProductController {
         }
     
         model.addAttribute("products", products);
+	model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "");
         return "products";
 
     }
