@@ -15,7 +15,11 @@ public class CartController {
     @GetMapping("/web/carts/{id}")
     public String showCart(@PathVariable Long id, Model model) {
         Cart cart = cartService.getCart(id);
-        model.addAttribute(cart);
+        model.addAttribute("cart", cart);
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "");
         return "cart";
     }
     
