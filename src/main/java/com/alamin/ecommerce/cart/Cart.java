@@ -2,6 +2,7 @@ package com.alamin.ecommerce.cart;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.time.LocalDateTime;
 import lombok.*;
 
 @Entity
@@ -18,7 +19,10 @@ public class Cart {
     private int totalQuantity;
     private double totalPrice;
     private Long userId;
+    private LocalDateTime createdDate;
 
-    public Cart(){}
+    public Cart(){
+        createdDate = LocalDateTime.now();
+    }
     
 }
