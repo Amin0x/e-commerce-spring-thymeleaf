@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
+import java.time.LocalDateTime;
 import lombok.*;
 
 import com.alamin.ecommerce.product.Product;
@@ -24,6 +25,8 @@ public class Category {
     @Size(max = 255, message = "Description must be less than 255 characters")
     private String description;
 
+    private LocalDateTime createdDate;
+
     // One-to-many relationship: A category can have many products
     //@OneToMany(mappedBy = "category")
     //private List<Product> products;
@@ -35,6 +38,7 @@ public class Category {
     public Category(String name, String description) {
         this.name = name;
         this.description = description;
+        this.createdDate = LocalDateTime.now();
     }
 
 }
