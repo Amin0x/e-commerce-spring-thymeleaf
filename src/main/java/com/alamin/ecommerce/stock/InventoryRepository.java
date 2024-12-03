@@ -11,4 +11,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     // Example of querying for a list of inventory items with quantity greater than a specified value
     List<Inventory> findByQuantityGreaterThan(int quantity);
+
+    List<Inventory> findByQuantityLessThan(int quantity);
 }
