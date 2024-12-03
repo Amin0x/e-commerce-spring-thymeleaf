@@ -17,6 +17,7 @@ public class Cart {
 
     private int totalQuantity;
     private double totalPrice;
+    private Long userId;
 
     public Cart(){}
     
