@@ -13,7 +13,7 @@ public class CartService {
     private CartRepository cartRepository;
 
     public Cart getCart(Long id) {
-        return cartRepository.findById(id).orElse(new Cart());
+        return cartRepository.findById(id).orElse(null);
     }
 
     public Cart saveCart(Cart cart) {
