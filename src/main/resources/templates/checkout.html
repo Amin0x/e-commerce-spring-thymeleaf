@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-
-    <div class="page-warpper">
+    <div class="content-warper">
+        <div th:replace="fragments/navbar :: navbar"></div>
         <h1 class="title">Checkout</h1>
 
         <div class="order-summary" th:each="item : ${cart.items}">
