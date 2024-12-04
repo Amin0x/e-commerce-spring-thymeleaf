@@ -26,6 +26,7 @@ public class Category {
     private String description;
 
     private LocalDateTime createdDate;
+    private Long parentId;
 
     // One-to-many relationship: A category can have many products
     //@OneToMany(mappedBy = "category")
