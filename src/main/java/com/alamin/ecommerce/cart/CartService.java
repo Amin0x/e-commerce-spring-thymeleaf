@@ -52,9 +52,9 @@ public class CartService {
     }
 
     private void updateCartTotals(Cart cart) {
-        int totalQuantity = cart.getItems().stream().mapToInt(CartItem::getQuantity).sum();
+        //int totalQuantity = cart.getItems().stream().mapToInt(CartItem::getQuantity).sum();
         double totalPrice = cart.getItems().stream().mapToDouble(item -> item.getQuantity() * item.getPrice()).sum();
-        cart.setTotalQuantity(totalQuantity);
+        //cart.setTotalQuantity(totalQuantity);
         cart.setTotalPrice(totalPrice);
     }
 }
