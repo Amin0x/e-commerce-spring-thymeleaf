@@ -21,7 +21,7 @@ public class ProductService {
         return productRepository.findNewArrivalProducts();
     }
 
-    public Page<Product> getProducts(int pageNumber, int count) {
+    public Page<Product> getAllProducts(int pageNumber, int count) {
         if (pageNumber < 1) pageNumber = 1;
         if (count < 10) count = 10;
         Pageable pageable = PageRequest.of(pageNumber, count);  // 20 products per page
