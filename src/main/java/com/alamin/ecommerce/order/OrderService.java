@@ -20,13 +20,13 @@ public class OrderService {
    	// Create a PageRequest with pagination and sorting
 	String orderCol = null;
 	switch(order){
-	case 1: orderCol = ""; break;
+	case 1: orderCol = "orderDate"; break;
 	case 2: orderCol = ""; break;
 	case 3: orderCol = ""; break;
-	default: orderCol = null; 
+	default: orderCol = "orderDate"; 
 	}
    		
-	Sort sort = Sort.by(order == 1 ? Sort.Order.asc("orderDate") : Sort.Order.desc("orderDate"));
+	Sort sort = asc == true ? Sort.by(Sort.Order.asc(orderCol)) : Sort.by(Sort.Order.desc(orderCol));
    	PageRequest pageRequest = PageRequest.of(page, size, sort);
 
    	// Fetch the paged and sorted orders from the repository
