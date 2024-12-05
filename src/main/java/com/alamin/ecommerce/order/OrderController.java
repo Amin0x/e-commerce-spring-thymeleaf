@@ -15,8 +15,12 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+    public List<Order> getAllOrders(
+        @RequestParam(name = "p", defaultValue = 1) int page,
+        @RequestParam(name = "s", defaultValue = 10) int size,
+        @RequestParam(name = "o", defaultValue = 0) int order
+    ) {
+        return orderService.getAllOrders(page, size, order);
     }
 
     @GetMapping("/{id}")
