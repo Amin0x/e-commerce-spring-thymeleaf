@@ -16,7 +16,7 @@ public class OrderService {
 
     
 
-    public List<Order> getAllOrders(int page, int size, int order) {
+    public List<Order> getAllOrders(int page, int size, int order, boolean asc) {
    	// Create a PageRequest with pagination and sorting
 	String orderCol = null;
 	switch(order){
