@@ -6,9 +6,9 @@
     <meta name="description" content="Company Name is led by CEO John Doe. We specialize in XYZ services. Learn more about our leadership and offerings."> 
     <meta name="keywords" content="Company Name, CEO, John Doe, Business Leadership, XYZ services"> 
     <meta name="robots" content="index, follow"> 
-    <title>Product List</title>
+    <title th:text="${title}">Product List</title>
   
-    <link href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
