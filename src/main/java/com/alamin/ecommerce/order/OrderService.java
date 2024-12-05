@@ -17,16 +17,24 @@ public class OrderService {
     
 
     public List<Order> getAllOrders(int page, int size, int order) {
-   		// Create a PageRequest with pagination and sorting
-   		Sort sort = Sort.by(order == 1 ? Sort.Order.asc("date") : Sort.Order.desc("date"));
-   		PageRequest pageRequest = PageRequest.of(page, size, sort);
-
-   		// Fetch the paged and sorted orders from the repository
-   		Page<Order> orderPage = orderRepository.findAll(pageRequest);
-    
-   		// Return the list of orders (you can return the Page if you need pagination info)
-   		return orderPage.getContent();
+   	// Create a PageRequest with pagination and sorting
+	String orderCol = null;
+	switch(order){
+	case 1: orderCol = ""; break;
+	case 2: orderCol = ""; break;
+	case 3: orderCol = ""; break;
+	default: orderCol = null; 
 	}
+   		
+	Sort sort = Sort.by(order == 1 ? Sort.Order.asc("orderDate") : Sort.Order.desc("orderDate"));
+   	PageRequest pageRequest = PageRequest.of(page, size, sort);
+
+   	// Fetch the paged and sorted orders from the repository
+   	Page<Order> orderPage = orderRepository.findAll(pageRequest);
+    
+   	// Return the list of orders (you can return the Page if you need pagination info)
+   	return orderPage.getContent();
+    }
 
     public Optional<Order> getOrderById(Long id) {
         return orderRepository.findById(id);
