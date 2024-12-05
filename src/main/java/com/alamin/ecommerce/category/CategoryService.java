@@ -42,7 +42,7 @@ public class CategoryService {
     }
 
     // Get all categories with pagination and sorting
-    public List<Category> getAllCategoriesWithPaginationAndSorting(int page, int size, int order, boolean asc) {
+    public List<Category> getAllCategories(int page, int size, int order, boolean asc) {
         // Define the sorting column based on the "order" parameter
         String orderCol = null;
         switch (order) {
