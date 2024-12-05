@@ -26,7 +26,15 @@ public class CategoryService {
 
     // Delete category by ID
     public void deleteCategory(Long id) {
-        categoryRepository.deleteById(id);
+        Optional<Category> cat = getCategoryById(id);
+        if(cat.isPresent()){
+            Category curCat = cat.get();
+            categoryRepository.updateCategoryParent(curCat.getId(), curCat.getParentId());
+            categoryRepository.deleteById(id);
+            return;
+        }
+
+        throw new IllegalStateException("");
     }
 
     // Update category
