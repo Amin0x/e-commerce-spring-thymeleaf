@@ -19,7 +19,7 @@ public class OrderController {
         @RequestParam(name = "p", defaultValue = 1) int page,
         @RequestParam(name = "s", defaultValue = 10) int size,
         @RequestParam(name = "o", defaultValue = 0) int order,
-        @RequestParam(name = "a", defaultValue = 0) int desc,
+        @RequestParam(name = "a", defaultValue = 0) int desc
     ) {
         return orderService.getAllOrders(page, size, order, (desc == 0));
     }
