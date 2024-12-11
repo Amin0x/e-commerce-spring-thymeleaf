@@ -11,6 +11,28 @@
 
 <div class="container mt-5">
     <h1 class="mb-4">User List</h1>
+    <!-- Filter Form -->
+    <form method="get" th:action="@{/users}" class="mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="First Name" name="firstName" th:value="${firstName}">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Last Name" name="lastName" th:value="${lastName}">
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" name="role">
+                    <option value="">Select Role</option>
+                    <option value="ADMIN" th:selected="${role == 'ADMIN'}">Admin</option>
+                    <option value="USER" th:selected="${role == 'USER'}">User</option>
+                    <option value="GUEST" th:selected="${role == 'GUEST'}">Guest</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
 
     <table class="table table-striped table-bordered">
         <thead>
