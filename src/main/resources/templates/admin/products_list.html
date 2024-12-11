@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
 
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Products</h2>
+
+    <div class="mb-4">
+        <form th:action="@{/web/products}" method="get" class="form-inline">
+            <input type="text" name="keyword" class="form-control mr-sm-2" placeholder="Search..." th:value="${param.keyword}">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th th:sort="id">ID</th>
+                <th th:sort="title">Title</th>
+                <th th:sort="priceSDG">Price (SDG)</th>
+                <th th:sort="priceUSD">Price (USD)</th>
+                <th th:sort="sold">Sold</th>
+                <th th:sort="stock">Stock</th>
+                <th th:sort="sku">SKU</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="product : ${productPage.content}">
+                <td th:text="${product.id}">1</td>
+                <td th:text="${product.title}">Product Title</td>
+                <td th:text="${product.priceSDG}">100.00</td>
+                <td th:text="${product.priceUSD}">20.00</td>
+                <td th:text="${product.sold}">50</td>
+                <td th:text="${product.stock}">200</td>
+                <td th:text="${product.sku}">SKU1234</td>
+                <td>
+                    <a th:href="@{/web/products/edit/{id}(id=${product.id})}" class="btn btn-primary btn-sm">Edit</a>
+                    <a th:href="@{/web/products/delete/{id}(id=${product.id})}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between">
+        <div>
+            Page <span th:text="${currentPage}">1</span> of <span th:text="${totalPages}">10</span>
+        </div>
+        <div>
+            <a th:href="@{/web/products(page=${currentPage-1}, size=${size}, sortField=${sortField}, sortDirection=${sortDirection})}" class="btn btn-secondary btn-sm"
+               th:if="${currentPage > 1}">Previous</a>
+            <a th:href="@{/web/products(page=${currentPage+1}, size=${size}, sortField=${sortField}, sortDirection=${sortDirection})}" class="btn btn-secondary btn-sm"
+               th:if="${currentPage < totalPages}">Next</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
