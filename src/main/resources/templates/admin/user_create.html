@@ -61,11 +61,15 @@
             <div class="user-drv">
                 <div class="form-group">
                   <label for="licenseNumber">License number:</label>
-                  <input type="text" class="form-control" th:field="*{licenseNumber}" id="licenseNumber" required>
+                  <input type="text" class="form-control" th:field="*{licenseNumber}" id="licenseNumber">
                 </div>
                 <div class="form-group">
                   <label for="licenseExpireDate">License expire date:</label>
-                  <input type="date" class="form-control" th:field="*{licenseExpireDate}" id="licenseExpireDate" required>
+                  <input type="date" class="form-control" th:field="*{licenseExpireDate}" id="licenseExpireDate">
+                </div>
+                <div class="form-group">
+                  <label for="userImg">License expire date:</label>
+                  <input type="file" class="form-control" th:field="*{userImg}" id="userImg">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Create User</button>
