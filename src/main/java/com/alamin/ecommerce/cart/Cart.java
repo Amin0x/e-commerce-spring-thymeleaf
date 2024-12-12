@@ -16,12 +16,14 @@ public class Cart {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CartItem> items;
 
-    private double totalPrice;
+    private Integer totalPrice;
     private Long userId;
-    private LocalDateTime createdDate;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 
     public Cart(){
-        createdDate = LocalDateTime.now();
+        this.created = LocalDateTime.now();
+        this.updated = LocalDateTime.now();
     }
     
 }
