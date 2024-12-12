@@ -25,21 +25,22 @@ public class Category {
     @Size(max = 255, message = "Description must be less than 255 characters")
     private String description;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime created;
+    private LocalDateTime updated;
     private Long parentId;
-
-    // One-to-many relationship: A category can have many products
-    //@OneToMany(mappedBy = "category")
-    //private List<Product> products;
+    private Boolean active;
 
     // Default constructor (required by JPA)
     public Category() {}
 
     // Constructor for convenience
-    public Category(String name, String description) {
+    public Category(String name, String description, Long parentId) {
         this.name = name;
         this.description = description;
-        this.createdDate = LocalDateTime.now();
+        this.parentId = parentId; 
+        this.active = false; 
+        this.created = LocalDateTime.now();
+        this.updated = LocalDateTime.now();
     }
 
 }
