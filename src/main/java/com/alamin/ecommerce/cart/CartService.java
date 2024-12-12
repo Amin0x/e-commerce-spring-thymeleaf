@@ -57,4 +57,12 @@ public class CartService {
         //cart.setTotalQuantity(totalQuantity);
         cart.setTotalPrice(totalPrice);
     }
+
+    public Cart getCartBySession(String sessionId){
+        return null;
+    }
+
+    public Cart getCartByUser(Long userId){
+        return null;
+    }
 }
