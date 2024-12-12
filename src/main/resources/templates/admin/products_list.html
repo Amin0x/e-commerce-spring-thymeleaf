@@ -32,7 +32,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="product : ${productPage.content}">
+            <tr th:each="product,iterStat : ${productPage.content}" th:class="${iterStat.odd} ? 'odd'">
                 <td th:text="${product.id}">1</td>
                 <td th:text="${product.title}">Product Title</td>
                 <td th:text="${product.priceSDG}">100.00</td>
