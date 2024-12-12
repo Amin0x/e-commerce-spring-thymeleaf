@@ -26,23 +26,34 @@ public class Product {
     private String description;
 
     @NotNull(message = "Price is required")
-    private Double price;
+    private Integer price;
+
+    private Integer initialPrice;
+
+    @NotNull(message = "Product sku is required")
+    @Size(min = 3, max = 100, message = "Product sku must be between 3 and 100 characters")
+    private String sku;
 
     @NotNull(message = "Stock is required")
     private Integer stock;
+
+    @NotNull(message = "Category is required")
+    private Long categoryId;
+
+    private LocalDateTime created;
+    private LocalDateTime updated;
+    private LocalDateTime deleted;
 
     // Default constructor (required by JPA)
     public Product() {}
 
     // Constructor for convenience
-    public Product(String name, String description, Double price, Integer stock) {
+    public Product(String name, String description, Integer price, Integer stock) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
+        this.created = LocalDateTime.now();
+        this.updated = LocalDateTime.now();
     }
-
-    
-
-    
 }
