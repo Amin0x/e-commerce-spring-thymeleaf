@@ -18,6 +18,7 @@ public class Cart {
 
     private Integer totalPrice;
     private Long userId;
+    private String sid;
     private LocalDateTime created;
     private LocalDateTime updated;
 
