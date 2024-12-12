@@ -29,13 +29,9 @@ public class InventoryService {
 
     // Update an existing item
     public Inventory updateItem(Long id, Inventory inventory) {
-        Optional<Inventory> optional = getItemById(id);
-        if (optional.isPresent()) {
-            Inventory current = optional.get();
-            return inventoryRepository.save(current);
-        } else {
-            throw new RuntimeException("Item not found");
-        }
+        Inventory current  = getItemById(id)
+            .orElseThrow(()=>{throw new RuntimeException("Item not found");});
+        return inventoryRepository.save(current);
     }
 
     // Delete an item
