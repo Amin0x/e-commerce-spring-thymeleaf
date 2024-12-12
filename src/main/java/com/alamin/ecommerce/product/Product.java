@@ -48,7 +48,12 @@ public class Product {
     public Product() {}
 
     // Constructor for convenience
-    public Product(String name, String description, Integer price, Integer stock) {
+    public Product(String name, 
+                   String description, 
+                   Integer price, 
+                   Long categoryId, 
+                   Integer stock) {
+        
         this.name = name;
         this.description = description;
         this.price = price;
