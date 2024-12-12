@@ -14,7 +14,7 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int quantity;
-    private Integer price;
+    private int price;
     private Long productId;
     private LocalDateTime created;
     private LocalDateTime updated;
