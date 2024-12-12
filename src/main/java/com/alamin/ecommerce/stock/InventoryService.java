@@ -29,9 +29,10 @@ public class InventoryService {
 
     // Update an existing item
     public Inventory updateItem(Long id, Inventory inventory) {
-        if (inventoryRepository.existsById(id)) {
-            inventory.setId(id);
-            return inventoryRepository.save(inventory);
+        Optional<Inventory> optional = getItemById(id);
+        if (optional.isPresent()) {
+            Inventory current = optional.get();
+            return inventoryRepository.save(current);
         } else {
             throw new RuntimeException("Item not found");
         }
