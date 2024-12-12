@@ -40,6 +40,8 @@ public class Product {
     @NotNull(message = "Category is required")
     private Long categoryId;
 
+    private Boolean active;
+
     private LocalDateTime created;
     private LocalDateTime updated;
     private LocalDateTime deleted;
@@ -51,13 +53,16 @@ public class Product {
     public Product(String name, 
                    String description, 
                    Integer price, 
-                   Long categoryId, 
-                   Integer stock) {
+                   Long categoryId
+                   ) {
         
         this.name = name;
         this.description = description;
         this.price = price;
-        this.stock = stock;
+        this.initialPrice = 0;
+        this.stock = 0;
+        this.categoryId = categoryId;
+        this.active = false;
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();
     }
