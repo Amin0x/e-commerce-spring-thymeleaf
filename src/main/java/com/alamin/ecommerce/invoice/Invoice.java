@@ -12,7 +12,6 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String customerName;
-    private Date invoiceDate;
     private double totalAmount;
 
     private LocalDateTime created;
