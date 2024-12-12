@@ -15,5 +15,9 @@ public class Invoice {
     private Date invoiceDate;
     private double totalAmount;
 
+    private LocalDateTime created;
+    private LocalDateTime updated;
+    private LocalDateTime deleted;
+
     // Getters and Setters
 }
