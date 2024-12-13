@@ -30,7 +30,7 @@ public class InventoryService {
     // Update an existing item
     public Inventory updateItem(Long id, Inventory inventory) {
         Inventory current  = getItemById(id)
-            .orElseThrow(()=>{throw new RuntimeException("Item not found");});
+            .orElseThrow(()->{throw new RuntimeException("Item not found");});
         return inventoryRepository.save(current);
     }
 
