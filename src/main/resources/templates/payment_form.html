@@ -315,7 +315,7 @@ form .btn.btn-primary:hover {
                 </label>
             </div>
         </div>
-        <form action="/payments" method="post">
+        <form action="/payments" method="post" name="payment-form">
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex flex-column px-md-5 px-4 mb-4">
@@ -356,7 +356,7 @@ form .btn.btn-primary:hover {
                     </div>
                 </div>
                 <div class="col-12 px-md-5 px-4 mt-3">
-                    <div class="btn btn-primary w-100">
+                    <div class="btn btn-primary w-100" onClick="document.forms["payment-form"].submit();">
                         <span th:text="'Pay $' + ${amount}">Pay $599.00</span>
                     </div>
                 </div>
