@@ -28,6 +28,24 @@
         </div>
 
         <form th:action="@{/checkout}" method="post">
+<h2>contact</h2>
+ <div class="col-md-6">
+                <!-- First Name Field -->
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" id="firstName" name="firstName" class="form-control" th:field="*{firstName}" required>
+            </div>
+            <div class="col-md-6">
+                <!-- Last Name Field -->
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" id="lastName" name="lastName" class="form-control" th:field="*{lastName}" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="contact" class="form-label">Email Address or Phone Number</label>
+            <input type="text" id="contact" name="contact" class="form-control" th:field="*{contact}" required>
+            <small class="form-text text-muted">Provide either your email address or phone number.</small>
+        </div>
             <h3>Billing Information</h3>
             <div class="form-group">
                 <label for="billingName">Name:</label>
