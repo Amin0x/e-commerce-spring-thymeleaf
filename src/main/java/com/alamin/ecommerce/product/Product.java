@@ -38,7 +38,8 @@ public class Product {
     private Integer stock;
 
     @NotNull(message = "Category is required")
-    private Long categoryId;
+    @OneToOne
+    private Category category;
 
     private Boolean active;
 
