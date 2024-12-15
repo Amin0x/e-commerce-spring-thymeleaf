@@ -13,21 +13,19 @@
 </head>
 <body>
 
-<div th:replace="fragments/navbar :: navbar"></div>
-
-<div class="container">
-    <h1 class="text-center my-4">Product List</h1>
-    
-    <div class="row">
-        <div class="col-6 col-md-3" th:each="product : ${products}">
+    <div class="wrapper>
+      <div th:replace="fragments/navbar :: navbar"></div>
+      <div class="container">
+        <h1 class="text-center my-4">Product List</h1>
+        <div class="row">
+          <div class="col-6 col-md-3" th:each="product : ${products}">
             <div th:replace="fragments/product_card :: productCard(${product})"></div>
+          </div>
         </div>
+      </div>
+      <div th:replace="fragments/footer :: footer"></div>
     </div>
-</div>
-
-<div th:replace="fragments/footer :: footer"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
