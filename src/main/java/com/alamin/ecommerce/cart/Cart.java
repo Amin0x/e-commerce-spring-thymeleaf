@@ -16,8 +16,10 @@ public class Cart {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CartItem> items;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private User user;
+
     private Integer totalPrice;
-    private Long userId;
     private String sid;
     private LocalDateTime created;
     private LocalDateTime updated;
