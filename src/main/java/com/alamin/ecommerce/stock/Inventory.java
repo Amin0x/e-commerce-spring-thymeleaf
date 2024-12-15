@@ -15,7 +15,8 @@ public class Inventory {
     private Long id;
     private int quantity;
     private int price;
-    private Long productId;
+    @OneToOne
+    private Product product;
     private LocalDateTime created;
     private LocalDateTime updated;
 }
