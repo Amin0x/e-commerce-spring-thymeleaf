@@ -13,10 +13,10 @@
 </head>
 <body>
 
-    <div class="page-wrapper">
+    <div class="wrapper">
     <div th:replace="fragments/navbar :: navbar"></div>
     
-    <div class="product-details-container">
+    <div class="product-details">
         <h2 th:text="${product.name}">Product Name</h2>
         <div class="text-center">
             <img th:src="@{${product.imageUrl}}" alt="Product Image">
