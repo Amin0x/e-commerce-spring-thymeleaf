@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Card</title>
     <link th:href="@{/css/bootstrap.min.css}" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .circle-container {
+      width: 32px;
+      height: 32px;
+      padding: 3px;
+      border-radius: 50%; 
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 25px; 
+      color: red;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    </style>
 </head>
 <body>
 
@@ -15,6 +30,9 @@
         <div class="col-md-4">
     <div class="card">
         <div class="position-relative">
+            <div class="circle-container position-absolute">
+                <i class="far fa-heart"></i>
+            </div>
             <img th:src="@{${product.imageUrl}}" src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image" th:alt="${product.name}">
             <span th:if="true" class="badge bg-info position-absolute top-0 start-0 m-2">New</span>
             <span th:if="true" class="badge bg-success position-absolute top-0 end-0 m-2">Sale</span>
