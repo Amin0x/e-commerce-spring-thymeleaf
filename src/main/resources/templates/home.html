@@ -78,7 +78,7 @@
 
     <section class="container mt-5">
     <div class="row">
-    <div class="col-6">
+    <div class="col-6 product-card">
                 <div class="card">
                     <div class="position-relative">
                         <div class="circle-container position-absolute">
@@ -92,7 +92,7 @@
                         <div th:text="${product.name}" class="card-title">Product Title</div>
                         <div th:text="${product.price}" class="card-text"><strong>$49.99</strong></div>
                         <div th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}" class="card-text"><strong>$49.99</strong></div>
-                        <form id="addToCartForm" method="post" class="mt-auto">
+                        <form onSubmit="addToCartFormonSubmit" method="post" class="mt-auto">
                             <input type="hidden" name="productId" th:value="${product.id}">
                             <input type="hidden" name="quantity" value="1">
                             <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
@@ -101,7 +101,7 @@
                 </div>
             </div>
     
-    <div class="col-6">
+    <div class="col-6 product-card">
                 <div class="card">
                     <div class="position-relative">
                         <div class="circle-container position-absolute">
@@ -115,7 +115,7 @@
                         <div th:text="${product.name}" class="card-title">Product Title</div>
                         <div th:text="${product.price}" class="card-text"><strong>$49.99</strong></div>
                         <div th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}" class="card-text"><strong>$49.99</strong></div>
-                        <form id="addToCartForm" method="post" class="mt-auto">
+                        <form onSubmit="addToCartFormonSubmit" method="post" class="mt-auto">
                             <input type="hidden" name="productId" th:value="${product.id}">
                             <input type="hidden" name="quantity" value="1">
                             <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
@@ -124,7 +124,7 @@
                 </div>
             </div>
     
-    <div class="col-6">
+    <div class="col-6 product-card">
                 <div class="card">
                     <div class="position-relative">
                         <div class="circle-container position-absolute">
@@ -138,7 +138,7 @@
                         <div th:text="${product.name}" class="card-title">Product Title</div>
                         <div th:text="${product.price}" class="card-text"><strong>$49.99</strong></div>
                         <div th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}" class="card-text"><strong>$49.99</strong></div>
-                        <form id="addToCartForm" method="post" class="mt-auto">
+                        <form onSubmit="addToCartFormonSubmit" method="post" class="mt-auto">
                             <input type="hidden" name="productId" th:value="${product.id}">
                             <input type="hidden" name="quantity" value="1">
                             <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
@@ -149,7 +149,7 @@
     
 
     
-    <div class="col-6">
+    <div class="col-6 product-card">
                 <div class="card">
                     <div class="position-relative">
                         <div class="circle-container position-absolute">
@@ -163,7 +163,7 @@
                         <div th:text="${product.name}" class="card-title">Product Title</div>
                         <div th:text="${product.price}" class="card-text"><strong>$49.99</strong></div>
                         <div th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}" class="card-text"><strong>$49.99</strong></div>
-                        <form id="addToCartForm" method="post" class="mt-auto">
+                        <form onSubmit="addToCartFormonSubmit" method="post" class="mt-auto">
                             <input type="hidden" name="productId" th:value="${product.id}">
                             <input type="hidden" name="quantity" value="1">
                             <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
