@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,45 +34,44 @@
 <body>
     <!-- Content  -->
     <main class="content-warper">
-    <nav th:fragment="navbar">
-        <div class="container" id="navbar">
-            <div class="row">
-                <div class="col-lg-3">
-                    <ul class="menu list-unstyled">
-                        <li><a href="#">Menu Item 1</a></li>
-                        <li><a href="#">Menu Item 2</a></li>
-                        <li><a href="#">Menu Item 3</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4">
-                    <div><a><img th:src="@{/images/logo.png}" src="https://via.placeholder.com/120x80" alt="Logo"></a></div>
-                </div>
-                <div class="col-lg-3">
-                    <ul class="menu list-unstyled">
-                        <li><a href="#">Menu Item 1</a></li>
-                        <li><a href="#">Menu Item 2</a></li>
-                        <li><a href="#">Menu Item 3</a></li>
-                    </ul>
+        <nav th:fragment="navbar">
+            <div class="container" id="navbar">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <ul class="menu list-unstyled">
+                            <li><a href="#">Menu Item 1</a></li>
+                            <li><a href="#">Menu Item 2</a></li>
+                            <li><a href="#">Menu Item 3</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div><a><img th:src="@{/images/logo.png}" src="https://via.placeholder.com/120x80" alt="Logo"></a></div>
+                    </div>
+                    <div class="col-lg-3">
+                        <ul class="menu list-unstyled">
+                            <li><a href="#">Menu Item 1</a></li>
+                            <li><a href="#">Menu Item 2</a></li>
+                            <li><a href="#">Menu Item 3</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
     
 
 
-<section class="container">
- <div class="wrapper">
-   <div class="banner-image"> </div>
-   <h1> Toyota Supra</h1>
-   <p>Lorem ipsum dolor sit amet, <br/>
-     consectetur adipiscing elit.</p>
-  </div>
-  <div class="button-wrapper"> 
-  <button class="btn outline">DETAILS</button>
-    <button class="btn fill">BUY NOW</button>
-  </div>
-    </div>
-</section>
+        <section class="container">
+            <div class="wrapper">
+                <div class="banner-image"> </div>
+                    <h1> Toyota Supra</h1>
+                    <p>Lorem ipsum dolor sit amet, <br> consectetur adipiscing elit.</p>
+                </div>
+                <div class="button-wrapper"> 
+                    <button class="btn outline">DETAILS</button>
+                    <button class="btn fill">BUY NOW</button>
+                </div>
+            </div>
+        </section>
 
 
 
