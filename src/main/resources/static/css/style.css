@@ -439,18 +439,18 @@ body {
     border-bottom: 1px solid #ccc;
 }
         
-.cart-container {
-    max-width: 800px;
-    margin: 0px auto;
+.cart-card {
+    margin-bottom: 20px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
 }
 
-.cart-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
+.cart-container {
+    max-width: 800px;
+    margin: 0px auto;
+    padding: 0 20px;
 }
 
 .cart-container .cart-item {
@@ -486,4 +486,12 @@ body {
 .cart-container button {
     width: 100%;
     margin-top: 20px;
+}
+
+.cart-container h4.title {
+    font-size: 0.9rem;
+}
+
+.cart-container label {
+    font-size: 0.8rem;
 }
