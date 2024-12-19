@@ -13,25 +13,25 @@
 }
 
 .login-container form .form-group {
-            margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .login-container form button {
-            width: 100%;
+    width: 100%;
 } 
 
 .product-details-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-  background-color: #f9f9f9;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
 }
 
 .product-details-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .product-details-container img {
@@ -81,22 +81,22 @@
 }
 
 .user-reviews {
-            margin-top: 40px;
+    margin-top: 40px;
 }
 
 .user-reviews h3 {
-            text-align: center;
-            margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .review-item {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .review-form {
-            margin-top: 30px;
+    margin-top: 30px;
 }
 
 .product-grid{ font-family: 'Poppins', sans-serif; }
@@ -164,7 +164,9 @@
     bottom: -20px;
     left: -20px;
 }
-.product-grid .product-view:hover{ background: #ff6f00; }
+.product-grid .product-view:hover{ 
+    background: #ff6f00; 
+}
 .product-grid .product-links{
     padding: 0;
     margin: 0;
@@ -217,7 +219,9 @@
     list-style: none;
 }
 .product-grid .rating li{ display: inline-block; }
-.product-grid .rating .disable{ color: #a3a3a3; }
+.product-grid .rating .disable{ 
+    color: #a3a3a3; 
+}
 .product-grid .title{
     font-size: 15px;
     font-weight: 500;
@@ -228,7 +232,9 @@
     color: #333;
     transition: all 0.3s ease 0s;
 }
-.product-grid .title a:hover{ color: #ff6f00; }
+.product-grid .title a:hover{ 
+    color: #ff6f00; 
+}
 .product-grid .price{
     color: #a3a3a3;
     font-size: 15px;
@@ -241,66 +247,165 @@
     text-decoration: line-through;
     margin-right: 5px;
 }
+
 @media screen and (max-width: 990px){
     .product-grid{ margin-bottom: 30px; }
 }
 
 .checkout-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
 
-        .checkout-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+.checkout-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        .checkout-container .form-group {
-            margin-bottom: 15px;
-        }
+.checkout-container .form-group {
+    margin-bottom: 15px;
+}
 
-        .checkout-container .order-summary {
-            margin-bottom: 20px;
-        }
+.checkout-container .order-summary {
+    margin-bottom: 20px;
+}
 
-        .checkout-container .order-summary .item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-        }
+.checkout-container .order-summary .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
 
-        .checkout-container .order-summary .total {
-            font-weight: bold;
-            text-align: right;
-        }
+.checkout-container .order-summary .total {
+    font-weight: bold;
+    text-align: right;
+}
 
-        .checkout-container button {
-            width: 100%;
-            margin-top: 20px;
-        }
+.checkout-container button {
+    width: 100%;
+    margin-top: 20px;
+}
 
 .signup-container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
 
-        .signup-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+.signup-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        .signup-container form .form-group {
-            margin-bottom: 15px;
-        }
+.signup-container form .form-group {
+    margin-bottom: 15px;
+}
 
-        .signup-container form button {
-            width: 100%;
-        }
+.signup-container form button {
+    width: 100%;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap');
+
+.subscribe {
+  font-size: 20px;
+  font-family: 'Roboto';
+  padding: 1rem 0.9rem;
+  background: linear-gradient(90deg, #ff9966, #ff5e62);
+}
+
+.fas.fa-envelope {
+  color: #fff;
+  font-size: 2rem;
+  background: #333;
+  padding: 1rem;
+  border-radius: 100%;
+  margin: 0 0 1rem 0;
+} 
+
+.subscribe-content {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  box-shadow: 1px 1px 2rem rgba(0,0,0,.3);
+  text-align: center;
+}
+
+.subscribe-content h1 {
+  text-transform: uppercase;
+  margin: 0 0 1rem 0;
+}
+
+.subscribe-content p {
+  font-size: .8rem;
+  margin: 0 0 2rem 0;
+}
+
+.subscribe-content input {
+  padding: .8rem 1rem;
+  margin-bottom: 0.6rem;
+  width: 100%;
+  border-radius: 5rem;
+  outline: none;
+  border: .1rem solid #d1d1d1;
+  font-size: .7rem;
+}
+
+.subscribe-content ::placeholder {
+  color: #d1d1d1;
+}
+
+.subscribe-content .subscribe-btn {
+  padding: .8rem 2rem;
+  border-radius: 5rem;
+  background: linear-gradient(90deg, #ff9966, #ff5e62);
+  color: #fff;
+  font-size: .7rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.0;
+}
+
+.circle-container {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 32px;
+    height: 32px;
+    padding: 3px;
+    border-radius: 50%; 
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px; 
+    color: red;
+}
+
+.card .sale {
+    font-size: 0.6rem;
+    position: absolute;
+    top: 20px;
+    right: 2px;
+}
+
+.card .new {
+    font-size: 0.6rem;
+    position: absolute;
+    top: 4px;
+    right: 2px;
+}
