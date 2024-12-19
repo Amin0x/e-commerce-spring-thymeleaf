@@ -12,25 +12,29 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="content-warper">
+    <main class="content-warper">
         <div th:replace="fragments/navbar :: navbar"></div>
         <h1 class="title">Checkout</h1>
 
-        <div class="order-summary" th:each="item : ${cart.items}">
+        <section>
+            <div class="order-summary" th:each="item : ${cart.items}">
             <div class="item">
                 <span th:text="${item.productName}">Product Name</span>
                 <span th:text="${item.quantity}">Quantity</span>
                 <span th:text="${item.price}">Price</span>
             </div>
-        </div>
-
-        <div class="total">
+            </div>
+            <div class="total">
             Total: $<span th:text="${cart.totalPrice}">0.00</span>
-        </div>
+            </div>
+        </section>
+        
+
+        
 
         <form th:action="@{/checkout}" method="post">
-<h2>contact</h2>
- <div class="col-md-6">
+            <h2>contact</h2>
+            <div class="col-md-6">
                 <!-- First Name Field -->
                 <label for="firstName" class="form-label">First Name</label>
                 <input type="text" id="firstName" name="firstName" class="form-control" th:field="*{firstName}" required>
@@ -40,7 +44,7 @@
                 <label for="lastName" class="form-label">Last Name</label>
                 <input type="text" id="lastName" name="lastName" class="form-control" th:field="*{lastName}" required>
             </div>
-        </div>
+        
 
         <div class="mb-3">
             <label for="contact" class="form-label">Email Address or Phone Number</label>
@@ -82,7 +86,7 @@
             <button type="submit" class="btn btn-primary">Place Order</button>
         </form>
         <div th:replace="fragments/footer :: footer"></div>
-    </div>
+    </main>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
