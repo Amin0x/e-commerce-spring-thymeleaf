@@ -9,6 +9,16 @@
   --background-dark: #fff;
 }
 
+body {
+    font-size: 16px;
+    font-weight: 400;
+}
+        
+.page-wrapper {
+    width:100%;
+    padding: 12px;
+} 
+
 .login-container {
   max-width: 400px;
   margin: 50px auto;
@@ -422,15 +432,6 @@
 }
 
        
-body {
-    font-size: 16px;
-    font-weight: 400;
-}
-        
-.page-wrapper {
-    width:100%;
-    padding: 12px;
-}
         
 .bottom-boarder {
     height: 1px;
@@ -464,25 +465,25 @@ body {
 }
 
 .cart-container .item-price {
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
+    font-size: 0.8rem;
+    font-weight: bold;
+}
 
-        .cart-container .item-quantity {
-            font-size: 0.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-        }
+.cart-container .item-quantity {
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
 
-        .cart-container .total {
-            text-align: right;
-            margin-top: 20px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
+.cart-container .total {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
 
-        .cart-container button {
-            width: 100%;
-            margin-top: 20px;
-        }
+.cart-container button {
+    width: 100%;
+    margin-top: 20px;
+}
