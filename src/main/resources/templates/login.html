@@ -43,7 +43,7 @@
 
         <div class="login-container">
             <p class="login__form-icon"><i class="fas fa-lock"></i></p>
-            <h2 class="login-title">Login</h2>
+            <h2 class="login-title">Welcome Back</h2>
             <form th:action="@{/login}" th:object="${loginForm}" method="post">
                 <div class="form-group">
                     <label for="email">Email:</label>
@@ -53,12 +53,12 @@
                     <label for="password">Password:</label>
                     <input type="password" class="form-control" th:field="*{password}" id="password" placeholder="">
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
+                <button type="submit" class="button-31 w-100">Login</button>
              </form>
          </div>
         <div class="alt-login">
-            <button type="submit" class="btn btn-primary">Login Using Google <i class="fab fa-google"></i></button>
-            <button type="submit" class="btn btn-primary">Login Using Facebook <i class="fab fa-facebook"></i></button>
+            <button type="submit" class="button-31 mb-3">Login Using Google <i class="fab fa-google"></i></button>
+            <button type="submit" class="button-31">Login Using Facebook <i class="fab fa-facebook"></i></button>
         </div>
 
     </div>
