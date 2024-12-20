@@ -24,22 +24,39 @@ body {
   margin: 50px auto;
   padding: 20px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 5px;
   background-color: #f9f9f9;
 }
 
-.login-container h2 {
-  text-align: center;
+.login-container .login-title {
   margin-bottom: 20px;
 }
 
-.login-container form .form-group {
-    margin-bottom: 15px;
+.login-container .login-title,
+.login-container .login__form-icon {
+  text-align: center;
+  color: #00000044;
 }
 
-.login-container form button {
-    width: 100%;
-} 
+.login-container .form-group {
+  margin-bottom: 15px;
+}
+
+.login-container .spilter {
+  margin-top: 20px;
+}
+
+.login-container .spilter .or{
+  color: #ddd;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  transform: translateY(-22px);
+}
+
+.login-container .spilter .bottom-boarder{
+ color: #000 !important;
+}
 
 .product-details-container {
     max-width: 800px;
