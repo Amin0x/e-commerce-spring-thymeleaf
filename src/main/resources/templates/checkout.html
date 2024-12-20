@@ -17,7 +17,7 @@
         <h1 class="title">Checkout</h1>
 
         <section class="cart-card">
-<h4 class="title">Cart Details</h4>
+            <h4 class="title">Cart Details</h4>
             <div class="order-summary" th:each="item : ${cart.items}">
             <div class="item">
                 <span th:text="${item.productName}">Product Name</span>
@@ -34,26 +34,23 @@
         
 
         <form th:action="@{/checkout}" method="post">
-<section class="cart-card">
+          <section class="cart-card">
             <h4 class="title">Contact</h4>
-<div>
+            <div class="form-group">
                 <label for="firstName" class="form-label">First Name</label>
                 <input type="text" id="firstName" name="firstName" class="form-control" th:field="*{firstName}" required>
             </div>
-            
-                <div>
+            <div class="form-group">
                 <label for="lastName" class="form-label">Last Name</label>
                 <input type="text" id="lastName" name="lastName" class="form-control" th:field="*{lastName}" required>
             </div>
-        
-
-        <div class="">
-            <label for="contact" class="form-label">Email Address or Phone Number</label>
-            <input type="text" id="contact" name="contact" class="form-control" th:field="*{contact}" required>
-            <small class="form-text text-muted">Provide either your email address or phone number.</small>
-        </div>
-</section>
-<section class="cart-card billing-information">
+            <div class="form-group">
+              <label for="contact" class="form-label">Email Address or Phone Number</label>
+              <input type="text" id="contact" name="contact" class="form-control" th:field="*{contact}" required>
+              <small class="form-text text-muted">Provide either your email address or phone number.</small>
+            </div>
+          </section>
+          <section class="cart-card billing-information">
             <h4 class="title">Billing Information</h4>
             <div class="form-group">
                 <label for="billingName">Name:</label>
@@ -71,8 +68,8 @@
                 <label for="billingPhone">Phone:</label>
                 <input type="tel" class="form-control" id="billingPhone" name="billingPhone" required>
             </div>
-</section>
-<section class="cart-card payment-details">
+          </section>
+          <section class="cart-card payment-details">
             <h4 class="title">Payment Details</h4>
             <div class="form-group">
                 <label for="cardNumber">Card Number:</label>
@@ -88,7 +85,7 @@
             </div>
 
             <button type="submit" class="button-31">Place Order</button>
-</section>
+          </section>
         </form>
         <div th:replace="fragments/footer :: footer"></div>
     </main>
