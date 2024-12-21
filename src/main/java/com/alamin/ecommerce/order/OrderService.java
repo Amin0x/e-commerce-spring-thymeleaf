@@ -58,4 +58,16 @@ public class OrderService {
             return null;
         }
     }
+
+	public static int roundToNearestMultiple(int number) {
+        // تحديد المضاعف المناسب بناءً على الرقم
+        int multiple = (int) Math.pow(10, Math.floor(Math.log10(number)));
+
+        // تقريب الرقم إلى أقرب مضاعف
+        return (int) (Math.round((double) number / multiple) * multiple);
+	}
+	
+
+
+	
 }
