@@ -8,6 +8,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // You can define custom queries here if needed, e.g., based on customer name
     // List<Order> findByCustomerName(String customerName);
     
+    // Query to count orders created today
+    @Query("SELECT COUNT(o) FROM Order o WHERE o.createdDate >= :startOfDay AND o.createdDate < :endOfDay")
+    long countOrdersToday(LocalDate startOfDay, LocalDate endOfDay);
+    
     
     // Query to count orders for the current month and a specific productId
     @Query("SELECT COUNT(o) FROM Order o WHERE FUNCTION('MONTH', o.createdDate) = :month " +
