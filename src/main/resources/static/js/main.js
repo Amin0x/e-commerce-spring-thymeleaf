@@ -16,3 +16,9 @@ const signinForm = () => {
 
   });
 };
+
+const addToCart = () => {
+  document.getElementById('signupForm').addEventListener('submit', function(event) {
+
+  });
+};
