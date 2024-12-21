@@ -11,6 +11,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // Query to count orders created today
     @Query("SELECT COUNT(o) FROM Order o WHERE o.createdDate >= :startOfDay AND o.createdDate < :endOfDay")
     long countOrdersToday(LocalDate startOfDay, LocalDate endOfDay);
+
+    // Query to count orders placed this year
+    @Query("SELECT COUNT(o) FROM Order o WHERE FUNCTION('YEAR', o.createdDate) = :year")
+    long countOrdersThisYear(int year);
     
     
     // Query to count orders for the current month and a specific productId
