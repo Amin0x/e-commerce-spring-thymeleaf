@@ -59,22 +59,23 @@ public class OrderService {
         }
     }
 
-	public long getTotalOrdersThisMonth() {
+    // Method to get the total number of orders for the current month and a specific productId
+    public long getTotalOrdersThisMonthForProduct(Long productId) {
         LocalDate now = LocalDate.now();
         int currentMonth = now.getMonthValue();
         int currentYear = now.getYear();
 
-        List<Order> ordersThisMonth = orderRepository.findOrdersByCurrentMonth(currentMonth, currentYear);
-        return ordersThisMonth.size();
-	}
+        // Call the repository to get the count of orders for the current month and the productId
+        return orderRepository.countOrdersByMonthAndProductId(currentMonth, currentYear, productId);
+    }
 
-	public static int roundToNearestMultiple(int number) {
+    public static int roundToNearestMultiple(int number) {
         // تحديد المضاعف المناسب بناءً على الرقم
         int multiple = (int) Math.pow(10, Math.floor(Math.log10(number)));
 
         // تقريب الرقم إلى أقرب مضاعف
         return (int) (Math.round((double) number / multiple) * multiple);
-	}
+    }
 	
 
 
