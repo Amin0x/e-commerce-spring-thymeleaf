@@ -59,6 +59,15 @@ public class OrderService {
         }
     }
 
+	public long getTotalOrdersThisMonth() {
+        LocalDate now = LocalDate.now();
+        int currentMonth = now.getMonthValue();
+        int currentYear = now.getYear();
+
+        List<Order> ordersThisMonth = orderRepository.findOrdersByCurrentMonth(currentMonth, currentYear);
+        return ordersThisMonth.size();
+	}
+
 	public static int roundToNearestMultiple(int number) {
         // تحديد المضاعف المناسب بناءً على الرقم
         int multiple = (int) Math.pow(10, Math.floor(Math.log10(number)));
