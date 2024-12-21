@@ -7,4 +7,11 @@ import org.springframework.stereotype.Repository;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     // You can define custom queries here if needed, e.g., based on customer name
     // List<Order> findByCustomerName(String customerName);
+    
+    
+    // Query to count orders for the current month and a specific productId
+    @Query("SELECT COUNT(o) FROM Order o WHERE FUNCTION('MONTH', o.createdDate) = :month " +
+           "AND FUNCTION('YEAR', o.createdDate) = :year " +
+           "AND o.productId = :productId")
+    long countOrdersByMonthAndProductId(int month, int year, Long productId);
 }
