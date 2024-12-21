@@ -1,7 +1,5 @@
 const signupForm = () => {
-
   document.getElementById('signupForm').addEventListener('submit', function(event) {
-            
     var password = document.getElementById('password').value;
     var confirmPassword = document.getElementById('confirmPassword').value;
 
@@ -14,6 +12,7 @@ const signupForm = () => {
 };
 
 const signinForm = () => {
+  document.getElementById('signupForm').addEventListener('submit', function(event) {
 
-  
+  });
 };
