@@ -79,5 +79,10 @@ public class OrderService {
 	
 
 
+	@Scheduled(cron = "0 0 0 * * *")
+    public void runAtMidnight() {
+        System.out.println("Task is running at midnight!");
+    }
+
 	
 }
