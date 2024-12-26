@@ -19,4 +19,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Transactional
     @Query(value = "UPDATE category SET parentId = :newParent WHERE parentId = :oldParent", nativeQuery = true)
     void updateCategoriesParent(@Param("oldParent") Long oldParent, @Param("newParent") Long newParent);
+
 }

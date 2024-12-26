@@ -12,7 +12,7 @@ public class Payment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "userId")
     private User user;
 
     private BigDecimal amount;

@@ -1,3 +1,5 @@
+package com.alamin.ecommerce.statistics;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +33,7 @@ public class StatisticsController {
     @GetMapping("/{id}")
     public ResponseEntity<Statistics> getStatisticsById(@PathVariable Long id) {
         Optional<Statistics> statistics = statisticsService.getStatisticsById(id);
-        if (statistics.isPresent()) {
-            return new ResponseEntity<>(statistics.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return statistics.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     // Update a statistic by ID

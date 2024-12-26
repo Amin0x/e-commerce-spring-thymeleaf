@@ -12,14 +12,12 @@ public class StockNotificationService {
     private InventoryRepository inventoryRepository;
 
     // Check stock levels every day
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 * * *")
     public void checkLowStock() {
-        List<Inventory> inventories = inventoryRepository.findAll();
+        List<Inventory> inventories = inventoryRepository.findByQuantityLessThan(10);
         for (Inventory inventory : inventories) {
-            if (inventory.getQuantity() < 10) {
-                // Notify that stock is low (you can send an email here)
-                System.out.println("Stock is low for product: " + inventory.getProductId());
-            }
+            // Notify that stock is low (you can send an email here)
+            System.out.println("Stock is low for product: " + inventory.getProduct().getName());
         }
     }
 }

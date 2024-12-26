@@ -12,9 +12,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * FROM Product p WHERE p.category = :category ORDER BY RAND() LIMIT 12", nativeQuery = true)
     List<Product> findRandomProductsByCategory(@Param("category") String category);
 
-    @Query(value = "SELECT * FROM Product p WHERE p.category = :category ORDER BY p.id LIMIT 20", nativeQuery = true)
+    @Query(value = "SELECT * FROM Product p WHERE p.category = :category ORDER BY p.productId LIMIT 20", nativeQuery = true)
     List<Product> findByCategory(java.lang.String category);
 
-    @Query(value = "SELECT * FROM Product p ORDER BY p.created_date DESC LIMIT 12", nativeQuery = true)
+    @Query(value = "SELECT * FROM Product p ORDER BY p.created DESC LIMIT 12", nativeQuery = true)
     List<Product> findNewArrivalProducts();
 }

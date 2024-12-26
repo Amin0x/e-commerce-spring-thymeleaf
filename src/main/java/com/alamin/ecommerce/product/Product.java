@@ -1,13 +1,12 @@
 package com.alamin.ecommerce.product;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.alamin.ecommerce.category.Category;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -15,8 +14,9 @@ import lombok.*;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the id value
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
+    private Long productId;
 
     @NotNull(message = "Product name is required")
     @Size(min = 3, max = 100, message = "Product name must be between 3 and 100 characters")
@@ -28,7 +28,7 @@ public class Product {
     @NotNull(message = "Price is required")
     private Integer price;
 
-    private Integer initialPrice;
+    private Integer initPrice;
 
     @NotNull(message = "Product sku is required")
     @Size(min = 3, max = 100, message = "Product sku must be between 3 and 100 characters")
@@ -54,15 +54,15 @@ public class Product {
     public Product(String name, 
                    String description, 
                    Integer price, 
-                   Long categoryId
+                   Category category
                    ) {
         
         this.name = name;
         this.description = description;
         this.price = price;
-        this.initialPrice = 0;
+        this.initPrice = 0;
         this.stock = 0;
-        this.categoryId = categoryId;
+        this.category = category;
         this.active = false;
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();

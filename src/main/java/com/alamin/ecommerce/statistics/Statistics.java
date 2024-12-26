@@ -1,28 +1,34 @@
+package com.alamin.ecommerce.statistics;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.time.LocalDateTime;
 
 @Entity
 public class Statistics {
-  private Long id;
-  private LocalDateTime dateVal;
+  @Id
+  private Long statisticId;
+  private LocalDateTime stDate;
   private String type;
-  private int value;
+  private int stValue;
 
   // Getter and Setter for id
   public Long getId() {
-    return id;
+    return statisticId;
   }
 
   public void setId(Long id) {
-    this.id = id;
+    this.statisticId = id;
   }
 
   // Getter and Setter for dateVal
   public LocalDateTime getDateVal() {
-    return dateVal;
+    return stDate;
   }
 
   public void setDateVal(LocalDateTime dateVal) {
-    this.dateVal = dateVal;
+    this.stDate = dateVal;
   }
 
   // Getter and Setter for type
@@ -36,10 +42,10 @@ public class Statistics {
 
   // Getter and Setter for value
   public int getValue() {
-    return value;
+    return stValue;
   }
 
   public void setValue(int value) {
-    this.value = value;
+    this.stValue = value;
   }
 }

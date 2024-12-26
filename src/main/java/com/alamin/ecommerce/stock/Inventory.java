@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import com.alamin.ecommerce.product.Product;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 public class Inventory {
@@ -13,8 +15,10 @@ public class Inventory {
     private Long id;
     private int quantity;
     private int price;
-    @OneToOne
-    private Product product;
     private LocalDateTime created;
     private LocalDateTime updated;
+
+    @OneToOne
+    @JoinColumn(name ="product_id", referencedColumnName = "product_id")
+    private Product product;
 }

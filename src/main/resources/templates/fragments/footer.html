@@ -2,28 +2,75 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Footer Fragment</title>
+    <link rel="stylesheet" href="../../static//css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../../static/css/style.css">
+    <style>
+        
+@import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
+.footer {
+    background: linear-gradient(0deg, #fff, 50%, #DEEEFE);
+    font-family: 'Rubik', sans-serif;
+    background: #455A64;
+}
+
+
+.footer .container-fluid{
+    overflow:hidden; 
+    margin-top: 250px ;
+    background:#262626 ;
+    color: #627482  !important;
+    margin-bottom: 0 ;
+    padding-bottom:0  ;
+}
+
+.footer small{
+    font-size: calc(12px + (15 - 12) * ((100vw - 360px) / (1600 - 360))) !important; 
+}
+
+.footer .bold-text{
+    color: #989c9e !important;
+}
+
+
+.footer .mt-55{
+    margin-top: calc(50px + (60 - 50) * ((100vw - 360px) / (1600 - 360))) !important; 
+}
+
+
+.footer h3{
+    font-size: calc(34px + (40 - 34) * ((100vw - 360px) / (1600 - 360))) !important; 
+}
+ 
+.footer .social{
+    font-size: 21px !important; 
+}
+
+.footer .rights{
+    font-size: calc(10px + (12 - 10) * ((100vw - 360px) / (1600 - 360))) !important; 
+}
+
+
+    </style>
 </head>
-<body>
-    <div th:fragment="footer">
-        <div class="container" id="footer">
-            <div class="row">
-                <div class="col-lg-4">
-                    <h5>About Us</h5>
-                    <p>Information about the company.</p>
+<body dir="rtl">
+    <div th:fragment="footer" class="footer">
+        <div class="container-fluid pb-0 mb-0 justify-content-center text-light ">
+            <footer>
+                <div class="row my-5 justify-content-center py-5">
+                    <div class="col-11">
+                        <div class="row ">
+                            <div class="col-xl-8 col-md-4 col-sm-4 col-12   my-auto mx-auto a"><h3 class="text-muted mb-md-0 mb-5 bold-text">Pepper.</h3></div>
+                            <div class="col-xl-2 col-md-4 col-sm-4 col-12"><h6 class="mb-3 mb-lg-4 bold-text "><b>القائمة</b></h6><ul class="list-unstyled"><li>الرئيسية</li><li>عن الشركة</li><li>الاخبار</li><li>المعرض</li></ul></div>
+                            <div class="col-xl-2 col-md-4 col-sm-4 col-12"><h6 class="mb-3 mb-lg-4 text-muted bold-text mt-sm-0 mt-5"><b>العنوان</b></h6><p class="mb-1">605, برج الكاميل</p><p>الطابق العاشر</p> </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-xl-8 col-md-4 col-sm-4 col-auto  my-md-0 mt-5 order-sm-1 order-3 align-self-end"><p class="social text-muted mb-0 pb-0 bold-text"> <span  class="mx-2"><i class="fa fa-facebook" aria-hidden="true"></i></span> <span class="mx-2"><i class="fa fa-linkedin-square" aria-hidden="true"></i></span> <span class="mx-2"><i class="fa fa-twitter" aria-hidden="true"></i></span> <span class="mx-2"><i class="fa fa-instagram" aria-hidden="true"></i></span> </p><small class="rights"><span>&#174;</span> Pepper All Rights Reserved.</small></div>
+                            <div class="col-xl-2 col-md-4 col-sm-4 col-auto order-1 align-self-end "><h6 class="mt-55 mt-2 text-muted bold-text"><b>ANIRUDH SINGLA</b></h6><small> <span><i class="fa fa-envelope" aria-hidden="true"></i></span> anirudh@gmail.com</small></div>
+                            <div class="col-xl-2 col-md-4 col-sm-4 col-auto order-2 align-self-end mt-3   "><h6 class="text-muted bold-text"><b>RISHABH SHEKHAR</b></h6><small><span><i class="fa fa-envelope" aria-hidden="true"></i></span> rishab@gmail.com</small></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-4">
-                    <h5>Contact Us</h5>
-                    <p>Contact information and address.</p>
-                </div>
-                <div class="col-lg-4">
-                    <h5>Follow Us</h5>
-                    <ul class="social-media">
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Instagram</a></li>
-                    </ul>
-                </div>
-            </div>
+            </footer>
         </div>
     </div>
 </body>

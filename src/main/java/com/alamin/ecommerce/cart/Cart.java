@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.cart;
 
+import com.alamin.ecommerce.user.User;
 import jakarta.persistence.*;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ public class Cart {
     private List<CartItem> items;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
 
     private Integer totalPrice;

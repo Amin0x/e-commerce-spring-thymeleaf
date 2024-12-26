@@ -1,10 +1,13 @@
 package com.alamin.ecommerce.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,14 +62,14 @@ public class OrderService {
         }
     }
 
-    // Method to get the total number of orders for the current month and a specific productId
-    public long getTotalOrdersThisMonthForProduct(Long productId) {
+    // Method to get the total number of orders for the current month
+    public long getTotalOrdersThisMonth() {
         LocalDate now = LocalDate.now();
         int currentMonth = now.getMonthValue();
         int currentYear = now.getYear();
 
         // Call the repository to get the count of orders for the current month and the productId
-        return orderRepository.countOrdersByMonthAndProductId(currentMonth, currentYear, productId);
+        return orderRepository.countOrdersByMonthAndProductId(currentMonth, currentYear);
     }
 
     public static int roundToNearestMultiple(int number) {
