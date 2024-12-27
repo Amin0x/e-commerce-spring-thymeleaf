@@ -242,9 +242,7 @@
             <section class="revenue">
                 <h2>Revenue</h2>
                 <p><small>Revenue in last 30 days</small></p>
-                <ul>
-                    <li th:each="revenue : ${revenues}" th:text="${activity.description}">Sample activity</li>
-                </ul>
+                <canvas id="myChart"></canvas>
             </section>
         </main>
 
@@ -255,5 +253,31 @@
     </div>
 
     <script src="scripts.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var data = [[${data}]];  // Thymeleaf expression to inject Java data into JavaScript array
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',  // Chart type (bar, line, etc.)
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],  // X-axis labels
+                datasets: [{
+                    label: 'My Data',
+                    data: data,  // The data from the server side
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        /*]]>*/
+    </script>
 </body>
 </html>
