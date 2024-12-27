@@ -201,9 +201,17 @@
                 <section class="user-info">
                     <img src="user-avatar.jpg" alt="User Avatar" class="user-avatar" th:src="@{${user.avatar}}">
                     <span th:text="${user.username}">Admin User</span>
-                    <form action="#" th:action="@{/logout}" method="post">
+                    <div>
+        <div sec:authorize="isAuthenticated()">
+            <form action="#" th:action="@{/logout}" method="post">
                         <button class="logout-btn" type="submit">Logout</button>
                     </form>
+        </div>
+        <div sec:authorize="!isAuthenticated()">
+            <a href="/login">Login</a>
+        </div>
+                    </div>
+                    
                 </section>
             </section>
 
