@@ -238,6 +238,13 @@
                     <li th:each="activity : ${activities}" th:text="${activity.description}">Sample activity</li>
                 </ul>
             </section>
+            <section class="revenue">
+                <h2>Revenue</h2>
+                <p><small>Revenue in last 30 days</small></p>
+                <ul>
+                    <li th:each="revenue : ${revenues}" th:text="${activity.description}">Sample activity</li>
+                </ul>
+            </section>
         </main>
 
         <!-- Footer -->
