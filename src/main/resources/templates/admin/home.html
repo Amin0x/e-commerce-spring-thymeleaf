@@ -196,10 +196,10 @@
         <main class="main-content">
             <!-- Top Header -->
             <section class="top-header">
-                <section class="logo">
+                <div class="logo">
                     <img src="logo.png" alt="Logo" class="logo-img">
-                </section>
-                <section class="user-info">
+                </div>
+                <div class="user-info">
                     <img src="user-avatar.jpg" alt="User Avatar" class="user-avatar" th:src="@{${user.avatar}}">
                     <span th:text="${user.username}">Admin User</span>
                     <div>
@@ -213,22 +213,22 @@
         </div>
                     </div>
                     
-                </section>
+                </div>
             </section>
 
             <!-- Dashboard Stats -->
             <section class="stats">
                 <section class="stat-card">
                     <h3>Users</h3>
-                    <p th:text="${stats.users}">250</p>
+                    <p><span th:text="${stats.users}">250</span></p>
                 </section>
                 <section class="stat-card">
                     <h3>Orders</h3>
-                    <p th:text="${stats.orders}">120</p>
+                    <p><span th:text="${stats.orders}">120</span></p>
                 </section>
                 <section class="stat-card">
                     <h3>Revenue</h3>
-                    <p th:text="${stats.revenue}">$5,000</p>
+                    <p><span th:text="${stats.revenue}">$5,000</span></p>
                 </section>
             </section>
 
