@@ -218,18 +218,18 @@
 
             <!-- Dashboard Stats -->
             <section class="stats">
-                <section class="stat-card">
+                <div class="stat-card">
                     <h3>Users</h3>
                     <p><span th:text="${stats.users}">250</span></p>
-                </section>
-                <section class="stat-card">
+                </div>
+                <div class="stat-card">
                     <h3>Orders</h3>
                     <p><span th:text="${stats.orders}">120</span></p>
-                </section>
-                <section class="stat-card">
+                </div>
+                <div class="stat-card">
                     <h3>Revenue</h3>
                     <p><span th:text="${stats.revenue}">$5,000</span></p>
-                </section>
+                </div>
             </section>
 
             <!-- Recent Activity -->
@@ -238,6 +238,16 @@
                 <ul>
                     <li th:each="activity : ${activities}" th:text="${activity.description}">Sample activity</li>
                 </ul>
+            </section>
+            <section class="revenue">
+                <h2>Revenue</h2>
+                <p><small>Revenue in last 30 days</small></p>
+                <canvas id="myChart"></canvas>
+            </section>
+            <section class="revenue">
+                <h2>Revenue</h2>
+                <p><small>Revenue in last 30 days</small></p>
+                <canvas id="myChart"></canvas>
             </section>
             <section class="revenue">
                 <h2>Revenue</h2>
