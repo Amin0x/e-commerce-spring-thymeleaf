@@ -73,8 +73,7 @@
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 password: document.getElementById('password').value,
-                admin: document.getElementById('admin').checked,
-                passwordExpired: document.getElementById('passwordExpired').checked
+                admin: document.getElementById('admin').checked
             };
 
             fetch('/api/users', {
