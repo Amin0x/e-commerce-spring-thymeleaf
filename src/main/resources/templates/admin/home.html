@@ -118,6 +118,12 @@
             margin-top: 30px;
         }
 
+        @media screen and (min-width < 200px){
+            .stats {
+                display: block;
+            }
+        }
+
         .stat-card {
             background-color: #fff;
             padding: 20px;
@@ -135,6 +141,11 @@
         .stat-card p {
             font-size: 24px;
             color: #333;
+        }
+
+        .stat-card p small{
+            font-size: 12px;
+            color: #ccc;
         }
 
         .recent-activity {
@@ -221,14 +232,17 @@
                 <div class="stat-card">
                     <h3>Users</h3>
                     <p><span th:text="${stats.users}">250</span></p>
+                    <p><small>this month</small></p>
                 </div>
                 <div class="stat-card">
                     <h3>Orders</h3>
                     <p><span th:text="${stats.orders}">120</span></p>
+                    <p><small>this month</small></p>
                 </div>
                 <div class="stat-card">
                     <h3>Revenue</h3>
                     <p><span th:text="${stats.revenue}">$5,000</span></p>
+                    <p><small>this month</small></p>
                 </div>
             </section>
 
