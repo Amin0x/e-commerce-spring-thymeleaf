@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             margin: 0;
@@ -117,6 +118,15 @@
             margin-top: 30px;
         }
 
+        @media screen and (min-width < 200px){
+            .stats {
+                display: block;
+            }
+            .stat-card {
+                margin-top: 20px;
+            }
+        }
+
         .stat-card {
             background-color: #fff;
             padding: 20px;
@@ -134,6 +144,11 @@
         .stat-card p {
             font-size: 24px;
             color: #333;
+        }
+
+        .stat-card p small{
+            font-size: 12px;
+            color: #ccc;
         }
 
         .recent-activity {
@@ -195,32 +210,43 @@
         <main class="main-content">
             <!-- Top Header -->
             <section class="top-header">
-                <section class="logo">
+                <div class="logo">
                     <img src="logo.png" alt="Logo" class="logo-img">
-                </section>
-                <section class="user-info">
+                </div>
+                <div class="user-info">
                     <img src="user-avatar.jpg" alt="User Avatar" class="user-avatar" th:src="@{${user.avatar}}">
                     <span th:text="${user.username}">Admin User</span>
-                    <form action="#" th:action="@{/logout}" method="post">
+                    <div>
+        <div sec:authorize="isAuthenticated()">
+            <form action="#" th:action="@{/logout}" method="post">
                         <button class="logout-btn" type="submit">Logout</button>
                     </form>
-                </section>
+        </div>
+        <div sec:authorize="!isAuthenticated()">
+            <a href="/login">Login</a>
+        </div>
+                    </div>
+                    
+                </div>
             </section>
 
             <!-- Dashboard Stats -->
             <section class="stats">
-                <section class="stat-card">
+                <div class="stat-card">
                     <h3>Users</h3>
-                    <p th:text="${stats.users}">250</p>
-                </section>
-                <section class="stat-card">
+                    <p><span th:text="${stats.users}">250</span></p>
+                    <p><small>this month</small></p>
+                </div>
+                <div class="stat-card">
                     <h3>Orders</h3>
-                    <p th:text="${stats.orders}">120</p>
-                </section>
-                <section class="stat-card">
+                    <p><span th:text="${stats.orders}">120</span></p>
+                    <p><small>this month</small></p>
+                </div>
+                <div class="stat-card">
                     <h3>Revenue</h3>
-                    <p th:text="${stats.revenue}">$5,000</p>
-                </section>
+                    <p><span th:text="${stats.revenue}">$5,000</span></p>
+                    <p><small>this month</small></p>
+                </div>
             </section>
 
             <!-- Recent Activity -->
@@ -229,6 +255,21 @@
                 <ul>
                     <li th:each="activity : ${activities}" th:text="${activity.description}">Sample activity</li>
                 </ul>
+            </section>
+            <section class="revenue">
+                <h2>Revenue</h2>
+                <p><small>Revenue in last 30 days</small></p>
+                <canvas id="myChart"></canvas>
+            </section>
+            <section class="revenue">
+                <h2>Revenue</h2>
+                <p><small>Revenue in last 30 days</small></p>
+                <canvas id="myChart"></canvas>
+            </section>
+            <section class="revenue">
+                <h2>Revenue</h2>
+                <p><small>Revenue in last 30 days</small></p>
+                <canvas id="myChart"></canvas>
             </section>
         </main>
 
@@ -239,5 +280,31 @@
     </div>
 
     <script src="scripts.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var data = [[${data}]];  // Thymeleaf expression to inject Java data into JavaScript array
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',  // Chart type (bar, line, etc.)
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],  // X-axis labels
+                datasets: [{
+                    label: 'My Data',
+                    data: data,  // The data from the server side
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        /*]]>*/
+    </script>
 </body>
 </html>
