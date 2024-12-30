@@ -7,7 +7,7 @@ CREATE TABLE users (
     first_name VARCHAR(50),
     last_name VARCHAR(50),
     birth_date DATE,
-    enabled BIT,
+    enabled BOOL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -41,6 +41,11 @@ CREATE TABLE products (
     deleted TIMESTAMP,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE product_images (
+    product_id INT,
+    image VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE orders (

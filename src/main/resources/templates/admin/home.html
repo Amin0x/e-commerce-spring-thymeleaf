@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -24,42 +26,54 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
+            font-family: Ciro, Arial, sans-serif;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: row;
         }
 
         .sidebar {
             width: 250px;
             background-color: #2d3b48;
             color: #fff;
-            padding: 20px;
         }
 
         .sidebar .brand h2 {
             font-size: 24px;
-            margin-bottom: 40px;
+            margin-bottom: 8px;
+            margin-top: 8px;
+            padding: 0;
             text-align: center;
         }
 
         .sidebar ul {
             list-style-type: none;
-        }
-
-        .sidebar ul li {
-            margin: 15px 0;
+            margin: 0;
+            padding: 0;
         }
 
         .sidebar ul li a {
+            padding: 15px 5px;
             color: #fff;
             text-decoration: none;
-            font-size: 18px;
             display: block;
-            padding: 10px 20px;
-            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
         }
 
-        .sidebar ul li a:hover {
-            background-color: #4b5c6d; /* Background color on hover */
-            border-radius: 5px;
-            transform: translateX(5px); /* Slight movement to the right */
+        .sidebar ul li {
+            color: #fff;
+            font-size: 14px;
+            display: block;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #4b5c6d;
+        }
+
+        .sidebar ul li:hover a {
+            color: rgb(184, 184, 184);
         }
 
         main {
@@ -118,10 +132,11 @@
             margin-top: 30px;
         }
 
-        @media screen and (min-width < 200px){
+        @media screen and (min-width < 200px) {
             .stats {
                 display: block;
             }
+
             .stat-card {
                 margin-top: 20px;
             }
@@ -146,7 +161,7 @@
             color: #333;
         }
 
-        .stat-card p small{
+        .stat-card p small {
             font-size: 12px;
             color: #ccc;
         }
@@ -189,89 +204,93 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="brand">
-                <h2>Admin Panel</h2>
-            </div>
-            <ul>
-                <li><a href="#" th:href="@{/dashboard}">Dashboard</a></li>
-                <li><a href="#" th:href="@{/users}">Users</a></li>
-                <li><a href="#" th:href="@{/orders}">Orders</a></li>
-                <li><a href="#" th:href="@{/create}">Create</a></li>
-                <li><a href="#" th:href="@{/settings}">Settings</a></li>
-                <li><a href="#" th:href="@{/logout}">Logout</a></li>
-            </ul>
-        </nav>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Top Header -->
-            <section class="top-header">
-                <div class="logo">
-                    <img src="logo.png" alt="Logo" class="logo-img">
+        <div class="content">
+            <nav class="sidebar">
+                <div class="brand">
+                    <h2>Admin Panel</h2>
                 </div>
-                <div class="user-info">
-                    <img src="user-avatar.jpg" alt="User Avatar" class="user-avatar" th:src="@{${user.avatar}}">
-                    <span th:text="${user.username}">Admin User</span>
-                    <div>
-        <div sec:authorize="isAuthenticated()">
-            <form action="#" th:action="@{/logout}" method="post">
-                        <button class="logout-btn" type="submit">Logout</button>
-                    </form>
-        </div>
-        <div sec:authorize="!isAuthenticated()">
-            <a href="/login">Login</a>
-        </div>
-                    </div>
-                    
-                </div>
-            </section>
-
-            <!-- Dashboard Stats -->
-            <section class="stats">
-                <div class="stat-card">
-                    <h3>Users</h3>
-                    <p><span th:text="${stats.users}">250</span></p>
-                    <p><small>this month</small></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Orders</h3>
-                    <p><span th:text="${stats.orders}">120</span></p>
-                    <p><small>this month</small></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Revenue</h3>
-                    <p><span th:text="${stats.revenue}">$5,000</span></p>
-                    <p><small>this month</small></p>
-                </div>
-            </section>
-
-            <!-- Recent Activity -->
-            <section class="recent-activity">
-                <h2>Recent Activity</h2>
                 <ul>
-                    <li th:each="activity : ${activities}" th:text="${activity.description}">Sample activity</li>
+                    <li><a href="#" th:href="@{/dashboard}"><i class="fas fa-icon1"></i>Dashboard</a></li>
+                    <li><a href="users_home.html" th:href="@{/users}"><i class="fas fa-icon1"></i>Users</a></li>
+                    <li><a href="products_home.html" th:href="@{/users}"><i class="fas fa-icon1"></i>Products</a></li>
+                    <li><a href="#" th:href="@{/orders}"><i class="fas fa-icon1"></i>Orders</a></li>
+                    <li><a href="#" th:href="@{/create}"><i class="fas fa-icon1"></i>Create</a></li>
+                    <li><a href="#" th:href="@{/settings}"><i class="fas fa-icon1"></i>Settings</a></li>
+                    <li><a href="#" th:href="@{/logout}"><i class="fas fa-icon1"></i>Logout</a></li>
                 </ul>
-            </section>
-            <section class="revenue">
-                <h2>Revenue</h2>
-                <p><small>Revenue in last 30 days</small></p>
-                <canvas id="myChart"></canvas>
-            </section>
-            <section class="revenue">
-                <h2>Revenue</h2>
-                <p><small>Revenue in last 30 days</small></p>
-                <canvas id="myChart"></canvas>
-            </section>
-            <section class="revenue">
-                <h2>Revenue</h2>
-                <p><small>Revenue in last 30 days</small></p>
-                <canvas id="myChart"></canvas>
-            </section>
-        </main>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Top Header -->
+                <section class="top-header">
+                    <div class="logo">
+                        <img src="logo.png" alt="Logo" class="logo-img">
+                    </div>
+                    <div class="user-info">
+                        <img src="user-avatar.jpg" alt="User Avatar" class="user-avatar" th:src="@{${user.avatar}}">
+                        <span th:text="${user.username}">Admin User</span>
+                        <div>
+                            <div sec:authorize="isAuthenticated()">
+                                <form action="#" th:action="@{/logout}" method="post">
+                                    <button class="logout-btn" type="submit">Logout</button>
+                                </form>
+                            </div>
+                            <div sec:authorize="!isAuthenticated()">
+                                <a href="/login">Login</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Dashboard Stats -->
+                <section class="stats">
+                    <div class="stat-card">
+                        <h3>Users</h3>
+                        <p><span th:text="${stats.users}">250</span></p>
+                        <p><small>this month</small></p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Orders</h3>
+                        <p><span th:text="${stats.orders}">120</span></p>
+                        <p><small>this month</small></p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Revenue</h3>
+                        <p><span th:text="${stats.revenue}">$5,000</span></p>
+                        <p><small>this month</small></p>
+                    </div>
+                </section>
+
+                <!-- Recent Activity -->
+                <section class="recent-activity">
+                    <h2>Recent Activity</h2>
+                    <ul>
+                        <li th:each="activity : ${activities}" th:text="${activity.description}">Sample activity</li>
+                    </ul>
+                </section>
+                <section class="revenue">
+                    <h2>Revenue</h2>
+                    <p><small>Revenue in last 30 days</small></p>
+                    <canvas id="myChart"></canvas>
+                </section>
+                <section class="revenue">
+                    <h2>Revenue</h2>
+                    <p><small>Revenue in last 30 days</small></p>
+                    <canvas id="myChart"></canvas>
+                </section>
+                <section class="revenue">
+                    <h2>Revenue</h2>
+                    <p><small>Revenue in last 30 days</small></p>
+                    <canvas id="myChart"></canvas>
+                </section>
+            </main>
+        </div>
 
         <!-- Footer -->
         <footer class="footer">
@@ -282,7 +301,7 @@
     <script src="scripts.js"></script>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var data = [[${data}]];  // Thymeleaf expression to inject Java data into JavaScript array
+        var data = [[${ data }]];  // Thymeleaf expression to inject Java data into JavaScript array
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',  // Chart type (bar, line, etc.)
@@ -307,4 +326,5 @@
         /*]]>*/
     </script>
 </body>
+
 </html>

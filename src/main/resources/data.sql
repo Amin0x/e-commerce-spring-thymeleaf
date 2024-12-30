@@ -111,3 +111,9 @@ INSERT INTO categories (name, description, parent_id, active, created, updated) 
 ('category2', 'Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.', 'category1', 1, NOW(), NOW()),
 ('category3', 'Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.', 'category1', 1, NOW(), NOW()),
 ('category4', 'Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec semm', 'category1', 1, NOW(), NOW());
+
+INSERT INTO product_images (product_id, image) VALUES
+('', ''),
+('', ''),
+('', ''),
+('', '');
