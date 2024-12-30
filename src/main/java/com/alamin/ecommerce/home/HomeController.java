@@ -26,16 +26,11 @@ public class HomeController {
     @GetMapping("/") // Handles requests to the root URL ("/")
     public String home(Model model) {
         List<Category> categories = categoryService.getRandomCategories();
-        /*Map<String, List<Category>> mapData = new HashMap<>();
-        for (Category category:categories){
-            List<Product> products = productService.getRandomProductsByCategory(category.getName());
 
-            if(products != null)
-                mapData.add(category.getName(), products);
-        }
+        if (categories.isEmpty())
+            return "error404";
+            //throw new RuntimeException("no category");
 
-        model.addAttribute("data", mapData);*/
-        
         List<Product> products1 = productService.getRandomProductsByCategory(categories.get(0).getName());
         List<Product> products2 = productService.getRandomProductsByCategory(categories.get(1).getName());
         List<Product> products3 = productService.getRandomProductsByCategory(categories.get(2).getName());

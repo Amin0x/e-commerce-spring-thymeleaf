@@ -11,12 +11,12 @@ import com.alamin.ecommerce.product.Product;
 
 @Data
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the id value
-    private Long id;
+    private Long categoryId;
 
     @NotNull(message = "Category name is required")
     @Size(min = 3, max = 100, message = "Category name must be between 3 and 100 characters")

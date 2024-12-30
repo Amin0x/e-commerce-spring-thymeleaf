@@ -29,7 +29,7 @@ public class CategoryService {
         Optional<Category> cat = getCategoryById(id);
         if(cat.isPresent()){
             Category curCat = cat.get();
-            categoryRepository.updateCategoriesParent(curCat.getId(), curCat.getParentId());
+            categoryRepository.updateCategoriesParent(curCat.getCategoryId(), curCat.getParentId());
             categoryRepository.deleteById(id);
             return;
         }
