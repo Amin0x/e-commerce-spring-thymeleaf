@@ -36,6 +36,7 @@ CREATE TABLE products (
     init_price INT NOT NULL,
     sku VARCHAR(50) NOT NULL,
     stock INT NOT NULL,
+    total_sold INT NOT NULL,
     category_id INT NOT NULL,
     active BIT,
     deleted TIMESTAMP,

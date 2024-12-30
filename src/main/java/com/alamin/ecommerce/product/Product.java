@@ -37,6 +37,8 @@ public class Product {
     @NotNull(message = "Stock is required")
     private Integer stock;
 
+    private int totalSold;
+
     @NotNull(message = "Category is required")
     @OneToOne
     private Category category;
@@ -60,8 +62,9 @@ public class Product {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.initPrice = 0;
+        this.initPrice = price;
         this.stock = 0;
+        this.totalSold = 0;
         this.category = category;
         this.active = false;
         this.created = LocalDateTime.now();

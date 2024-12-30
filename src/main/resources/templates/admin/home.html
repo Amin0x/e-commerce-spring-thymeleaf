@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="../../static/css/admin/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -181,12 +182,9 @@
         }
 
         .recent-activity ul li {
-            padding: 10px;
-            background-color: #fff;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            
         }
+
 
         /* Footer Styles */
         .footer {
@@ -268,23 +266,23 @@
                 </section>
 
                 <!-- Recent Activity -->
-                <section class="recent-activity">
+                <section class="recent-activity box">
                     <h2>Recent Activity</h2>
                     <ul>
                         <li th:each="activity : ${activities}" th:text="${activity.description}">Sample activity</li>
                     </ul>
                 </section>
-                <section class="revenue">
+                <section class="revenue box">
                     <h2>Revenue</h2>
                     <p><small>Revenue in last 30 days</small></p>
                     <canvas id="myChart"></canvas>
                 </section>
-                <section class="revenue">
+                <section class="revenue box2">
                     <h2>Revenue</h2>
                     <p><small>Revenue in last 30 days</small></p>
                     <canvas id="myChart"></canvas>
                 </section>
-                <section class="revenue">
+                <section class="revenue box2">
                     <h2>Revenue</h2>
                     <p><small>Revenue in last 30 days</small></p>
                     <canvas id="myChart"></canvas>
@@ -294,7 +292,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>&copy; 2024 Your Company. All rights reserved.</p>
+            <p>&copy; 2024 Alamin. All rights reserved.</p>
         </footer>
     </div>
 
