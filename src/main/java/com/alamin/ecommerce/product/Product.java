@@ -17,37 +17,29 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productId;
-
     @NotNull(message = "Product name is required")
     @Size(min = 3, max = 100, message = "Product name must be between 3 and 100 characters")
     private String name;
-
     @Size(max = 255, message = "Description must be less than 255 characters")
     private String description;
-
     @NotNull(message = "Price is required")
     private Integer price;
-
     private Integer initPrice;
-
     @NotNull(message = "Product sku is required")
     @Size(min = 3, max = 100, message = "Product sku must be between 3 and 100 characters")
     private String sku;
-
     @NotNull(message = "Stock is required")
     private Integer stock;
-
     private int totalSold;
-
-    @NotNull(message = "Category is required")
-    @OneToOne
-    private Category category;
-
     private Boolean active;
-
     private LocalDateTime created;
     private LocalDateTime updated;
     private LocalDateTime deleted;
+
+    @NotNull(message = "Category is required")
+    @OneToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "categoryId")
+    private Category category;
 
     // Default constructor (required by JPA)
     public Product() {}

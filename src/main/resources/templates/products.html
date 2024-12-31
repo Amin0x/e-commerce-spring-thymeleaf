@@ -12,18 +12,17 @@
     <link th:href="@{/css/style.css}" href="../static/css/style.css"  rel="stylesheet">
 </head>
 <body>
-
-
     <main class="page-wrapper">
-      
-      <article class="container">
-        <h1 class="text-center my-4">Product List</h1>
+      <div class="container">
+        <div class="title">
+          <h1 class="text-center my-4">Product List</h1>
+        </div>
         <section class="row">
           <div class="col-6 col-md-3" th:each="product : ${products}">
             <div th:replace="fragments/product_card :: productCard(${product})"></div>
           </div>
         </section>
-      </article>
+      </div>
         
       <div th:replace="fragments/footer :: footer"></div>
     </main>
