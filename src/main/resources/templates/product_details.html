@@ -25,33 +25,36 @@
                         <div class="main-search-input-item">
                             <input type="text" value="" placeholder="بحث عن منتجات...">
                         </div>
-    
+
                         <button class="main-search-button">بحث</button>
                     </div>
                 </div>
-                <div>
-                    <button type="button"></button>
-                    <button type="button"></button>
+                <div style="display: inline-block; width: 145px;">
+                    <a href="#" target="_blank" rel="noopener noreferrer">
+                        <img src="../static/imgs/googleplay.png" alt="googleplay">
+                    </a>
                 </div>
             </section>
 
             <section class="product-info" id="productInfo">
                 <h2 class="product-name" th:text="${product.name}">فاست نيتبوك 12.5 بوصة خفيف الوزن ورقيق جدا 4 جيجابايت
                     + 64 جيجابايت لابتوب لابتوب انتل N3350 64 بت كواد كور نتبووك ويندوز 10</h2>
-                <div class="product-image text-center">
-                    <img th:src="@{${product.imageUrl}}" class="img-fluid" src="../static/imgs/img9.jpg"
-                        alt="Product Image">
+                <div class="product-image-wrap">
+                    <div class="product-image text-center">
+                        <img th:src="@{${product.imageUrl}}" class="img-fluid" src="../static/imgs/img9.jpg"
+                            alt="Product Image">
+                    </div>
                 </div>
                 <div class="product-price">
-                    <span th:text="'Price: ' + ${product.price} + ' SDG '">Price: 122 SDG </span>
-                    <span th:text="${product.price} + ' SDG '" class="price-old"> 155 SDG </span>
-                    <span th:text="${product.percnt}" class="price-discount"> 5% off</span>
+                    <div th:text="${product.price} + ' SDG '" class="d-inline-block">122 SDG </div>
+                    <div th:text="${product.price} + ' SDG '" class="price-old d-inline-block"> 155 SDG </div>
+                    <div th:text="${product.percnt}" class="price-discount d-inline-block"> 5% خصم</div>
                 </div>
                 <div>
                     <i class="fas fa-star"></i> 4.5 (283 مراجعة)
                 </div>
                 <div class="product-description">
-                    <h5 class="description-title">الوصف</h5>
+                    <h4 class="description-title">الوصف</h4>
                     <p class="description-body" th:text="${product.description}">
                         فاست نيتبوك 12.5 بوصة خفيف الوزن ورقيق جدا 4 جيجابايت + 64 جيجابايت لابتوب لابتوب انتل N3350 64
                         بت كواد كور نتبووك ويندوز 10.
@@ -64,21 +67,20 @@
 
 
             <section class="similar-products">
-                <h3>منتجات مشابه</h3>
+                <h4>منتجات مشابه</h4>
                 <div class="row">
                     <div class="col-6" th:each="similarProduct : ${similarProducts}">
                         <div class="product-item">
                             <img th:src="@{${similarProduct.imageUrl}}" src="../static/imgs/img10.jpg"
                                 alt="Similar Product Image">
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">كمبيوتر محمول Yepo جديد Intel Core i7 Windows 11
+                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول Yepo جديد Intel Core i7 Windows 11
                                     Pro شاشة 15.6 بوصة 2K HD MX450 2G بطاقة رسومات مستقلة كمبيوتر مكتبي للأعمال</div>
-                                <div class="price"><span class="cprice" th:text="${similarProduct.price}">1599
-                                        SDG</span><span class="oprice">1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
@@ -87,10 +89,11 @@
                             <img th:src="@{${similarProduct.imageUrl}}" src="../static/imgs/img11.jpg"
                                 alt="Similar Product Image">
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">كمبيوتر محمول Yepo جديد Intel Core i7 Windows 11
+                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول Yepo جديد Intel Core i7 Windows 11
                                     Pro شاشة 15.6 بوصة 2K HD MX450 2G بطاقة رسومات مستقلة كمبيوتر مكتبي للأعمال</div>
-                                <div class="price"><span th:text="${similarProduct.price}">1599 SDG</span><span> 1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
                         </div>
@@ -101,11 +104,12 @@
                             <img th:src="@{${similarProduct.imageUrl}}" src="../static/imgs/img7.jpg"
                                 alt="Similar Product Image">
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">كمبيوتر محمول 15.6 بوصة يعمل بنظام التشغيل Windows
+                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول 15.6 بوصة يعمل بنظام التشغيل Windows
                                     11 Pro Intel Core i7 8500Y 16GB RAM 1 تيرابايت SSD أجهزة الكمبيوتر المحمولة كمبيوتر
                                     مكتبي بصمة فتح الكمبيوتر المحمول</div>
-                                <div class="price"><span th:text="${similarProduct.price}">1599 SDG</span><span> 1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
                         </div>
@@ -117,11 +121,12 @@
                                 alt="Similar Product Image">
 
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">كمبيوتر محمول جديد للألعاب بشاشة 15.6 بوصة
+                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول جديد للألعاب بشاشة 15.6 بوصة
                                     عالية الدقة Intel Celeron N5095 نظام Windows 11 ثنائي النطاق WiFi 16GB RAM 1
                                     تيرابايت SSD كمبيوتر محمول مكتب الأعمال</div>
-                                <div class="price"><span th:text="${similarProduct.price}">1599 SDG</span><span> 1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
                         </div>
@@ -132,11 +137,12 @@
                             <img th:src="@{${similarProduct.imageUrl}}" src="../static/imgs/img13.webp"
                                 alt="Similar Product Image">
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">كمبيوتر محمول 10.1 بوصة يعمل بنظام التشغيل
+                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول 10.1 بوصة يعمل بنظام التشغيل
                                     Windows 10 OS رباعي النواة مثبت مسبقًا 3 جيجابايت + 64 جيجابايت كاميرا ويب HDMI
                                     للمكتب (أسود)</div>
-                                <div class="price"><span th:text="${similarProduct.price}">1599 SDG</span><span> 1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
                         </div>
@@ -147,11 +153,12 @@
                             <img th:src="@{${similarProduct.imageUrl}}" src="../static/imgs/img14.jpg"
                                 alt="Similar Product Image">
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">كمبيوتر محمول 10.1 بوصة يعمل بنظام التشغيل
+                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول 10.1 بوصة يعمل بنظام التشغيل
                                     Windows 10 OS رباعي النواة مثبت مسبقًا 3 جيجابايت + 64 جيجابايت كاميرا ويب HDMI
                                     للمكتب (أسود)</div>
-                                <div class="price"><span th:text="${similarProduct.price}">1599 SDG</span><span> 1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
                         </div>
@@ -162,10 +169,11 @@
                             <img th:src="@{${similarProduct.imageUrl}}" src="../static/imgs/img6.jpg"
                                 alt="Similar Product Image">
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">سامسونج جالكسي تاب أي 9، واي فاي، 8.7 بوصة، 64
+                                <div th:text="${similarProduct.name}" class="title">سامسونج جالكسي تاب أي 9، واي فاي، 8.7 بوصة، 64
                                     جيجا، جرافيتي</div>
-                                <div class="price"><span th:text="${similarProduct.price}">1599 SDG</span><span> 1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
                         </div>
@@ -176,10 +184,11 @@
                             <img th:src="@{${similarProduct.imageUrl}}" src="../static/imgs/img16.jpg"
                                 alt="Similar Product Image">
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">لينوفو تاب بي 12، 128 جيجا، واي فاي 12 بوصة،
+                                <div th:text="${similarProduct.name}" class="title">لينوفو تاب بي 12، 128 جيجا، واي فاي 12 بوصة،
                                     رمادي</div>
-                                <div class="price"><span th:text="${similarProduct.price}">1599 SDG</span><span> 1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
                         </div>
@@ -190,11 +199,12 @@
                             <img th:src="@{${similarProduct.imageUrl}}" src="../static/imgs/img15.jpg"
                                 alt="Similar Product Image">
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">ابتوب اتش بي موديل 15 fd0029nx شاشة FHD 15.6
+                                <div th:text="${similarProduct.name}" class="title">ابتوب اتش بي موديل 15 fd0029nx شاشة FHD 15.6
                                     بوصة إنتل كور i5 1334U (جيل 13) كرت أيرس Xe رام 8GB هارد SSD 512GB ويندوز 11 هوم
                                     فضي طبيعي 9P7P3EA</div>
-                                <div class="price"><span th:text="${similarProduct.price}">1599 SDG</span><span> 1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
                         </div>
@@ -205,11 +215,12 @@
                             <img th:src="@{${similarProduct.imageUrl}}" src="../static/imgs/img1.jpg"
                                 alt="Similar Product Image">
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}">HP لابتوب ايليت بوك 725 G4 خفيف الوزن للاعمال،
+                                <div th:text="${similarProduct.name}" class="title">HP لابتوب ايليت بوك 725 G4 خفيف الوزن للاعمال،
                                     معالج AMD رباعي النواة A12، ذاكرة RAM DDR4 4GB، هارد ساتا 500GB، شاشة FHD 12.5
                                     انش، ويندوز 10 برو</div>
-                                <div class="price"><span th:text="${similarProduct.price}">1599 SDG</span><span> 1699
-                                        SDG</span>
+                                <div class="price">
+                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
+                                    <div class="oprice">1699 SDG</div>
                                 </div>
                             </div>
                         </div>
@@ -255,7 +266,7 @@
 
 
             <section class="user-reviews">
-                <h3>المراجعات</h3>
+                <h4>المراجعات</h4>
                 <div th:each="review : ${product.reviews}">
                     <div class="review-item">
                         <h5 th:text="${review.userName}">احمد علي</h5>
@@ -284,7 +295,7 @@
                             <label for="comment">التعليق:</label>
                             <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">ارسال</button>
+                        <button type="submit" class="button-31 mt-3" style="width: fit-content;">ارسال</button>
                     </form>
             </section>
         </section>
@@ -297,12 +308,36 @@
                         <div class="row my-5 justify-content-center py-5">
                             <div class="col-11">
                                 <div class="row ">
-                                    <div class="col-xl-8 col-md-4 col-sm-4 col-12   my-auto mx-auto a"><h3 class="text-muted mb-md-0 mb-5 bold-text">Pepper.</h3></div>
-                                    <div class="col-xl-2 col-md-4 col-sm-4 col-12"><h6 class="mb-3 mb-lg-4 bold-text "><b>القائمة</b></h6><ul class="list-unstyled"><li>الرئيسية</li><li>عن الشركة</li><li>الاخبار</li><li>المعرض</li></ul></div>
-                                    <div class="col-xl-2 col-md-4 col-sm-4 col-12"><h6 class="mb-3 mb-lg-4 text-muted bold-text mt-sm-0 mt-5"><b>العنوان</b></h6><p class="mb-1">605, برج الكاميل</p><p>الطابق العاشر</p> </div>
+                                    <div class="col-xl-8 col-md-4 col-sm-4 col-12   my-auto mx-auto a">
+                                        <h3 class="text-muted mb-md-0 mb-5 bold-text">Pepper.</h3>
+                                    </div>
+                                    <div class="col-xl-2 col-md-4 col-sm-4 col-12">
+                                        <h6 class="mb-3 mb-lg-4 bold-text "><b>القائمة</b></h6>
+                                        <ul class="list-unstyled">
+                                            <li>الرئيسية</li>
+                                            <li>عن الشركة</li>
+                                            <li>الاخبار</li>
+                                            <li>المعرض</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xl-2 col-md-4 col-sm-4 col-12">
+                                        <h6 class="mb-3 mb-lg-4 text-muted bold-text mt-sm-0 mt-5"><b>العنوان</b></h6>
+                                        <p class="mb-1">605, برج الكاميل</p>
+                                        <p>الطابق العاشر</p>
+                                    </div>
                                 </div>
                                 <div class="row ">
-                                    <div class="col-xl-8 col-md-4 col-sm-4 col-auto  my-md-0 mt-5 order-sm-1 order-3 align-self-end"><p class="social text-muted mb-0 pb-0 bold-text"> <span  class="mx-2"><i class="fa fa-facebook" aria-hidden="true"></i></span> <span class="mx-2"><i class="fa fa-linkedin-square" aria-hidden="true"></i></span> <span class="mx-2"><i class="fa fa-twitter" aria-hidden="true"></i></span> <span class="mx-2"><i class="fa fa-instagram" aria-hidden="true"></i></span> </p><small class="rights"><span>&#174;</span> Pepper All Rights Reserved.</small></div>
+                                    <div
+                                        class="col-xl-8 col-md-4 col-sm-4 col-auto  my-md-0 mt-5 order-sm-1 order-3 align-self-end">
+                                        <p class="social text-muted mb-0 pb-0 bold-text"> <span class="mx-2"><i
+                                                    class="fa fa-facebook" aria-hidden="true"></i></span> <span
+                                                class="mx-2"><i class="fa fa-linkedin-square"
+                                                    aria-hidden="true"></i></span> <span class="mx-2"><i
+                                                    class="fa fa-twitter" aria-hidden="true"></i></span> <span
+                                                class="mx-2"><i class="fa fa-instagram" aria-hidden="true"></i></span>
+                                        </p><small class="rights"><span>&#174;</span> Pepper All Rights
+                                            Reserved.</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -170,6 +170,20 @@ body {
     height: auto;
 }
 
+.product-info .product-image-wrap {
+    background-color: #ffffff;
+}
+
+.product-info .product-image {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.product-details-header {
+    display: flex;
+    align-items: center;
+}
+
 .product-info .product-price {
     font-size: 1.2rem;
     font-weight: bold;
@@ -195,6 +209,8 @@ body {
     margin-top: 20px;
 }
 
+
+
 @media screen and (width > 425px) {
     .product-details .product-info .add-to-cart {
         width: fit-content;
@@ -210,38 +226,46 @@ body {
     margin-bottom: 1.25rem;
 }
 
-.similar-products .product-item {
+.product-item {
     border: 1px solid #ccc;
     margin-bottom: 1.25rem;
 }
 
-.similar-products .product-item img {
+.product-item img {
     max-width: 100%;
     height: auto;
     aspect-ratio: 300 / 300;
     margin-bottom: 0.62rem;
 }
 
-.similar-products .product-item .price {
+.product-item .price {
     color: #e74c3c;
 }
 
-.similar-products .product-item .product-item-btm {
+.product-item .product-item-btm {
     padding: 0.5rem;
 }
 
-.similar-products .product-item-btm .price {
+.product-item-btm .title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.product-item .product-item-btm .price {
     direction: ltr;
     text-align: right;
     font-size: 0.8rem;
     font-weight: 700;
 }
 
-.similar-products .product-item-btm .price .cprice {
+.product-item .product-item-btm .price .cprice {
+    font-size: 18px;
+    font-weight: 700;
     color: #c13030;
 }
 
-.similar-products .product-item-btm .price .oprice {
+.product-item .product-item-btm .price .oprice {
     color: #999;
     text-decoration: line-through;
 }
@@ -685,9 +709,9 @@ body {
 }
 
 .cart-container .total {
-    text-align: right;
+    text-align: left;
     margin-top: 20px;
-    font-size: 1.2em;
+    font-size: 1.2rem;
     font-weight: bold;
 }
 
