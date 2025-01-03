@@ -69,13 +69,12 @@ public class ProductController {
             try {
                 products = productRepository.findByCategory(category);
             } catch (Exception e) {
-                // Handle exceptions, e.g., category not found
                 throw new CategoryNotFoundException("Category not found: " + category);
             }
         }
     
         model.addAttribute("products", products);
-	model.addAttribute("pageDescription", "");
+	    model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
@@ -99,7 +98,7 @@ public class ProductController {
         if (!productRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        product.setProductId(id);
+        product.setId(id);
         Product updatedProduct = productRepository.save(product);
         return ResponseEntity.ok(updatedProduct);
     }

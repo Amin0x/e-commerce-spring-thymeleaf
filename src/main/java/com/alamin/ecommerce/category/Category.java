@@ -27,17 +27,20 @@ public class Category {
 
     private LocalDateTime created;
     private LocalDateTime updated;
-    private Long parentId;
+
     private Boolean active;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_id")
+    private Category parent;
 
     // Default constructor (required by JPA)
     public Category() {}
 
     // Constructor for convenience
-    public Category(String name, String description, Long parentId) {
+    public Category(String name, String description, Category parent) {
         this.name = name;
         this.description = description;
-        this.parentId = parentId; 
+        this.parent = parent;
         this.active = false; 
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();

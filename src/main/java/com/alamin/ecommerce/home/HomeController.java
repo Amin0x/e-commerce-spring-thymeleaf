@@ -52,8 +52,6 @@ public class HomeController {
             model.addAttribute("products4", products4);
             model.addAttribute("productsName4", categories.get(3).getName());
         }
-        
-        
 
         List<Product> newProducts = productService.getNewArrivalProducts();
         model.addAttribute("newProducts", newProducts);

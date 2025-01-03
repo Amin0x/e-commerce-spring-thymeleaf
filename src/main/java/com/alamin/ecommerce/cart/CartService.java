@@ -4,8 +4,6 @@ package com.alamin.ecommerce.cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class CartService {
 
@@ -14,6 +12,10 @@ public class CartService {
 
     public Cart getCart(Long id) {
         return cartRepository.findById(id).orElse(null);
+    }
+
+    public Cart getCart(String sessionId) {
+        return cartRepository.findBySessionId(sessionId).orElse(null);
     }
 
     public Cart saveCart(Cart cart) {
