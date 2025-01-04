@@ -37,8 +37,16 @@ public class CategoryService {
         throw new IllegalStateException("");
     }
 
+    public Category createCategory(Category category) {
+        return categoryRepository.save(category);
+    }
+
     // Update category
     public Category updateCategory(Long id, Category updatedCategory) {
+        if (updatedCategory == null) {
+            throw new IllegalArgumentException("Updated category cannot be null");
+        }
+
         Optional<Category> existingCategoryOptional = categoryRepository.findById(id);
         if (existingCategoryOptional.isPresent()) {
             Category existingCategory = existingCategoryOptional.get();
@@ -46,6 +54,7 @@ public class CategoryService {
             existingCategory.setDescription(updatedCategory.getDescription()); // Assuming a description field
             return categoryRepository.save(existingCategory);
         }
+
         throw new IllegalArgumentException("Category not found with id: " + id);
     }
 

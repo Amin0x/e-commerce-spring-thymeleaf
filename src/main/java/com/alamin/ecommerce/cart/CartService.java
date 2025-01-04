@@ -10,12 +10,17 @@ public class CartService {
     @Autowired
     private CartRepository cartRepository;
 
-    public Cart getCart(Long id) {
+    public Cart getCartById(Long id) {
         return cartRepository.findById(id).orElse(null);
     }
 
-    public Cart getCart(String sessionId) {
+    public Cart getCartBySession(String sessionId){
+        
         return cartRepository.findBySessionId(sessionId).orElse(null);
+    }
+
+    public Cart getCartByUser(Long userId){
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public Cart saveCart(Cart cart) {
@@ -26,8 +31,9 @@ public class CartService {
         cartRepository.deleteById(id);
     }
 
-    public Cart addItemToCart(Long cartId, CartItem item) {
-        Cart cart = getCart(cartId);
+    public Cart addItemToCart(CartItem item) {
+        Long cartId = 0L;
+        Cart cart = getCartById(cartId);
         boolean isExisting = false ;
 
         for (CartItem cartitem : cart.getItems()) {
@@ -46,8 +52,9 @@ public class CartService {
         return saveCart(cart);
     }
 
-    public Cart removeItemFromCart(Long cartId, Long itemId) {
-        Cart cart = getCart(cartId);
+    public Cart deleteCartItem(Long itemId) {
+        Long cartId = 0L;
+        Cart cart = getCartById(cartId);
         cart.getItems().removeIf(item -> item.getId().equals(itemId));
         updateCartTotals(cart);
         return saveCart(cart);
@@ -60,11 +67,4 @@ public class CartService {
         cart.setTotalPrice(totalPrice);
     }
 
-    public Cart getCartBySession(String sessionId){
-        return null;
-    }
-
-    public Cart getCartByUser(Long userId){
-        return null;
-    }
 }

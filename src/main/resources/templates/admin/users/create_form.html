@@ -4,36 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create User</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .create-user-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-
-        .create-user-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .create-user-container form .form-group {
-            margin-bottom: 15px;
-        }
-
-        .create-user-container form button {
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/bootstrap/4.5.2/css/bootstrap.min.css}" href="../../../static/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin/main.css"} href="../../../static/css/admin/main.css">
 </head>
 <body>
+<div class="content">
 
+    <div th:replace="~{admin/fragments/navigation :: navigation}">
+
+    </div>
     <div class="create-user-container">
         <h2>Create New User</h2>
-        <form id="createUserForm" th:object="${user}" >
+        <form id="createUserForm" th:object="${user}">
             <div class="form-group">
                 <label for="name">Name Arabic:</label>
                 <input type="text" class="form-control" th:field="*{name}" id="name" required>
@@ -58,41 +40,46 @@
                 <input type="checkbox" class="form-check-input" th:field="*{admin}" id="admin">
                 <label for="admin" class="form-check-label">Admin Privileges</label>
             </div>
-            
+
             <button type="submit" class="btn btn-primary mt-3">Create User</button>
         </form>
     </div>
+</div>
+<!-- Footer -->
+<footer th:replace="~{admin/fragments/footer::footer}">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        document.getElementById('createUserForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+</footer>
 
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                admin: document.getElementById('admin').checked
-            };
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/bootstrap/4.5.2/js/bootstrap.min.js}" src="../../../static/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('createUserForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-            fetch('/api/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Handle success
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                // Handle error
-            });
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            admin: document.getElementById('admin').checked
+        };
+
+        fetch('/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Handle success
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            // Handle error
         });
-    </script>
+    });
+</script>
 </body>
 </html>

@@ -8,24 +8,27 @@ CREATE TABLE users (
     last_name VARCHAR(50),
     birth_date DATE,
     enabled BOOL,
+    block_date TIMESTAMP DEFAULT NULL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE inventories (
     inventory_id INT AUTO_INCREMENT PRIMARY KEY,
-    quantity INT NOT NULL,
-    price INT NOT NULL,
     product_id INT NOT NULL,
+    quantity INT NOT NULL DEFAULT 0,
+    price DECIMAL(10, 2) NOT NULL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE statistics (
     statistic_id INT AUTO_INCREMENT PRIMARY KEY,
-    st_date DATE NOT NULL,
-    type VARCHAR(50) NOT NULL,
-    st_value INT NOT NULL
+    statistic_date DATE NOT NULL,
+    statistic_type VARCHAR(50) NOT NULL,
+    value INT NOT NULL,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE products (
@@ -38,7 +41,7 @@ CREATE TABLE products (
     stock INT NOT NULL,
     total_sold INT NOT NULL,
     category_id INT NOT NULL,
-    active BIT,
+    active BOOL,
     deleted TIMESTAMP,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -85,27 +88,79 @@ CREATE TABLE categories (
     name VARCHAR(50) NOT NULL,
     description VARCHAR(255) NOT NULL,
     parent_id INT,
-    active BIT,
+    active BOOL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE carts (
     cart_id INT AUTO_INCREMENT PRIMARY KEY,
-    sid VARCHAR(255) NOT NULL,
-    user_id INT NOT NULL,
-    totalPrice INT,
-    active BIT,
+    session_id VARCHAR(255) NOT NULL,
+    user_id INT DEFAULT NULL,
+    total_price INT,
+    active BOOL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE cart_items (
     item_id INT AUTO_INCREMENT PRIMARY KEY,
-    quantity INT NOT NULL,
     cart_id INT NOT NULL,
     product_id INT NOT NULL,
+    quantity INT NOT NULL,
     price INT NOT NULL,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE cities (
+    city_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    state_id INT NOT NULL,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE states (
+    state_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE countries (
+    country_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE reviwes (
+    review_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    user_id INT NOT NULL,
+    review VARCHAR(255) NOT NULL,
+    rating INT NOT NULL,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE addresses (
+    address_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    city_id INT NOT NULL,
+    state_id INT NOT NULL,
+    country_id INT NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE settings (
+    setting_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    value VARCHAR(255) NOT NULL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

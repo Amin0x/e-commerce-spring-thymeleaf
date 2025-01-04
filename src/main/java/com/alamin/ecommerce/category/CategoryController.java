@@ -1,6 +1,9 @@
 package com.alamin.ecommerce.category;
 
+import com.alamin.ecommerce.exception.ResourceAlreadyExistsException;
+import com.alamin.ecommerce.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +16,22 @@ public class CategoryController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     // Create a new category
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryRepository.save(category);
+    public ResponseEntity<Category> createCategory(@RequestBody Category newCategory) {
+        try {
+            Category category = categoryService.createCategory(newCategory);
+            return ResponseEntity.status(HttpStatus.OK).body(category);
+        
+        } catch (ResourceAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // Get all categories

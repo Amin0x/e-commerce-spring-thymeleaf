@@ -2,6 +2,7 @@ package com.alamin.ecommerce.cart;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,19 +16,19 @@ public class CartController {
 
     @GetMapping("/web/carts/{id}")
     public String showCart(@PathVariable Long id, Model model) {
-        Cart cart = cartService.getCart(id);
+        Cart cart = cartService.getCartById(id);
         model.addAttribute("cart", cart);
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
-        return "cart";
+        return "public/cart";
     }
     
     @GetMapping("/api/carts/{id}")
-    public ResponseEntity<Cart> getCart(@PathVariable String id, HttpSession session) {
+    public ResponseEntity<Cart> getCart(@PathVariable Long id, HttpSession session) {
 
-        Cart cart = cartService.getCart(session.getId());
+        Cart cart = cartService.getCartById(id);
         return ResponseEntity.ok(cart);
     }
 
@@ -43,15 +44,43 @@ public class CartController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/api/carts/{cartId}/items")
-    public ResponseEntity<Cart> addItemToCart(@PathVariable Long cartId, @RequestBody CartItem item) {
-        Cart updatedCart = cartService.addItemToCart(cartId, item);
+    @PostMapping("/api/carts/items")
+    public ResponseEntity<Cart> addItemToCart(@RequestBody CartItem item) {
+        Cart updatedCart = cartService.addItemToCart(item);
         return ResponseEntity.ok(updatedCart);
     }
 
-    @DeleteMapping("/api/carts/{cartId}/items/{itemId}")
-    public ResponseEntity<Cart> removeItemFromCart(@PathVariable Long cartId, @PathVariable Long itemId) {
-        Cart updatedCart = cartService.removeItemFromCart(cartId, itemId);
-        return ResponseEntity.ok(updatedCart);
+    @PostMapping("/api/carts/items/{itemId}/delete")
+    public ResponseEntity<Void> deleteCartItem(@PathVariable Long itemId) {
+        try {
+            cartService.deleteCartItem(itemId);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @GetMapping("/admin/carts")
+    public String adminCartIndex(Model model) {
+        return "admin/carts/index";
+    }
+
+    @GetMapping("/admin/carts/{id}")
+    public String adminCartDetails(@PathVariable Long id, Model model) {
+        Cart cart = cartService.getCartById(id);
+        model.addAttribute("cart", cart);
+        return "admin/carts/details";
+    }
+
+    @GetMapping("/admin/carts/list")
+    public String adminCartList(Model model) {
+        return "admin/carts/list";
+    }
+
+    @PostMapping("/admin/carts/{id}/delete")
+    public ResponseEntity<Void> adminCartDelete(@PathVariable Long id){
+        cartService.deleteCart(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }

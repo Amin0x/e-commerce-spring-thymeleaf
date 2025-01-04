@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../static/css/admin/main.css">
+</head>
+<body style="height: 100vh; background-color: brown;">
+    <div class="navigation" th:fragment="navigation">
+        <nav class="sidebar">
+            <div class="brand">
+                <img src="../../../static/images/admin/logo.png" alt="Admin Logo" class="logo">
+                <h4>Admin Control Panel</h4>
+            </div>
+            <ul>
+                <li><a href="/admin"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="users/index.html" th:href="@{/admin/users}"><i class="fas fa-user"></i> Users</a></li>
+                <li><a href="#" th:href="@{/admin/products}"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="#" th:href="@{/admin/products}"><i class="fas fa-box"></i> Products</a></li>
+                <li><a href="#" th:href="@{/admin/orders}"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="#" th:href="@{/admin/create}"><i class="fas fa-plus-circle"></i> Create</a></li>
+                <li><a href="#" th:href="@{/admin/settings}"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#" th:href="@{/logout}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../../static/css/admin/main.css">
+</head>
+<body>
+    <header th:fragment="header">
+        <!-- Top Header -->
+        <section class="top-header">
+            <div class="logo">
+                <img src="logo.png" alt="Logo" class="logo-img">
+            </div>
+            <div class="user-info">
+                <img src="user-avatar.jpg" alt="User Avatar" class="user-avatar" th:src="@{${user.avatar}}">
+                <span th:text="${user.username}">Admin User</span>
+            </div>
+        </section>
+    </header>
+</body>
+</html>

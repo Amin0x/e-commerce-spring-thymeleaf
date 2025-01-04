@@ -14,7 +14,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CartItem> items;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -29,7 +29,6 @@ public class Cart {
     public Cart(){
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();
-
     }
     
 }
