@@ -1,4 +1,7 @@
-CREATE TABLE users (
+CREATE DATABASE IF NOT EXISTS `amin_db_123`  /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `amin_db_123`;
+
+CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -13,7 +16,7 @@ CREATE TABLE users (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE inventories (
+CREATE TABLE IF NOT EXISTS inventories (
     inventory_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     quantity INT NOT NULL DEFAULT 0,
@@ -22,7 +25,7 @@ CREATE TABLE inventories (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE statistics (
+CREATE TABLE IF NOT EXISTS statistics (
     statistic_id INT AUTO_INCREMENT PRIMARY KEY,
     statistic_date DATE NOT NULL,
     statistic_type VARCHAR(50) NOT NULL,
@@ -31,7 +34,7 @@ CREATE TABLE statistics (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     description VARCHAR(255) NOT NULL,
     name VARCHAR(50) NOT NULL,
@@ -47,12 +50,12 @@ CREATE TABLE products (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE product_images (
+CREATE TABLE IF NOT EXISTS product_images (
     product_id INT,
     image VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
     status VARCHAR(50) NOT NULL,
@@ -60,13 +63,17 @@ CREATE TABLE orders (
     total_amount INT NOT NULL,
     order_date TIMESTAMP,
     shipping_date TIMESTAMP,
+    shipping_address VARCHAR(255),
+    shipping_city VARCHAR(50),
+    shipping_state VARCHAR(50),
+    shipping_country VARCHAR(50),
     payment_method VARCHAR(50) NOT NULL,
     transaction_id VARCHAR(50) NOT NULL,
     deleted TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
     item_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     quantity INT NOT NULL,
@@ -74,7 +81,7 @@ CREATE TABLE order_items (
     product_id INT NOT NULL
 );
 
-CREATE TABLE invoices (
+CREATE TABLE IF NOT EXISTS invoices (
     invoice_id INT AUTO_INCREMENT PRIMARY KEY,
     customerName VARCHAR(50) NOT NULL,
     totalAmount INT,
@@ -83,7 +90,7 @@ CREATE TABLE invoices (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     description VARCHAR(255) NOT NULL,
@@ -93,7 +100,7 @@ CREATE TABLE categories (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE carts (
+CREATE TABLE IF NOT EXISTS carts (
     cart_id INT AUTO_INCREMENT PRIMARY KEY,
     session_id VARCHAR(255) NOT NULL,
     user_id INT DEFAULT NULL,
@@ -103,7 +110,7 @@ CREATE TABLE carts (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE cart_items (
+CREATE TABLE IF NOT EXISTS cart_items (
     item_id INT AUTO_INCREMENT PRIMARY KEY,
     cart_id INT NOT NULL,
     product_id INT NOT NULL,
@@ -113,7 +120,7 @@ CREATE TABLE cart_items (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE cities (
+CREATE TABLE IF NOT EXISTS cities (
     city_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     state_id INT NOT NULL,
@@ -121,21 +128,21 @@ CREATE TABLE cities (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE states (
+CREATE TABLE IF NOT EXISTS states (
     state_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE countries (
+CREATE TABLE IF NOT EXISTS countries (
     country_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE reviwes (
+CREATE TABLE IF NOT EXISTS reviwes (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     user_id INT NOT NULL,
@@ -145,7 +152,7 @@ CREATE TABLE reviwes (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE addresses (
+CREATE TABLE IF NOT EXISTS addresses (
     address_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     street VARCHAR(255) NOT NULL,
@@ -157,7 +164,7 @@ CREATE TABLE addresses (
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE settings (
+CREATE TABLE IF NOT EXISTS settings (
     setting_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     value VARCHAR(255) NOT NULL,

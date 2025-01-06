@@ -9,25 +9,23 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "userId")
-    private User user;
-
+    private Long paymentId;
     private BigDecimal amount;
     private String paymentMethod; // Credit Card, PayPal, etc.
     private String transactionId;
     private boolean success;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "userId")
+    private User user;
     
     // Getters and Setters
 
-    public Long getId() {
-        return id;
+    public Long getPaymentId() {
+        return paymentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
     }
 
     public User getUser() {

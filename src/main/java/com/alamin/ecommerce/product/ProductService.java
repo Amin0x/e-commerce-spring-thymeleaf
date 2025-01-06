@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.product;
 
+import com.alamin.ecommerce.category.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -61,5 +62,9 @@ public class ProductService {
         } else {
             throw new IllegalArgumentException("Product with ID " + id + " not found");
         }
+    }
+
+    public List<Category> getAllCategories() {
+        return null;
     }
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
+
 import lombok.*;
 
 @Data
@@ -25,22 +27,24 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    private String uuid;
     private BigDecimal totalAmount;
     private LocalDateTime orderDate;
     private LocalDateTime shippingDate;
-
     @Embedded
     private Address shippingAddress;
-
     private String paymentMethod;
     private String transactionId;
+    private LocalDateTime updated;
 
     // Constructors, Getters, Setters
 
     // Default constructor
     public Order() {
+        this.uuid = new UUID(System.currentTimeMillis(), System.currentTimeMillis()).toString();
         this.orderDate = LocalDateTime.now(); // Set order date to current time by default
         this.status = OrderStatus.PENDING; // Default status is PENDING
+        this.updated = LocalDateTime.now();
     }
 
     // Constructor with parameters

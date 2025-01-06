@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.category;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,7 +16,7 @@ import com.alamin.ecommerce.product.Product;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the id value
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
 
     @NotNull(message = "Category name is required")
@@ -25,23 +26,28 @@ public class Category {
     @Size(max = 255, message = "Description must be less than 255 characters")
     private String description;
 
+    private String  imageUrl;
     private LocalDateTime created;
     private LocalDateTime updated;
-
     private Boolean active;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id", referencedColumnName = "categoryId")
     private Category parent;
 
+
     // Default constructor (required by JPA)
-    public Category() {}
+    public Category() {
+        this.created = LocalDateTime.now();
+        this.updated = LocalDateTime.now();
+    }
 
     // Constructor for convenience
     public Category(String name, String description, Category parent) {
         this.name = name;
         this.description = description;
         this.parent = parent;
-        this.active = false; 
+        this.active = true;
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();
     }

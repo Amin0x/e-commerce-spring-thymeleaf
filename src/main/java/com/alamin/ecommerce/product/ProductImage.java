@@ -1,19 +1,17 @@
 package com.alamin.ecommerce.product;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "product_images")
 public class ProductImage {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long productId;
     private String image;
 
-    public ProductImage(String image) {
-        this.image = image;
+    public ProductImage() {
     }
 
     public ProductImage(String image, Long productId) {
@@ -35,5 +33,13 @@ public class ProductImage {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

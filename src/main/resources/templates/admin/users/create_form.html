@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create User</title>
     <link rel="stylesheet" th:href="@{/bootstrap/4.5.2/css/bootstrap.min.css}" href="../../../static/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/css/admin/main.css"} href="../../../static/css/admin/main.css">
+    <link rel="stylesheet" th:href="@{/css/admin/main.css}" href="../../../static/css/admin/main.css">
 </head>
 <body>
 <div class="content">
@@ -17,31 +17,57 @@
         <h2>Create New User</h2>
         <form id="createUserForm" th:object="${user}">
             <div class="form-group">
-                <label for="name">Name Arabic:</label>
-                <input type="text" class="form-control" th:field="*{name}" id="name" required>
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" th:field="*{firstName}" id="firstName" required>
             </div>
             <div class="form-group">
-                <label for="nameeng">Name English:</label>
-                <input type="text" class="form-control" th:field="*{nameeng}" id="nameeng" required>
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" th:field="*{lastName}" id="lastName" required>
             </div>
             <div class="form-group">
-                <label for="phone">Phone:</label>
-                <input type="text" class="form-control" th:field="*{phone}" id="phone" required>
+                <label for="birthday">Birthday:</label>
+                <div class="d-flex">
+                    <select class="form-control mr-2"  id="birthdayDay" required>
+                        <option value="" disabled selected>Day</option>
+                        <option th:each="day : ${#numbers.sequence(1, 31)}" th:value="${day}" th:text="${day}"></option>
+                    </select>
+                    <select class="form-control mr-2" id="birthdayMonth" required>
+                        <option value="" disabled selected>Month</option>
+                        <option th:each="month, iter : ${monthNames}" th:value="${iter.index + 1}" th:text="${month}"></option>
+                    </select>
+                    <select class="form-control" id="birthdayYear" required>
+                        <option value="" disabled selected>Year</option>
+                        <option th:each="year : ${#numbers.sequence(1900, 2023)}" th:value="${year}" th:text="${year}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <select class="form-control" th:field="*{role}" id="role" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="USER">USER</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="MODERATOR">MODERATOR</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="avatar">Avatar:</label>
+                <input type="file" class="form-control" th:field="*{avatar}" id="avatar" accept="image/*">
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" class="form-control" th:field="*{email}" id="email" required>
+                <input type="email" class="form-control" th:field="*{email}" id="email">
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" class="form-control" th:field="*{password}" id="password" required>
+                <input type="password" class="form-control" th:field="*{password}" id="password">
             </div>
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" th:field="*{admin}" id="admin">
-                <label for="admin" class="form-check-label">Admin Privileges</label>
+                <input type="checkbox" class="form-check-input" th:field="*{enabled}" id="enabled">
+                <label for="enabled" class="form-check-label">Enabled</label>
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3">Create User</button>
+            <button type="submit" class="btn btn-primary mt-3"><i class="fab fa-plus"></i> Create User</button>
         </form>
     </div>
 </div>
@@ -56,14 +82,29 @@
     document.getElementById('createUserForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
+        const day = document.getElementById('birthdayDay').value;
+        const month = document.getElementById('birthdayMonth').value;
+        const year = document.getElementById('birthdayYear').value;
+
+        if (!day || !month || !year) {
+            alert('Please select a valid date.');
+            return;
+        }
+
+        const date = new Date(year, month - 1, day);
+
         const formData = {
-            name: document.getElementById('name').value,
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
             email: document.getElementById('email').value,
             password: document.getElementById('password').value,
-            admin: document.getElementById('admin').checked
+            avatar: document.getElementById('avatar').value,
+            role: document.getElementById('role').value,
+            enabled: document.getElementById('enabled').checked,
+            birthDate: date.toISOString()
         };
 
-        fetch('/api/users', {
+        fetch('/admin/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

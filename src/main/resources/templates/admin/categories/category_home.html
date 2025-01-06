@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link th:href="@{/bootstrap/4.5.2/css/bootstrap.min.css}" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/css/admin/main.css}" href="../../../static/css/admin/main.css" rel="stylesheet">
+</head>
+<body>
+<div><a href="@{/admin/categories/create}">create</a></div>
+<div th:each="category : ${categories}">
+    <div th:text="${category.categoryId}">id</div>
+    <div th:text="${category.name}">category name</div>
+    <div th:text="${category.parent.name}">category parent</div>
+</div>
+</body>
+</html>

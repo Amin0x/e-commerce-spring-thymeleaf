@@ -1,6 +1,8 @@
 package com.alamin.ecommerce.statistics;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
@@ -8,10 +10,19 @@ import java.time.LocalDateTime;
 @Entity
 public class Statistics {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long statisticId;
   private LocalDateTime stDate;
-  private String type;
   private int stValue;
+  private String type;
+
+  public Statistics() {}
+
+  public Statistics(int stValue, String type) {
+    this.stValue = stValue;
+    this.type = type;
+    this.stDate = LocalDateTime.now();
+  }
 
   // Getter and Setter for id
   public Long getId() {
@@ -31,7 +42,6 @@ public class Statistics {
     this.stDate = dateVal;
   }
 
-  // Getter and Setter for type
   public String getType() {
     return type;
   }
