@@ -6,6 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +21,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private ProductImageRepository productImageRepository;
 
     public List<Product> getRandomProductsByCategory(String category) {
         return productRepository.findRandomProductsByCategory(category);
@@ -66,5 +75,29 @@ public class ProductService {
 
     public List<Category> getAllCategories() {
         return null;
+    }
+
+    public Long uploadImage(MultipartFile file) {
+        String fn = file.getOriginalFilename();
+        // Save the image file to the server
+        try {
+            String uploadDir = "path/to/upload/directory/";
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+               Files.createDirectories(uploadPath);
+            }
+
+            Path filePath = uploadPath.resolve(fn);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Return the ID of the image
+            ProductImage pimg = productImageRepository.save(new ProductImage(fn, null));  // Save the image to the database
+            return pimg.getId();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store file " + fn, e);
+        }
+
+
     }
 }

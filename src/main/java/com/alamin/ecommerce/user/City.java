@@ -9,7 +9,8 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-  
+    private String nameAr;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     private State state;
 

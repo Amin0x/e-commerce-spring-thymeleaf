@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
 
 :root {
     --primary-color: #fff;
@@ -36,7 +37,6 @@ body {
     width: 100%;
     position: relative;
 }
-
 
 .main-search-input-item {
     width: 100%;
@@ -319,7 +319,6 @@ body {
     color: #a3a3a3;
     margin-bottom: 0.3rem;
 }
-
 
 .review-form {
     margin-top: 30px;
@@ -681,8 +680,6 @@ body {
     right: 2px;
 }
 
-
-
 .bottom-boarder {
     height: 1px;
     margin: 5px 0;
@@ -746,12 +743,13 @@ body {
     font-size: 0.8rem;
 }
 
+/* start footer */
+
 .footer {
     background: linear-gradient(0deg, #fff, 50%, #DEEEFE);
     font-family: 'Rubik', sans-serif;
     background: #455A64;
 }
-
 
 .footer .container-fluid{
     overflow:hidden; 
@@ -787,6 +785,8 @@ body {
 .footer .rights{
     font-size: calc(10px + (12 - 10) * ((100vw - 360px) / (1600 - 360))) !important; 
 }
+
+/* end footer */
 
 .button-83 {
     appearance: button;
@@ -857,3 +857,5 @@ body {
 .button-31:focus {
     opacity: .75;
 }
+
+

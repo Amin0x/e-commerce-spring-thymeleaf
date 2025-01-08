@@ -10,8 +10,11 @@ public class State {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    private String nameAr;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Country country;
+    
     @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
     private List<City> cities;
 

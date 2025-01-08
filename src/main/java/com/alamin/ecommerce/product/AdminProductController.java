@@ -1,7 +1,10 @@
 package com.alamin.ecommerce.product;
 
 import com.alamin.ecommerce.category.CategoryService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import com.alamin.ecommerce.exception.CategoryNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,15 +52,32 @@ public class AdminProductController {
     }
 
     @PostMapping("/products")
-    public String createProduct(@Valid Product product, @RequestBody MultipartFile image, BindingResult result, Model model) {
-        if (model.containsAttribute("productImage"))
-            System.out.println("Image is not null");
-        else
-            System.out.println("Image is null");
+    public String createProduct(@RequestBody Map<String,String> map, BindingResult result, Model model) {
+        if (map.get("name") == null || map.get("name").isEmpty())
+            result.rejectValue("name", "name.required", "Name is required");
 
-        if (result.hasErrors()) {
+        if (map.get("category") == null || map.get("category").isEmpty())
+            result.rejectValue("category", "category.required", "Category is required");
+
+        if (map.get("price") == null || Integer.parseInt(map.get("price")) <= 0)
+            result.rejectValue("price", "price.required", "Price is required and should be greater than 0");
+
+        if(map.get("description") == null || map.get("description").isEmpty())
+            result.rejectValue("description", "description.required", "Description is required");
+
+        if (result.hasErrors())
             return "admin/products/product_create_form";
-        }
+
+
+        Product product = new Product();
+        product.setName(map.get("name"));
+        product.setPrice(Integer.parseInt(map.get("price")));
+        //product.setCategory(map.get("category"));
+        product.setDescription(map.get("description"));
+        product.setStock(Integer.parseInt(map.get("stock")));
+        product.setActive(Boolean.parseBoolean(map.get("active")));
+
+        categoryService.getCategoryById(Long.parseLong(map.get("category"))).ifPresent(product::setCategory);
 
 
         Product savedProduct = productRepository.save(product);
@@ -115,6 +138,23 @@ public class AdminProductController {
         product.setId(id);
         Product updatedProduct = productRepository.save(product);
         return ResponseEntity.ok(updatedProduct);
+    }
+
+    // Upload an image
+    @PostMapping(name = "/products/images/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        Long id = productService.uploadImage(file);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> map = new HashMap<>();
+        map.put("message", "Image uploaded successfully");
+        map.put("url", "/images/" + file.getOriginalFilename());
+        map.put("id", id.toString());
+
+        try {
+            return ResponseEntity.ok(objectMapper.writeValueAsString(map));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Delete a product by ID

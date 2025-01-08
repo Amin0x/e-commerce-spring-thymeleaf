@@ -1,85 +1,164 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Product</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="../../../static/css/admin/main.css" rel="stylesheet">
-    <style>
-        .create-product-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .create-product-container h2 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .create-product-container form .form-group {
-            margin-bottom: 15px;
-        }
-
-        .create-product-container form button {
-            width: 100%;
-        }
-
-        .form-box {
-            max-width: 425px;
-        }
-        
-    </style>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="../../../static/css/bootstrap.min.css">
+    <link th:href="@{/css/admin/main.css}" href="../../../static/css/admin/main.css" rel="stylesheet">
 </head>
-<body>
 
-    <div class="create-product-container">
-        <h2>Create New Product</h2>
-        <div class="box2">
-            <div class="form-box">
-                <form th:action="@{/admin/products}" th:object="${product}" method="post">
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" th:field="*{name}" id="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <textarea class="form-control" th:field="*{description}" id="description" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price:</label>
-                        <input type="number" step="0.01" class="form-control" th:field="*{price}" id="price">
-                    </div>
-                    <div class="form-group">
-                        <label for="stock">Stock:</label>
-                        <input type="number" class="form-control" th:field="*{stock}" id="stock" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="category">Category:</label>
-                        <input type="text" class="form-control" th:field="*{category}" id="category">
-                    </div>
-                    <div class="form-group">
-                      <label for="category">Category:</label>
-                      <select id="category" name="category">
-                        <option value="">Select Category</option>
-                        <option th:each="category : ${categories}" 
-                        th:value="${category.id}" 
-                        th:text="${category.name}">Category</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="productImage">Product Image:</label>
-                      <input type="file" id="productImage" name="productImage" accept="image/*">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create Product</button>
-                </form>
+<body>
+    <div class="content">
+
+        <div th:replace="~{admin/fragments/navigation :: navigation}">
+
+        </div>
+        <div class="create-product-container">
+            <h2>Create New Product</h2>
+            <div class="box2">
+                <div class="form-box">
+                    <form th:action="@{/admin/products}" method="post" id="createProduct">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" th:value="${name}" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea class="form-control" th:value="${description}" id="description"
+                                rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price:</label>
+                            <input type="number" step="0.01" class="form-control" th:value="${price}" id="price">
+                        </div>
+                        <div class="form-group">
+                            <label for="stock">Stock:</label>
+                            <input type="number" class="form-control" th:vlaue="${stock}" id="stock" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category:</label>
+                            <input type="text" class="form-control" th:value="${category}" id="category">
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category:</label>
+                            <select id="category" name="category">
+                                <option value="">Select Category</option>
+                                <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                                    th:text="${category.name}">Category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div id="imagesPreviwe" class="d-flex flex-wrap">
+
+                            </div>
+
+                            <label for="productImage">Product Image:</label>
+                            <input type="file" id="productImage" name="productImage" class="d-none" accept="image/*"
+                                multiple>
+                            <button type="button" class="btn btn-primary" id="uploadImage">Upload Image</button>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Create Product</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    
+    <footer th:replace="~{admin/fragments/footer::footer}">
+            
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        let productImage = [];
+        $(document).ready(function () {
+            $('#uploadImage').click(function () {
+                $('#productImage').click();
+            });
+
+            $('#createProduct').submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                formData.delete('productImage');
+                formData.append('productImage', JSON.stringify(productImage));
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+
+            $('#createCategoryModel').click(function () {
+                $('#createCategoryModel').toggle();
+            });
+
+            $('#productImage').change(function () {
+                var files = this.files;
+                for (var i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    reader.addEventListener('load', function (e) {
+                        console.log(reader.result);
+                        $('#imagesPreviwe').append(`<img src="${e.target.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
+                    });
+
+                    reader.addEventListener('error', function (e) {
+                        console.error('Error reading file');
+                    });
+
+                    reader.addEventListener('abort', function (e) {
+                        console.error('File reading aborted');
+                    });
+
+                    reader.addEventListener('loadend', function (e) {
+                        console.log('File reading completed');
+                        const formData = new FormData();
+                        formData.append('file', files[i]);
+                        fetch('/admin/products/images/upload', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response.ok ? response.json() : Promise.reject(response))
+                            .then(data => {
+                                productImage.push(data.imageId);
+                                console.log(data);
+                            })
+                            .catch(error => {
+                                console.error('Error uploading image:', error);
+                            });
+                    });
+
+                    reader.addEventListener('loadstart', function (e) {
+                        console.log('File reading started');
+                    });
+
+                    reader.addEventListener('progress', function (event) {
+                        console.log('File reading progress:', event.loaded, event.total);
+                    });
+
+                    reader.readAsDataURL(file);
+
+
+                }
+
+            });
+        });
+
+
+
+    </script>
 </body>
+
 </html>

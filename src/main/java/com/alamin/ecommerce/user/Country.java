@@ -11,6 +11,7 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    private String nameAr;
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private List<State> states;
 
