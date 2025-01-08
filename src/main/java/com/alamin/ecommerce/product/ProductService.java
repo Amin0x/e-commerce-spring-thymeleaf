@@ -100,4 +100,28 @@ public class ProductService {
 
 
     }
+
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
+
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    public List<Product> findByCategory(String category) {
+        return productRepository.findByCategory(category);
+    }
+
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    public boolean existsById(Long id) {
+        return productRepository.existsById(id);
+    }
+
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
+    }
 }

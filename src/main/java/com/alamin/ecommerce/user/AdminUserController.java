@@ -15,6 +15,9 @@ public class AdminUserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
     
 
     @GetMapping
@@ -33,6 +36,15 @@ public class AdminUserController {
         model.addAttribute("driversRegistrationLabels", 9876);
         model.addAttribute("driversRegistrationData", 9876);
         return "admin/users/index";
+    }
+
+    @GetMapping("/all")
+    public String allUsers(Model model) {
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("pageNumber", 10);
+        model.addAttribute("totalPages", 10);
+        model.addAttribute("i", 10);
+        return "admin/users/users_list";
     }
 
     @GetMapping("/{id}/edit")

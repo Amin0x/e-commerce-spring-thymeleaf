@@ -23,14 +23,14 @@
             </thead>
             <tbody>
                 <tr th:each="order : ${orders}">
-                    <td th:text="${order.id}"></td>
-                    <td th:text="${order.customerName}"></td>
+                    <td th:text="${order.orderId}"></td>
+                    <td th:text="${order.customer.name}"></td>
                     <td th:text="${order.orderDate}"></td>
                     <td th:text="${order.status}"></td>
-                    <td th:text="${order.total}"></td>
+                    <td th:text="${order.totalAmount}"></td>
                     <td>
-                        <a th:href="@{/admin/orders/edit/{id}(id=${order.id})}" class="btn btn-primary btn-sm">Edit</a>
-                        <a th:href="@{/admin/orders/delete/{id}(id=${order.id})}" class="btn btn-danger btn-sm">Delete</a>
+                        <a th:href="@{/admin/orders/edit/{id}(id=${order.orderId})}" class="btn btn-primary btn-sm">Edit</a>
+                        <a th:href="@{/admin/orders/delete/{id}(id=${order.orderId})}" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                 </tr>
             </tbody>
@@ -39,15 +39,15 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     <li class="page-item" th:classappend="${pageNumber == 1} ? 'disabled'">
-                        <a class="page-link" th:href="@{/admin/orders(page=${pageNumber - 1})}" aria-label="Previous">
+                        <a class="page-link" th:href="@{/admin/orders/all(page=${pageNumber - 1})}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == pageNumber} ? 'active'">
-                        <a class="page-link" th:href="@{/admin/orders(page=${i})}" th:text="${i}">1</a>
+                        <a class="page-link" th:href="@{/admin/orders/all(page=${i})}" th:text="${i}">1</a>
                     </li>
                     <li class="page-item" th:classappend="${pageNumber == totalPages} ? 'disabled'">
-                        <a class="page-link" th:href="@{/admin/orders(page=${pageNumber + 1})}" aria-label="Next">
+                        <a class="page-link" th:href="@{/admin/orders/all(page=${pageNumber + 1})}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

@@ -25,8 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminProductController {
 
     @Autowired
-    private ProductRepository productRepository;
-    @Autowired
     private ProductService productService;
     @Autowired
     private CategoryService categoryService;
@@ -34,7 +32,7 @@ public class AdminProductController {
     // Create a new product
     @PostMapping("/api/products")
 	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-   		Product savedProduct = productRepository.save(product);
+   		Product savedProduct = productService.save(product);
    		return ResponseEntity
             .status(HttpStatus.CREATED)  // HTTP status 201 Created
             .body(savedProduct);         // The saved product as the response body
@@ -80,14 +78,14 @@ public class AdminProductController {
         categoryService.getCategoryById(Long.parseLong(map.get("category"))).ifPresent(product::setCategory);
 
 
-        Product savedProduct = productRepository.save(product);
+        Product savedProduct = productService.save(product);
         return "redirect:/admin/products/" + savedProduct.getId();
     }
 
     // Get all products
     @GetMapping("/api/products")
 	public ResponseEntity<List<Product>> getAllProducts() {
-   		List<Product> products = productRepository.findAll();
+   		List<Product> products = productService.findAll();
    		return ResponseEntity.ok(products);  // HTTP status 200 OK with the list of products
 	}
 
@@ -99,12 +97,12 @@ public class AdminProductController {
 
         if (category == null || category.isEmpty()) {
             // Handle null or empty category
-            products = productRepository.findAll();
+            products = productService.findAll();
     
         } else {
         
             try {
-                products = productRepository.findByCategory(category);
+                products = productService.findByCategory(category);
             } catch (Exception e) {
                 throw new CategoryNotFoundException("Category not found: " + category);
             }
@@ -124,7 +122,7 @@ public class AdminProductController {
     @GetMapping("/api/products/{id}")
     @ResponseBody
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> product = productRepository.findById(id);
+        Optional<Product> product = productService.findById(id);
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -132,11 +130,11 @@ public class AdminProductController {
     @PutMapping("/api/products/{id}")
     @ResponseBody
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        if (!productRepository.existsById(id)) {
+        if (!productService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         product.setId(id);
-        Product updatedProduct = productRepository.save(product);
+        Product updatedProduct = productService.save(product);
         return ResponseEntity.ok(updatedProduct);
     }
 
@@ -161,10 +159,10 @@ public class AdminProductController {
     @DeleteMapping("/api/products/{id}")
     @ResponseBody
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (!productRepository.existsById(id)) {
+        if (!productService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        productRepository.deleteById(id);
+        productService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
