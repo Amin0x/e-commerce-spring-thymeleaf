@@ -13,7 +13,7 @@
     <h1>Edit User</h1>
 
     <!-- Thymeleaf Form to Edit User -->
-    <form th:action="@{admin/users}" th:object="${user}" method="post">
+    <form th:action="@{/admin/users/} + ${user.userId}" th:object="${user}" method="post">
 
         <!-- Hidden field to store user ID -->
         <input type="hidden" th:field="*{userId}" />

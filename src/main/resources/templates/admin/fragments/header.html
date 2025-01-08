@@ -10,12 +10,13 @@
     <header th:fragment="header">
         <!-- Top Header -->
         <section class="top-header">
-            <div class="logo">
+            <div class="logo" style="">
                 <img src="logo.png" alt="Logo" class="logo-img">
+                <div>admin dashboard</div>
             </div>
             <div class="user-info">
-                <img src="user-avatar.jpg" alt="User Avatar" class="user-avatar" th:src="@{${user.avatar}}">
-                <span th:text="${user.username}">Admin User</span>
+                <img th:src="@{${user.avatar}}" src="user-avatar.jpg" alt="User Avatar" class="user-avatar">
+                <span th:text="${user.username}">amin</span>
             </div>
         </section>
     </header>

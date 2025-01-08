@@ -30,6 +30,7 @@ public class User {
     private String firstName;
     @Column(length = 50)
     private String lastName;
+    private LocalDateTime lastActive;
     private LocalDate birthDate;
     private LocalDateTime created;
     private LocalDateTime updated;

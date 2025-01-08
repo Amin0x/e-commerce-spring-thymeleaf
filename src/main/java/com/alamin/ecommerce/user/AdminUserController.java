@@ -47,9 +47,17 @@ public class AdminUserController {
         return "admin/users/users_list";
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/view/{id}")
+    public String viewUser(@PathVariable Long id, Model model) {
+        User user = userService.findById(id).orElseThrow();
+        model.addAttribute("user", user);
+        return "admin/users/view_user";
+    }
+
+    @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
-        model.addAttribute("user", new User());
+        User user = userService.findById(id).orElseThrow();
+        model.addAttribute("user", user);
         return "admin/users/edit_form";
     }
 
@@ -72,21 +80,23 @@ public class AdminUserController {
     }
 
     @PostMapping("/{id}")
-    public String updateUser(@RequestBody User user, Model model) {
+    public String updateUser(@PathVariable Long id, @ModelAttribute User user, Model model) {
         if (user == null) {
             return "admin/users/edit_form";
         }
 
-        User newUser = userRepository.findById(user.getUserId()).orElse(null);
-        if (newUser == null) {
-            return "admin/users/edit_form";
-        }
-        
+        User newUser = userRepository.findById(id).orElseThrow();
+
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
         newUser.setEmail(user.getEmail());
+        newUser.setRole(user.getRole());
+        newUser.setBirthDate(user.getBirthDate());
+        newUser.setEnabled(user.getEnabled());
+        newUser.setStatus(user.getStatus());
 
         User savedUser = userRepository.save(newUser);
-        return "admin/users/edit_form";
+        model.addAttribute("user", savedUser);
+        return "redirect:/admin/users/view/" + savedUser.getUserId();
     }
 }
