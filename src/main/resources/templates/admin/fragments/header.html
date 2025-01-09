@@ -10,13 +10,54 @@
     <header th:fragment="header">
         <!-- Top Header -->
         <section class="top-header">
-            <div class="logo" style="">
-                <img src="logo.png" alt="Logo" class="logo-img">
-                <div>admin dashboard</div>
+            <div class="logo" style="display: flex; justify-content: center; gap: 8px; font-size: 1.2rem; font-weight: 700; color: #1a1818;">
+                <img th:src="@{/imgs/logo2.png}" src="../../../static/imgs/logo2.png" alt="Logo" class="logo-img">
             </div>
-            <div class="user-info">
-                <img th:src="@{${user.avatar}}" src="user-avatar.jpg" alt="User Avatar" class="user-avatar">
-                <span th:text="${user.username}">amin</span>
+            <div class="menu" style="display: flex;">
+                <div class="menu-item" style="position: relative;"><a href="/home" style="display: inline-block; padding: 8px 12px;">Home</a></div>
+                <div class="menu-item" style="position: relative;">
+                    <a href="/about" style="display: inline-block; padding: 8px 12px;">About</a>
+                    <div class="sub-menu" style="position: absolute; display: none; top: 30px; left: 0px;">
+                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
+                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
+                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
+                    </div>
+                </div>
+                <div class="menu-item" style="position: relative;">
+                    <a href="/services" style="display: inline-block; padding: 8px 12px;">Services</a>
+                    <div class="sub-menu" style="position: absolute; display: none; top: 30px; left: 0px;">
+                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
+                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
+                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
+                    </div>
+                </div>
+                <div class="menu-item" style="position: relative;">
+                    <a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a>
+                    <div class="sub-menu" style="position: absolute; display: none; top: 30px; left: 0px;">
+                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
+                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
+                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="search">
+                <div class="box">
+                    <form name="search">
+                        <input type="text" class="input" name="txt" onmouseout="this.value = ''; this.blur();">
+                    </form>
+                    <i class="fas fa-search"></i>
+                
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <div class="notification">
+                    <img th:src="@{/imgs/notification.png}" src="../../../static/imgs/notification.png" alt="Notification" class="notification-img">
+                    <span>5</span>
+                </div>
+                <div class="user-info">
+                    <span th:text="${user.username}">amin</span>
+                    <img th:src="@{/imgs/user-avatar.png}" src="../../../static/imgs/user-avatar.png" alt="User Avatar" class="user-avatar">
+                </div>
             </div>
         </section>
     </header>

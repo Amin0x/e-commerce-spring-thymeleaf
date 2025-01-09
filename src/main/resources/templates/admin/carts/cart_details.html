@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" th:lang="en" th:ns="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cart Details - E-Commerce Admin</title>
+    <meta name="description"
+        content="View detailed information about the cart including products, subtotal, tax, shipping, and total.">
+    <meta name="keywords" content="e-commerce, cart details, admin, products, subtotal, tax, shipping, total">
+    <meta name="author" content="E-Commerce Admin">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../static/css/admin/main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body style="max-width: 1200px; margin: 0 auto;">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">E-Commerce Admin</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/orders}">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/products}">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/customers}">Customers</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+    </header>
+    <div class="content_warp">
+        <nav id="sidebar" th:replace="~{admin/fragments/navigation :: navigation}">
+
+        </nav>
+        <main>
+            <h1>Cart Details</h1>
+            <nav style="text-align: right; margin: 20px 0;" class="no-print">
+                <a class="btn btn-primary" th:href="@{/admin/carts}" style="margin-right: 10px;">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+                <a class="btn btn-primary" th:href="@{/admin/carts/{id}/delete(id=${cart.id})}" style="margin-right: 10px;">
+                    <i class="fa fa-trash"></i> Delete
+                </a>
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fa fa-print"></i> Print
+                </button>
+            </nav>
+            <div>
+                <h2>Products</h2>
+                <div class="cart__product">
+                    <p class="name"><strong>Product Name</strong></p>
+                    <p class="quantity"><strong>Qnty</strong></p>
+                    <p class="price"><strong>Price</strong></p>
+                    <p class="total"><strong>Total</strong></p>
+                </div>
+                <div th:each="product : ${cart.products}" class="cart__product">
+                    <p class="name"><span th:text="${product.name}">Product Name</span></p>
+                    <p class="quantity"><span th:text="${product.quantity}">23</span></p>
+                    <p class="price"><span th:text="${product.price}">399.99</span></p>
+                    <p class="total"><span th:text="${product.total}">34265</span></p>
+                </div>
+                <div style="display: flex; flex-wrap: nowrap; justify-content: end;">
+                    <p style="width: 20%;"><strong>Subtotal:</strong></p>
+                    <span th:text="${cart.subtotal}" style="width: 20%;">12345</span>
+                </div>
+                <div style="display: flex; flex-wrap: nowrap; justify-content: end;">
+                    <p style="width: 20%;"><strong>Tax:</strong></p>
+                    <span th:text="${cart.subtotal}" style="width: 20%;">234</span>
+                </div>
+                <div style="display: flex; flex-wrap: nowrap; justify-content: end;">
+                    <p style="width: 20%;"><strong>Shipping:</strong></p>
+                    <span th:text="${cart.subtotal}" style="width: 20%;">234</span>
+                </div>
+                <div style="display: flex; flex-wrap: nowrap; justify-content: end;">
+                    <p style="width: 20%;"><strong>Total:</strong></p>
+                    <span th:text="${cart.subtotal}" style="width: 20%;">234,23 SDG</span>
+                </div>
+            </div>
+            <div>
+                <h2>Summary</h2>
+                <p>Subtotal: $<span th:text="${cart.subtotal}">234567.00 SDG</span></p>
+                <p>Tax: $<span th:text="${cart.tax}">2312.67 SDG</span></p>
+                <p>Shipping: $<span th:text="${cart.shipping}">123.00 SDG</span></p>
+                <p>Total: $<span th:text="${cart.total}">234999.67 SDG</span></p>
+            </div>
+
+            <div>
+                <h2>User Information</h2>
+                <p>Name: <span th:text="${user.name}">Name</span></p>
+                <p>Email: <span th:text="${user.email}">Email</span></p>
+                <p>Address: <span th:text="${user.address}">Address</span></p>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

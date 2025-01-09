@@ -4,6 +4,8 @@ package com.alamin.ecommerce.cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CartService {
 
@@ -67,4 +69,7 @@ public class CartService {
         cart.setTotalPrice(totalPrice);
     }
 
+    public List<Cart> findAll() {
+        return cartRepository.findAll();
+    }
 }
