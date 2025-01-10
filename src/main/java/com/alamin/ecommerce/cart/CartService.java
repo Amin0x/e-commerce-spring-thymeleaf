@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartService {
@@ -12,8 +13,8 @@ public class CartService {
     @Autowired
     private CartRepository cartRepository;
 
-    public Cart getCartById(Long id) {
-        return cartRepository.findById(id).orElse(null);
+    public Optional<Cart> getCartById(Long id) {
+        return cartRepository.findById(id);
     }
 
     public Cart getCartBySession(String sessionId){
@@ -35,7 +36,7 @@ public class CartService {
 
     public Cart addItemToCart(CartItem item) {
         Long cartId = 0L;
-        Cart cart = getCartById(cartId);
+        Cart cart = getCartById(cartId).orElse(new Cart());
         boolean isExisting = false ;
 
         for (CartItem cartitem : cart.getItems()) {
@@ -56,7 +57,7 @@ public class CartService {
 
     public Cart deleteCartItem(Long itemId) {
         Long cartId = 0L;
-        Cart cart = getCartById(cartId);
+        Cart cart = getCartById(cartId).orElseThrow();
         cart.getItems().removeIf(item -> item.getId().equals(itemId));
         updateCartTotals(cart);
         return saveCart(cart);

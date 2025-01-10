@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" content="AMIN">
+    <meta name="description" content="Admin Report Home">
+    <title>Admin Report Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../../static/css/admin/main.css">
+    <link rel="stylesheet" href="../../static/css/admin/rport_style.css">
+</head>
+
+<body>
+    <header class="admin-header"></header>
+    <h1>Admin Report Home</h1>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" href="/admin/reports/sales">Sales Reports</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/reports/inventory">Inventory Reports</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/reports/customers">Customer Reports</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/reports/orders">Order Reports</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section class="generate-reports">
+            <h2>Generate Reports</h2>
+            <p>Select a report type from the navigation menu to generate the corresponding report.</p>
+        </section>
+        <section class="report-section">
+            <h2 class="report-title">Reports</h2>
+            <div class="tabs">
+                <button class="tablinks" onclick="openReport(event, 'Sales')">Sales Report</button>
+                <button class="tablinks" onclick="openReport(event, 'Orders')">Order Report</button>
+                <button class="tablinks" onclick="openReport(event, 'Inventory')">Inventory Report</button>
+                <button class="tablinks" onclick="openReport(event, 'Customers')">Customer Report</button>
+            </div>
+            <div id="Sales" class="tabcontent">
+                <h3 class="tabcontent-title">Sales Report</h3>
+                <p class="tabcontent-description">Details of sales report will be displayed here.</p>
+            </div>
+            <div id="Orders" class="tabcontent">
+                <h3 class="tabcontent-title">Order Report</h3>
+                <p class="tabcontent-description">Details of order report will be displayed here.</p>
+            </div>
+        </section>
+
+        <script>
+            function openReport(evt, reportName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(reportName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+        </script>
+
+        <style>
+            .tabcontent {
+                display: none;
+            }
+
+            .tablinks.active {
+                background-color: #ccc;
+            }
+        </style>
+    </main>
+    <footer>
+        <p>&copy; 2023 E-Commerce Admin</p>
+    </footer>
+</body>
+
+</html>

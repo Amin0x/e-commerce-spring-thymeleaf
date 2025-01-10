@@ -16,7 +16,7 @@ public class CartController {
 
     @GetMapping("/web/carts/{id}")
     public String showCart(@PathVariable Long id, Model model) {
-        Cart cart = cartService.getCartById(id);
+        Cart cart = cartService.getCartById(id).orElseThrow();
         model.addAttribute("cart", cart);
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
@@ -28,7 +28,7 @@ public class CartController {
     @GetMapping("/api/carts/{id}")
     public ResponseEntity<Cart> getCart(@PathVariable Long id, HttpSession session) {
 
-        Cart cart = cartService.getCartById(id);
+        Cart cart = cartService.getCartById(id).orElseThrow();
         return ResponseEntity.ok(cart);
     }
 
@@ -61,26 +61,9 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    @GetMapping("/admin/carts")
-    public String adminCartIndex(Model model) {
-        return "admin/carts/index";
-    }
 
-    @GetMapping("/admin/carts/{id}")
-    public String adminCartDetails(@PathVariable Long id, Model model) {
-        Cart cart = cartService.getCartById(id);
-        model.addAttribute("cart", cart);
-        return "admin/carts/details";
-    }
 
-    @GetMapping("/admin/carts/list")
-    public String adminCartList(Model model) {
-        return "admin/carts/list";
-    }
 
-    @PostMapping("/admin/carts/{id}/delete")
-    public ResponseEntity<Void> adminCartDelete(@PathVariable Long id){
-        cartService.deleteCart(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-    }
+
+
 }
