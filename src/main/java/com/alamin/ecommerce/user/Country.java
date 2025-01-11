@@ -9,7 +9,7 @@ import java.util.List;
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int countryId;
     private String name;
     private String nameAr;
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
@@ -22,12 +22,12 @@ public class Country {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public int getCountryId() {
+        return countryId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 
     public String getName() {

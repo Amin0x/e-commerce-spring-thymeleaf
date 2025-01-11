@@ -1,6 +1,7 @@
 
 package com.alamin.ecommerce.cart;
 
+import com.alamin.ecommerce.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,8 @@ public class CartService {
         return cartRepository.findById(id);
     }
 
-    public Cart getCartBySession(String sessionId){
-        
-        return cartRepository.findBySessionId(sessionId).orElse(null);
-    }
-
-    public Cart getCartByUser(Long userId){
-        throw new UnsupportedOperationException("Not implemented yet");
+    public List<Cart> getCartByUserId(String userId){        
+        return cartRepository.findByUserId(userId);
     }
 
     public Cart saveCart(Cart cart) {
@@ -34,43 +30,48 @@ public class CartService {
         cartRepository.deleteById(id);
     }
 
-    public Cart addItemToCart(CartItem item) {
-        Long cartId = 0L;
-        Cart cart = getCartById(cartId).orElse(new Cart());
-        boolean isExisting = false ;
+    public Cart addItemToCart(Product item, String userId) {
 
-        for (CartItem cartitem : cart.getItems()) {
-            if (cartitem.getProductId().equals(item.getProductId())) {
-                isExisting = true;
-                int quan = cartitem.getQuantity() + item.getQuantity();
-                cartitem.setQuantity(quan);
-                break;
-            }
+        Cart cart = cartRepository.findByUserIdAndProductId( userId, item.getId());
+        if(cart == null){
+            cart = new Cart();
+            cart.setUserId(userId);
+            cart.setProductId(item.getId());
+            cart.setQuantity(1);
+            cart.setPrice(item.getPrice());
+            cart.setTotal(item.getPrice() * cart.getQuantity());
+        }else{
+            cart.setQuantity(cart.getQuantity() + 1);
+            cart.setTotal(cart.getTotal() + (item.getPrice() * cart.getQuantity()));
         }
 
-        if(!isExisting)
-            cart.getItems().add(item);
-        
-        updateCartTotals(cart);
         return saveCart(cart);
     }
 
-    public Cart deleteCartItem(Long itemId) {
-        Long cartId = 0L;
-        Cart cart = getCartById(cartId).orElseThrow();
-        cart.getItems().removeIf(item -> item.getId().equals(itemId));
-        updateCartTotals(cart);
+    // Update the quantity of a product in the cart can be negitive to remove the product
+    public Cart removeCartItem(Long itemId, String userId) {
+        Cart cart = cartRepository.findByUserIdAndProductId(userId, itemId);
+        if (cart == null) {
+            return null;
+        }
+        cart.setQuantity(cart.getQuantity() - 1);
+        if (cart.getQuantity() <= 0) {
+            deleteCartItem(itemId, userId);
+            return null;
+        }
+        cart.setTotal(cart.getPrice() * cart.getQuantity());
         return saveCart(cart);
     }
 
-    private void updateCartTotals(Cart cart) {
-        //int totalQuantity = cart.getItems().stream().mapToInt(CartItem::getQuantity).sum();
-        int totalPrice = cart.getItems().stream().mapToInt(item -> item.getQuantity() * item.getPrice()).sum();
-        //cart.setTotalQuantity(totalQuantity);
-        cart.setTotalPrice(totalPrice);
+    public void deleteCartItem(Long itemId, String userId) {
+        cartRepository.deleteByUserIdAndProductId(itemId, userId);
     }
 
     public List<Cart> findAll() {
         return cartRepository.findAll();
+    }
+
+    public boolean existsById(Long id) {
+        return cartRepository.existsById(id);
     }
 }

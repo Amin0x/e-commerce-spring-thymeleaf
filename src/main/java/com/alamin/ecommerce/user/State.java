@@ -8,11 +8,12 @@ import java.util.List;
 public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int stateId;
     private String name;
     private String nameAr;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id")
     private Country country;
     
     @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
@@ -22,17 +23,17 @@ public class State {
     }
 
     public State(int id, String name, Country country) {
-        this.id = id;
+        this.stateId = id;
         this.name = name;
         this.country = country;
     }
 
-    public int getId() {
-        return id;
+    public int getStateId() {
+        return stateId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStateId(int stateId) {
+        this.stateId = stateId;
     }
 
     public String getName() {

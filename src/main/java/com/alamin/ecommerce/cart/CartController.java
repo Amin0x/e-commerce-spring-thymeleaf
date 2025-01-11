@@ -1,5 +1,8 @@
 package com.alamin.ecommerce.cart;
 
+import com.alamin.ecommerce.product.Product;
+import com.alamin.ecommerce.product.ProductRepository;
+import com.alamin.ecommerce.product.ProductService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +16,8 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/web/carts/{id}")
     public String showCart(@PathVariable Long id, Model model) {
@@ -32,28 +37,18 @@ public class CartController {
         return ResponseEntity.ok(cart);
     }
 
-    @PostMapping("/api/carts")
-    public ResponseEntity<Cart> createCart(@RequestBody Cart cart) {
-        Cart savedCart = cartService.saveCart(cart);
-        return ResponseEntity.ok(savedCart);
-    }
-
-    @DeleteMapping("/api/carts/{id}")
-    public ResponseEntity<Void> deleteCart(@PathVariable Long id) {
-        cartService.deleteCart(id);
-        return ResponseEntity.noContent().build();
-    }
-
+    
     @PostMapping("/api/carts/items")
-    public ResponseEntity<Cart> addItemToCart(@RequestBody CartItem item) {
-        Cart updatedCart = cartService.addItemToCart(item);
+    public ResponseEntity<Cart> addItemToCart(@RequestBody Long productId, HttpSession session) {
+        Product product = productService.getProductById(productId).orElseThrow();
+        Cart updatedCart = cartService.addItemToCart(product, session.getId());
         return ResponseEntity.ok(updatedCart);
     }
 
     @PostMapping("/api/carts/items/{itemId}/delete")
-    public ResponseEntity<Void> deleteCartItem(@PathVariable Long itemId) {
+    public ResponseEntity<Void> reomveCartItem(@PathVariable Long itemId, HttpSession session) {
         try {
-            cartService.deleteCartItem(itemId);
+            cartService.removeCartItem(itemId, session.getId());
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }

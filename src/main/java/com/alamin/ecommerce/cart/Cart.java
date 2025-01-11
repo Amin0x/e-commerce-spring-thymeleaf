@@ -8,23 +8,24 @@ import lombok.*;
 
 @Entity
 @Data
+@Table(name = "carts", uniqueConstraints = {@UniqueConstraint(columnNames = {"userId", "productId"})})
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long cartId;
     
-    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<CartItem> items;
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    private Integer totalPrice;
-    private String sid;
+    private int quantity;
+    private int price;
+    private Integer total;
+    
+    private Long productId;
+    
     private LocalDateTime created;
     private LocalDateTime updated;
+
+    @Column(name = "user_id")
+    private String userId;
 
     public Cart(){
         this.created = LocalDateTime.now();

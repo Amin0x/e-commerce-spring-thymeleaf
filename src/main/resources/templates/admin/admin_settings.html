@@ -7,28 +7,87 @@
     <meta name="keywords" content="admin, settings, e-commerce, management">
     <meta name="author" content="Your Name">
     <title>Admin Settings - E-commerce Platform</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/path/to/your/styles.css">
 </head>
 <body>
     <header>
-        <h1>Admin Settings</h1>
+        
     </header>
-    <main>
-        <section>
-            <h2>General Settings</h2>
-            <!-- Add your settings form or content here -->
-        </section>
-        <section>
-            <h2>Security Settings</h2>
-            <!-- Add your settings form or content here -->
-        </section>
-        <section>
-            <h2>Notification Settings</h2>
-            <!-- Add your settings form or content here -->
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2023 Your Company. All rights reserved.</p>
-    </footer>
+    <div class="content_wrap">
+        <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
+        <main>
+            <h1 class="txt-title" style="font-size: 22px;">Admin Settings</h1>
+            <section>
+                <h2 class="txt-subtitle-l" style="font-size: 16px;">General Settings</h2>
+                <form action="/admin/settings/save" method="post">
+                    <div class="form-group">
+                        <label for="siteName">Site Name:</label>
+                        <input type="text" id="siteName" name="siteName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="siteUrl">Site URL:</label>
+                        <input type="url" id="siteUrl" name="siteUrl" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminEmail">Admin Email:</label>
+                        <input type="email" id="adminEmail" name="adminEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemsPerPage">Items Per Page:</label>
+                        <input type="number" id="itemsPerPage" name="itemsPerPage" class="form-control" min="1" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                </form>
+            </section>
+            <section>
+                <h2>Security Settings</h2>
+                <form action="/admin/settings/save" method="post">
+                    <div class="form-group">
+                        <label for="passwordLength">Password Length:</label>
+                        <input type="number" id="passwordLength" name="passwordLength" class="form-control" min="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordComplexity">Password Complexity:</label>
+                        <select id="passwordComplexity" name="passwordComplexity" class="form-control" required>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordExpiration">Password Expiration:</label>
+                        <input type="number" id="passwordExpiration" name="passwordExpiration" class="form-control" min="1" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                </form>
+            </section>
+            <section>
+                <h2>Notification Settings</h2>
+                <form action="/admin/settings/save" method="post">
+                    <div class="form-group">
+                        <label for="emailNotifications">Email Notifications:</label>
+                        <select id="emailNotifications" name="emailNotifications" class="form-control" required>
+                            <option value="on">On</option>
+                            <option value="off">Off</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="smsNotifications">SMS Notifications:</label>
+                        <select id="smsNotifications" name="smsNotifications" class="form-control" required>
+                            <option value="on">On</option>
+                            <option value="off">Off</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                </form>
+            </section>
+        </main>
+    </div>
+    <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
