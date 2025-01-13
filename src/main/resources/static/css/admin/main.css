@@ -49,6 +49,24 @@ body {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
+main {
+  flex: 1;
+  padding: 20px;
+}
+
+.container {
+      width: 100%;
+      height: 100%
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
 .content_wrap {
   display: flex;
   flex-wrap: nowrap;
@@ -80,22 +98,6 @@ body {
 
 /* start admin home page */
 
-main {
-  flex: 1;
-  padding: 20px;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  font-family: Ciro, Arial, sans-serif;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-}
 
 .stats {
   display: flex;
@@ -149,6 +151,14 @@ main {
 
 .recent-activity ul {
   list-style-type: none;
+}
+
+.chart-container {
+    height: 300px;
+}
+
+.revenue {
+    width: 50%;
 }
 
 

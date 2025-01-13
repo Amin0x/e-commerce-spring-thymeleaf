@@ -7,7 +7,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +20,7 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    
+
 
     public List<Order> getAllOrders(int page, int size, int order, boolean asc) {
    	// Create a PageRequest with pagination and sorting
@@ -26,15 +29,15 @@ public class OrderService {
 	case 1: orderCol = "orderDate"; break;
 	case 2: orderCol = ""; break;
 	case 3: orderCol = ""; break;
-	default: orderCol = "orderDate"; 
+	default: orderCol = "orderDate";
 	}
-   		
+
 	Sort sort = asc == true ? Sort.by(Sort.Order.asc(orderCol)) : Sort.by(Sort.Order.desc(orderCol));
    	PageRequest pageRequest = PageRequest.of(page, size, sort);
 
    	// Fetch the paged and sorted orders from the repository
    	Page<Order> orderPage = orderRepository.findAll(pageRequest);
-    
+
    	// Return the list of orders (you can return the Page if you need pagination info)
    	return orderPage.getContent();
     }
@@ -73,13 +76,10 @@ public class OrderService {
     }
 
     public static int roundToNearestMultiple(int number) {
-        // تحديد المضاعف المناسب بناءً على الرقم
         int multiple = (int) Math.pow(10, Math.floor(Math.log10(number)));
-
-        // تقريب الرقم إلى أقرب مضاعف
         return (int) (Math.round((double) number / multiple) * multiple);
     }
-	
+
 
 
 
@@ -87,7 +87,7 @@ public class OrderService {
     public void runAtMidnight() {
         System.out.println("Task is running at midnight!");
     }
-	
+
 	// run at midnight on the last day of the month
     @Scheduled(cron = "0 0 0 L * ?")
     public void runOnLastDayOfMonth() {
@@ -95,5 +95,57 @@ public class OrderService {
     }
 
 
+    public int grtOrderCountThisMonth() {
+        return orderRepository.grtOrderCountThisMonth();
+    }
 
+    public Double getTotalRevenue() {
+        Double totalRevenue = orderRepository.getTotalRevenue();
+        return totalRevenue == null? 0:totalRevenue;
+    }
+
+    public ArrayList<Double> getTotalRevenue(String d) {
+        ArrayList<Double> res = new ArrayList<>();
+
+        if (d.equals("d")){
+            LocalDate currentDate = LocalDate.now();
+            for (int i = 0; i < 12; i++) {
+                LocalDate date = currentDate.plusDays(i);
+                LocalDateTime startOfDay = date.atStartOfDay();
+                LocalDateTime endOfDay = date.atTime(23, 59, 59);
+                Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
+                res.add(v == null? 0:v);
+            }
+
+
+        } else if (d.equals("w")) {
+            LocalDate currentDate = LocalDate.now();
+            for (int i = 0; i < 12; i++) {
+                LocalDate date = currentDate.plusWeeks(i);
+                LocalDateTime startOfDay = date.atStartOfDay();
+                LocalDateTime endOfDay = date.atTime(23, 59, 59);
+                Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
+                res.add(v == null? 0:v);
+            }
+        } else if (d.equals("m")) {
+            LocalDate currentDate = LocalDate.now();
+            for (int i = 0; i < 12; i++) {
+                LocalDate date = currentDate.plusMonths(i);
+                LocalDateTime startOfDay = date.atStartOfDay();
+                LocalDateTime endOfDay = date.atTime(23, 59, 59);
+                Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
+                res.add(v == null? 0:v);
+            }
+        } else if (d.equals("y")) {
+            LocalDate currentDate = LocalDate.now();
+            for (int i = 0; i < 12; i++) {
+                LocalDate date = currentDate.plusYears(i);
+                LocalDateTime startOfDay = date.atStartOfDay();
+                LocalDateTime endOfDay = date.atTime(23, 59, 59);
+                Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
+                res.add(v == null? 0:v);
+            }
+        }
+        return res;
+    }
 }
