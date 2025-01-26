@@ -10,226 +10,180 @@
 </head>
 
 <body>
-<div class="content">
-
-    <div th:replace="~{admin/fragments/navigation :: navigation}">
-
-    </div>
-    <div class="create-product-container">
-        <h2>Create New Product</h2>
-        <div class="box2">
-            <div class="form-box">
-                <form th:action="@{/admin/products}" method="post" id="createProduct">
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                name="name"
-                                th:value="${name}"
-                                id="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <textarea
-                                class="form-control"
-                                th:value="${description}"
-                                name="description"
-                                id="description"
-                                rows="3">
-                        </textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price:</label>
-                        <input
-                                type="number"
-                                name="price"
-                                class="form-control"
-                                th:value="${price}"
-                                id="price">
-                    </div>
-                    <div class="form-group">
-                        <label for="stock">Stock:</label>
-                        <input
-                                type="number"
-                                name="stock"
-                                class="form-control"
-                                th:vlaue="${stock}"
-                                id="stock"
-                                value="0">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="category">Category:</label>
-                        <select id="category" name="category">
-                            <option name="category" value="">Select Category</option>
-                            <option
-                                    th:each="category : ${categories}"
-                                    th:name="${category.name}"
-                                    th:value="${category.categoryId}"
-                                    th:text="${category.name}">Category
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <div id="active-checkboxes">
-                            <div>
-                                <input
-                                        type="checkbox"
-                                        id="active"
-                                        name="active"
-                                        th:value="${active}"
-                                        value="0">
-                                <label for="active">Enabled</label>
+    <div class="page-wrapper">
+        <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
+        <div class="create-product-container">
+            <h2>Create New Product</h2>
+            <div class="box2">
+                <div class="form-box">
+                    <form th:action="@{/admin/products}" method="post" id="createProduct">
+                        <section class="product-info">
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" class="form-control" name="name" th:value="${name}" id="name">
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div id="enabled-checkboxes">
-                            <div>
-                                <input
-                                        type="checkbox"
-                                        id="enabled"
-                                        name="enabled"
-                                        th:value="${enabled}"
-                                        value="0">
-                                <label for="enabled">Active</label>
+                            <div class="form-group">
+                                <label for="description">Description:</label>
+                                <textarea class="form-control" th:value="${description}" name="description"
+                                    id="description" rows="3"></textarea>
                             </div>
-                        </div>
-                    </div>
+                            <div class="form-group">
+                                <label for="price">Price:</label>
+                                <input type="number" name="price" class="form-control" th:value="${price}" id="price">
+                            </div>
+                            <div class="form-group">
+                                <label for="stock">Stock:</label>
+                                <input type="number" name="stock" class="form-control" th:vlaue="${stock}" id="stock"
+                                    value="0">
+                            </div>
+                        </section>
 
-                    <div class="form-group">
-                        <div id="imagesPreviwe" class="d-flex flex-wrap">
+                        <section class="category">
+                            <div class="form-group">
+                                <label for="category">Category:</label>
+                                <select id="category" name="category">
+                                    <option name="category" value="">Select Category</option>
+                                    <option th:each="category : ${categories}" th:name="${category.name}"
+                                        th:value="${category.categoryId}" th:text="${category.name}">Category
+                                    </option>
+                                </select>
+                            </div>
+                        </section>
+                        <section class="product-enabled">
+                            <div class="form-group">
+                                <div id="active-checkboxes">
+                                    <div>
+                                        <input type="checkbox" id="active" name="active" th:value="${active}" value="0">
+                                        <label for="active">Enabled</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div id="enabled-checkboxes">
+                                    <div>
+                                        <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}"
+                                            value="0">
+                                        <label for="enabled">Active</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
 
-                        </div>
+                        <section class="product-images">
+                            <div class="form-group">
+                                <div>Product Image:</div>
+                                <div id="imagesPreview" class="d-flex flex-wrap"></div>
+                                <input type="file" id="fileImages" name="fileImages" class="d-none" multiple>
+                                <button type="button" class="btn btn-primary" id="uploadImage">Upload Image</button>
+                            </div>
+                        </section>
 
-                                                <label for="images">Product Image:</label>
-                                                <input
-                                                        type="file"
-                                                        id="images"
-                                                        name="images"
-                                                        class="d-none"
-                                                        accept="image/*"
-                                                        multiple>
-                        <button type="button" class="btn btn-primary" id="uploadImage">Upload Image</button>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Create Product</button>
-                </form>
+                        <button type="submit" class="btn btn-primary">Create Product</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<footer th:replace="~{admin/fragments/footer::footer}">
+    <footer th:replace="~{admin/fragments/footer::footer}">
+    </footer>
 
-</footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        let productImage = [];
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    let productImage = [];
-    document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('uploadImage').addEventListener('click', function () {
-        document.getElementById('images').click();
-    });
-
-    const uploadImage = (file) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        fetch('/admin/upload', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.ok ? response.json() : Promise.reject(response))
-        .then(data => {
-            productImage.push(data.imageId);
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Error uploading image:', error);
+        document.getElementById('uploadImage').addEventListener('click', function () {
+            document.getElementById('fileImages').click();
         });
-    };
 
-    const handleSubmit = (form) => {
-        var formData = new FormData(form);
-        formData.delete('images');
+        const uploadImage = (file) => {
+            console.log('Uploading image:', file);
+            const formData = new FormData();
+            formData.append('file', file);
+            fetch('/admin/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.ok ? response.json() : Promise.reject(response))
+                .then(data => {
+                    productImage.push(data.url);
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error uploading image:', error);
+                });
+        };
 
-        if(productImage.length > 0){
-            formData.append('productImage', JSON.stringify(productImage));
-        }
+        const handleSubmit = async (form) => {
+            var formData = new FormData(form);
+            formData.delete('fileImages');
 
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Content-Type': 'application/json'
+            if (productImage.length > 0) {
+                formData.append('productImage', JSON.stringify(productImage));
             }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.text();
-            } else {
-                return response.text().then(text => { throw new Error(text); });
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+                } else {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+            } catch (error) {
+                console.error('Error:', error);
             }
-        })
-        .then(responseText => {
-            console.log(responseText);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    };
+        };
 
-const form = document.getElementById('createProduct');
-form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    handleSubmit(form);
-});
-
-document.getElementById('createCategoryModel').addEventListener('click', function () {
-    this.classList.toggle('hidden');
-});
-
-const images = document.getElementById('images');
-images.addEventListener('change', function () {
-    var files = images.files;
-    console.log("upload image");
-    for (var i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
-        reader.addEventListener('load', function (e) {
-            console.log(reader.result);
-            document.getElementById('imagesPreview').insertAdjacentHTML('beforeend', `<img src="${e.target.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
+        const form = document.getElementById('createProduct');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            handleSubmit(form);
         });
 
-        reader.addEventListener('error', function () {
-            console.error('Error reading file');
+        const images = document.getElementById('fileImages');
+        images.addEventListener('change', function () {
+            var files = images.files;
+            console.log("upload image");
+            for (var i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.addEventListener('load', function (e) {
+                    console.log(reader.result);
+                    document.getElementById('imagesPreview').insertAdjacentHTML('beforeend', `<img src="${reader.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
+                });
+
+                reader.addEventListener('error', function () {
+                    console.error('Error reading file');
+                });
+
+                reader.addEventListener('abort', function () {
+                    console.error('File reading aborted');
+                });
+
+                reader.addEventListener('loadend', function () {
+                    console.log('File reading completed');
+                    uploadImage(file);
+                });
+
+                reader.addEventListener('progress', function (event) {
+                    console.log('File reading progress:', event.loaded, event.total);
+                });
+                console.log('Reading file:', file.name);
+                reader.readAsDataURL(file);
+            }
         });
 
-        reader.addEventListener('abort', function () {
-            console.error('File reading aborted');
-        });
-
-        reader.addEventListener('loadend', function () {
-            console.log('File reading completed');
-            uploadImage(file);
-        });
-
-        reader.addEventListener('loadstart', function () {
-            console.log('File reading started');
-        });
-
-        reader.addEventListener('progress', function (event) {
-            console.log('File reading progress:', event.loaded, event.total);
-        });
-
-        reader.readAsDataURL(file);
-    }
-});
-});
 
 
-</script>
+    </script>
 </body>
 
 </html>
