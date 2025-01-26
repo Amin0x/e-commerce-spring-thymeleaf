@@ -32,7 +32,9 @@ public class Product {
     @NotNull(message = "Stock is required")
     private Integer stock;
     private int totalSold;
+    private int viewCount;
     private Boolean active;
+    private Boolean enabled;
     private LocalDateTime created;
     private LocalDateTime updated;
     private LocalDateTime deleted;

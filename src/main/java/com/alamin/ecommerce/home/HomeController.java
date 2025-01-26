@@ -62,7 +62,7 @@ public class HomeController {
         model.addAttribute("pageTitle", "");
         
         // Return the name of the HTML view (without .html extension)
-        return "home"; // This will resolve to src/main/resources/templates/home.html
+        return "public/home"; // This will resolve to src/main/resources/templates/home.html
     }
 
     @GetMapping("/about")

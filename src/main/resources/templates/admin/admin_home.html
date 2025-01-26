@@ -22,9 +22,7 @@
             <!-- Main Content -->
             <main class="main-content">
                 <!-- Top Header -->
-                <header th:replace="~{admin/fragments/header :: header}">
-                    
-                </header>
+                <header th:replace="~{admin/fragments/header :: header}"></header>
 
                 <!-- Dashboard Stats -->
                 <section class="stats">
@@ -52,22 +50,22 @@
                         <li th:each="activity : ${activities}" th:text="${activity.description}">Sample activity</li>
                     </ul>
                 </section>
-                <div>
-                    <section class="revenue box">
+                <div style="display:flex;">
+                    <section class="revenue box" style="width: 50%;">
                         <h2>Revenue</h2>
                         <p><small>Revenue in last 30 days</small></p>
-                        <div style="width: 50%; height: 300px;"><canvas id="myChart" style="height: 300px; max-width: 100%"></canvas></div>
+                        <div style="width: 100%; height: 300px;"><canvas id="myChart" style="height: 300px; max-width: 100%"></canvas></div>
                     </section>
-                    <section class="revenue box2">
+                    <section class="revenue box2" style="width: 50%;">
                         <h2>Revenue</h2>
                         <p><small>Revenue in last 30 days</small></p>
-                        <div style="width: 50%; height: 300px;"><canvas id="myChart1" style="height: 300px; max-width: 100%"></canvas></div>
+                        <div style="width: 100%; height: 300px;"><canvas id="myChart1" style="height: 300px; max-width: 100%"></canvas></div>
                     </section>
                 </div>
                 <section class="revenue box2">
                     <h2>Revenue</h2>
                     <p><small>Revenue in last 30 days</small></p>
-                    <div style="width: 50%; height: 300px;"><canvas id="myChart2" style="width: 50%; height: 300px; max-width: 50%"></canvas></div>
+                    <div style="width: 100%; height: 300px;"><canvas id="myChart2" style="height: 300px; max-width: 50%"></canvas></div>
                 </section>
             </main>
         </div>
@@ -79,15 +77,17 @@
     <script src="../../static/js/main.js"></script>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var data = [[${ data }]];
+        const data = [[${ data }]];
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',  // Chart type (bar, line, etc.)
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May'],  // X-axis labels
+                labels: months,  // X-axis labels
                 datasets: [{
                     label: 'My Data',
-                    data:  [12, 19, 3, 5, 2, 3],  // The data from the server side
+                    data:  data,  // The data from the server side
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
@@ -96,14 +96,14 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                aspectRatio: 1,
+                /*aspectRatio: 1,*/
             }
         });
         var ctx1 = document.getElementById('myChart1').getContext('2d');
         var myChart1 = new Chart(ctx1, {
             type: 'bar',  // Chart type (bar, line, etc.)
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May',  ],  // X-axis labels
+                labels: months,  // X-axis labels
                 datasets: [{
                     label: 'My Data',
                     data:  [12, 19, 3, 5, 2, 3],  // The data from the server side
@@ -122,7 +122,7 @@
         var myChart2 = new Chart(ctx2, {
             type: 'bar',  // Chart type (bar, line, etc.)
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May'],  // X-axis labels
+                labels: months,  // X-axis labels
                 datasets: [{
                     label: 'My Data',
                     data:  [12, 19, 3, 5, 2, 3],  // The data from the server side

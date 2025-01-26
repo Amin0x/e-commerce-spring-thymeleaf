@@ -5,105 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>User Dashboard</title>
-    <link href="../../../static/css/all.css">
+    <link href="../../../static/css/all.css"  rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="../../../static/css/admin/main.css">
+    <link th:href="@{/css/admin/main.css}" href="../../../static/css/admin/main.css"  rel="stylesheet">
 </head>
 <body>
 
-<div class="container mt-5">
-    <h1 class="mb-4">User Dashboard</h1>
+    <div class="container mt-5">
+        <div class="content_wrap">
 
-    <!-- 4 Counters -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-header">Total Users</div>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${totalUsers}"></h5>
+            <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Top Header -->
+                <header th:replace="~{admin/fragments/header :: header}"></header>
+
+            <h1 class="mb-4">User Dashboard</h1>
+
+        <!-- 4 Counters -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">Total Users</div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${totalUsers}"></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Total Drivers</div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${totalDrivers}"></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-header">Users Registered This Month</div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${usersThisMonth}"></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Drivers Registered This Month</div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${driversThisMonth}"></h5>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-header">Total Drivers</div>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${totalDrivers}"></h5>
-                </div>
+
+        <!-- Charts: Users Registration Monthly and Drivers Registration Monthly -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div>User Register</div>
+                <canvas id="usersRegistrationChart"></canvas>
+            </div>
+            <div class="col-md-6">
+                <div>User Register</div>
+                <canvas id="driversRegistrationChart"></canvas>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-header">Users Registered This Month</div>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${usersThisMonth}"></h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-header">Drivers Registered This Month</div>
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${driversThisMonth}"></h5>
-                </div>
-            </div>
-        </div>
+
+        <!-- Top 10 Users this Month -->
+        <section>
+            <h2>Top 10 Users This Month</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Registration Date</th>
+                    <th>Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${topUsers}">
+                    <td th:text="${user.firstName} + ' ' + ${user.lastName}"></td>
+                    <td th:text="${#dates.format(user.registrationDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${user.role}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+        <!-- Top 10 Drivers this Month -->
+        <section>
+            <h2>Top 10 Drivers This Month</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Registration Date</th>
+                    <th>License Number</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="driver : ${topDrivers}">
+                    <td th:text="${driver.firstName} + ' ' + ${driver.lastName}"></td>
+                    <td th:text="${#dates.format(driver.registrationDate, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${driver.licenseNumber}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+            </main>
     </div>
-
-    <!-- Charts: Users Registration Monthly and Drivers Registration Monthly -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div>User Register</div>
-            <canvas id="usersRegistrationChart"></canvas>
-        </div>
-        <div class="col-md-6">
-            <div>User Register</div>
-            <canvas id="driversRegistrationChart"></canvas>
-        </div>
-    </div>
-
-    <!-- Top 10 Users this Month -->
-    <section>
-    <h2>Top 10 Users This Month</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Registration Date</th>
-                <th>Role</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="user : ${topUsers}">
-                <td th:text="${user.firstName} + ' ' + ${user.lastName}"></td>
-                <td th:text="${#dates.format(user.registrationDate, 'yyyy-MM-dd')}"></td>
-                <td th:text="${user.role}"></td>
-            </tr>
-        </tbody>
-    </table>
-    </section>
-    <!-- Top 10 Drivers this Month -->
-    <section>
-    <h2>Top 10 Drivers This Month</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Registration Date</th>
-                <th>License Number</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="driver : ${topDrivers}">
-                <td th:text="${driver.firstName} + ' ' + ${driver.lastName}"></td>
-                <td th:text="${#dates.format(driver.registrationDate, 'yyyy-MM-dd')}"></td>
-                <td th:text="${driver.licenseNumber}"></td>
-            </tr>
-        </tbody>
-    </table>
-    </section>
 </div>
+
 
 <!-- Bootstrap 5 JS (Optional, for additional functionality like dropdowns, etc.) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

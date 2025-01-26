@@ -36,4 +36,9 @@ public class AdminIndexController {
 
         return "admin/admin_home";
     }
+
+    @GetMapping("/create")
+    public String create(){
+        return "admin/create_links";
+    }
 }

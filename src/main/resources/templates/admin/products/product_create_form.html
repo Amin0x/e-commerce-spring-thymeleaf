@@ -10,155 +10,226 @@
 </head>
 
 <body>
-    <div class="content">
+<div class="content">
 
-        <div th:replace="~{admin/fragments/navigation :: navigation}">
+    <div th:replace="~{admin/fragments/navigation :: navigation}">
 
-        </div>
-        <div class="create-product-container">
-            <h2>Create New Product</h2>
-            <div class="box2">
-                <div class="form-box">
-                    <form th:action="@{/admin/products}" method="post" id="createProduct">
-                        <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" class="form-control" th:value="${name}" id="name">
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <textarea class="form-control" th:value="${description}" id="description"
-                                rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Price:</label>
-                            <input type="number" step="0.01" class="form-control" th:value="${price}" id="price">
-                        </div>
-                        <div class="form-group">
-                            <label for="stock">Stock:</label>
-                            <input type="number" class="form-control" th:vlaue="${stock}" id="stock" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Category:</label>
-                            <input type="text" class="form-control" th:value="${category}" id="category">
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Category:</label>
-                            <select id="category" name="category">
-                                <option value="">Select Category</option>
-                                <option th:each="category : ${categories}" th:value="${category.categoryId}"
-                                    th:text="${category.name}">Category</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <div id="imagesPreviwe" class="d-flex flex-wrap">
+    </div>
+    <div class="create-product-container">
+        <h2>Create New Product</h2>
+        <div class="box2">
+            <div class="form-box">
+                <form th:action="@{/admin/products}" method="post" id="createProduct">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                name="name"
+                                th:value="${name}"
+                                id="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea
+                                class="form-control"
+                                th:value="${description}"
+                                name="description"
+                                id="description"
+                                rows="3">
+                        </textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price:</label>
+                        <input
+                                type="number"
+                                name="price"
+                                class="form-control"
+                                th:value="${price}"
+                                id="price">
+                    </div>
+                    <div class="form-group">
+                        <label for="stock">Stock:</label>
+                        <input
+                                type="number"
+                                name="stock"
+                                class="form-control"
+                                th:vlaue="${stock}"
+                                id="stock"
+                                value="0">
+                    </div>
 
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select id="category" name="category">
+                            <option name="category" value="">Select Category</option>
+                            <option
+                                    th:each="category : ${categories}"
+                                    th:name="${category.name}"
+                                    th:value="${category.categoryId}"
+                                    th:text="${category.name}">Category
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div id="active-checkboxes">
+                            <div>
+                                <input
+                                        type="checkbox"
+                                        id="active"
+                                        name="active"
+                                        th:value="${active}"
+                                        value="0">
+                                <label for="active">Enabled</label>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div id="enabled-checkboxes">
+                            <div>
+                                <input
+                                        type="checkbox"
+                                        id="enabled"
+                                        name="enabled"
+                                        th:value="${enabled}"
+                                        value="0">
+                                <label for="enabled">Active</label>
+                            </div>
+                        </div>
+                    </div>
 
-                            <label for="productImage">Product Image:</label>
-                            <input type="file" id="productImage" name="productImage" class="d-none" accept="image/*"
-                                multiple>
-                            <button type="button" class="btn btn-primary" id="uploadImage">Upload Image</button>
+                    <div class="form-group">
+                        <div id="imagesPreviwe" class="d-flex flex-wrap">
+
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Create Product</button>
-                    </form>
-                </div>
+                                                <label for="images">Product Image:</label>
+                                                <input
+                                                        type="file"
+                                                        id="images"
+                                                        name="images"
+                                                        class="d-none"
+                                                        accept="image/*"
+                                                        multiple>
+                        <button type="button" class="btn btn-primary" id="uploadImage">Upload Image</button>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Product</button>
+                </form>
             </div>
         </div>
     </div>
-    <footer th:replace="~{admin/fragments/footer::footer}">
-            
-    </footer>
+</div>
+<footer th:replace="~{admin/fragments/footer::footer}">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        let productImage = [];
-        $(document).ready(function () {
-            $('#uploadImage').click(function () {
-                $('#productImage').click();
-            });
+</footer>
 
-            $('#createProduct').submit(function (e) {
-                e.preventDefault();
-                var formData = new FormData(this);
-                formData.delete('productImage');
-                formData.append('productImage', JSON.stringify(productImage));
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: 'POST',
-                    data: formData,
-                    success: function (response) {
-                        console.log(response);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
-            });
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    let productImage = [];
+    document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('uploadImage').addEventListener('click', function () {
+        document.getElementById('images').click();
+    });
 
-            $('#createCategoryModel').click(function () {
-                $('#createCategoryModel').toggle();
-            });
+    const uploadImage = (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        fetch('/admin/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.ok ? response.json() : Promise.reject(response))
+        .then(data => {
+            productImage.push(data.imageId);
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error uploading image:', error);
+        });
+    };
 
-            $('#productImage').change(function () {
-                var files = this.files;
-                for (var i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    reader.addEventListener('load', function (e) {
-                        console.log(reader.result);
-                        $('#imagesPreviwe').append(`<img src="${e.target.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
-                    });
+    const handleSubmit = (form) => {
+        var formData = new FormData(form);
+        formData.delete('images');
 
-                    reader.addEventListener('error', function (e) {
-                        console.error('Error reading file');
-                    });
+        if(productImage.length > 0){
+            formData.append('productImage', JSON.stringify(productImage));
+        }
 
-                    reader.addEventListener('abort', function (e) {
-                        console.error('File reading aborted');
-                    });
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                return response.text().then(text => { throw new Error(text); });
+            }
+        })
+        .then(responseText => {
+            console.log(responseText);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    };
 
-                    reader.addEventListener('loadend', function (e) {
-                        console.log('File reading completed');
-                        const formData = new FormData();
-                        formData.append('file', files[i]);
-                        fetch('/admin/products/images/upload', {
-                            method: 'POST',
-                            body: formData
-                        })
-                            .then(response.ok ? response.json() : Promise.reject(response))
-                            .then(data => {
-                                productImage.push(data.imageId);
-                                console.log(data);
-                            })
-                            .catch(error => {
-                                console.error('Error uploading image:', error);
-                            });
-                    });
+const form = document.getElementById('createProduct');
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    handleSubmit(form);
+});
 
-                    reader.addEventListener('loadstart', function (e) {
-                        console.log('File reading started');
-                    });
+document.getElementById('createCategoryModel').addEventListener('click', function () {
+    this.classList.toggle('hidden');
+});
 
-                    reader.addEventListener('progress', function (event) {
-                        console.log('File reading progress:', event.loaded, event.total);
-                    });
-
-                    reader.readAsDataURL(file);
-
-
-                }
-
-            });
+const images = document.getElementById('images');
+images.addEventListener('change', function () {
+    var files = images.files;
+    console.log("upload image");
+    for (var i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        reader.addEventListener('load', function (e) {
+            console.log(reader.result);
+            document.getElementById('imagesPreview').insertAdjacentHTML('beforeend', `<img src="${e.target.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
         });
 
+        reader.addEventListener('error', function () {
+            console.error('Error reading file');
+        });
+
+        reader.addEventListener('abort', function () {
+            console.error('File reading aborted');
+        });
+
+        reader.addEventListener('loadend', function () {
+            console.log('File reading completed');
+            uploadImage(file);
+        });
+
+        reader.addEventListener('loadstart', function () {
+            console.log('File reading started');
+        });
+
+        reader.addEventListener('progress', function (event) {
+            console.log('File reading progress:', event.loaded, event.total);
+        });
+
+        reader.readAsDataURL(file);
+    }
+});
+});
 
 
-    </script>
+</script>
 </body>
 
 </html>

@@ -25,6 +25,7 @@ public class AdminUserController {
 
         var topUsers = new ArrayList<User>();
 
+        model.addAttribute("user", new User());
         model.addAttribute("totalUsers", 567234);
         model.addAttribute("totalDrivers", 567234);
         model.addAttribute("usersThisMonth", 567234);

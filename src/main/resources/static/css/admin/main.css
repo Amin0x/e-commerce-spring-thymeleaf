@@ -185,7 +185,7 @@ main {
 /* start sidebar fragment style */
 
 .navigation {
-  max-width: 180px;
+  width: 200px;
   color: #fff;
   background-color: #2d3b48;
 }
@@ -209,7 +209,7 @@ main {
   margin-top: 8px;
 }
 
-.sidebar .nav_list {
+.navigation .sidebar .nav-list {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -224,7 +224,7 @@ main {
 
 .sidebar .menu-item a {
   font-size: 15px;
-  padding: 8px;
+  padding: 10px 12px;
   color: #fff;
   text-decoration: none;
   display: block;

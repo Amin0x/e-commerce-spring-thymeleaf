@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.exception.ResourceNotFoundException;
+import com.alamin.ecommerce.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class AdminCartController {
 
     @GetMapping("/admin/carts")
     public String showCartIndex(Model model) {
-
+        model.addAttribute("user", new User());
         model.addAttribute("carts", cartService.findAll());
         model.addAttribute("cartState1", "");
         model.addAttribute("cartState2", "");

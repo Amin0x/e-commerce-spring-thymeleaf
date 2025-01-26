@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.order;
 
+import com.alamin.ecommerce.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,14 @@ public class AdminOrderController {
     public String index(
             Model model
     ){
+
+        model.addAttribute("user", new User());
+        model.addAttribute("totalOrder", 10);
+        model.addAttribute("totalSale", 10);
+        model.addAttribute("orderCompleted", 10);
+        model.addAttribute("orderUncompleted", 10);
+        model.addAttribute("lastOrders", orderService.getAllOrders(1,10,1,true));
+        model.addAttribute("totalOrder99999", 10);
         return "admin/orders/order_index";
     }
 

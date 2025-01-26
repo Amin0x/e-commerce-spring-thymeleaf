@@ -1,6 +1,8 @@
 package com.alamin.ecommerce.product;
 
+import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.category.CategoryService;
+import com.alamin.ecommerce.user.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -13,10 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
+
 import com.alamin.ecommerce.exception.CategoryNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,36 +51,45 @@ public class AdminProductController {
     }
 
     @PostMapping("/products")
-    public String createProduct(@RequestBody Map<String,String> map, BindingResult result, Model model) {
-        if (map.get("name") == null || map.get("name").isEmpty())
+    public ResponseEntity<Object> createProduct(@RequestBody ProductForm map, BindingResult result, Model model) {
+        /*if (map.getName().isEmpty())
             result.rejectValue("name", "name.required", "Name is required");
 
-        if (map.get("category") == null || map.get("category").isEmpty())
+        if (map.getCategory() < 0)
             result.rejectValue("category", "category.required", "Category is required");
 
-        if (map.get("price") == null || Integer.parseInt(map.get("price")) <= 0)
+        if (map.getPrice() < 0)
             result.rejectValue("price", "price.required", "Price is required and should be greater than 0");
 
-        if(map.get("description") == null || map.get("description").isEmpty())
+        if(map.getDescription().isEmpty())
             result.rejectValue("description", "description.required", "Description is required");
 
         if (result.hasErrors())
-            return "admin/products/product_create_form";
+            return "admin/products/product_create_form";*/
 
 
+        System.out.println("createProduct product form ;" + map);
         Product product = new Product();
-        product.setName(map.get("name"));
-        product.setPrice(Integer.parseInt(map.get("price")));
+        product.setName(map.name());
+        product.setPrice(map.price() == null? 0 : map.price());
         //product.setCategory(map.get("category"));
-        product.setDescription(map.get("description"));
-        product.setStock(Integer.parseInt(map.get("stock")));
-        product.setActive(Boolean.parseBoolean(map.get("active")));
+        product.setDescription(map.description());
+        product.setStock(map.stock() == null? 0 : map.stock());
+        product.setActive(map.active() != null && map.active());
+//        product.setSku(UUID.randomUUID().toString().replace("-", ""));
+        product.setSku("SKU" + String.valueOf(System.currentTimeMillis()));
+        product.setCreated(LocalDateTime.now());
+        product.setUpdated(LocalDateTime.now());
 
-        categoryService.getCategoryById(Long.parseLong(map.get("category"))).ifPresent(product::setCategory);
+        if (map.category()!=null) {
+            Category category = categoryService.getCategoryById((long) map.category())
+                    .orElseThrow(() -> new RuntimeException("category not found"));
+            product.setCategory(category);
+        }
 
 
         Product savedProduct = productService.save(product);
-        return "redirect:/admin/products/" + savedProduct.getId();
+        return new ResponseEntity<>(savedProduct, HttpStatus.OK);
     }
 
     // Get all products
@@ -90,7 +100,7 @@ public class AdminProductController {
 	}
 
     // Get all products
-    @GetMapping("/web/products")
+    @GetMapping("/products")
     public String getAllProducts(@RequestParam(required = false) String category, Model model) {
     
         List<Product> products;
@@ -108,15 +118,22 @@ public class AdminProductController {
             }
         }
     
+        model.addAttribute("user", new User());
         model.addAttribute("products", products);
+        model.addAttribute("totalProducts", 10002020);
+        model.addAttribute("totalSold", 10002020);
+        model.addAttribute("totalUnsold", 10002020);
+        model.addAttribute("totalRevenue", 10002020);
+        model.addAttribute("topSoldProducts", products);
+        model.addAttribute("topUnsoldProducts", products);
+
 	    model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
-        return "products";
+        return "admin/products/product_home";
 
     }
-
 
     // Get a product by ID
     @GetMapping("/api/products/{id}")
