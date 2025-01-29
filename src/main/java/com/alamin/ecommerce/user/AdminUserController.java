@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormatSymbols;
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/admin/users")
@@ -45,19 +44,32 @@ public class AdminUserController {
         model.addAttribute("pageNumber", 10);
         model.addAttribute("totalPages", 10);
         model.addAttribute("i", 10);
+        model.addAttribute("user", new User());
         return "admin/users/users_list";
     }
 
     @GetMapping("/{id}")
     public String viewUser(@PathVariable Long id, Model model) {
-        User user = userService.findById(id).orElseThrow();
+        User user = null;
+        try {
+            user = userService.findById(id).orElseThrow();
+        } catch (Exception e) {
+            return "error/404";
+            //throw new RuntimeException(e);
+        }
         model.addAttribute("user", user);
         return "admin/users/view_user";
     }
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
-        User user = userService.findById(id).orElseThrow();
+        User user = null;
+        try {
+            user = userService.findById(id).orElseThrow();
+        } catch (Exception e) {
+            return "error/404";
+            //throw new RuntimeException(e);
+        }
         model.addAttribute("user", user);
         return "admin/users/edit_form";
     }

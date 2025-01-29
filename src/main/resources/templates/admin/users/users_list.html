@@ -15,11 +15,11 @@
     <aside th:replace="~{admin/fragments/navigation :: navigation}"></aside>
     <main class="content">
         <header th:replace="~{admin/fragments/header :: header}"></header>
-    <div class="users-list-wrapper">
+    <div class="users-list-wrapper px-3 my-4">
         <h1 class="mb-4">User List</h1>
         <!-- Filter Form -->
         <form method="get" th:action="@{/users/all?search}" class="mb-4">
-            <div class="row">
+            <div class="d-flex">
                 <div class="col-md-3">
                     <input type="text" class="form-control" placeholder="First Name" name="firstName">
                 </div>
