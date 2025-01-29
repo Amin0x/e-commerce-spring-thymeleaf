@@ -1,0 +1,15 @@
+
+// users index start
+.container-user-chart{
+    display: flex;
+    flex-wrap: nowrap;
+    
+    .chart-users-reg{
+      width: calc(50% - 8px);
+      max-width: calc(50% - 8px);
+      margin: 0 4px;
+      flex: 1;
+      background-color: var(--primary-color);
+    }
+  }
+  //user index end

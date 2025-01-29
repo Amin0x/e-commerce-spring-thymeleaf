@@ -1,0 +1,27 @@
+/* start create user form page */
+.create-user-container {
+  flex: 1 0 600px;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  form {
+    .form-group {
+      margin-bottom: 15px;
+   }
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+/* end create user form page */

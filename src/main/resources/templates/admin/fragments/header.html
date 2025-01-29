@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../../../static/css/admin/main.css">
+    <link rel="stylesheet" href="../../../static/admin/main.css">
 </head>
 <body>
     <header th:fragment="header">
@@ -12,7 +12,7 @@
         <section class="top-header">
             <div class="header-left d-flex">
                 <div class="logo d-flex justify-content-center">
-                    <img th:src="@{/imgs/logo2.png}" src="../../../static/imgs/logo2.png" alt="Logo" class="logo-img">
+                    <img th:src="@{/imgs/logo2.png}" src="../../../static/public/imgs/logo2.png" alt="Logo" class="logo-img">
                 </div>
                 <div class="menu d-flex">
                     <div class="menu-item" style="position: relative;"><a href="/admin" style="display: inline-block; padding: 8px 12px;">Home</a></div>
@@ -24,12 +24,12 @@
             </div>
             <div class="notification-wrap">
                 <div class="notification">
-                    <img th:src="@{/imgs/notification.png}" src="../../../static/imgs/notification.png" alt="Notification" class="notification-img">
+                    <img th:src="@{/imgs/notification.png}" src="../../../static/public/imgs/notification.png" alt="Notification" class="notification-img">
                     <span>5</span>
                 </div>
                 <div class="user-info">
                     <span th:text="${user.username}">amin</span>
-                    <img th:src="@{/imgs/user-avatar.png}" src="../../../static/imgs/user-avatar.png" alt="User Avatar" class="user-avatar">
+                    <img th:src="@{/imgs/user-avatar.png}" src="../../../static/public/imgs/user-avatar.png" alt="User Avatar" class="user-avatar">
                 </div>
             </div>
         </section>

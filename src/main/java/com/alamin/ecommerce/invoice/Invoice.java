@@ -8,6 +8,7 @@ import lombok.*;
 
 @Data
 @Entity
+@Table(name = "tbl_invoices")
 public class Invoice {
 
     @Id

@@ -1,10 +1,12 @@
 package com.alamin.ecommerce.product;
 import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "product_images")
+@Table(name = "tbl_product_images")
 public class ProductImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,8 +17,8 @@ public class ProductImage {
     private String caption;
     private String title;
     private Timestamp createdAt;
+    @JsonIgnore
     @ManyToOne
-    //@JoinColumn(name = "product_id")
     private Product product;
 
     public Product getProduct() {

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Table(name = "tbl_inventories")
 public class Inventory {
 
     @Id

@@ -7,6 +7,7 @@ import lombok.*;
 
 @Data
 @Entity
+@Table(name = "tbl_order_items")
 public class OrderItem {
 
     @Id

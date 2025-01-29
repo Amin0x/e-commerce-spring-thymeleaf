@@ -8,7 +8,7 @@ import lombok.*;
 
 @Entity
 @Data
-@Table(name = "carts", uniqueConstraints = {@UniqueConstraint(columnNames = {"userId", "productId"})})
+@Table(name = "tbl_carts", uniqueConstraints = {@UniqueConstraint(columnNames = {"userId", "productId"})})
 public class Cart {
 
     @Id

@@ -12,7 +12,7 @@ import com.alamin.ecommerce.product.Product;
 
 @Data
 @Entity
-@Table(name = "categories")
+@Table(name = "tbl_categories")
 public class Category {
 
     @Id

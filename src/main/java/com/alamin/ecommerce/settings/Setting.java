@@ -1,17 +1,15 @@
 package com.alamin.ecommerce.settings;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "tbl_settings")
 public class Setting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String key;
-    private String value;
+    private String name;
+    private String nameValue;
 
     public Integer getId() {
         return id;
@@ -21,28 +19,19 @@ public class Setting {
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getName() {
+        return name;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getValue() {
-        return value;
+    public String getNameValue() {
+        return nameValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "Setting{" +
-                "id=" + id +
-                ", key='" + key + '\'' +
-                ", value='" + value + '\'' +
-                '}';
+    public void setNameValue(String nameValue) {
+        this.nameValue = nameValue;
     }
 }

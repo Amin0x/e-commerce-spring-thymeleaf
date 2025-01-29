@@ -1,13 +1,11 @@
 package com.alamin.ecommerce.statistics;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "tbl_statistics")
 public class Statistics {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

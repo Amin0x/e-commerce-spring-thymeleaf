@@ -110,12 +110,14 @@ body {
   display: flex;
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
+  min-height: 100vh;
 }
 
 .page-wrapper .content {
   -webkit-box-flex: 1;
       -ms-flex: 1 0 auto;
           flex: 1 0 auto;
+  max-width: calc(100% - 200px);
 }
 
 .txt-title {
@@ -142,191 +144,6 @@ body {
   margin-bottom: 20px;
 }
 
-/* start admin home page */
-.states {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 80%;
-  margin: 30px auto 0px auto;
-}
-
-.state-1, .states-2, .states-3, .states-4 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.states-4 > * {
-  width: calc(25% - 10px);
-  max-width: calc(25% - 10px);
-  margin-left: 5px;
-  margin-right: 5px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-}
-
-.states-3 > * {
-  width: calc(33.33333% - 10px);
-  max-width: calc(33.33333% - 10px);
-  margin-left: 5px;
-  margin-right: 5px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-}
-
-.states-2 > * {
-  width: calc(50% - 10px);
-  max-width: calc(50% - 10px);
-  margin-left: 5px;
-  margin-right: 5px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-}
-
-.state-card {
-  margin-left: 8px;
-  margin-right: 8px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-}
-
-.state-card .state-card__body {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.state-card h3 {
-  font-size: 18px;
-  color: #555;
-}
-
-.state-card p {
-  font-size: 24px;
-  color: #333;
-}
-
-.state-card p small {
-  font-size: 12px;
-  color: #ccc;
-}
-
-.recent-activity {
-  margin-top: 40px;
-}
-
-.recent-activity h2 {
-  font-size: 22px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.recent-activity ul {
-  list-style-type: none;
-}
-
-.chart-container {
-  height: 300px;
-}
-
-.revenue {
-  width: 50%;
-}
-
-/* end admin home page */
-/* Start Footer fragment Styles */
-.footer {
-  background-color: #2d3b48;
-  color: #fff;
-  text-align: center;
-  padding: 15px 0;
-  position: relative;
-  bottom: 0;
-}
-
-.footer p {
-  font-size: 14px;
-}
-
-/* End Footer fragment Styles */
-/* start sidebar fragment style */
-.navigation {
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
-  width: 200px;
-  color: #fff;
-  background-color: #2d3b48;
-}
-
-.navigation .sidebar .brand {
-  padding: 20px 10px;
-  text-align: center;
-}
-
-.navigation .sidebar .brand .logo {
-  width: 55px;
-  height: auto;
-  margin: 0 auto;
-  display: block;
-}
-
-.navigation .sidebar .brand .title {
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  margin-top: 8px;
-}
-
-.navigation .sidebar .nav-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.navigation .sidebar .menu-item {
-  color: #fff;
-  font-size: 14px;
-  display: block;
-  -webkit-transition: background-color 0.3s ease, -webkit-transform 0.3s ease;
-  transition: background-color 0.3s ease, -webkit-transform 0.3s ease;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  transition: background-color 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
-}
-
-.navigation .sidebar .menu-item a {
-  font-size: 15px;
-  padding: 10px 12px;
-  color: #fff;
-  fill: #fff;
-  text-decoration: none;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 10px;
-  outline: none;
-}
-
-.navigation .sidebar .menu-item:hover {
-  background-color: #4b5c6d;
-}
-
-.navigation .sidebar .menu-item:hover a {
-  color: #b8b8b8;
-}
-
-/* end sidebar fragment style */
 /* start header fragment style */
 .top-header {
   display: -webkit-box;
@@ -430,33 +247,191 @@ body {
 }
 
 /* end header fragment style */
-/* start create user form page */
-.create-user-container {
-  -webkit-box-flex: 1;
-      -ms-flex: 1 0 600px;
-          flex: 1 0 600px;
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+/* start sidebar fragment style */
+.navigation {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+  width: 200px;
+  color: #fff;
+  background-color: #2d3b48;
 }
 
-.create-user-container h2 {
+.navigation .sidebar .brand {
+  padding: 20px 10px;
   text-align: center;
+}
+
+.navigation .sidebar .brand .logo {
+  width: 55px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.navigation .sidebar .brand .title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.navigation .sidebar .nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation .sidebar .menu-item {
+  color: #fff;
+  font-size: 14px;
+  display: block;
+  -webkit-transition: background-color 0.3s ease, -webkit-transform 0.3s ease;
+  transition: background-color 0.3s ease, -webkit-transform 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.navigation .sidebar .menu-item a {
+  font-size: 15px;
+  padding: 10px 12px;
+  color: #fff;
+  fill: #fff;
+  text-decoration: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+  outline: none;
+}
+
+.navigation .sidebar .menu-item:hover {
+  background-color: #4b5c6d;
+}
+
+.navigation .sidebar .menu-item:hover a {
+  color: #b8b8b8;
+}
+
+/* end sidebar fragment style */
+/* Start Footer fragment Styles */
+.footer {
+  background-color: #2d3b48;
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  position: relative;
+  bottom: 0;
+}
+
+.footer p {
+  font-size: 14px;
+}
+
+/* End Footer fragment Styles */
+/* start admin home page */
+.states {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80%;
+  margin: 30px auto 0px auto;
+}
+
+.state-1, .states-2, .states-3, .states-4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.states-4 > * {
+  width: calc(25% - 10px);
+  max-width: calc(25% - 10px);
+  margin-left: 5px;
+  margin-right: 5px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.states-3 > * {
+  width: calc(33.33333% - 10px);
+  max-width: calc(33.33333% - 10px);
+  margin-left: 5px;
+  margin-right: 5px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.states-2 > * {
+  width: calc(50% - 10px);
+  max-width: calc(50% - 10px);
+  margin-left: 5px;
+  margin-right: 5px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.state-card {
+  margin-left: 8px;
+  margin-right: 8px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.state-card .state-card__body {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.state-card h3 {
+  font-size: 18px;
+  color: #555;
+}
+
+.state-card p {
+  font-size: 24px;
+  color: #333;
+}
+
+.state-card p small {
+  font-size: 12px;
+  color: #ccc;
+}
+
+.recent-activity {
+  margin-top: 40px;
+}
+
+.recent-activity h2 {
+  font-size: 22px;
+  color: #333;
   margin-bottom: 20px;
 }
 
-.create-user-container form .form-group {
-  margin-bottom: 15px;
+.recent-activity ul {
+  list-style-type: none;
 }
 
-.create-user-container form button {
-  width: 100%;
+.chart-container {
+  height: 300px;
 }
 
-/* end create user form page */
+.revenue {
+  width: 50%;
+}
+
+/* end admin home page */
 /* star product create page */
 #createCategoryMode {
   -webkit-transition: all 0.3s;
@@ -484,6 +459,33 @@ body {
 }
 
 /* end product create page */
+/* start create user form page */
+.create-user-container {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 600px;
+          flex: 1 0 600px;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.create-user-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.create-user-container form .form-group {
+  margin-bottom: 15px;
+}
+
+.create-user-container form button {
+  width: 100%;
+}
+
+/* end create user form page */
 /* start cart detials page*/
 .cart__product {
   display: -webkit-box;
@@ -513,20 +515,3 @@ body {
 }
 
 /* end cart detials page */
-.container-user-chart {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
-}
-
-.container-user-chart .chart-users-reg {
-  width: calc(50% - 8px);
-  max-width: calc(50% - 8px);
-  margin: 0 4px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  background-color: var(--primary-color);
-}

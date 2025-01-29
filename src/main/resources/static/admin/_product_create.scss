@@ -1,0 +1,28 @@
+
+
+/* star product create page */
+#createCategoryMode {
+    transition: all 0.3s;
+  }
+  
+  .create-product-container {
+    max-width: 1200px;
+    width: 800px;
+    margin: 0 auto;
+  
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+  
+    form .form-group {
+      margin-bottom: 15px;
+    }
+  
+    form button {
+      width: 100%;
+    }
+  }
+  /* end product create page */
+  

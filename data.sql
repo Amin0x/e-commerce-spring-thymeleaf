@@ -1,5 +1,5 @@
 
-INSERT INTO users (user_id, username, email, password, role, first_name, last_name, birth_date, enabled, updated, created, avatar, status, uuid) VALUES
+INSERT INTO tbl_users (user_id, username, email, password, role, first_name, last_name, birth_date, enabled, updated, created, avatar, status, uuid) VALUES
 (1, 'user1', 'user1@example.com', 'password1', 'USER', 'FirstName1', 'LastName1', '1990-01-01', TRUE, NOW(), NOW(), 'avatar1', 'ACTIVE', 'uuid1'),
 (2, 'user2', 'user2@example.com', 'password2', 'USER', 'FirstName2', 'LastName2', '1991-01-01', TRUE, NOW(), NOW(), 'avatar2', 'ACTIVE', 'uuid2'),
 (3, 'user3', 'user3@example.com', 'password3', 'USER', 'FirstName3', 'LastName3', '1992-01-01', TRUE, NOW(), NOW(), 'avatar3', 'ACTIVE', 'uuid3'),
@@ -137,7 +137,7 @@ VALUES
 (50, 1, '2024-01-01', '2024-01-26 10:00:00', 'description50', 5000, 'product50', 5000, 'sku50', 5000, 5000, '2024-01-01', 2);
 
 
-INSERT INTO `statistic` (`statistic_id`, `st_date`,`st_value`,`type`) VALUES 
+INSERT INTO `tbl_statistics` (`statistic_id`, `st_date`,`st_value`,`type`) VALUES
 (1001, '2024-01-01', 100, 'VISITORS'),
 (1002, '2024-01-01', 200, 'VISITORS'),
 (1003, '2024-01-01', 300, 'VISITORS'),
@@ -189,7 +189,7 @@ INSERT INTO `statistic` (`statistic_id`, `st_date`,`st_value`,`type`) VALUES
 (1049, '2024-01-01', 4900, 'VISITORS'),
 (1050, '2024-01-01', 5000, 'VISITORS');
 
-INSERT INTO `country` (`id`,`name`, `name_ar`) VALUES
+INSERT INTO tbl_country (`id`,`name`, `name_ar`) VALUES
 (1, 'Afghanistan', 'أفغانستان'),
 (2, 'Albania', 'ألبانيا'),
 (3, 'Algeria', 'الجزائر'),
@@ -385,7 +385,7 @@ INSERT INTO `country` (`id`,`name`, `name_ar`) VALUES
 (193, 'Zambia', 'زامبيا'),
 (194, 'Zimbabwe', 'زيمبابوي');
 
-INSERT INTO `state` (`id`,`name`, `name_ar`, `country_id`) VALUES
+INSERT INTO `tbl_state` (`id`,`name`, `name_ar`, `country_id`) VALUES
 (1, 'Khartoum', 'الخرطوم', 164),
 (2, 'North Kordofan', 'شمال كردفان', 164),
 (3, 'South Kordofan', 'جنوب كردفان', 164),
@@ -405,7 +405,7 @@ INSERT INTO `state` (`id`,`name`, `name_ar`, `country_id`) VALUES
 (17, 'Gedaref', 'القضارف', 164),
 (18, 'West Kordofan', 'غرب كردفان', 164);
 
-INSERT INTO city (id, name, name_ar, state_id) VALUES
+INSERT INTO tbl_cities (id, name, name_ar, state_id) VALUES
 (1, 'Khartoum', 'الخرطوم', 1),
 (2, 'Omdurman', 'أم درمان', 1),
 (3, 'Khartoum North', 'الخرطوم بحري', 1),
@@ -441,7 +441,7 @@ INSERT INTO city (id, name, name_ar, state_id) VALUES
 (33, 'Ar Sufun', 'الصفون', 15);
 
 
-INSERT INTO carts (user_id, price, total, product_id, quantity, created, updated) VALUES
+INSERT INTO tbl_carts (user_id, price, total, product_id, quantity, created, updated) VALUES
 (1, 100, 100, 1, 1, NOW(), NOW()),
 (1, 200, 400, 2, 2, NOW(), NOW()),
 (1, 300, 900, 3, 3, NOW(), NOW()),
@@ -459,7 +459,7 @@ INSERT INTO carts (user_id, price, total, product_id, quantity, created, updated
 (4, 300, 900, 3, 3, NOW(), NOW()),
 (4, 400, 1600, 4, 4, NOW(), NOW());
 
-INSERT INTO `amin_db_123`.`customer`
+INSERT INTO `amin_db_123`.`tbl_customers`
 (`id`,
 `city`,
 `country`,
@@ -501,7 +501,7 @@ VALUES
 (29, 'Khartoum', 'Sudan', '11111', 'Khartoum', 'street29', 'FirstName29', 'LastName29', 29),
 (30, 'Khartoum', 'Sudan', '11111', 'Khartoum', 'street30', 'FirstName30', 'LastName30', 30);
 
-INSERT INTO `amin_db_123`.`inventory`
+INSERT INTO tbl_inventories
 (`id`,
 `created`,
 `price`,
@@ -561,7 +561,7 @@ VALUES
 (50, NOW(), 5000, 5000, NOW(), 50);
 
 
-INSERT INTO `amin_db_123`.`invoice`
+INSERT INTO tbl_invoices
 (`invoice_id`,
 `created`,
 `customer_name`,
@@ -600,7 +600,7 @@ VALUES
 (29, NOW(), 'FirstName29 LastName29', 0, 2900, NOW()),
 (30, NOW(), 'FirstName30 LastName30', 0, 3000, NOW());
 
-INSERT INTO `amin_db_123`.`order_item`
+INSERT INTO tbl_order_items
 (`item_id`,
 `price`,
 `quantity`,
@@ -658,7 +658,7 @@ VALUES
 (49, 4900, 49, 49, 49),
 (50, 5000, 50, 50, 50);
 
-INSERT INTO `amin_db_123`.`orders`
+INSERT INTO tbl_orders
 (`order_id`,
 `order_date`,
 `payment_method`,
@@ -697,7 +697,7 @@ VALUES
 (20, NOW(), 'Cash', 'Khartoum', 'Sudan', '11111', 'Khartoum', 'street20', NOW(), 'Delivered', 2000, '123', NOW(), '123', 20),
 (21, NOW(), 'Cash', 'Khartoum', 'Sudan', '11111', 'Khartoum', 'street21', NOW(), 'Delivered', 2100, '123', NOW(), '123', 21);
 
-INSERT INTO `amin_db_123`.`payment`
+INSERT INTO tbl_payments
 (`payment_id`,
 `amount`,
 `payment_method`,
@@ -756,7 +756,7 @@ VALUES
 (49, 4900, 'Cash', 1, '123456', 49),
 (50, 5000, 'Cash', 1, '123456', 50);
 
-INSERT INTO `amin_db_123`.`statistics`
+INSERT INTO tbl_statistics
 (`statistic_id`,
 `st_date`,
 `st_value`,

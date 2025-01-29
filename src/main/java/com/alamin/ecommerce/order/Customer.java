@@ -7,6 +7,7 @@ import lombok.*;
 
 @Data
 @Entity
+@Table(name = "tbl_customers")
 public class Customer {
 
     @Id

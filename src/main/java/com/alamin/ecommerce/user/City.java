@@ -3,7 +3,7 @@ package com.alamin.ecommerce.user;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "city")
+@Table(name = "tbl_cities")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
