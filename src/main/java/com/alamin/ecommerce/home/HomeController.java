@@ -54,6 +54,7 @@ public class HomeController {
         }
 
         List<Product> newProducts = productService.getNewArrivalProducts();
+        model.addAttribute("products", productService.getAllProducts(1, 30));
         model.addAttribute("newProducts", newProducts);
 
         model.addAttribute("pageDescription", "");

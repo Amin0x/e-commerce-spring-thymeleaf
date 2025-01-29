@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -18,31 +20,27 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
-    @NotNull(message = "Product name is required")
-    @Size(min = 3, max = 100, message = "Product name must be between 3 and 100 characters")
     private String name;
-    @Size(max = 255, message = "Description must be less than 255 characters")
     private String description;
-    @NotNull(message = "Price is required")
     private Integer price;
     private Integer initPrice;
-    @NotNull(message = "Product sku is required")
-    @Size(min = 3, max = 100, message = "Product sku must be between 3 and 100 characters")
+    private Integer priceUSD;
     private String sku;
-    @NotNull(message = "Stock is required")
     private Integer stock;
-    private int totalSold;
-    private int viewCount;
+    private Integer totalSold;
+    private Integer viewCount;
     private Boolean active;
     private Boolean enabled;
     private LocalDateTime created;
     private LocalDateTime updated;
     private LocalDateTime deleted;
 
-    @NotNull(message = "Category is required")
     @OneToOne
     @JoinColumn(name = "category_id", referencedColumnName = "categoryId")
     private Category category;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
+    private Set<ProductImage> productImage = new HashSet<>();
 
     // Default constructor (required by JPA)
     public Product() {}

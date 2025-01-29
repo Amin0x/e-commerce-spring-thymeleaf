@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record ProductForm(
         Long id,
@@ -15,10 +16,11 @@ public record ProductForm(
         Integer initPrice,
         String sku,
         Integer stock,
-        int totalSold,
+        Integer totalSold,
         Boolean active,
-        LocalDateTime created,
-        LocalDateTime updated,
-        LocalDateTime deleted,
-        Integer category
-) {}
+        Boolean enabled,
+        Integer category,
+        List<String> images
+) {
+
+}

@@ -1,10 +1,11 @@
 package com.alamin.ecommerce.order;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -36,4 +37,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT SUM(o.totalAmount) FROM Order o")
     Double getTotalRevenue();
+
+    Page<Order> findByOrderDateBetween(LocalDate startDate, LocalDate endDate, PageRequest pageRequest);
 }

@@ -15,6 +15,17 @@ public class ProductImage {
     private String caption;
     private String title;
     private Timestamp createdAt;
+    @ManyToOne
+    //@JoinColumn(name = "product_id")
+    private Product product;
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     public ProductImage() {
         createdAt = new Timestamp(System.currentTimeMillis());

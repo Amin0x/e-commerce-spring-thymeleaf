@@ -10,40 +10,19 @@
     <header th:fragment="header">
         <!-- Top Header -->
         <section class="top-header">
-            <div class="logo" style="display: flex; justify-content: center; gap: 8px; font-size: 1.2rem; font-weight: 700; color: #1a1818;">
-                <img th:src="@{/imgs/logo2.png}" src="../../../static/imgs/logo2.png" alt="Logo" class="logo-img">
-            </div>
-            <div class="menu" style="display: flex;">
-                <div class="menu-item" style="position: relative;"><a href="/home" style="display: inline-block; padding: 8px 12px;">Home</a></div>
-                <div class="menu-item" style="position: relative;">
-                    <a href="/about" style="display: inline-block; padding: 8px 12px;">About</a>
-                    <div class="sub-menu" style="position: absolute; display: none; top: 30px; left: 0px;">
-                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
-                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
-                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
-                    </div>
+            <div class="header-left d-flex">
+                <div class="logo d-flex justify-content-center">
+                    <img th:src="@{/imgs/logo2.png}" src="../../../static/imgs/logo2.png" alt="Logo" class="logo-img">
                 </div>
-                <div class="menu-item" style="position: relative;">
-                    <a href="/services" style="display: inline-block; padding: 8px 12px;">Services</a>
-                    <div class="sub-menu" style="position: absolute; display: none; top: 30px; left: 0px;">
-                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
-                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
-                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
-                    </div>
-                </div>
-                <div class="menu-item" style="position: relative;">
-                    <a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a>
-                    <div class="sub-menu" style="position: absolute; display: none; top: 30px; left: 0px;">
-                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
-                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
-                        <div class="sub-menu-item"><a href="/contact" style="display: inline-block; padding: 8px 12px;">Contact</a></div>
-                    </div>
+                <div class="menu d-flex">
+                    <div class="menu-item" style="position: relative;"><a href="/admin" style="display: inline-block; padding: 8px 12px;">Home</a></div>
+                
                 </div>
             </div>
             <div class="search">
 
             </div>
-            <div style="display: flex; gap: 8px;">
+            <div class="notification-wrap">
                 <div class="notification">
                     <img th:src="@{/imgs/notification.png}" src="../../../static/imgs/notification.png" alt="Notification" class="notification-img">
                     <span>5</span>

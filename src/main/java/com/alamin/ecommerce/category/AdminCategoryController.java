@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.category;
 
+import com.alamin.ecommerce.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -26,7 +28,19 @@ public class AdminCategoryController {
     @GetMapping()
     public String indexPage(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute("user", new User());
         return "admin/categories/category_home";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String updateCategoryPage(@PathVariable Long id, Model model) {
+        model.addAttribute("category", categoryRepository.findById(id).orElseThrow());
+        List<Category> categories = categoryRepository.findAll();
+        categories.removeIf((item)->{return Objects.equals(item.getCategoryId(), id);});
+        model.addAttribute("categories", categories);
+        model.addAttribute("user", new User());
+
+        return "admin/categories/edit_category";
     }
 
     // Create a new category
@@ -66,19 +80,14 @@ public class AdminCategoryController {
 
     // Update an existing category
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(
-            @PathVariable Long id,
-            @RequestBody String name,
-            @RequestBody String description,
-            @RequestBody String imageUrl,
-            @RequestBody Long parentId
-    ) {
-        Category updateCategory = new Category(name, description, null);
-        Category parent = categoryService.getCategoryById(parentId).orElseThrow();
-        updateCategory.setParent(parent);
-        updateCategory.setImageUrl(imageUrl);
-        
-        return ResponseEntity.ok(categoryService.updateCategory(id, updateCategory));
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody CategoryDto category) {
+        try {
+            categoryService.updateCategory(id, category);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(null);
     }
 
     // Delete a category by ID

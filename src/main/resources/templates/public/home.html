@@ -18,13 +18,14 @@
     <meta name="twitter:title" content="Home Page">
     <meta name="twitter:description" content="Welcome to the homepage of our website!">
     <meta name="twitter:image" content="https://example.com/twitter-image.jpg">
-    <link rel="icon" href="https://example.com/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
     <title th:text="${pageTitle}">Home</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="../../static/css/bootstrap.rtl.min.css" th:href="@{/css/bootstrap.rtl.min.css}" rel="stylesheet">
     <link href="../../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="../../static/css/mainstyle.css" th:href="@{/css/mainstyle.css}" rel="stylesheet">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 </head>
@@ -36,8 +37,11 @@
             <div class="container-fluid w-100" id="navbar">
                 <div class="row mb-4">
                     <div class="col flex-grow-0">
-                        <div><a><img th:src="@{/images/logo.png}" src="https://via.placeholder.com/120x80"
-                                    alt="Logo"></a></div>
+                        <div>
+                            <a href="/">
+                                <img width="32" height="32" src="/imgs/logo2.png" alt="Logo">
+                            </a>
+                        </div>
                     </div>
                     <div class="col">
                         <ul class="menu list-unstyled d-flex">
@@ -66,89 +70,15 @@
             </div>
         </section>
 
-        <section class="container mt-5">
-            <div class="row">
-                <div class="col-6 mb-2 product-card">
+        <section class="products-container">
+            <div class="products">
+                <div th:each="product : ${products}" class="mb-2 product-card">
                     <div class="card">
                         <div class="position-relative">
                             <div class="circle-container position-absolute">
                                 <i class="far fa-heart"></i>
                             </div>
-                            <img th:src="@{${product.imageUrl}}" src="https://via.placeholder.com/150"
-                                class="card-img-top" alt="Product Image" th:alt="${product.name}">
-                            <span th:if="true" class="badge bg-info new">New</span>
-                            <span th:if="true" class="badge bg-success sale">Sale</span>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <div th:text="${product.name}" class="card-title">Product Title</div>
-                            <div class="card-text d-inline-block"><strong th:text="${product.price}">$49.99 ج.س</strong></div>
-                            <div th:if="(${product.price} < ${product.initPrice})" class="card-text d-inline-block"><strong th:text="${product.initPrice}">$49.99 ج.س</strong></div>
-                            <form onSubmit="addToCartFormonSubmit" method="post" class="mt-auto">
-                                <input type="hidden" name="productId" th:value="${product.id}">
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="button-31 w-100">اضافة للعربة</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 mb-2 product-card">
-                    <div class="card">
-                        <div class="position-relative">
-                            <div class="circle-container position-absolute">
-                                <i class="far fa-heart"></i>
-                            </div>
-                            <img th:src="@{${product.imageUrl}}" src="https://via.placeholder.com/150"
-                                class="card-img-top" alt="Product Image" th:alt="${product.name}">
-                            <span th:if="true" class="badge bg-info new">New</span>
-                            <span th:if="true" class="badge bg-success sale">Sale</span>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <div th:text="${product.name}" class="card-title">Product Title</div>
-                            <div class="card-text d-inline-block"><strong th:text="${product.price}">$49.99 ج.س</strong></div>
-                            <div th:if="(${product.price} < ${product.initPrice})" class="card-text d-inline-block"><strong th:text="${product.initPrice}">$49.99 ج.س</strong></div>
-                            <form onSubmit="addToCartFormonSubmit" method="post" class="mt-auto">
-                                <input type="hidden" name="productId" th:value="${product.id}">
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="button-31 w-100">اضافة للعربة</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 mb-2 product-card">
-                    <div class="card">
-                        <div class="position-relative">
-                            <div class="circle-container position-absolute">
-                                <i class="far fa-heart"></i>
-                            </div>
-                            <img th:src="@{${product.imageUrl}}" src="https://via.placeholder.com/150"
-                                class="card-img-top" alt="Product Image" th:alt="${product.name}">
-                            <span th:if="true" class="badge bg-info new">New</span>
-                            <span th:if="true" class="badge bg-success sale">Sale</span>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <div th:text="${product.name}" class="card-title">Product Title</div>
-                            <div th:text="${product.price}" class="card-text d-inline-block"><strong>$49.99 ج.س</strong></div>
-                            <div th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}"
-                                class="card-text d-inline-block"><strong>$49.99 ج.س</strong></div>
-                            <form onSubmit="addToCartFormonSubmit" method="post" class="mt-auto">
-                                <input type="hidden" name="productId" th:value="${product.id}">
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="button-31 w-100">اضافة للعربة</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 mb-2 product-card">
-                    <div class="card">
-                        <div class="position-relative">
-                            <div class="circle-container position-absolute">
-                                <i class="far fa-heart"></i>
-                            </div>
-                            <img th:src="@{${product.imageUrl}}" src="https://via.placeholder.com/150"
-                                class="card-img-top" alt="Product Image" th:alt="${product.name}">
+                            <img th:src="${ (product.productImage.size == 0? '/imgs/img14.jpg':'/images/' + product.productImage[0]) }" class="card-img-top" alt="Product Image" src="">
                             <span th:if="true" class="badge bg-info new">New</span>
                             <span th:if="true" class="badge bg-success sale">Sale</span>
                         </div>

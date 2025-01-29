@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Image Upload</title>
+    <style>
+        #dropZone {
+            width: 300px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 200px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h2>Upload Product Image</h2>
+<form id="uploadForm" enctype="multipart/form-data">
+    <div id="dropZone">Drag and drop your image here</div>
+    <input type="file" id="fileInput" name="file" style="display: none;" required>
+    <button type="submit" style="margin-top: 20px;">Upload</button>
+</form>
+<div id="response"></div>
+
+<script>
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
+
+    var index = 0;
+
+    function showProgressBars(index) {
+        var responseDiv = document.getElementById('response');
+        //responseDiv.innerHTML = '';
+        var progressDiv = document.createElement('div');
+        progressDiv.className = 'progress';
+        var progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        progressBar.id = 'progress-bar-' + index;
+        progressDiv.appendChild(progressBar);
+        responseDiv.appendChild(progressDiv);
+    }
+
+    function updateProgressBars(percent, index) {
+        var progressBars = document.getElementsById('progress-bar-' + index);
+        progressBars.style.width = percent + '%';
+        progressBars.innerHTML = percent.toFixed(2) + '%';
+    }
+
+    function resetProgressBars(status, index) {
+        var progressBars = document.getElementsByClassName('progress-bar-' + index);
+        var color = status === 'success' ? '#4caf50' : '#f44336';
+        progressBars[i].style.backgroundColor = color;
+    }
+
+    fileInput.addEventListener('change', function(event){
+        document.getElementById('uploadForm').submit();
+    });
+
+    dropZone.addEventListener('click', function(event) {
+        event.preventDefault();
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('dragover', function(event) {
+        event.preventDefault();
+        dropZone.style.borderColor = 'green';
+    });
+
+    dropZone.addEventListener('dragleave', function() {
+        dropZone.style.borderColor = '#ccc';
+    });
+
+    dropZone.addEventListener('drop', function(event) {
+        event.preventDefault();
+        dropZone.style.borderColor = '#ccc';
+
+        var files = event.dataTransfer.files;
+        fileInput.files = files;
+        document.getElementById('uploadForm').submit();
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/admin/upload', true);
+
+        xhr.upload.addEventListener('progress', function(event) {
+            var percent = (event.loaded / event.total) * 100;
+            updateProgressBars(percent);
+        });
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                document.getElementById('response').innerHTML = '<p>Upload successful!</p>';
+                resetProgressBars('success');
+            } else {
+                document.getElementById('response').innerHTML = '<p>Upload failed. Please try again.</p>';
+                resetProgressBars('failed');
+            }
+        };
+        showProgressBars(++index);
+        xhr.send(formData);
+    });
+
+</script>
+</body>
+</html>

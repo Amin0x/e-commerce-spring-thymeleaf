@@ -30,6 +30,23 @@ public class AdminProductController {
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping("/products/all")
+    public String showAllProductPage(Model model) {
+        model.addAttribute("products", productService.getAllProducts(1,50));
+        model.addAttribute("totalPages", 5);
+        model.addAttribute("currentPage", 1);
+        model.addAttribute("size", 1);
+        model.addAttribute("sortField", 1);
+        model.addAttribute("sortDirection", 1);
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "");
+        model.addAttribute("user", new User());
+
+        return "admin/products/product_list";
+    }
+
     // Create a new product
     @PostMapping("/api/products")
 	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
@@ -50,58 +67,70 @@ public class AdminProductController {
         return "admin/products/product_create_form";
     }
 
+    @GetMapping("/products/edit/{id}")
+    public String showEditProductForm(@PathVariable Long id, Model model) {
+        Product product = productService.getProductById(id).orElseThrow();
+        System.out.println("product : " + product);
+        model.addAttribute("product", product);
+	    model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "");
+        model.addAttribute("categories", categoryService.getAllCategories(0, 100, 1, true));
+        return "admin/products/product_edit_form";
+    }
+
     @PostMapping("/products")
-    public ResponseEntity<Object> createProduct(@RequestBody ProductForm map, BindingResult result, Model model) {
-        /*if (map.getName().isEmpty())
+    public ResponseEntity<Object> createProduct(@RequestBody ProductForm productForm, BindingResult result, Model model) {
+        /*if (productForm.getName().isEmpty())
             result.rejectValue("name", "name.required", "Name is required");
 
-        if (map.getCategory() < 0)
+        if (productForm.getCategory() < 0)
             result.rejectValue("category", "category.required", "Category is required");
 
-        if (map.getPrice() < 0)
+        if (productForm.getPrice() < 0)
             result.rejectValue("price", "price.required", "Price is required and should be greater than 0");
 
-        if(map.getDescription().isEmpty())
+        if(productForm.getDescription().isEmpty())
             result.rejectValue("description", "description.required", "Description is required");
 
         if (result.hasErrors())
             return "admin/products/product_create_form";*/
 
 
-        System.out.println("createProduct product form ;" + map);
+        System.out.println("createProduct product form ;" + productForm);
         Product product = new Product();
-        product.setName(map.name());
-        product.setPrice(map.price() == null? 0 : map.price());
-        //product.setCategory(map.get("category"));
-        product.setDescription(map.description());
-        product.setStock(map.stock() == null? 0 : map.stock());
-        product.setActive(map.active() != null && map.active());
+        product.setName(productForm.name());
+        product.setPrice(productForm.price() == null? 0 : productForm.price());
+        //product.setCategory(productForm.get("category"));
+        product.setDescription(productForm.description());
+        product.setStock(productForm.stock() == null? 0 : productForm.stock());
+        product.setActive(productForm.active() != null && productForm.active());
 //        product.setSku(UUID.randomUUID().toString().replace("-", ""));
         product.setSku("SKU" + String.valueOf(System.currentTimeMillis()));
         product.setCreated(LocalDateTime.now());
         product.setUpdated(LocalDateTime.now());
 
-        if (map.category()!=null) {
-            Category category = categoryService.getCategoryById((long) map.category())
+        if (productForm.category() != null) {
+            Category category = categoryService.getCategoryById((long) productForm.category())
                     .orElseThrow(() -> new RuntimeException("category not found"));
             product.setCategory(category);
         }
-
 
         Product savedProduct = productService.save(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.OK);
     }
 
-    // Get all products
+    // Get all products api
     @GetMapping("/api/products")
 	public ResponseEntity<List<Product>> getAllProducts() {
    		List<Product> products = productService.findAll();
    		return ResponseEntity.ok(products);  // HTTP status 200 OK with the list of products
 	}
 
-    // Get all products
+    // products home page
     @GetMapping("/products")
-    public String getAllProducts(@RequestParam(required = false) String category, Model model) {
+    public String showProductsHomePage(@RequestParam(required = false) String category, Model model) {
     
         List<Product> products;
 
@@ -145,14 +174,39 @@ public class AdminProductController {
 
     // Update an existing product
     @PutMapping("/api/products/{id}")
-    @ResponseBody
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductForm productForm) {
+        System.out.println("id = " + id + "; product = " + productForm);
         if (!productService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        product.setId(id);
-        Product updatedProduct = productService.save(product);
-        return ResponseEntity.ok(updatedProduct);
+        Product product = productService.getProductById(id).orElseThrow(() -> new RuntimeException("category not found"));
+        product.setName(productForm.name());
+        product.setEnabled(productForm.enabled());
+        product.setActive(productForm.active());
+        if (productForm.category() != null && categoryService.existsById(productForm.category())) {
+            product.setCategory(categoryService.getCategoryById(Long.valueOf(productForm.category())).get());
+        }
+        product.setSku(productForm.sku());
+        product.setDescription(productForm.description());
+        product.setPrice(productForm.price() == null? 0: productForm.price());
+        product.setStock(productForm.stock());
+        product.setInitPrice(productForm.initPrice());
+        product.setTotalSold(productForm.totalSold());
+        //product.setViewCount(productForm.viewsCount());
+
+//        Set<ProductImage> productImages = new HashSet<>();
+//
+//        for (String image : productForm.images()) {
+//            productImages.add(new ProductImage(image, id));
+//        }
+//        product.setProductImage(productImages);
+        try {
+            Product updatedProduct = productService.save(product);
+            return ResponseEntity.ok(updatedProduct);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     // Upload an image

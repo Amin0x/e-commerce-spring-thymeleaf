@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,4 +66,12 @@ public class UserService {
         return UUID.randomUUID().toString();
     }
 
+    public List<User> getLastUsers(int i) {
+
+        return userRepository.getLastUsers(Pageable.ofSize(i));
+    }
+
+    public long findCount(){
+        return userRepository.count();
+    }
 }

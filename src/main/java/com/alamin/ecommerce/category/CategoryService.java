@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
 
@@ -42,16 +43,21 @@ public class CategoryService {
     }
 
     // Update category
-    public Category updateCategory(Long id, Category updatedCategory) {
-        if (updatedCategory == null) {
+    public Category updateCategory(Long id, CategoryDto categoryDto) {
+        if (categoryDto == null) {
             throw new IllegalArgumentException("Updated category cannot be null");
         }
 
-        Optional<Category> existingCategoryOptional = categoryRepository.findById(id);
-        if (existingCategoryOptional.isPresent()) {
-            Category existingCategory = existingCategoryOptional.get();
-            existingCategory.setName(updatedCategory.getName()); // Assuming you have a name field
-            existingCategory.setDescription(updatedCategory.getDescription()); // Assuming a description field
+        Optional<Category> categoryOptional = categoryRepository.findById(id);
+        if (categoryOptional.isPresent()) {
+            Category existingCategory = categoryOptional.get();
+            Category parent = categoryRepository.findById(Long.valueOf(categoryDto.parent())).orElse(null);
+            existingCategory.setParent(parent);
+            existingCategory.setName(categoryDto.name());
+            existingCategory.setDescription(categoryDto.description());
+            existingCategory.setImageUrl(categoryDto.imageUrl());
+            existingCategory.setActive(categoryDto.active());
+            existingCategory.setUpdated(LocalDateTime.now());
             return categoryRepository.save(existingCategory);
         }
 
@@ -81,4 +87,7 @@ public class CategoryService {
         return categoryPage.getContent();
     }
 
+    public boolean existsById(long id) {
+        return categoryRepository.existsById(id);
+    }
 }

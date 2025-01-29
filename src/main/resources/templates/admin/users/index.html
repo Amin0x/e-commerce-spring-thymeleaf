@@ -13,20 +13,15 @@
 </head>
 
 <body>
-
-    <div class="page-wrapper">
-        <div class="content_wrap">
-            <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-            <!-- Main Content -->
-            <main class="main-content">
-                <!-- Top Header -->
+    <div class="warpper">
+        <div class="page-wrapper">
+            <aside th:replace="~{admin/fragments/navigation :: navigation}"></aside>
+            <main class="content">
                 <header th:replace="~{admin/fragments/header :: header}"></header>
-
-                <h1 class="mb-4">User Dashboard</h1>
-
-                <!-- 4 Counters -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
+                <div class="px-3">
+                <h1 class="page-title mb-4">Users home</h1>
+                <div class="states states-4 mb-4">
+                    <div class="state-card">
                         <div class="card text-white bg-primary mb-3">
                             <div class="card-header">Total Users</div>
                             <div class="card-body">
@@ -34,7 +29,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="state-card">
                         <div class="card text-white bg-success mb-3">
                             <div class="card-header">Total Drivers</div>
                             <div class="card-body">
@@ -42,7 +37,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="state-card">
                         <div class="card text-white bg-info mb-3">
                             <div class="card-header">Users Registered This Month</div>
                             <div class="card-body">
@@ -50,7 +45,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="state-card">
                         <div class="card text-white bg-warning mb-3">
                             <div class="card-header">Drivers Registered This Month</div>
                             <div class="card-body">
@@ -60,21 +55,19 @@
                     </div>
                 </div>
 
-                <!-- Charts: Users Registration Monthly and Drivers Registration Monthly -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
+                <div class="container-user-chart mb-4">
+                    <div class="chart-users-reg">
                         <div>User Register</div>
                         <canvas id="usersRegistrationChart"></canvas>
                     </div>
-                    <div class="col-md-6">
+                    <div class="chart-users-reg">
                         <div>User Register</div>
                         <canvas id="driversRegistrationChart"></canvas>
                     </div>
                 </div>
 
-                <!-- Top 10 Users this Month -->
-                <section>
-                    <h2>Top 10 Users This Month</h2>
+                <section class="top-users">
+                    <div class="card-title"><a href="/admin/users/list">Top Users This Month</a></div>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -85,33 +78,14 @@
                         </thead>
                         <tbody>
                             <tr th:each="user : ${topUsers}">
-                                <td th:text="${user.firstName} + ' ' + ${user.lastName}"></td>
-                                <td th:text="${#dates.format(user.registrationDate, 'yyyy-MM-dd')}"></td>
+                                <td><a th:href="${'/admin/users/' + user.userId }" th:text="${user.firstName} + ' ' + ${user.lastName}"></a></td>
+                                <td th:text="${#temporals.format(user.created, 'yyyy-MM-dd')}"></td>
                                 <td th:text="${user.role}"></td>
                             </tr>
                         </tbody>
                     </table>
                 </section>
-                <!-- Top 10 Drivers this Month -->
-                <section>
-                    <h2>Top 10 Drivers This Month</h2>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Registration Date</th>
-                                <th>License Number</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="driver : ${topDrivers}">
-                                <td th:text="${driver.firstName} + ' ' + ${driver.lastName}"></td>
-                                <td th:text="${#dates.format(driver.registrationDate, 'yyyy-MM-dd')}"></td>
-                                <td th:text="${driver.licenseNumber}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
+                </div>
             </main>
         </div>
     </div>

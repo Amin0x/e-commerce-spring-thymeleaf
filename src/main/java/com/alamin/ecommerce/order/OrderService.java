@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,25 +20,31 @@ public class OrderService {
     private OrderRepository orderRepository;
 
 
+    public Page<Order> getAllOrders(int page, int size, int order, boolean asc, LocalDate startDate, LocalDate endDate) {
+        // Create a PageRequest with pagination and sorting
+        String orderCol = null;
+        switch (order) {
+            case 1:
+                orderCol = "orderDate";
+                break;
+            case 2:
+                orderCol = "";
+                break;
+            case 3:
+                orderCol = "";
+                break;
+            default:
+                orderCol = "orderDate";
+        }
 
-    public List<Order> getAllOrders(int page, int size, int order, boolean asc) {
-   	// Create a PageRequest with pagination and sorting
-	String orderCol = null;
-	switch(order){
-	case 1: orderCol = "orderDate"; break;
-	case 2: orderCol = ""; break;
-	case 3: orderCol = ""; break;
-	default: orderCol = "orderDate";
-	}
+        Sort sort = asc ? Sort.by(Sort.Order.asc(orderCol)) : Sort.by(Sort.Order.desc(orderCol));
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-	Sort sort = asc == true ? Sort.by(Sort.Order.asc(orderCol)) : Sort.by(Sort.Order.desc(orderCol));
-   	PageRequest pageRequest = PageRequest.of(page, size, sort);
-
-   	// Fetch the paged and sorted orders from the repository
-   	Page<Order> orderPage = orderRepository.findAll(pageRequest);
-
-   	// Return the list of orders (you can return the Page if you need pagination info)
-   	return orderPage.getContent();
+        if (startDate != null && endDate != null) {
+            return orderRepository.findByOrderDateBetween(startDate, endDate, pageRequest);
+        } else {
+            return orderRepository.findAll(pageRequest);
+        }
     }
 
     public Optional<Order> getOrderById(Long id) {
@@ -81,14 +86,12 @@ public class OrderService {
     }
 
 
-
-
-	@Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void runAtMidnight() {
         System.out.println("Task is running at midnight!");
     }
 
-	// run at midnight on the last day of the month
+    // run at midnight on the last day of the month
     @Scheduled(cron = "0 0 0 L * ?")
     public void runOnLastDayOfMonth() {
         System.out.println("Task is running on the last day of the month at midnight!");
@@ -101,20 +104,20 @@ public class OrderService {
 
     public Double getTotalRevenue() {
         Double totalRevenue = orderRepository.getTotalRevenue();
-        return totalRevenue == null? 0:totalRevenue;
+        return totalRevenue == null ? 0 : totalRevenue;
     }
 
     public ArrayList<Double> getTotalRevenue(String d) {
         ArrayList<Double> res = new ArrayList<>();
 
-        if (d.equals("d")){
+        if (d.equals("d")) {
             LocalDate currentDate = LocalDate.now();
             for (int i = 0; i < 12; i++) {
                 LocalDate date = currentDate.plusDays(i);
                 LocalDateTime startOfDay = date.atStartOfDay();
                 LocalDateTime endOfDay = date.atTime(23, 59, 59);
                 Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
-                res.add(v == null? 0:v);
+                res.add(v == null ? 0 : v);
             }
 
 
@@ -125,7 +128,7 @@ public class OrderService {
                 LocalDateTime startOfDay = date.atStartOfDay();
                 LocalDateTime endOfDay = date.atTime(23, 59, 59);
                 Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
-                res.add(v == null? 0:v);
+                res.add(v == null ? 0 : v);
             }
         } else if (d.equals("m")) {
             LocalDate currentDate = LocalDate.now();
@@ -134,7 +137,7 @@ public class OrderService {
                 LocalDateTime startOfDay = date.atStartOfDay();
                 LocalDateTime endOfDay = date.atTime(23, 59, 59);
                 Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
-                res.add(v == null? 0:v);
+                res.add(v == null ? 0 : v);
             }
         } else if (d.equals("y")) {
             LocalDate currentDate = LocalDate.now();
@@ -143,9 +146,13 @@ public class OrderService {
                 LocalDateTime startOfDay = date.atStartOfDay();
                 LocalDateTime endOfDay = date.atTime(23, 59, 59);
                 Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
-                res.add(v == null? 0:v);
+                res.add(v == null ? 0 : v);
             }
         }
         return res;
+    }
+
+    public List<Order> getAllOrders(int page, int size, int order, boolean b) {
+        return orderRepository.findAll();
     }
 }

@@ -9,8 +9,8 @@
 
 :root {
   --primary-color: #2d3b48;
-  --secondary-color: #f4f7fc;
-  --on-primary-color: #f4f7fc;
+  --secondary-color: #4b5c6d;
+  --on-primary-color: #181818;
   --on-secondary-color: #2d3b48;
   --background-color: #f4f7fc;
   --font-family-primary: 'nunito', 'Cairo', Arial, sans-serif;
@@ -20,35 +20,24 @@
   --box-shadow-dark: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.btn-primary {
-  --bs-btn-color: #fff;
-  --bs-btn-bg: #435267;
-  --bs-btn-border-color: #60656d;
-  --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #080809;
-  --bs-btn-hover-border-color: #15181c;
-  --bs-btn-focus-shadow-rgb: 49,132,253;
-  --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #636b78;
-  --bs-btn-active-border-color: #5a626e;
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(46, 40, 40, 0.125);
-  --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #7b8087;
-  --bs-btn-disabled-border-color: #6e737b;
-}
-
 .dark-mode {
-  --primary-color: #f4f7fc;
+  --primary-color: #212121;
   --secondary-color: #2d3b48;
-  --on-primary-color: #2d3b48;
+  --on-primary-color: #f4f4f4;
   --on-secondary-color: #f4f7fc;
   --background-color: #2d3b48;
+  --bs-table-color: #f4f4f4;
+  --font-family-primary: 'nunito', 'Cairo', Arial, sans-serif;
+  --font-family-secondary: 'Cairo', Arial, sans-serif;
+  --box-shadow-light: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  --box-shadow-medium: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  --box-shadow-dark: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 body {
   font-size: 15px;
   font-family: var(--font-family-primary);
-  color: var(--primary-color);
+  color: var(--on-primary-color);
   background-color: var(--background-color);
 }
 
@@ -60,6 +49,16 @@ body {
           box-shadow: var(--box-shadow-light);
 }
 
+.box-title {
+  border-bottom: 1px solid #9d9d9d;
+  color: #757575;
+}
+
+.page-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
 .box2 {
   padding: 8px;
   margin-bottom: 15px;
@@ -68,21 +67,41 @@ body {
           box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-main {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  padding: 20px;
-}
-
-.content {
+.container-2 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+}
+
+.container-2 {
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+.container-2 > * {
+  width: 50%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.container-4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.container-4 {
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+.container-4 > * {
+  width: calc(25% - 8px);
+  max-width: calc(25% - 8px);
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 
 .page-wrapper {
@@ -91,6 +110,12 @@ main {
   display: flex;
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
+}
+
+.page-wrapper .content {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
 }
 
 .txt-title {
@@ -118,49 +143,78 @@ main {
 }
 
 /* start admin home page */
-.stats {
+.states {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  gap: 20px;
-  margin-top: 30px;
+  width: 80%;
+  margin: 30px auto 0px auto;
 }
 
-@media only screen and (min-width: 200px) {
-  .stats {
-    display: block;
-  }
+.state-1, .states-2, .states-3, .states-4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
-@media only screen and (min-width: 200px) {
-  .stat-card {
-    margin-top: 20px;
-  }
-}
-
-.stat-card {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
+.states-4 > * {
+  width: calc(25% - 10px);
+  max-width: calc(25% - 10px);
+  margin-left: 5px;
+  margin-right: 5px;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
 }
 
-.stat-card h3 {
+.states-3 > * {
+  width: calc(33.33333% - 10px);
+  max-width: calc(33.33333% - 10px);
+  margin-left: 5px;
+  margin-right: 5px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.states-2 > * {
+  width: calc(50% - 10px);
+  max-width: calc(50% - 10px);
+  margin-left: 5px;
+  margin-right: 5px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.state-card {
+  margin-left: 8px;
+  margin-right: 8px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.state-card .state-card__body {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.state-card h3 {
   font-size: 18px;
   color: #555;
 }
 
-.stat-card p {
+.state-card p {
   font-size: 24px;
   color: #333;
 }
 
-.stat-card p small {
+.state-card p small {
   font-size: 12px;
   color: #ccc;
 }
@@ -196,7 +250,6 @@ main {
   padding: 15px 0;
   position: relative;
   bottom: 0;
-  width: 100%;
 }
 
 .footer p {
@@ -206,6 +259,9 @@ main {
 /* End Footer fragment Styles */
 /* start sidebar fragment style */
 .navigation {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
   width: 200px;
   color: #fff;
   background-color: #2d3b48;
@@ -230,7 +286,7 @@ main {
   margin-top: 8px;
 }
 
-.navigation .sidebar .brand .nav-list {
+.navigation .sidebar .nav-list {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -250,8 +306,15 @@ main {
   font-size: 15px;
   padding: 10px 12px;
   color: #fff;
+  fill: #fff;
   text-decoration: none;
-  display: block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
   outline: none;
 }
 
@@ -280,6 +343,16 @@ main {
   border-bottom: 2px solid #eee;
 }
 
+.top-header .header-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.top-header .header-left .logo {
+  margin-right: 50px;
+}
+
 .top-header .logo-img {
   width: 32px;
   height: auto;
@@ -303,6 +376,13 @@ main {
   font-size: 14px;
   font-weight: 700;
   color: #333;
+}
+
+.top-header .notification-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 8px;
 }
 
 .top-header .notification {
@@ -433,3 +513,20 @@ main {
 }
 
 /* end cart detials page */
+.container-user-chart {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+.container-user-chart .chart-users-reg {
+  width: calc(50% - 8px);
+  max-width: calc(50% - 8px);
+  margin: 0 4px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  background-color: var(--primary-color);
+}

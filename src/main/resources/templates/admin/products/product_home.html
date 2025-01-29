@@ -47,61 +47,57 @@
 
 <body>
 <div class="page-wrapper">
+    <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
 
-    <div class="content_wrap">
+    <main class="content">
 
-        <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Top Header -->
-            <header th:replace="~{admin/fragments/header :: header}"></header>
-
+        <header th:replace="~{admin/fragments/header :: header}"></header>
+        <div class="px-3">
             <h1 class="my-4">Dashboard - Products</h1>
-        <div class="links">
-            <a class="" href="products_list.html" th:href="@{/admin/products}">All products</a>
-            <a class="" href="products_create_form.html" th:href="@{/admin/products}">Create product</a>
-            <a class="" href="@{/admin/products}">link</a>
-        </div>
-        <div class="counter-container">
-            <div class="counter">
-                <h4>Total Products</h4>
-                <p th:text="${totalProducts}">0</p>
+            <div class="links">
+                <a class="" href="products_list.html" th:href="@{/admin/products}">All products</a>
+                <a class="" href="products_create_form.html" th:href="@{/admin/products}">Create product</a>
+                <a class="" href="@{/admin/products}">link</a>
             </div>
-            <div class="counter">
-                <h4>Total Sold</h4>
-                <p th:text="${totalSold}">0</p>
+            <div class="counter-container">
+                <div class="counter">
+                    <h4>Total Products</h4>
+                    <p th:text="${totalProducts}">0</p>
+                </div>
+                <div class="counter">
+                    <h4>Total Sold</h4>
+                    <p th:text="${totalSold}">0</p>
+                </div>
+                <div class="counter">
+                    <h4>Total Unsold</h4>
+                    <p th:text="${totalUnsold}">0</p>
+                </div>
+                <div class="counter">
+                    <h4>Total Revenue</h4>
+                    <p th:text="${totalRevenue}">0</p>
+                </div>
             </div>
-            <div class="counter">
-                <h4>Total Unsold</h4>
-                <p th:text="${totalUnsold}">0</p>
-            </div>
-            <div class="counter">
-                <h4>Total Revenue</h4>
-                <p th:text="${totalRevenue}">0</p>
-            </div>
-        </div>
 
-        <div class="row box2">
-            <div class="col-md-6">
-                <h4>Sold Products</h4>
-                <h6>some text</h6>
-                <hr size="18px">
-                <canvas id="productsSoldChart"></canvas>
+            <div class="box2">
+                <div class="col-md-6">
+                    <h4>Sold Products</h4>
+                    <h6>some text</h6>
+                    <hr size="18px">
+                    <canvas id="productsSoldChart"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <h4>Market Prices</h4>
+                    <h6>Sold Products</h6>
+                    <hr>
+                    <canvas id="marketPriceChart"></canvas>
+                </div>
             </div>
-            <div class="col-md-6">
-                <h4>Market Prices</h4>
-                <h6>Sold Products</h6>
-                <hr>
-                <canvas id="marketPriceChart"></canvas>
-            </div>
-        </div>
 
-        <div class="list-container row">
-            <div class="list box2">
-                <h4>Top 10 Sold Products</h4>
-                <table class="table d-block">
-                    <tbody class="d-block">
+            <div class="list-container">
+                <div class="list box2">
+                    <h4>Top 10 Sold Products</h4>
+                    <table class="table d-block">
+                        <tbody class="d-block">
                         <tr class="d-block bg-gray" th:each="product : ${topSoldProducts}">
                             <td class="p-2">4</td>
                             <td>
@@ -130,69 +126,70 @@
                                 <span class="badge badge-primary badge-pill" th:text="${87}">0</span>
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="list box2">
-                <h4>Top 10 Unsold Products</h4>
-                <ul class="list-group" th:each="product : ${topUnsoldProducts}">
-                    <li class="list-group-item">
-                        <span th:text="${product.name}">Product Name</span>
-                        <span class="badge badge-secondary badge-pill" th:text="${654}">0</span>
-                    </li>
-                </ul>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="list box2">
+                    <h4>Top 10 Unsold Products</h4>
+                    <ul class="list-group" th:each="product : ${topUnsoldProducts}">
+                        <li class="list-group-item">
+                            <span th:text="${product.name}">Product Name</span>
+                            <span class="badge badge-secondary badge-pill" th:text="${654}">0</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-        </main>
-    </div>
+    </main>
+
 </div>
 
-    <script>
-        const productsSoldCtx = document.getElementById('productsSoldChart').getContext('2d');
-        const marketPriceCtx = document.getElementById('marketPriceChart').getContext('2d');
+<script>
+    const productsSoldCtx = document.getElementById('productsSoldChart').getContext('2d');
+    const marketPriceCtx = document.getElementById('marketPriceChart').getContext('2d');
 
-        const productsSoldChart = new Chart(productsSoldCtx, {
-            type: 'bar',
-            data: {
-                labels: /*[[${months}]]*/,
-                datasets: [{
-                    label: 'Products Sold',
-                    data: /*[[${productsSoldData}]]*/,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    const productsSoldChart = new Chart(productsSoldCtx, {
+        type: 'bar',
+        data: {
+            labels: /*[[${months}]]*/,
+            datasets: [{
+                label: 'Products Sold',
+                data: /*[[${productsSoldData}]]*/,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
+        }
+    });
 
-        const marketPriceChart = new Chart(marketPriceCtx, {
-            type: 'line',
-            data: {
-                labels: /*[[${months}]]*/,
-                datasets: [{
-                    label: 'Market Price',
-                    data: /*[[${marketPriceData}]]*/,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    const marketPriceChart = new Chart(marketPriceCtx, {
+        type: 'line',
+        data: {
+            labels: /*[[${months}]]*/,
+            datasets: [{
+                label: 'Market Price',
+                data: /*[[${marketPriceData}]]*/,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
-    </script>
+        }
+    });
+</script>
 </body>
 
 </html>
