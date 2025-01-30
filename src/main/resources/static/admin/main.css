@@ -432,6 +432,39 @@ body {
 }
 
 /* end admin home page */
+.image-upload .drop-zone {
+  width: 300px;
+  height: 200px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 200px;
+  margin: 20px 0;
+}
+
+.edit-product-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.edit-product-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.edit-product-container form .form-group {
+  margin-bottom: 15px;
+}
+
+.edit-product-container form button {
+  width: 100%;
+}
+
 /* star product create page */
 #createCategoryMode {
   -webkit-transition: all 0.3s;
@@ -481,8 +514,22 @@ body {
   margin-bottom: 15px;
 }
 
-.create-user-container form button {
-  width: 100%;
+.create-user-container form .form-group .input-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
+}
+
+.create-user-container form .form-group .input-message.is-invalid {
+  display: block !important;
+}
+
+.create-user-container form .avatar-button {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #fff;
+  margin-top: 8px;
 }
 
 /* end create user form page */

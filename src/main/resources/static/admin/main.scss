@@ -5,16 +5,16 @@
 @import 'header';
 @import 'sidebar';
 @import 'footer';
-@import '_cart_index';
-@import 'category_create';
-@import 'category_index';
-@import 'category_list';
-@import '_create_links';
 @import 'index';
+@import 'product_edit';
 @import 'order_index';
 @import 'product_create';
-@import 'product_edit';
 @import 'product_list';
+@import 'create_links';
+@import 'category_index';
+@import 'category_create';
+@import 'category_list';
+@import 'cart_index';
 @import 'user_create';
 
 

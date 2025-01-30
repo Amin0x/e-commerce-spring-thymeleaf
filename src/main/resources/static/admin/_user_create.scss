@@ -16,10 +16,24 @@
   form {
     .form-group {
       margin-bottom: 15px;
+
+      .input-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none;
+      }
+
+      .input-message.is-invalid {
+        display: block !important;
+      }
    }
 
-    button {
-      width: 100%;
+   .avatar-button {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #fff;
+      margin-top: 8px;
     }
   }
 }

@@ -1,5 +1,8 @@
 package com.alamin.ecommerce.home;
 
+import com.alamin.ecommerce.product.Product;
+import com.alamin.ecommerce.product.ProductImage;
+import com.alamin.ecommerce.product.ProductService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,16 +19,32 @@ import java.util.UUID;
 @RestController
 public class FileController {
 
+    private ProductService productService;
+
     @PostMapping("/admin/upload")
     public Map<String, String> uploadFile(@RequestBody MultipartFile file){
         if(file.getSize() > 5000 * 1024)
             throw new RuntimeException("file size exceed allowed size");
 
         String name = saveFile(file);
+        System.out.println("file saved successful with name: " + name);
         Map<String, String> res = new HashMap<>();
         res.put("url",  name);
         res.put("result", "success");
         System.out.println("File name: " + name);
+        return res;
+    }
+
+    @PostMapping("/admin/products/upload")
+    public Map<String, String> uploadFile(@RequestBody MultipartFile file,
+                                          @RequestParam(required = false) Long id){
+        if(file.getSize() > 5000 * 1024)
+            throw new RuntimeException("file size exceed allowed size");
+
+        Product product = productService.getProductById(id).orElseThrow();
+        Map<String, String> res = uploadFile(file);
+        product.getProductImage().add(new ProductImage(res.get("url"), id));
+        productService.save(product);
         return res;
     }
 
