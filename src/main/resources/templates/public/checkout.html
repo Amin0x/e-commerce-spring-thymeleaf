@@ -14,10 +14,8 @@
     <link th:href="@{/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
 </head>
 <body dir="rtl">
-    <main class="page-wrapper cart-container">
-        
+    <main class="page-wrapper cart-container">        
         <h1 class="title">الدفع الامن</h1>
-
         <section class="cart-card">
             <h4 class="title">تفاصبل السلة</h4>
             <div class="order-summary" th:each="item : ${cart.items}">

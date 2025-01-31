@@ -32,11 +32,11 @@ public class CartService {
 
     public Cart addItemToCart(Product item, String userId) {
 
-        Cart cart = cartRepository.findByUserIdAndProductId( userId, item.getId());
+        Cart cart = cartRepository.findByUserIdAndProductId( userId, item.getProductId());
         if(cart == null){
             cart = new Cart();
             cart.setUserId(userId);
-            cart.setProductId(item.getId());
+            cart.setProductId(item.getProductId());
             cart.setQuantity(1);
             cart.setPrice(item.getPrice());
             cart.setTotal(item.getPrice() * cart.getQuantity());

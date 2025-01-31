@@ -1,0 +1,36 @@
+.product-home {
+    .counter-container {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+
+    .counter {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        width: 20%;
+    }
+
+    .list-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .list {
+        width: 48%;
+    }
+
+    .links {
+        margin-bottom: 20px;
+    }
+
+    .links a {
+        text-decoration: none;
+        display: inline-block;
+        margin-inline-end: 15px;
+    }
+
+}

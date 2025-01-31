@@ -14,16 +14,12 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
-    
     private int quantity;
     private int price;
-    private Integer total;
-    
+    private int total;
     private Long productId;
-    
     private LocalDateTime created;
     private LocalDateTime updated;
-
     @Column(name = "user_id")
     private String userId;
 

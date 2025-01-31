@@ -64,6 +64,7 @@ public class AdminProductController {
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
         model.addAttribute("categories", categoryService.getAllCategories(0, 100, 1, true));
+
         return "admin/products/product_create_form";
     }
 
@@ -77,6 +78,7 @@ public class AdminProductController {
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
         model.addAttribute("categories", categoryService.getAllCategories(0, 100, 1, true));
+
         return "admin/products/product_edit_form";
     }
 
@@ -160,8 +162,8 @@ public class AdminProductController {
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
-        return "admin/products/product_home";
 
+        return "admin/products/product_home";
     }
 
     // Get a product by ID

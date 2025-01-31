@@ -98,7 +98,7 @@ public class ProductController {
         if (!productRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        product.setId(id);
+        product.setProductId(id);
         Product updatedProduct = productRepository.save(product);
         return ResponseEntity.ok(updatedProduct);
     }
