@@ -17,7 +17,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
@@ -29,12 +29,20 @@ public class Order {
 
     private String uuid;
     private BigDecimal totalAmount;
+    private BigDecimal tax;
+    private BigDecimal shipping;
     private LocalDateTime orderDate;
     private LocalDateTime shippingDate;
     @Embedded
     private Address shippingAddress;
     private String paymentMethod;
+    private String cardNumber;
+    private String paymentStatus;
     private String transactionId;
+    private String carrier;
+    private String trackingNumber;
+    private String estimatedArrival;
+
     private LocalDateTime updated;
 
     // Constructors, Getters, Setters

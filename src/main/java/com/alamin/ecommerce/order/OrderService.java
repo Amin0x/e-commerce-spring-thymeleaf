@@ -155,4 +155,8 @@ public class OrderService {
     public List<Order> getAllOrders(int page, int size, int order, boolean b) {
         return orderRepository.findAll();
     }
+
+    public Optional<Order> findById(Long id) {
+        return orderRepository.findById(id);
+    }
 }

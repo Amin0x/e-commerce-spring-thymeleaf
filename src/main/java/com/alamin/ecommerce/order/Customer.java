@@ -20,8 +20,11 @@ public class Customer {
     @NotEmpty
     private String lastName;
 
+    @NotEmpty
+    String email;
+
     @Embedded
-    private Address address;  // Embedding the Address class
+    private Address address;
 
     // One-to-one relationship with User
     @OneToOne(fetch = FetchType.LAZY)

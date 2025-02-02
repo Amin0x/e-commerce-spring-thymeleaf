@@ -10,6 +10,7 @@ public class City {
     private Integer cityId;
     private String name;
     private String nameAr;
+    private String estimatedDelivery;
     
     @ManyToOne(fetch = FetchType.LAZY)
     private State state;
@@ -54,5 +55,13 @@ public class City {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public String getEstimatedDelivery() {
+        return estimatedDelivery;
+    }
+
+    public void setEstimatedDelivery(String estimatedDelivery) {
+        this.estimatedDelivery = estimatedDelivery;
     }
 }

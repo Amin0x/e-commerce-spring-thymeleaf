@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.category;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +26,7 @@ public class Category {
     private LocalDateTime created;
     private LocalDateTime updated;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "categoryId")
     private Category parent;

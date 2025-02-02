@@ -3,12 +3,13 @@ package com.alamin.ecommerce.order;
 import com.alamin.ecommerce.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Controller
@@ -18,9 +19,7 @@ public class AdminOrderController {
     private OrderService orderService;
 
     @GetMapping
-    public String index(
-            Model model
-    ){
+    public String index( Model model  ){
 
         model.addAttribute("user", new User());
         model.addAttribute("totalOrder", 10);
@@ -32,7 +31,7 @@ public class AdminOrderController {
         return "admin/orders/order_index";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/all")
     public String allOrders(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int size,
@@ -50,7 +49,23 @@ public class AdminOrderController {
     }
 
     @GetMapping("/{id}")
-    public String orderDetails(){
+    public String orderDetails(@PathVariable Long id, Model model){
+        Order order = orderService.findById(id).orElseThrow();
+        Double total = 0.0;
+        String estimatedDelivery = "";
+        String customerAddress = "";
+
+        model.addAttribute("order", order);
+        model.addAttribute("total", total);
+        model.addAttribute("estimatedDelivery", estimatedDelivery);
+        model.addAttribute("customerAddress", customerAddress);
         return "admin/orders/order_details";
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
     }
 }

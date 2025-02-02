@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.product;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -16,7 +17,7 @@ public class ProductImage {
     private String altText;
     private String caption;
     private String title;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     @JsonIgnore
     @ManyToOne
     private Product product;
@@ -30,13 +31,13 @@ public class ProductImage {
     }
 
     public ProductImage() {
-        createdAt = new Timestamp(System.currentTimeMillis());
+        createdAt = LocalDateTime.now();
     }
 
     public ProductImage(String image, Long productId) {
         this.image = image;
         this.productId = productId;
-        this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getProductId() {
@@ -87,12 +88,12 @@ public class ProductImage {
         this.title = title;
     }
 
-    public Timestamp getCreatedAt() {
+
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
 }

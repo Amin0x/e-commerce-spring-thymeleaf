@@ -74,4 +74,8 @@ public class UserService {
     public long findCount(){
         return userRepository.count();
     }
+
+    public Optional<User> findByName(String name) {
+        return userRepository.findByUsername(name);
+    }
 }

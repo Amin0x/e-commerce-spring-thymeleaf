@@ -8,29 +8,42 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById('editProductForm').addEventListener('submit', function(event){
         event.preventDefault();
+        event.stopPropagation();
 
-        const formData = new FormData(this);
-        if(document.getElementById("active").checked){
-            formData.set("active", "true");
-        } else {
-            formData.set("active", "false");
+        const formData = {
+            name: document.getElementById('name').value,
+            description: document.getElementById('description').value,
+            price: document.getElementById('price').value,
+            initPrice: document.getElementById('initPrice').value,
+            category: document.getElementById('category').value,
+            sku: document.getElementById('sku').value,
+            stock: document.getElementById('stock').value,
+            totalSold: document.getElementById('totalSold').value,
+            active: document.getElementById("active").checked? "true":"false",
+            enabled: document.getElementById("enabled").checked? "true":"false",
+            images: [],
         }
         
-        if(document.getElementById("enabled").checked){
-            formData.set("enabled", "true");
-        } else {
-            formData.set("enabled", "false");
-        }
         
         fetch(url, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            //body: JSON.stringify(formData)
-            body: JSON.stringify(Object.fromEntries(formData)),
+            body: JSON.stringify(formData),
         })
-        .then(response => response.json())
+        .then(response => {
+            if(response.ok) {
+                response.json();
+                console.log('Product updated successfully!');
+                // Redirect or update UI as needed
+            } else {
+                Promise.reject(response.status);
+                console.error('Failed to update product:', response.statusText);
+                alert('Failed to update product.');
+            }
+
+        })
         .then(data => {
             alert('Product updated successfully!');
             // Redirect or update UI as needed

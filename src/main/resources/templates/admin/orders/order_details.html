@@ -11,8 +11,7 @@
     <div class="page-wrapper">
         <main class="order-details" style="max-width: 1200px; margin: 0 auto; padding: 0 18px; background-color: #f5f5f5;">
             <div class="btn-group mt-5" role="group" aria-label="Order Actions">
-                <a href="#" th:href="@{/admin/orders/edit}" class="btn btn-secondary">Edit</a>
-                <a href="#" th:href="@{/admin/orders/delete}" class="btn btn-secondary">Delete</a>
+                <a href="#" th:href="@{/admin/orders/delete{id}(id=${order.orderId})}" class="btn btn-secondary">Delete Order</a>
                 <a href="#" th:href="@{/admin/orders/print}" class="btn btn-secondary">Print</a>
             </div>
             <h1 class="mt-3">Order Details</h1>
@@ -23,43 +22,43 @@
                     <th>Quantity</th>
                     <th>Price</th>
                 </tr>
-                <tr th:each="order : ${orders}">
-                    <td th:text="${order.id}">12345</td>
-                    <td th:text="${order.productName}">Product A</td>
-                    <td th:text="${order.quantity}">2</td>
-                    <td th:text="${order.price}">$20.00</td>
+                <tr th:each="item, iter : ${orderItems}">
+                    <td th:text="${iter.index}">12345</td>
+                    <td th:text="${item.product?.name}">Product A</td>
+                    <td th:text="${item.quantity}">2</td>
+                    <td th:text="${item.price}">$20.00</td>
                 </tr>
             </table>
             <div class="order-summary">
                 <h2>Summary</h2>
-                <p>Subtotal: <span th:text="${subtotal}">$30.00</span></p>
-                <p>Tax: <span th:text="${tax}">$3.00</span></p>
-                <p>Shipping: <span th:text="${shipping}">$5.00</span></p>
+                <p>Subtotal: <span th:text="${order.totalAmount}">$30.00</span></p>
+                <p>Tax: <span th:text="${order.tax}">$3.00</span></p>
+                <p>Shipping: <span th:text="${order.shipping}">$5.00</span></p>
                 <p>Total: <span th:text="${total}">$38.00</span></p>
             </div>
             <div class="order-status">
                 <h2>Order Status</h2>
-                <p>Status: <span th:text="${status}">Shipped</span></p>
+                <p>Status: <span th:text="${order.status}">Shipped</span></p>
                 <p>Estimated Delivery: <span th:text="${estimatedDelivery}">3-5 business days</span></p>
             </div>
             <div class="customer-information">
                 <h2>Customer Information</h2>
-                <p>Name: <span th:text="${customerName}">John Doe</span></p>
-                <p>Email: <span th:text="${customerEmail}">john.doe@example.com</span></p>
+                <p>Name: <span th:text="${order.customer?.firstName}+' '+${order.customer?.lastName}">John Doe</span></p>
+                <p>Email: <span th:text="${order.customer?.email}">john.doe@example.com</span></p>
                 <p>Address: <span th:text="${customerAddress}">123 Main St, Anytown, USA</span></p>
             </div>
             <div class="payment-information">
                 <h2>Payment Information</h2>
-                <p>Payment Method: <span th:text="${paymentMethod}">Credit Card</span></p>
-                <p>Card Number: <span th:text="${cardNumber}">**** **** **** 1234</span></p>
-                <p>Transaction ID: <span th:text="${transactionId}">TXN123456789</span></p>
-                <p>Payment Status: <span th:text="${paymentStatus}">Completed</span></p>
+                <p>Payment Method: <span th:text="${order.paymentMethod}">Credit Card</span></p>
+                <p>Card Number: <span th:text="${order.cardNumber}">**** **** **** 1234</span></p>
+                <p>Transaction ID: <span th:text="${order.transactionId}">TXN123456789</span></p>
+                <p>Payment Status: <span th:text="${order.paymentStatus}">Completed</span></p>
             </div>
             <div class="shipping-details">
                 <h2>Shipping Details</h2>
                 <p>Carrier: <span th:text="${carrier}">UPS</span></p>
                 <p>Tracking Number: <span th:text="${trackingNumber}">1Z999AA10123456784</span></p>
-                <p>Shipping Date: <span th:text="${shippingDate}">2023-10-01</span></p>
+                <p>Shipping Date: <span th:text="${#temporals.format(order.shippingDate, 'E dd MMMM yyyy h:m:s a')}">2023-10-01</span></p>
                 <p>Estimated Arrival: <span th:text="${estimatedArrival}">2023-10-05</span></p>
             </div>
         </main>

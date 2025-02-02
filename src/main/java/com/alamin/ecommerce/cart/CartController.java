@@ -1,7 +1,6 @@
 package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.product.Product;
-import com.alamin.ecommerce.product.ProductRepository;
 import com.alamin.ecommerce.product.ProductService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Controller
 public class CartController {
@@ -20,7 +21,7 @@ public class CartController {
     private ProductService productService;
 
     @GetMapping("/web/carts/{id}")
-    public String showCart(@PathVariable Long id, Model model) {
+    public String showCartPage(@PathVariable Long id, Model model) {
         Cart cart = cartService.getCartById(id).orElseThrow();
         model.addAttribute("cart", cart);
         model.addAttribute("pageDescription", "");
@@ -37,18 +38,19 @@ public class CartController {
         return ResponseEntity.ok(cart);
     }
 
-    
-    @PostMapping("/api/carts/items")
-    public ResponseEntity<Cart> addItemToCart(@RequestBody Long productId, HttpSession session) {
+    @PostMapping("/api/carts/add")
+    public ResponseEntity<Cart> addItemToCart(@RequestParam Long productId,
+                                              @RequestParam int quantity,
+                                              HttpSession session, Principal principal) {
         Product product = productService.getProductById(productId).orElseThrow();
-        Cart updatedCart = cartService.addItemToCart(product, session.getId());
+        Cart updatedCart = cartService.addItemToCart(product, session, principal);
         return ResponseEntity.ok(updatedCart);
     }
 
-    @PostMapping("/api/carts/items/{itemId}/delete")
-    public ResponseEntity<Void> reomveCartItem(@PathVariable Long itemId, HttpSession session) {
+    @PostMapping("/api/carts/delete/{id}")
+    public ResponseEntity<Void> removeCartItem(@PathVariable Long id, HttpSession session, Principal principal) {
         try {
-            cartService.removeCartItem(itemId, session.getId());
+            cartService.removeCartItem(id, session, principal);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }

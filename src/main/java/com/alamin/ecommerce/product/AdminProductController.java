@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -78,6 +79,7 @@ public class AdminProductController {
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
         model.addAttribute("categories", categoryService.getAllCategories(0, 100, 1, true));
+        model.addAttribute("user", new User());
 
         return "admin/products/product_edit_form";
     }
@@ -119,6 +121,18 @@ public class AdminProductController {
             product.setCategory(category);
         }
 
+
+
+        for (var img : productForm.images()) {
+            ProductImage productImage = new ProductImage();
+            productImage.setImage(img);
+            productImage.setProduct(product);
+            productImage.setCaption("");
+            productImage.setAltText(product.getName());
+            productImage.setTitle(product.getName());
+            product.getProductImage().add(productImage);
+
+        }
         Product savedProduct = productService.save(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.OK);
     }

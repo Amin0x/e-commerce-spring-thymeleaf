@@ -17,7 +17,7 @@
             <h2>Create New Product</h2>
             <div class="box2 p-3">
                 <div class="form-box">
-                    <form th:action="@{/admin/products}" method="post" id="createProduct">
+                    <form th:action="@{/admin/products}" id="createProduct">
                         <section class="product-info">
                             <div class="form-group">
                                 <label for="name">Name:</label>
@@ -91,6 +91,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+    document.addEventListener("DOMContentLoaded", function() {
         let productImage = [];
 
         document.getElementById('uploadImage').addEventListener('click', function () {
@@ -102,51 +103,52 @@
             const formData = new FormData();
             formData.append('file', file);
             fetch('/admin/upload', {
-                method: 'POST',
+                method: 'POST',                
                 body: formData
             })
-                .then(response => response.ok ? response.json() : Promise.reject(response))
-                .then(data => {
-                    productImage.push(data.url);
-                    console.log(data);
-                })
-                .catch(error => {
-                    console.error('Error uploading image:', error);
-                });
+            .then(response => response.ok ? response.json() : Promise.reject(response))
+            .then(data => {
+                productImage.push(data.url);
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error uploading image:', error);
+            });
         };
 
-        const handleSubmit = async (form) => {
-            var formData = new FormData(form);
-            formData.delete('fileImages');
-
-            if (productImage.length > 0) {
-                formData.append('productImage', JSON.stringify(productImage));
-            }
+        const handleSubmit = async () => {
+            var formData = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                price: document.getElementById('price').value,
+                stock: document.getAnimations('stock').value,
+                category: document.getElementById('category').value,
+                active: document.getElementById('active').checked ? true : false,
+                enabled: document.getElementById('enabled').checked ? true : false,
+                images: productImage,
+            };
 
             try {
-                const response = await fetch(form.action, {
+                const response = await fetch('/admin/products', {
                     method: 'POST',
-                    body: formData,
+                    body: JSON.stringify(formData),
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     }
                 });
 
                 if (response.ok) {
                     const data = await response.json();
                     console.log(data);
+                    return data;
                 } else {
-                    return response.text().then(text => { throw new Error(text); });
+                    Promise.reject(response.status);
                 }
             } catch (error) {
                 console.error('Error:', error);
             }
         };
 
-        const inputs = document.querySelectorAll('input[required]');
-        inputs.forEach(input => input.addEventListener('blur', function () {
-            validateInputs(input);
-        }));
 
         const validateInputs = (input) => {
             
@@ -158,21 +160,20 @@
             return true;
         };
 
-        const form = document.getElementById('createProduct');
-        form.addEventListener('submit', function (e) {
+        document.getElementById('createProduct').addEventListener('submit', function (e) {
             e.preventDefault();
-            handleSubmit(form);
+            handleSubmit();
         });
 
-        const images = document.getElementById('fileImages');
-        images.addEventListener('change', function () {
-            var files = images.files;
+        document.getElementById('fileImages').addEventListener('change', function () {
+            var files = this.files;
             console.log("upload image");
             for (var i = 0; i < files.length; i++) {
                 const file = files[i];
                 const reader = new FileReader();
                 reader.addEventListener('load', function (e) {
                     console.log(reader.result);
+                    
                     document.getElementById('imagesPreview').insertAdjacentHTML('beforeend', `<img src="${reader.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
                 });
 
@@ -197,7 +198,7 @@
             }
         });
 
-
+    });
 
     </script>
 </body>

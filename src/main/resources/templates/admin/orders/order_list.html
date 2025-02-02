@@ -28,12 +28,12 @@
                 <tbody>
                     <tr th:each="order : ${orders}">
                         <td th:text="${order.orderId}"></td>
-                        <td th:text="${'order.customer.name'}"></td>
+                        <td><a href="@{/admin/customers/}+${order.customer?.customerId}"  th:text="${'order.customer?.name'}"></a></td>
                         <td th:text="${order.orderDate}"></td>
                         <td th:text="${order.status}"></td>
                         <td th:text="${order.totalAmount}"></td>
                         <td>
-                            <a th:href="@{/admin/orders/edit/{id}(id=${order.orderId})}" class="btn btn-primary btn-sm">Edit</a>
+                            <a th:href="@{/admin/orders/{id}(id=${order.orderId})}" class="btn btn-danger btn-sm">Details</a>
                             <a th:href="@{/admin/orders/delete/{id}(id=${order.orderId})}" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>

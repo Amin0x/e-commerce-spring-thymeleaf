@@ -35,11 +35,11 @@ public class Product {
     private LocalDateTime updated;
     private LocalDateTime deleted;
 
-    @OneToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "categoryId")
+    @OneToOne()
+    @JoinColumn(name = "category_id", referencedColumnName = "categoryId", unique = false)
     private Category category;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product",cascade = CascadeType.ALL)
     private Set<ProductImage> productImage = new HashSet<>();
 
     // Default constructor (required by JPA)

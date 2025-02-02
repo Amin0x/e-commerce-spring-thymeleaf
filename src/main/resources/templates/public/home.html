@@ -23,14 +23,15 @@
     <title th:text="${pageTitle}">Home</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="../../static/public/css/bootstrap.rtl.min.css" th:href="@{/css/bootstrap.rtl.min.css}" rel="stylesheet">
-    <link href="../../static/public/css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
-    <link href="../../static/public/css/mainstyle.css" th:href="@{/css/mainstyle.css}" rel="stylesheet">
+    <link href="../../static/public/css/bootstrap.rtl.min.css" th:href="@{/public/css/bootstrap.rtl.min.css}" rel="stylesheet">
+    <link href="../../static/public/css/style.css" th:href="@{/public/css/style.css}" rel="stylesheet">
+    <link href="../../static/public/css/mainstyle.css" th:href="@{/public/css/mainstyle.css}" rel="stylesheet">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 </head>
 
 <body>
+    
     <!-- Content  -->
     <main class="content-warper">
         <nav th:fragment="navbar">
@@ -86,11 +87,9 @@
                             <div th:text="${product.name}" class="card-title">Product Title</div>
                             <div class="card-text d-inline-block"><strong th:text="${product.price}">$49.99 ج.س</strong></div>
                             <div th:if="(${product.price} < ${product.initPrice})" class="card-text d-inline-block"><strong th:text="${product.initPrice}">$49.99 ج.س</strong></div>
-                            <form onSubmit="addToCartFormonSubmit" method="post" class="mt-auto">
-                                <input type="hidden" name="productId" th:value="${product.id}">
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="button-31 w-100">اضافة للعربة</button>
-                            </form>
+                            
+                            <button type="button" class="button-31 w-100" th:onclick="'addToCart('+${product.productId}+', 1)'">اضافة للعربة</button>
+                            
                         </div>
                     </div>
                 </div>
@@ -139,9 +138,22 @@
     </main>
 
     <!-- Bootstrap JS and dependencies (via CDN) -->
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script>
+        function addToCart(p,q){
+            $.ajax({
+                url: "/api/carts/add",
+                method: "post",
+                data: {productId: p, quantity: q},
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+            return false; // Prevent the form from submitting
+        }
+    </script>
 </body>
 
 </html>

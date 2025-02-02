@@ -2,9 +2,14 @@
 package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.product.Product;
+import com.alamin.ecommerce.user.User;
+import com.alamin.ecommerce.user.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +18,9 @@ public class CartService {
 
     @Autowired
     private CartRepository cartRepository;
+
+    @Autowired
+    private UserService userService;
 
     public Optional<Cart> getCartById(Long id) {
         return cartRepository.findById(id);
@@ -30,42 +38,52 @@ public class CartService {
         cartRepository.deleteById(id);
     }
 
-    public Cart addItemToCart(Product item, String userId) {
+    public Cart addItemToCart(Product item, HttpSession session, Principal principal) {
+        Cart cart = null;
+        if (principal != null) {
+            cart = cartRepository.findByUserIdAndProductId(principal.getName(), item.getProductId());
+        } else {
+            cart = null;
+        }
 
-        Cart cart = cartRepository.findByUserIdAndProductId( userId, item.getProductId());
         if(cart == null){
             cart = new Cart();
-            cart.setUserId(userId);
+            cart.setUserId(principal.getName());
             cart.setProductId(item.getProductId());
-            cart.setQuantity(1);
-            cart.setPrice(item.getPrice());
-            cart.setTotal(item.getPrice() * cart.getQuantity());
+
         }else{
-            cart.setQuantity(cart.getQuantity() + 1);
-            cart.setTotal(cart.getTotal() + (item.getPrice() * cart.getQuantity()));
+
         }
 
         return saveCart(cart);
     }
 
     // Update the quantity of a product in the cart can be negitive to remove the product
-    public Cart removeCartItem(Long itemId, String userId) {
-        Cart cart = cartRepository.findByUserIdAndProductId(userId, itemId);
-        if (cart == null) {
-            return null;
+    public Cart removeCartItem(Long itemId, HttpSession session, Principal principal) {
+        User user = null;
+        Cart cart = null;
+
+        if (principal != null){
+            user = userService.findByName(principal.getName()).orElseThrow();
         }
-        cart.setQuantity(cart.getQuantity() - 1);
-        if (cart.getQuantity() <= 0) {
-            deleteCartItem(itemId, userId);
-            return null;
-        }
-        cart.setTotal(cart.getPrice() * cart.getQuantity());
+
+        if (user == null)
+            cart = cartRepository.findByUserIdAndProductId(session.getId(), itemId);
+        else
+            cart = null;
+
+
+        List<CartItem> cartItems = cart.getCartItems();
+        if (cartItems == null)
+            cartItems = new ArrayList<>();
+
+
+
+
         return saveCart(cart);
     }
 
-    public void deleteCartItem(Long itemId, String userId) {
-        cartRepository.deleteByUserIdAndProductId(itemId, userId);
-    }
+
 
     public List<Cart> findAll() {
         return cartRepository.findAll();
