@@ -51,12 +51,12 @@ public class CategoryService {
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isPresent()) {
             Category existingCategory = categoryOptional.get();
-            Category parent = categoryRepository.findById(Long.valueOf(categoryDto.parent())).orElse(null);
+            Category parent = categoryRepository.findById(Long.valueOf(categoryDto.getParent())).orElse(null);
             existingCategory.setParent(parent);
-            existingCategory.setName(categoryDto.name());
-            existingCategory.setDescription(categoryDto.description());
-            existingCategory.setImageUrl(categoryDto.imageUrl());
-            existingCategory.setActive(categoryDto.active());
+            existingCategory.setName(categoryDto.getName());
+            existingCategory.setDescription(categoryDto.getDescription());
+            existingCategory.setImageUrl(categoryDto.getImageUrl());
+            existingCategory.setActive(categoryDto.getActive());
             existingCategory.setUpdated(LocalDateTime.now());
             return categoryRepository.save(existingCategory);
         }

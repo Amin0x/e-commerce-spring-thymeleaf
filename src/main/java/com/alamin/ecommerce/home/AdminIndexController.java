@@ -26,6 +26,7 @@ public class AdminIndexController {
         var user = new User();
         var activities = new ArrayList<Map<String,String>>();
 
+        ArrayList<Object> data = new ArrayList<>();
 
         model.addAttribute("user", user);
         model.addAttribute("statsUsers", userService.getUsersThisMonth());

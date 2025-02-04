@@ -130,7 +130,7 @@ public class AdminProductController {
             productImage.setCaption("");
             productImage.setAltText(product.getName());
             productImage.setTitle(product.getName());
-            product.getProductImage().add(productImage);
+            product.getProductImages().add(productImage);
 
         }
         Product savedProduct = productService.save(product);

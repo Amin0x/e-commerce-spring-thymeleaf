@@ -7,9 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -31,6 +29,7 @@ public class Product {
     private Integer viewCount;
     private Boolean active;
     private Boolean enabled;
+    private String image;
     private LocalDateTime created;
     private LocalDateTime updated;
     private LocalDateTime deleted;
@@ -40,9 +39,9 @@ public class Product {
     private Category category;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product",cascade = CascadeType.ALL)
-    private Set<ProductImage> productImage = new HashSet<>();
+    private List<ProductImage> productImages = new ArrayList<>();
 
-    // Default constructor (required by JPA)
+    // Default constructor
     public Product() {
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();
@@ -57,20 +56,23 @@ public class Product {
     }
 
     // Constructor for convenience
-    public Product(String name, 
-                   String description, 
-                   Integer price, 
-                   Category category
-                   ) {
+    public Product(
+            String name,
+            String description,
+            Integer price,
+            Category category,
+            String image ) {
         
         this.name = name;
         this.description = description;
         this.price = price;
         this.initPrice = price;
+        this.image = image;
         this.stock = 0;
         this.totalSold = 0;
         this.category = category;
         this.active = false;
+        this.enabled = false;
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();
     }

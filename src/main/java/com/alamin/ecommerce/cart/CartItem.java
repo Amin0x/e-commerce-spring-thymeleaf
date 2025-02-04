@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.cart;
 
+import com.alamin.ecommerce.product.Product;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,9 @@ public class CartItem {
     private int quantity;
     private int price;
     private int total;
+    @OneToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private Cart cart;
@@ -53,5 +57,13 @@ public class CartItem {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

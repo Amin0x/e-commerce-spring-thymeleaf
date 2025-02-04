@@ -26,8 +26,11 @@ public class CartService {
         return cartRepository.findById(id);
     }
 
-    public List<Cart> getCartByUserId(String userId){        
-        return cartRepository.findByUserId(userId);
+    public Cart getCartBySession(HttpSession session){
+        if (session == null)
+            throw new IllegalArgumentException("no user found");
+
+        return cartRepository.getCartBySession(session.getId());
     }
 
     public Cart saveCart(Cart cart) {
@@ -41,16 +44,22 @@ public class CartService {
     public Cart addItemToCart(Product item, HttpSession session, Principal principal) {
         Cart cart = null;
         if (principal != null) {
-            cart = cartRepository.findByUserIdAndProductId(principal.getName(), item.getProductId());
+            cart = cartRepository.findByUserId(principal.getName());
         } else {
-            cart = null;
+            cart = cartRepository.getCartBySession(session.getId());
         }
 
         if(cart == null){
             cart = new Cart();
-            cart.setUserId(principal.getName());
-            cart.setProductId(item.getProductId());
+            cart.setUserId(principal == null ? null: principal.getName());
+            cart.setSessionId(session.getId());
 
+            CartItem cartItem = new CartItem();
+            cartItem.setProduct(item);
+            cartItem.setQuantity(1);
+            cartItem.setTotal(item.getPrice() * cartItem.getQuantity());
+
+            cart.getCartItems().add(cartItem);
         }else{
 
         }
@@ -68,7 +77,7 @@ public class CartService {
         }
 
         if (user == null)
-            cart = cartRepository.findByUserIdAndProductId(session.getId(), itemId);
+            cart = cartRepository.getCartBySession(session.getId());
         else
             cart = null;
 

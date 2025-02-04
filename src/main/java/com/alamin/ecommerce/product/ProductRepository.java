@@ -10,16 +10,16 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     // Custom query methods (if needed) can be added here
     @Query(value = """
-            SELECT p.* FROM products AS p
-            JOIN categories AS c ON p.category_id = c.category_id
+            SELECT p.* FROM tbl_products AS p
+            JOIN tbl_categories AS c ON p.category_id = c.category_id
             WHERE c.name = :category
             ORDER BY RAND()
             LIMIT 12""", nativeQuery = true)
     List<Product> findRandomProductsByCategory(@Param("category") String category);
 
     @Query(value = """
-            SELECT p.* FROM products AS p
-            JOIN categories AS c ON p.category_id = c.category_id
+            SELECT p.* FROM tbl_products AS p
+            JOIN tbl_categories AS c ON p.category_id = c.category_id
             WHERE c.name = :category
             ORDER BY p.productId
             LIMIT 20""", nativeQuery = true)
@@ -27,7 +27,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = """
             SELECT p FROM Product p
-            ORDER BY p.created DESC
+            ORDER BY p.productImages DESC
             LIMIT 12""")
     List<Product> findNewArrivalProducts();
+
+    @Query(value = "SELECT p FROM Product p WHERE p.active = TRUE AND p.enabled = TRUE ORDER BY p.totalSold DESC")
+    List<Product> getBestSellingProducts();
 }

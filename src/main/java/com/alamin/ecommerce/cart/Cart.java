@@ -14,10 +14,11 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
-    private Long productId;
+    private int total;
+    private String sessionId;
     private LocalDateTime created;
     private LocalDateTime updated;
-    @Column(name = "user_id")
+    //@Column(name = "user_id")
     private String userId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "cart")

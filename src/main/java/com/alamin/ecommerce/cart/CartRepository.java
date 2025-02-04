@@ -13,12 +13,9 @@ import java.util.Optional;
 public interface CartRepository extends JpaRepository<Cart, Long> {
    
     @Query(value = "SELECT c FROM Cart c WHERE c.userId = :userId")
-    List<Cart> findByUserId(String userId);
-    @Query(value = "SELECT c FROM Cart c WHERE c.userId = :userId AND c.productId = :productId")
-    Cart findByUserIdAndProductId(String userId, Long productId);
+    Cart findByUserId(String userId);
 
-    @Transactional
-    @Modifying
-    @Query(value = "DELETE FROM Cart c WHERE c.userId = :userId AND c.productId = :productId")
-    void deleteByUserIdAndProductId(Long productId, String userId);
+
+    @Query(value = "SELECT c FROM Cart c WHERE c.sessionId = :id")
+    Cart getCartBySession(String id);
 }

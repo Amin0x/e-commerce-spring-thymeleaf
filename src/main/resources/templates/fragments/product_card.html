@@ -33,7 +33,7 @@
                         <div class="circle-container position-absolute">
                             <i class="far fa-heart"></i>
                         </div>
-                        <img th:src="@{${product.imageUrl}}" src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image" th:alt="${product.name}">
+                        <img th:src="@{${product.image}}" src="https://via.placeholder.com/150" class="card-img-top" alt="Product Image" th:alt="${product.name}">
                         <span th:if="true" class="badge bg-info position-absolute top-0 start-0 m-2">New</span>
                         <span th:if="true" class="badge bg-success position-absolute top-0 end-0 m-2">Sale</span>
                     </div>
@@ -41,11 +41,7 @@
                         <h5 th:text="${product.name}" class="card-title">Product Title</h5>
                         <p th:text="${product.price}" class="card-text"><strong>$49.99</strong></p>
                         <p th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}" class="card-text"><strong>$49.99</strong></p>
-                        <form id="addToCartForm" method="post" class="mt-auto">
-                            <input type="hidden" name="productId" th:value="${product.id}">
-                            <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
-                        </form>
+                        <button th:data-add-to-cart="${product.productId}" data-quantity="1" type="button" role="button" class="btn btn-primary w-100">Add to Cart</button>
                     </div>
                 </div>
             </div>

@@ -33,9 +33,13 @@ public class ProductService {
     }
 
     public Page<Product> getAllProducts(int pageNumber, int count) {
-        if (pageNumber < 1) pageNumber = 1;
-        if (count < 10) count = 10;
-        Pageable pageable = PageRequest.of(pageNumber - 1, count);  // 20 products per page
+        if (pageNumber < 1)
+            pageNumber = 1;
+
+        if (count < 10)
+            count = 10;
+
+        Pageable pageable = PageRequest.of(pageNumber - 1, count);
         return productRepository.findAll(pageable);
     }
 
@@ -65,6 +69,10 @@ public class ProductService {
 
     // Delete product by ID
     public void deleteProduct(Long id) {
+        if (id == null){
+            throw new RuntimeException("Product not found");
+        }
+
         Optional<Product> existingProductOpt = productRepository.findById(id);
         if (existingProductOpt.isPresent()) {
             productRepository.deleteById(id);  // Delete product if it exists
@@ -102,6 +110,9 @@ public class ProductService {
     }
 
     public Product save(Product product) {
+        if (product == null){
+            throw new RuntimeException("Product not found");
+        }
         return productRepository.save(product);
     }
 
@@ -110,18 +121,34 @@ public class ProductService {
     }
 
     public List<Product> findByCategory(String category) {
+        if (category == null){
+            throw new RuntimeException("Product not found");
+        }
         return productRepository.findByCategory(category);
     }
 
     public Optional<Product> findById(Long id) {
+        if (id == null){
+            throw new RuntimeException("Product not found");
+        }
         return productRepository.findById(id);
     }
 
     public boolean existsById(Long id) {
+        if (id == null){
+            throw new RuntimeException("Product not found");
+        }
         return productRepository.existsById(id);
     }
 
     public void deleteById(Long id) {
+        if (id == null){
+            throw new RuntimeException("Product not found");
+        }
         productRepository.deleteById(id);
+    }
+
+    public List<Product> getBestSellingProducts() {
+        return productRepository.getBestSellingProducts();
     }
 }

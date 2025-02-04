@@ -11,44 +11,37 @@
 
     <title th:text="${title}">السلة</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link th:href="@{/css/bootstrap.min.css}"
+    <link th:href="@{/public/css/bootstrap.min.css}"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link th:href="@{/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
+    <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
 </head>
 
 <body dir="rtl">
     <main class="page-wrapper">
-        <section class="cart-container">
-            <div class="title">السلة</div>
-            <div class="cart-item" th:each="item : ${cart.items}">
-                <div class="item-details">
-                    <span class="product-name" th:text="${item.productName}">اسم المنتج</span>
-                    <span class="item-quantity">الكمية: <span th:text="${item.quantity}">1</span></span>
+        <nav th:replace="~{fragments/navbar :: navbar}" class="navbar-wrp"></nav>
+        <section class="cart-container mt-4">
+            <h4 class="title">السلة</h4>
+            <div class="cart-item" th:if="${cart != null}" th:each="item : ${cart?.cartItems}">
+                <div class="d-flex">
+                    <div style="width: 20%;"><img th:src="" th:alt=""/></div>
+                    <div class="item-details" style="width: 40%;">
+                        <span class="product-name" th:text="${item.product?.name}">اسم المنتج</span>
+                        <span class="item-quantity">الكمية: <span th:text="${item.quantity}">1</span></span>
+                    </div>
+                    <div class="item-price" style="width: 20%;" th:text="${item.price}">100.00 SDG</div>
+                    <div class="item-price" style="width: 20%;" th:text="${item.total}">100.00 SDG</div>
                 </div>
-                <div class="item-price" th:text="${item.price}">100.00 SDG</div>
+                <div class="bottom-boarder"></div>
             </div>
-            <div class="bottom-boarder"></div>
-            <div class="cart-item" th:each="item : ${cart.items}">
-                <div class="item-details">
-                    <span class="product-name" th:text="${item.productName}">اسم المنتج</span>
-                    <span class="item-quantity">الكمية: <span th:text="${item.quantity}">1</span></span>
+            <div  th:unless="${cart != null}">
+                <div>لاتوجد اي منتجات تمت اضافتها للسلة</div>
+                <div class="total">
+                    المجموع: <span th:text="${cart?.total}">0.00 SDG</span>
                 </div>
-                <div class="item-price" th:text="${item.price}">100.00 SDG</div>
             </div>
-            <div class="bottom-boarder"></div>
-            <div class="cart-item" th:each="item : ${cart.items}">
-                <div class="item-details">
-                    <span class="product-name" th:text="${item.productName}">اسم المنتج</span>
-                    <span class="item-quantity">الكمية: <span th:text="${item.quantity}">1</span></span>
-                </div>
-                <div class="item-price" th:text="${item.price}">100.00 SDG</div>
-            </div>
-            <div class="bottom-boarder"></div>
-            <div class="total">
-                المجموع: <span th:text="${cart.totalPrice}">0.00 SDG</span>
-            </div>
-            <button class="button-31">Checkout</button>
+            <button class="button-31 w-20">Checkout</button>
         </section>
+        <footer th:replace="~{fragments/footer :: footer}" class="mt-3"></footer>
     </main>
 
     <script th:src="@{/js/popper.min.js}"

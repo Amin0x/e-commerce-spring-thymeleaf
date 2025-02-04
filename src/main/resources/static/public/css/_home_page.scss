@@ -1,0 +1,24 @@
+.circle-container {
+    top: 5;
+    right: -5;
+    display: inline-block;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    top: 0px;
+    right: 5px;
+    text-decoration: none !important;
+
+    &:hover {
+        color: red;
+    }
+}
+
+.card {
+    .new{
+        position: absolute;
+        top: 5px;
+        left: 5px;
+    }
+}
+

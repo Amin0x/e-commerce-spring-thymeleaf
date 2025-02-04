@@ -20,9 +20,9 @@ public class CartController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/web/carts/{id}")
-    public String showCartPage(@PathVariable Long id, Model model) {
-        Cart cart = cartService.getCartById(id).orElseThrow();
+    @GetMapping("/cart")
+    public String showCartPage(Model model, HttpSession session) {
+        Cart cart = cartService.getCartBySession(session);
         model.addAttribute("cart", cart);
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");

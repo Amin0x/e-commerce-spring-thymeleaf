@@ -43,7 +43,7 @@ public class FileController {
 
         Product product = productService.getProductById(id).orElseThrow();
         Map<String, String> res = uploadFile(file);
-        product.getProductImage().add(new ProductImage(res.get("url"), id));
+        product.getProductImages().add(new ProductImage(res.get("url"), id));
         productService.save(product);
         return res;
     }

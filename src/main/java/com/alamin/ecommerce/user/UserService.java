@@ -66,9 +66,8 @@ public class UserService {
         return UUID.randomUUID().toString();
     }
 
-    public List<User> getLastUsers(int i) {
-
-        return userRepository.getLastUsers(Pageable.ofSize(i));
+    public List<User> getLastUsers(int size) {
+        return userRepository.getLastUsers(Pageable.ofSize(size));
     }
 
     public long findCount(){
