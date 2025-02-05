@@ -48,7 +48,7 @@ public class FileController {
         return res;
     }
 
-    @GetMapping("/admin/images/{name}")
+    @GetMapping({"/admin/images/{name}", "/uploads/images/{name}"})
     public void getImage(@PathVariable String name, HttpServletResponse response, UriComponentsBuilder ucb) {
         File file = new File("C:\\uploads\\" + name);
         if (!file.exists()) {

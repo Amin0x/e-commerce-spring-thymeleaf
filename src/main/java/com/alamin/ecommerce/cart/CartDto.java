@@ -5,6 +5,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartDto {
@@ -15,9 +16,22 @@ public class CartDto {
     private LocalDateTime created;
     private LocalDateTime updated;
     private String userId;
-    private List<CartItem> cartItems;
+    private List<CartItemDto> cartItems = new ArrayList<>();
 
     public CartDto() {
+    }
+
+    public CartDto(Cart cart) {
+        this.cartId = cart.getCartId();
+        this.total = cart.getTotal();
+        this.sessionId = cart.getSessionId();
+        this.created = cart.getCreated();
+        this.updated = cart.getUpdated();
+        this.userId = cart.getUserId();
+
+        this.cartItems = cart.getCartItems().stream().map(CartItemDto::new).toList();
+
+
     }
 
     public Long getCartId() {
@@ -68,11 +82,11 @@ public class CartDto {
         this.userId = userId;
     }
 
-    public List<CartItem> getCartItems() {
+    public List<CartItemDto> getCartItems() {
         return cartItems;
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
+    public void setCartItems(List<CartItemDto> cartItems) {
         this.cartItems = cartItems;
     }
 }

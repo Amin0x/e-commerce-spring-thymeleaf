@@ -1,0 +1,35 @@
+.cart-container {
+    .title{
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .item-details{
+        .product-name{
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    }
+
+    .cart-no-item{
+        padding: 2rem;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .item-price{}
+        
+    .total-wrp{
+        width: 400px;
+        border-radius: 1rem;
+        background-color: #f2f2f2;
+        padding: .8rem;
+        
+        .shipping, .tax, .subtotal, .total{
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

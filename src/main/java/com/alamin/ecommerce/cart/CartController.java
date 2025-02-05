@@ -31,10 +31,9 @@ public class CartController {
         return "public/cart";
     }
     
-    @GetMapping("/api/carts/{id}")
-    public ResponseEntity<Cart> getCart(@PathVariable Long id, HttpSession session) {
-
-        Cart cart = cartService.getCartById(id).orElseThrow();
+    @GetMapping("/api/cart/get")
+    public ResponseEntity<Cart> getCart(HttpSession session) {
+        Cart cart = cartService.getCartBySession(session);
         return ResponseEntity.ok(cart);
     }
 

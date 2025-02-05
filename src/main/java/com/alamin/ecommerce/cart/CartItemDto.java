@@ -1,27 +1,24 @@
 package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.product.Product;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import com.alamin.ecommerce.product.ProductDto;
 
-@Entity
-@Table(name = "tbl_cart_items", uniqueConstraints = {@UniqueConstraint(columnNames = {"cart_id", "product_id"})})
-public class CartItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CartItemDto {
     private Long id;
     private int quantity;
     private int price;
     private int total;
+    private ProductDto product;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    public CartItemDto() {
+    }
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
+    public CartItemDto(CartItem cartItem) {
+        this.id = cartItem.getId();
+        this.quantity  = cartItem.getQuantity();
+        this.price = cartItem.getPrice();
+        this.total = cartItem.getTotal();
+    }
 
     public Long getId() {
         return id;
@@ -55,19 +52,11 @@ public class CartItem {
         this.total = total;
     }
 
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
-    public Product getProduct() {
+    public ProductDto getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductDto product) {
         this.product = product;
     }
 }

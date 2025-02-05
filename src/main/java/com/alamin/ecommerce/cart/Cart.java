@@ -2,13 +2,15 @@ package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.user.User;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
 import lombok.*;
 
 @Entity
 @Data
-@Table(name = "tbl_carts", uniqueConstraints = {@UniqueConstraint(columnNames = {"userId", "productId"})})
+@Table(name = "tbl_carts")
 public class Cart {
 
     @Id
@@ -21,8 +23,8 @@ public class Cart {
     //@Column(name = "user_id")
     private String userId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "cart")
-    private List<CartItem> cartItems;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart", cascade = CascadeType.ALL)
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public Cart(){
         this.created = LocalDateTime.now();
