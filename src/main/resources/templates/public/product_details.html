@@ -10,15 +10,15 @@
     <meta name="keywords" content="home, page, example, bootstrap, website">
     <title>Product Details</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link th:href="@{/css/bootstrap.min.css}" href="../../static/public/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link th:href="@{/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
+    <link th:href="@{/public/css/bootstrap.min.css}" href="../../static/public/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
 </head>
 
 <body>
 
     <main class="page-wrapper">
+        <nav th:replace="~{fragments/navbar :: navbar}" class="navbar-wrp"></nav>
         <section class="product-details">
-
             <section class="product-details-header">
                 <div class="main-search-input-wrap">
                     <div class="main-search-input fl-wrap">
@@ -41,16 +41,15 @@
                     + 64 جيجابايت لابتوب لابتوب انتل N3350 64 بت كواد كور نتبووك ويندوز 10</h2>
                 <div class="product-image-wrap">
                     <div class="product-image text-center">
-                        <img th:src="@{${product.image}}" class="img-fluid" src="../../static/public/imgs/img9.jpg"
-                            alt="Product Image">
+                        <img th:src="@{'/uploads/images/'+ ${product.image}}" class="img-fluid" th:alt="product.name">
                     </div>
                 </div>
                 <div class="product-price">
-                    <div th:text="${product.price} + ' SDG '" class="d-inline-block">122 SDG </div>
+                    <div th:text="${product.price} + ' SDG '" class="price d-inline-block">122 SDG </div>
                     <div th:text="${product.price} + ' SDG '" class="price-old d-inline-block"> 155 SDG </div>
-                    <div th:text="${product.percnt}" class="price-discount d-inline-block"> 5% خصم</div>
+                    <div th:text="${discountPercent}" class="price-discount d-inline-block"> 5% خصم</div>
                 </div>
-                <div>
+                <div class="review-rate">
                     <i class="fas fa-star"></i> 4.5 (283 مراجعة)
                 </div>
                 <div class="product-description">
@@ -64,15 +63,14 @@
                     <button class="button-31">اضافة للعربة</button>
                 </div>
             </section>
-
-
             <section class="similar-products">
                 <h4>منتجات مشابه</h4>
                 <div class="row">
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
+                    <article class="col-6 col-md-4 col-lg-2" th:each="similarProduct : ${similarProducts}">
                         <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img10.jpg"
-                                alt="Similar Product Image">
+                            <div class="image"><img th:src="@{${similarProduct.imageUrl}}"
+                                                    src="../../static/public/imgs/img10.jpg"
+                                                    alt="Similar Product Image"></div>
                             <div class="product-item-btm">
                                 <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول Yepo جديد Intel Core i7 Windows 11
                                     Pro شاشة 15.6 بوصة 2K HD MX450 2G بطاقة رسومات مستقلة كمبيوتر مكتبي للأعمال</div>
@@ -82,151 +80,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img11.jpg"
-                                alt="Similar Product Image">
-                            <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول Yepo جديد Intel Core i7 Windows 11
-                                    Pro شاشة 15.6 بوصة 2K HD MX450 2G بطاقة رسومات مستقلة كمبيوتر مكتبي للأعمال</div>
-                                <div class="price">
-                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
-                                    <div class="oprice">1699 SDG</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img7.jpg"
-                                alt="Similar Product Image">
-                            <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول 15.6 بوصة يعمل بنظام التشغيل Windows
-                                    11 Pro Intel Core i7 8500Y 16GB RAM 1 تيرابايت SSD أجهزة الكمبيوتر المحمولة كمبيوتر
-                                    مكتبي بصمة فتح الكمبيوتر المحمول</div>
-                                <div class="price">
-                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
-                                    <div class="oprice">1699 SDG</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img12.jpg"
-                                alt="Similar Product Image">
-
-                            <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول جديد للألعاب بشاشة 15.6 بوصة
-                                    عالية الدقة Intel Celeron N5095 نظام Windows 11 ثنائي النطاق WiFi 16GB RAM 1
-                                    تيرابايت SSD كمبيوتر محمول مكتب الأعمال</div>
-                                <div class="price">
-                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
-                                    <div class="oprice">1699 SDG</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img13.webp"
-                                alt="Similar Product Image">
-                            <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول 10.1 بوصة يعمل بنظام التشغيل
-                                    Windows 10 OS رباعي النواة مثبت مسبقًا 3 جيجابايت + 64 جيجابايت كاميرا ويب HDMI
-                                    للمكتب (أسود)</div>
-                                <div class="price">
-                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
-                                    <div class="oprice">1699 SDG</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img14.jpg"
-                                alt="Similar Product Image">
-                            <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول 10.1 بوصة يعمل بنظام التشغيل
-                                    Windows 10 OS رباعي النواة مثبت مسبقًا 3 جيجابايت + 64 جيجابايت كاميرا ويب HDMI
-                                    للمكتب (أسود)</div>
-                                <div class="price">
-                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
-                                    <div class="oprice">1699 SDG</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img6.jpg"
-                                alt="Similar Product Image">
-                            <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">سامسونج جالكسي تاب أي 9، واي فاي، 8.7 بوصة، 64
-                                    جيجا، جرافيتي</div>
-                                <div class="price">
-                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
-                                    <div class="oprice">1699 SDG</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img16.jpg"
-                                alt="Similar Product Image">
-                            <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">لينوفو تاب بي 12، 128 جيجا، واي فاي 12 بوصة،
-                                    رمادي</div>
-                                <div class="price">
-                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
-                                    <div class="oprice">1699 SDG</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img15.jpg"
-                                alt="Similar Product Image">
-                            <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">ابتوب اتش بي موديل 15 fd0029nx شاشة FHD 15.6
-                                    بوصة إنتل كور i5 1334U (جيل 13) كرت أيرس Xe رام 8GB هارد SSD 512GB ويندوز 11 هوم
-                                    فضي طبيعي 9P7P3EA</div>
-                                <div class="price">
-                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
-                                    <div class="oprice">1699 SDG</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-6" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
-                            <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img1.jpg"
-                                alt="Similar Product Image">
-                            <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">HP لابتوب ايليت بوك 725 G4 خفيف الوزن للاعمال،
-                                    معالج AMD رباعي النواة A12، ذاكرة RAM DDR4 4GB، هارد ساتا 500GB، شاشة FHD 12.5
-                                    انش، ويندوز 10 برو</div>
-                                <div class="price">
-                                    <div class="cprice" th:text="${similarProduct.price}">1599 SDG</div>
-                                    <div class="oprice">1699 SDG</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
+                    </article>
                 </div>
             </section>
 
@@ -265,9 +119,9 @@
             </section>
 
 
-            <section class="user-reviews">
+            <section th:if="false" class="user-reviews">
                 <h4>المراجعات</h4>
-                <div th:each="review : ${product.reviews}">
+                <article th:each="review : ${product.reviews}">
                     <div class="review-item">
                         <h5 th:text="${review.userName}">احمد علي</h5>
                         <p th:text="${review.comment}">ممتاز اللابتوب</p>
@@ -283,7 +137,7 @@
                         <p th:text="${review.comment}">ممتاز اللابتوب</p>
                         <small th:text="${review.date}" dir="auto">15/03/2024 05:30 PM</small>
                     </div>
-                </div>
+                </article>
                 <div class="review-form">
                     <h4>اضافة مراجعة</h4>
                     <form th:action="@{/product/${product.id}/review}" method="post">
@@ -297,6 +151,7 @@
                         </div>
                         <button type="submit" class="button-31 mt-3" style="width: fit-content;">ارسال</button>
                     </form>
+                </div>
             </section>
         </section>
 
@@ -345,6 +200,7 @@
                 </div>
             </div>
         </footer>
+        <footer th:replace="~{fragments/footer :: footer}" class="mt-3"></footer>
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

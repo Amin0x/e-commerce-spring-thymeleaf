@@ -1,7 +1,10 @@
 package com.alamin.ecommerce.product;
 
 import com.alamin.ecommerce.category.Category;
+import com.alamin.ecommerce.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.jpa.support.PageableUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +27,12 @@ public class ProductService {
     @Autowired
     private ProductImageRepository productImageRepository;
 
-    public List<Product> getRandomProductsByCategory(String category) {
-        return productRepository.findRandomProductsByCategory(category);
+    public List<Product> getRandomProductsByCategory(String category, int size) {
+        if (size < 5) size = 5;
+
+        if (category.isEmpty()) throw new ResourceNotFoundException("null category name");
+
+        return productRepository.findRandomProductsByCategory(category, size);
     }
 
     public List<Product> getNewArrivalProducts() {
@@ -150,5 +157,12 @@ public class ProductService {
 
     public List<Product> getBestSellingProducts() {
         return productRepository.getBestSellingProducts();
+    }
+
+    public List<Product> getSimilarProducts(Product product) {
+        if (product == null || product.getProductId() == null)
+            throw new ResourceNotFoundException("cant get similar products");
+
+        return productRepository.getSimilarProducts(product.getProductId(), product.getName(), PageRequest.ofSize(30));
     }
 }

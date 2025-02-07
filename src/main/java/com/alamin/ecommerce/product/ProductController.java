@@ -21,12 +21,16 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public String showProductDetails(@PathVariable Long id, Model model) {
 
-        Product product = productService.getProductById(id).orElseThrow();
+        if (id == null)
+            throw new IllegalArgumentException("null argument");
 
-        double percent = (double) product.getPrice() / product.getInitPrice();
+        Product product = productService.getProductById(id).orElseThrow(()-> new IllegalArgumentException("not fund"));
+        List<Product> similarProducts = productService.getSimilarProducts(product);
+        double percent = Math.ceil((double) product.getPrice() / product.getInitPrice());
 
         model.addAttribute("product", product);
         model.addAttribute("percent", percent);
+        model.addAttribute("similarProducts", similarProducts);
 	    model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
