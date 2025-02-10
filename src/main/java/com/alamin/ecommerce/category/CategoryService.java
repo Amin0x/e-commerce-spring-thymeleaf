@@ -90,4 +90,10 @@ public class CategoryService {
     public boolean existsById(long id) {
         return categoryRepository.existsById(id);
     }
+
+    public List<Category> searchCategoryByName(String search) {
+        if (search == null)
+            throw new IllegalArgumentException("null not allowed");
+        return categoryRepository.searchCategoryByName(search);
+    }
 }

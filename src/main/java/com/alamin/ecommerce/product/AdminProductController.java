@@ -3,8 +3,8 @@ package com.alamin.ecommerce.product;
 import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.category.CategoryService;
 import com.alamin.ecommerce.user.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
-import jakarta.validation.Valid;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -24,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/admin")
+@Slf4j
 public class AdminProductController {
 
     @Autowired
@@ -32,13 +31,24 @@ public class AdminProductController {
     private CategoryService categoryService;
 
     @GetMapping("/products/all")
-    public String showAllProductPage(Model model) {
-        model.addAttribute("products", productService.getAllProducts(1,50));
-        model.addAttribute("totalPages", 5);
-        model.addAttribute("currentPage", 1);
-        model.addAttribute("size", 1);
-        model.addAttribute("sortField", 1);
-        model.addAttribute("sortDirection", 1);
+    public String showAllProductPage(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "0") int sort,
+            @RequestParam(defaultValue = "0") int dir,
+            Model model) {
+
+        if (page < 1) page = 1;
+        if (size < 1) size = 10;
+        Page<Product> allProducts = productService.getAllProducts(page, size);
+        model.addAttribute("products", allProducts);
+
+        model.addAttribute("totalPages", allProducts.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
+        model.addAttribute("sortField", sort);
+        model.addAttribute("sortDirection", dir);
+
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
@@ -195,6 +205,7 @@ public class AdminProductController {
         if (!productService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+
         Product product = productService.getProductById(id).orElseThrow(() -> new RuntimeException("category not found"));
         product.setName(productForm.name());
         product.setEnabled(productForm.enabled());
@@ -210,12 +221,14 @@ public class AdminProductController {
         product.setTotalSold(productForm.totalSold());
         //product.setViewCount(productForm.viewsCount());
 
-//        Set<ProductImage> productImages = new HashSet<>();
-//
-//        for (String image : productForm.images()) {
-//            productImages.add(new ProductImage(image, id));
-//        }
-//        product.setProductImage(productImages);
+        Set<ProductImage> imageSet = new HashSet<>(product.getProductImages());
+        for (String image : productForm.images()) {
+            ProductImage productImage = new ProductImage(image, product);
+            productImage.setAltText(product.getName());
+            imageSet.add(productImage);
+        }
+        product.setProductImages(new ArrayList<>(imageSet));
+
         try {
             Product updatedProduct = productService.save(product);
             return ResponseEntity.ok(updatedProduct);
@@ -226,20 +239,11 @@ public class AdminProductController {
     }
 
     // Upload an image
-    @PostMapping(name = "/products/images/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
-        Long id = productService.uploadImage(file);
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> map = new HashMap<>();
-        map.put("message", "Image uploaded successfully");
-        map.put("url", "/images/" + file.getOriginalFilename());
-        map.put("id", id.toString());
+    @PostMapping("/products/images/upload")
+    public ResponseEntity<List<ProductImage>> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("id") Long id) {
+        List<ProductImage> productImages = productService.uploadImage(file, id);
 
-        try {
-            return ResponseEntity.ok(objectMapper.writeValueAsString(map));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        return ResponseEntity.ok(productImages);
     }
 
     // Delete a product by ID
@@ -250,6 +254,30 @@ public class AdminProductController {
             return ResponseEntity.notFound().build();
         }
         productService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Delete a product by ID
+    @DeleteMapping("/products/images/{id}")
+    public ResponseEntity<Void> deleteProductImage(@PathVariable Long id, @RequestBody Map<String, String> imageId) {
+        if (!productService.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        Product product = productService.findById(id).orElseThrow();
+       productService.deleteProductImage(product, Long.valueOf(imageId.get("imageId")));
+        log.info("delete image: {}" , imageId);
+//        for (var it : product.getProductImages()){
+//            if (it.getId() == Long.valueOf(imageId.get("imageId"))) {
+//                product.getProductImages().remove(it);
+//                it.setProduct(null);
+//                //productService.deleteProductImage(it.getId());
+//                productService.save(product);
+//                log.info("delete image successfully");
+//            }
+//
+//
+//        }
+
         return ResponseEntity.noContent().build();
     }
 }

@@ -38,7 +38,7 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "categoryId", unique = false)
     private Category category;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product",cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<ProductImage> productImages = new ArrayList<>();
 
     // Default constructor

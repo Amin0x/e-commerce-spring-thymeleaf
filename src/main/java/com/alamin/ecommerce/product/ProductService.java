@@ -1,21 +1,16 @@
 package com.alamin.ecommerce.product;
 
 import com.alamin.ecommerce.category.Category;
+import com.alamin.ecommerce.config.FileUploadService;
 import com.alamin.ecommerce.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.data.jpa.support.PageableUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +19,12 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
     @Autowired
     private ProductImageRepository productImageRepository;
+
+    @Autowired
+    private FileUploadService fileUploadService;
 
     public List<Product> getRandomProductsByCategory(String category, int size) {
         if (size < 5) size = 5;
@@ -92,28 +91,27 @@ public class ProductService {
         return null;
     }
 
-    public Long uploadImage(MultipartFile file) {
-        String fn = file.getOriginalFilename();
-        // Save the image file to the server
-        try {
-            String uploadDir = "path/to/upload/directory/";
-            Path uploadPath = Paths.get(uploadDir);
-
-            if (!Files.exists(uploadPath)) {
-               Files.createDirectories(uploadPath);
-            }
-
-            Path filePath = uploadPath.resolve(fn);
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            // Return the ID of the image
-            ProductImage pimg = productImageRepository.save(new ProductImage(fn, null));  // Save the image to the database
-            return pimg.getId();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to store file " + fn, e);
+    public List<ProductImage> uploadImage(MultipartFile file, Long id) {
+        if (id == null) {
+            throw new RuntimeException("");
         }
 
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException(""));
 
+
+        String fn = fileUploadService.uploadFile(file);
+
+        // Return the ID of the image
+        ProductImage productImage = new ProductImage(fn, product);
+        productImage.setAltText(product.getName());
+        productImage.setCaption(product.getName());
+        productImage.setTitle(product.getName());
+        productImage.setCreatedAt(LocalDateTime.now());
+
+        product.getProductImages().add(productImage);
+        save(product);
+
+        return product.getProductImages();
     }
 
     public Product save(Product product) {
@@ -164,5 +162,12 @@ public class ProductService {
             throw new ResourceNotFoundException("cant get similar products");
 
         return productRepository.getSimilarProducts(product.getProductId(), product.getName(), PageRequest.ofSize(30));
+    }
+
+    public void deleteProductImage(Product product, Long id) {
+        ProductImage productImage = productImageRepository.findById(id).orElseThrow();
+        product.getProductImages().remove(productImage);
+        save(product);
+        //productImageRepository.deleteById(id);
     }
 }

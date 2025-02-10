@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 import lombok.*;
 
 import com.alamin.ecommerce.product.Product;
@@ -40,6 +42,8 @@ public class Category {
 
     // Constructor for convenience
     public Category(String name, String description, Category parent) {
+        if (Objects.equals(this, parent))
+            throw new IllegalArgumentException("parent is same as category");
         this.name = name;
         this.description = description;
         this.parent = parent;

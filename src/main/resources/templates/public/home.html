@@ -61,7 +61,7 @@
                             <i class="far fa-heart"></i>
                         </a>
                         <a th:href="@{/products/{id}(id=${product.productId})}" href="#">
-                            <img th:src="${ (product.productImages?.size == 0? '/public/imgs/img14.jpg':'/images/' + product.image) }"
+                            <img th:src="${ (product.productImages?.size == 0? '/public/imgs/img14.jpg':'/uploads/images/' + product.productImages[0]) }"
                                  class="card-img-top" alt="Product Image" src="">
                         </a>
                         <span th:if="product.new" class="badge bg-info new">جديد</span>

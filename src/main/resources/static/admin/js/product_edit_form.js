@@ -1,17 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
-    let productId =  '';
     const dropZone = document.getElementById('dropZone');
     const fileInput = document.getElementById('fileInput');
     const deleteButtons = document.querySelectorAll('button[data-delete]');
-    const url = '/admin/api/products/' + 1 ;/*[[${product.id}]]*/
-    console.log(url);
-
-    document.getElementById('editProductForm').addEventListener('submit', function(event){
-        event.preventDefault();
-        event.stopPropagation();
-
+    
+    function handleSubmit() {
         const formData = {
-            name: document.getElementById('name').value,
+            image: document.getElementById('name').value,
             description: document.getElementById('description').value,
             price: document.getElementById('price').value,
             initPrice: document.getElementById('initPrice').value,
@@ -21,11 +15,10 @@ document.addEventListener("DOMContentLoaded", function() {
             totalSold: document.getElementById('totalSold').value,
             active: document.getElementById("active").checked? "true":"false",
             enabled: document.getElementById("enabled").checked? "true":"false",
-            images: [],
         }
         
         
-        fetch(url, {
+        fetch('/admin/api/products/' + productId, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -40,43 +33,62 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 Promise.reject(response.status);
                 console.error('Failed to update product:', response.statusText);
-                alert('Failed to update product.');
             }
 
         })
         .then(data => {
-            alert('Product updated successfully!');
+            console.log('Product updated successfully!');
             // Redirect or update UI as needed
         })
         .catch(error => {
             console.log(error);
             console.error('Error updating product:', error);
-            alert('Failed to update product.');
         });
+    }
+
+    document.getElementById('editProductForm').addEventListener('submit', function(event){
+        event.preventDefault();
+        event.stopPropagation();
+
+        handleSubmit();
     });
 
-    deleteButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            var imageId = this.getAttribute('data-delete');
-            console.log('Delete image with ID:', imageId);
+    deleteButtons.forEach(handleDeleteButtonsClick);
+
+    function handleDeleteButtonsClick(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            console.log('Delete image with ID:');
 
             // Perform AJAX request to delete image from server
-            fetch(url + "/delete-image", { 
-                method: "post", 
-                headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                body: {"imageId": imageId}
+            fetch("/admin/products/images/" + productId, { 
+                method: "delete",
+                headers: {
+                    "Content-Type": "application/json"
+                }, 
+                body: JSON.stringify({
+                    imageId: button.getAttribute('data-delete')*1, 
+                    id: productId
+                })
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(res => {
+                if(!res.ok) {
+                    Promise.reject(res.status);
+                    console.error('Failed to delete image:', res.statusText);
+                    return;
+                }
+               
                 console.log('Image deleted successfully.');
-                console.log(data);
                 button.parentElement.remove();
-            }).catch(err => {
+                
+            })
+           .catch(err => {
                 console.log(err);
                 console.log('Failed to delete image.');
             });
         });
-    });
+    };
 
     fileInput.addEventListener('change', function(event){
         uploadImage(event.target.files[0]);
@@ -111,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
         formData.append('file', file);
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/admin/upload', true);
+        xhr.open('POST', '/admin/products/images/upload?id=' + productId, true);
 
         xhr.upload.addEventListener('progress', function(event) {
             var percent = (event.loaded / event.total) * 100;
@@ -120,17 +132,29 @@ document.addEventListener("DOMContentLoaded", function() {
 
         xhr.onload = function() {
             if (xhr.status === 200) {
-                const div = document.createElement('div');
-                const img = document.createElement('img');
-                const button = document.createElement('button');
-                div.classList.add("image");
-                div.setAttribute("data-image", xhr.responseText);
-                img.setAttribute("src", xhr.responseText);
-                img.setAttribute("alt", xhr.responseText);
-                button.setAttribute("data-delete", xhr.responseText);
-                div.appendChild(img);
-                div.appendChild(button);
-                document.getElementById('productImages').appendChild(div);
+                const data = JSON.parse(xhr.responseText);
+                document.getElementById('productImages').innerHTML = '';
+                console.log(data);
+                images = [];
+                images = data;
+                images.forEach(function(image) {
+
+                    const div = document.createElement('div');
+                    const img = document.createElement('img');
+                    const button = document.createElement('button');
+                    div.classList.add("image");
+                    div.setAttribute("data-image", image.id);
+                    img.setAttribute("src","/admin/images/" + image.image);
+                    img.setAttribute("alt", image.altText);
+                    button.setAttribute("data-delete", image.id);
+                    button.classList.add("delete-btn");
+                    button.textContent = "Delete";
+                    div.appendChild(img);
+                    div.appendChild(button);
+                    document.getElementById('productImages').appendChild(div);
+                    handleDeleteButtonsClick(button);
+                });
+                
                 //resetProgressBars('success');
             } else {
                 
@@ -140,4 +164,29 @@ document.addEventListener("DOMContentLoaded", function() {
         
         xhr.send(formData);
     }
+
+    /*const fetchImages = () => {
+        fetch(url + "/images")
+       .then(response => response.json())
+       .then(data => {
+        data.forEach(image => {
+            const div = document.createElement('div');
+            const img = document.createElement('img');
+            const button = document.createElement('button');
+            div.classList.add("image");
+            div.setAttribute("data-image", image);
+            img.setAttribute("src", image);
+            img.setAttribute("alt", image);
+            button.setAttribute("data-delete", image);
+            div.appendChild(img);
+            div.appendChild(button);
+            document.getElementById('productImages').appendChild(div);
+        });
+  
+       })
+       .catch(error => {
+            console.log(error);
+            console.error('Error fetching images:', error);
+        });
+    };*/
 });

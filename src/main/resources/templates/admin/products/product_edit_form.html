@@ -11,82 +11,89 @@
 </head>
 
 <body>
-    <div class="page-wrapper">
-        <aside th:replace="~{admin/fragments/navigation :: navigation}"></aside>
-        <main class="content">
-            <header th:replace="~{admin/fragments/header :: header}"></header>
-            <div class="edit-product-container">
-                <h2>Edit Product</h2>
-                <form id="editProductForm">
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" th:value="${product.name}">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"
-                            th:text="${product.description}"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price:</label>
-                        <input type="number" class="form-control" id="price" name="price" th:value="${product.price}">
-                    </div>
-                    <div class="form-group">
-                        <label for="initPrice">Initial Price:</label>
-                        <input type="number" class="form-control" id="initPrice" name="initPrice"
-                            th:value="${product.initPrice}">
-                    </div>
-                    <div class="form-group">
-                        <label for="sku">SKU:</label>
-                        <input type="text" class="form-control" id="sku" name="sku" th:value="${product.sku}">
-                    </div>
-                    <div class="form-group">
-                        <label for="stock">Stock:</label>
-                        <input type="number" class="form-control" id="stock" name="stock" th:value="${product.stock}">
-                    </div>
-                    <div class="form-group">
-                        <label for="totalSold">Total Sold:</label>
-                        <input type="number" class="form-control" id="totalSold" name="totalSold"
-                            th:value="${product.totalSold}">
-                    </div>
-                    <div class="d-flex gap-5 my-4">
-                        <div class="flex-grow-1">
-                            <input type="checkbox" class="" id="active" name="active" th:checked="${product.active}">
-                            <label for="active">Active</label>
+    <div>
+        <div class="page-wrapper">
+            <aside th:replace="~{admin/fragments/navigation :: navigation}"></aside>
+            <main class="content">
+                <header th:replace="~{admin/fragments/header :: header}"></header>
+                <div class="edit-product-container">
+                    <h2>Edit Product</h2>
+                    <form id="editProductForm">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" th:value="${product.name}">
                         </div>
-                        <div class="flex-grow-1">
-                            <input type="checkbox" class="" id="enabled" name="enabled" th:checked="${product.enabled}">
-                            <label for="enabled">Enabled</label>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"
+                                th:text="${product.description}"></textarea>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="category">Category:</label>
-                        <select class="form-control" id="category" name="category">
-                            <option th:each="category : ${categories}" th:value="${category.categoryId}"
-                                th:text="${category.name}"
-                                th:selected="${category.categoryId} == ${product?.category?.categoryId}? 'ture':'false'">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Images:</label>
-                        <div class="product-images" id="productImages">
-                            <div class="image" th:each="image : ${product.productImage}" data-image="${image}">
-                                <img th:src="@{/images/ + ${image}}" alt="Product Image">
-                                <button type="button" data-delete="${image}">delete</button>
+                        <div class="form-group">
+                            <label for="price">Price:</label>
+                            <input type="number" class="form-control" id="price" name="price" th:value="${product.price}">
+                        </div>
+                        <div class="form-group">
+                            <label for="initPrice">Initial Price:</label>
+                            <input type="number" class="form-control" id="initPrice" name="initPrice"
+                                th:value="${product.initPrice}">
+                        </div>
+                        <div class="form-group">
+                            <label for="sku">SKU:</label>
+                            <input type="text" class="form-control" id="sku" name="sku" th:value="${product.sku}">
+                        </div>
+                        <div class="form-group">
+                            <label for="stock">Stock:</label>
+                            <input type="number" class="form-control" id="stock" name="stock" th:value="${product.stock}">
+                        </div>
+                        <div class="form-group">
+                            <label for="totalSold">Total Sold:</label>
+                            <input type="number" class="form-control" id="totalSold" name="totalSold"
+                                th:value="${product.totalSold}">
+                        </div>
+                        <div class="d-flex gap-5 my-4">
+                            <div class="flex-grow-1">
+                                <input type="checkbox" class="" id="active" name="active" th:checked="${product.active}">
+                                <label for="active">Active</label>
+                            </div>
+                            <div class="flex-grow-1">
+                                <input type="checkbox" class="" id="enabled" name="enabled" th:checked="${product.enabled}">
+                                <label for="enabled">Enabled</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="image-upload">
-                        <div id="dropZone" class="drop-zone">Drag and drop your image here</div>
-                        <input type="file" id="fileInput" name="file" style="display: none;">
-                    </div>
-                    <input type="hidden" id="productId" name="id" th:value="${product.productId}">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </form>
-            </div>
-        </main>
+                        <div class="form-group">
+                            <label for="category">Category:</label>
+                            <select class="form-control" id="category" name="category">
+                                <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                                    th:text="${category.name}"
+                                    th:selected="${category.categoryId} == ${product?.category?.categoryId}? 'ture':'false'">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div>Images:</div>
+                            <div class="product-images" id="productImages">
+                                <div class="image" th:each="image : ${product.productImages}" th:data-image="${image.id}">
+                                    <img class="img-item" th:src="@{'/admin/images/' + ${image.image}}" src="/static/public/imgs/img1.jpg" th:alt="${image.altText}">
+                                    <button type="button" class="delete-btn" th:data-delete="${image.id}">delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-upload">
+                            <div id="dropZone" class="drop-zone">Drag and drop your image here</div>
+                            <input type="file" id="fileInput" name="file" style="display: none;">
+                        </div>
+                        <input type="hidden" id="productId" name="id" th:value="${product.productId}">
+                        <div><button type="submit" class="button-37">Save Changes</button></div>                        
+                    </form>
+                </div>
+            </main>
+        </div>
+        <footer th:replace="~{admin/fragments/footer::footer}"></footer>
     </div>
+    <script th:inline="javascript">
+        const productId = /*[[${product.productId}]]*/  1;  
+        let images = [];      
+    </script>
     <script th:src="@{/admin/js/product_edit_form.js}" src="../../../static/admin/js/product_edit_form.js"></script>
 </body>
 

@@ -59,13 +59,13 @@
 
             <div class="d-flex justify-content-between">
                 <div>
-                    Page <span th:text="${currentPage}">1</span> of <span th:text="${totalPages}">10</span>
+                    Page <span th:text="${currentPage+1}">1</span> of <span th:text="${totalPages}">10</span>
                 </div>
                 <div>
-                    <a th:href="@{/web/products(page=${currentPage-1}, size=${size}, sortField=${sortField}, sortDirection=${sortDirection})}"
+                    <a th:href="@{/admin/products/all(page=${currentPage-1}, size=${size}, sort=${sortField}, dir=${sortDirection})}"
                        class="btn btn-secondary btn-sm"
                        th:if="${currentPage > 1}">Previous</a>
-                    <a th:href="@{/web/products(page=${currentPage+1}, size=${size}, sortField=${sortField}, sortDirection=${sortDirection})}"
+                    <a th:href="@{/admin/products/all(page=${currentPage+1}, size=${size}, sort=${sortField}, dir=${sortDirection})}"
                        class="btn btn-secondary btn-sm"
                        th:if="${currentPage < totalPages}">Next</a>
                 </div>

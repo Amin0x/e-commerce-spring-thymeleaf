@@ -12,83 +12,122 @@
 </head>
 
 <body>
-    <div class="page-wrapper">
-        <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-        <div class="create-product-container">
-            <h2>Create New Product</h2>
-            <div class="box2 p-3">
-                <div class="form-box">
-                    <form th:action="@{/admin/products}" id="createProduct">
-                        <section class="product-info">
-                            <div class="name">
-                                <label for="name">Name:</label>
-                                <input type="text" class="name-input" name="name" th:value="${name}" id="name">
-                            </div>
-                            <div class="description">
-                                <label for="description">Description:</label>
-                                <textarea class="description-input" th:value="${description}" name="description" id="description" rows="3"></textarea>
-                            </div>
-                            <div class="product-row">
-                                <div class="price">
-                                    <label for="price">Price:</label>
-                                    <input type="number" name="price" class="price-input" th:value="${price}" id="price">
+    <div>
+        <div class="page-wrapper">
+            <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
+            <div class="create-product-container">
+                <h2>Create New Product</h2>
+                <div class="box2 p-3">
+                    <div class="form-box">
+                        <form th:action="@{/admin/products}" id="createProduct">
+                            <section class="product-info">
+                                <div class="name">
+                                    <label for="name">Name:</label>
+                                    <input type="text" class="name-input" name="name" th:value="${name}" id="name">
                                 </div>
-                                <div class="stock">
-                                    <label for="stock">Stock:</label>
-                                    <input type="number" name="stock" class="stock-input" th:vlaue="${stock}" id="stock" value="0">
+                                <div class="description">
+                                    <label for="description">Description:</label>
+                                    <textarea class="description-input" th:value="${description}" name="description" id="description" rows="3"></textarea>
                                 </div>
-                            </div>
-                        </section>
-
-                        <section class="category-wrp">
-                            <div>
-                                <label for="category">Category:</label>
-                                <div class="category">
-                                    <select id="category" name="category">
-                                        <option name="category" value="">Select Category</option>
-                                        <option th:each="category : ${categories}" th:name="${category.name}"
-                                            th:value="${category.categoryId}" th:text="${category.name}">Category
-                                        </option>
-                                    </select>
-                                    <input type="text" name="categoryInput position-absolute top-0 left-0"
-                                        class="control-input" id="categoryInput">
+                                <div class="product-row">
+                                    <div class="price">
+                                        <label for="price">Price:</label>
+                                        <input type="number" name="price" class="price-input" th:value="${price}" id="price">
+                                    </div>
+                                    <div class="stock">
+                                        <label for="stock">Stock:</label>
+                                        <input type="number" name="stock" class="stock-input" th:vlaue="${stock}" id="stock" value="0">
+                                    </div>
                                 </div>
+                            </section>
+                            <section class="category-wrp">
+                                <div>
+                                    <label for="category">Category:</label>
+                                    <div class="category">
+                                        <input type="text" name="categoryInput" class="control-input" id="categoryInput" autocomplete="off">
+                                        <div id="category" name="category">
+                                            <p data-value="">Root</p>
+                                            <p th:each="category : ${categories}" th:data-value="${category.categoryId}" th:text="${category.name}">Category</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <div class="product-brand">
+                                <label for="brand">Brand:</label>
+                                <input type="text" name="brand" class="input-brand" th:vlaue="${brand}" id="brand">
                             </div>
-                        </section>
-                        <section class="product-enabled">
-                            <div class="active-checkbox">
-                                <input type="checkbox" id="active" name="active" th:value="${active}" value="0">
-                                <label for="active">Enabled</label>
-                            </div>
-                            <div class="enabled-checkbox">
-                                <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}" value="0">
-                                <label for="enabled">Active</label>
-                            </div>
-                        </section>
-
-                        <section class="product-images">
-                            <div class="form-group">
-                                <div>Product Image:</div>
-                                <div id="imagesPreview" class="d-flex flex-wrap"></div>
-                                <input type="file" id="fileImages" name="fileImages" class="d-none" multiple>
-                                <button type="button" class="button-1" id="uploadImage">Upload Image</button>
-                            </div>
-                        </section>
-
-                        <button type="submit" class="btn btn-primary">Create Product</button>
-                    </form>
+                            <section class="product-enabled">
+                                <div class="active-checkbox">
+                                    <input type="checkbox" id="active" name="active" th:value="${active}" value="0">
+                                    <label for="active">Enabled</label>
+                                </div>
+                                <div class="enabled-checkbox">
+                                    <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}" value="0">
+                                    <label for="enabled">Active</label>
+                                </div>
+                            </section>
+                            <section class="product-primary-img">
+                                <div class="form-group">
+                                    <div>Main Image:</div>
+                                    <div id="MainImagePreview" class="d-flex flex-wrap"></div>
+                                    <input type="file" id="filePrimeryImage" name="filePrimeryImage" class="file-primery-image">
+                                    <button type="button" class="button-37" id="addMainImage">Add Primary Image</button>
+                                </div>
+                            </section>
+                            <section class="product-images">
+                                <div class="form-group">
+                                    <div>Product Image:</div>
+                                    <div id="imagesPreview" class="d-flex flex-wrap"></div>
+                                    <input type="file" id="fileImages" name="fileImages" class="d-none" multiple>
+                                    <button type="button" class="button-37" id="uploadImage">Upload Image</button>
+                                </div>
+                            </section>
+                            <button type="submit" class="button-37 submit-button">Create Product</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+        <footer th:replace="~{admin/fragments/footer::footer}"></footer>
     </div>
-    <footer th:replace="~{admin/fragments/footer::footer}">
-    </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let productImage = [];
+            let productPrimaryImage = '';
+
+            document.getElementById('addMainImage').addEventListener('click', function () {
+                document.getElementById('filePrimeryImage').click();
+            });
+
+            document.getElementById('filePrimeryImage').addEventListener('change', function () {
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    document.getElementById('MainImagePreview').appendChild(img);
+                };
+                reader.readAsDataURL(file);
+                productPrimaryImage = '';
+
+                fetch('', {
+                    method: 'Post',
+                    body: new FormData({file: file}),
+                })
+                .then(response => response.ok ? response.json() : Promise.reject(response))
+                .then(data => {
+                    productPrimaryImage = data;
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error uploading image:', error);
+                });
+
+
+            });
 
             document.getElementById('uploadImage').addEventListener('click', function () {
                 document.getElementById('fileImages').click();
@@ -119,6 +158,7 @@
                     price: document.getElementById('price').value,
                     stock: document.getAnimations('stock').value,
                     category: document.getElementById('category').value,
+                    brand: document.getElementById('brand').value,
                     active: document.getElementById('active').checked ? true : false,
                     enabled: document.getElementById('enabled').checked ? true : false,
                     images: productImage,
@@ -136,6 +176,7 @@
                     if (response.ok) {
                         const data = await response.json();
                         console.log(data);
+                        window.location = '/admin/products/create';
                         return data;
                     } else {
                         Promise.reject(response.status);
@@ -145,13 +186,21 @@
                 }
             };
 
+            const validateInputData = (input) => {
+                if (input.value === '') {
+                    input.classList.add('is-invalid');
+                    input.closest('div div.message').classList.add('active');
+                    return false;
+                }
+                return true;
+            };
 
             const validateInputs = () => {
 
                 let name = document.getElementById('name');
                 let des = document.getElementById('description');
                 let price = document.getElementById('price');
-                let stock = document.getAnimations('stock');
+                let stock = document.getElementById('stock');
                 let category = document.getElementById('category');
 
                 name.classList.remove('is-invalid');
@@ -160,9 +209,11 @@
                 stock.classList.remove('is-invalid');
                 category.classList.remove('is-invalid');
 
-                if (name.value === '' || name.value.length < 3) {
-                    name.classList.add('is-invalid');
-                    name.closest('div div.message').classList.add('active');
+                if (!validateInputData(name)) {
+                    return false;
+                }
+
+                if(!validateInputData(des)) {
                     return false;
                 }
 
@@ -208,6 +259,50 @@
                     console.log('Reading file:', file.name);
                     reader.readAsDataURL(file);
                 }
+            });
+
+            window.addEventListener('click', function (event) {
+                document.getElementById('category').classList.remove('active');
+            });
+
+            document.getElementById('categoryInput').addEventListener('keydown', function(event) {
+                let  category = event.target.value;
+                fetch('/admin/categories/search/' + category)
+                .then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        console.log('Error fetch category');
+                        //Promise.reject(res.statusCode);
+                    }
+                })
+                .then(function(data) {
+                    console.log(data);
+                    const catElm = document.getElementById('category');
+                    catElm.innerHTML = "";
+                    data !== undefined && data.map(element => {
+                        const opt = document.createElement('p');
+                        opt.setAttribute("data-value", element.categoryId);
+                        opt.textContent = element.name;                        
+                        catElm.appendChild(opt);
+                        
+                        if(!catElm.classList.contains("category")){
+                            catElm.classList.add("active");
+                        }
+
+                        document.querySelectorAll("p[data-value]").forEach(function(item) {
+                            item.addEventListener('click', function() {
+                                catElm.value = this.getAttribute("data-value");
+                                catElm.classList.remove("active");
+                            });
+                        });
+                        
+                    });
+                    
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                });
             });
 
         });

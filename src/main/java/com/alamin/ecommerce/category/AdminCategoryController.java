@@ -78,6 +78,12 @@ public class AdminCategoryController {
         return category.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/search/{search}")
+    public ResponseEntity<List<Category>> searchCategoryByName(@PathVariable String search) {
+        List<Category> category = categoryService.searchCategoryByName(search);
+        return ResponseEntity.ok(category);
+    }
+
     // Update an existing category
     @PutMapping("/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody CategoryDto category) {
