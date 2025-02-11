@@ -796,8 +796,28 @@ body {
   width: 100%;
   height: 45px;
 }
+.create-product-container .product-primary-img {
+  background-color: aliceblue;
+  padding: 20px;
+  margin-bottom: 30px;
+  border: 1px solid #dfdfdf;
+  border-radius: 5px;
+}
 .create-product-container .product-primary-img .file-primery-image {
   display: none;
+}
+.create-product-container .product-primary-img .title {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.create-product-container .product-primary-img #MainImagePreview {
+  padding: 5px;
+  /* background-color: #ccc; */
+  margin-bottom: 12px;
+  width: 300px;
+  height: 300px;
+  /* margin-left: auto; */
+  margin-right: auto;
 }
 .create-product-container .product-images input {
   display: none;

@@ -112,10 +112,10 @@ public class ProductService {
         productImage.setTitle(product.getName());
         productImage.setCreatedAt(LocalDateTime.now());
 
-        product.getProductImages().add(productImage);
-        save(product);
+        product.addImage(productImage);
+        Product save = save(product);
 
-        return product.getProductImages();
+        return save.getProductImages();
     }
 
     public Product save(Product product) {
