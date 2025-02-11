@@ -1,52 +1,38 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
+    
     const deleteButtons = document.querySelectorAll('button[data-delete]');
     
     function handleSubmit() {
         const formData = {
-            image: document.getElementById('name').value,
-            description: document.getElementById('description').value,
-            price: document.getElementById('price').value,
-            initPrice: document.getElementById('initPrice').value,
-            category: document.getElementById('category').value,
-            sku: document.getElementById('sku').value,
-            stock: document.getElementById('stock').value,
-            totalSold: document.getElementById('totalSold').value,
-            active: document.getElementById("active").checked? "true":"false",
-            enabled: document.getElementById("enabled").checked? "true":"false",
-        }
+            name: $('#name').val(),
+            description: $('#description').val(),
+            price: $('#price').val(),
+            initPrice: $('#initPrice').val(),
+            category: $('#category').val(),
+            sku: $('#sku').val(),
+            stock: $('#stock').val(),
+            totalSold: $('#totalSold').val(),
+            active: $("#active").is(":checked") ? "true" : "false",
+            enabled: $("#enabled").is(":checked") ? "true" : "false"
+        };
         
-        
-        fetch('/admin/api/products/' + productId, {
+        $.ajax({
+            url: '/admin/api/products/' + productId,
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formData),
-        })
-        .then(response => {
-            if(response.ok) {
-                response.json();
+            contentType: "application/json",
+            data: JSON.stringify(formData),
+            success: function(data) {
                 console.log('Product updated successfully!');
                 // Redirect or update UI as needed
-            } else {
-                Promise.reject(response.status);
+            },
+            error: function(response) {
                 console.error('Failed to update product:', response.statusText);
             }
-
-        })
-        .then(data => {
-            console.log('Product updated successfully!');
-            // Redirect or update UI as needed
-        })
-        .catch(error => {
-            console.log(error);
-            console.error('Error updating product:', error);
         });
     }
+    
 
-    document.getElementById('editProductForm').addEventListener('submit', function(event){
+    $('#editProductForm').on('submit', function(event){
         event.preventDefault();
         event.stopPropagation();
 
@@ -54,139 +40,128 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     deleteButtons.forEach(handleDeleteButtonsClick);
-
-    function handleDeleteButtonsClick(button) {
-        button.addEventListener('click', function(e) {
+    function handleDeleteButtonsClick(b) {
+        $(b).on('click', function(e) {
             e.preventDefault();
             
             console.log('Delete image with ID:');
-
+    
             // Perform AJAX request to delete image from server
-            fetch("/admin/products/images/" + productId, { 
-                method: "delete",
-                headers: {
-                    "Content-Type": "application/json"
-                }, 
-                body: JSON.stringify({
-                    imageId: button.getAttribute('data-delete')*1, 
+            $.ajax({
+                url: "/admin/products/images/" + productId,
+                method: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    imageId: $(button).data('delete'),
                     id: productId
-                })
-            })
-            .then(res => {
-                if(!res.ok) {
-                    Promise.reject(res.status);
-                    console.error('Failed to delete image:', res.statusText);
-                    return;
+                }),
+                success: function(res) {
+                    console.log('Image deleted successfully.');
+                    $(b).parent().remove();
+                },
+                error: function(err) {
+                    console.error('Failed to delete image:', err.statusText);
+                    console.log('Failed to delete image.');
                 }
-               
-                console.log('Image deleted successfully.');
-                button.parentElement.remove();
-                
-            })
-           .catch(err => {
-                console.log(err);
-                console.log('Failed to delete image.');
             });
         });
-    };
+    }
+    
 
-    fileInput.addEventListener('change', function(event){
+    $('#fileInput').on('change', function(event){
         uploadImage(event.target.files[0]);
     });
 
-    dropZone.addEventListener('click', function(event) {
+    $('#dropZone').on('click', function(event) {
         event.preventDefault();
-        fileInput.click();
+        $('#fileInput').click();
     });
 
-    dropZone.addEventListener('dragover', function(event) {
+    $('#dropZone').on('dragover', function(event) {
         event.preventDefault();
-        dropZone.style.borderColor = 'green';
+        $('#dropZone').css('border-color', 'green');
     });
 
-    dropZone.addEventListener('dragleave', function() {
-        dropZone.style.borderColor = '#ccc';
+    $('#dropZone').on('dragleave', function() {
+        $('#dropZone').css('border-color', '#ccc');
     });
 
-    dropZone.addEventListener('drop', function(event) {
+    $('#dropZone').on('drop', function(event) {
         event.preventDefault();
-        dropZone.style.borderColor = '#ccc';
+        $(this).css('border-color', '#ccc');
 
         var files = event.dataTransfer.files;
-        fileInput.files = files;
+        //fileInput.files = files;
         uploadImage(files.item(0));
     });
 
+
     function uploadImage(file) {
-        
         var formData = new FormData();
         formData.append('file', file);
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/admin/products/images/upload?id=' + productId, true);
-
-        xhr.upload.addEventListener('progress', function(event) {
-            var percent = (event.loaded / event.total) * 100;
-            //updateProgressBars(percent);
-        });
-
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const data = JSON.parse(xhr.responseText);
-                document.getElementById('productImages').innerHTML = '';
+    
+        $.ajax({
+            url: '/admin/products/images/upload?id=' + productId,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            xhr: function() {
+                var xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', function(event) {
+                        var percent = (event.loaded / event.total) * 100;
+                        //updateProgressBars(percent);
+                    }, false);
+                }
+                return xhr;
+            },
+            success: function(data) {
                 console.log(data);
-                images = [];
+                $('#productImages').empty();
                 images = data;
                 images.forEach(function(image) {
-
-                    const div = document.createElement('div');
-                    const img = document.createElement('img');
-                    const button = document.createElement('button');
-                    div.classList.add("image");
-                    div.setAttribute("data-image", image.id);
-                    img.setAttribute("src","/admin/images/" + image.image);
-                    img.setAttribute("alt", image.altText);
-                    button.setAttribute("data-delete", image.id);
-                    button.classList.add("delete-btn");
-                    button.textContent = "Delete";
-                    div.appendChild(img);
-                    div.appendChild(button);
-                    document.getElementById('productImages').appendChild(div);
-                    handleDeleteButtonsClick(button);
+                    const $div = $('<div></div>', { class: 'image', 'data-image': image.id });
+                    const $img = $('<img>', { src: '/admin/images/' + image.image, alt: image.altText });
+                    const $button = $('<button></button>', { class: 'delete-btn', 'data-delete': image.id }).text('Delete');
+                    $div.append($img).append($button);
+                    $('#productImages').append($div);
+                    handleDeleteButtonsClick($button);
                 });
-                
                 //resetProgressBars('success');
-            } else {
-                
+            },
+            error: function() {
                 //resetProgressBars('failed');
             }
-        };
-        
-        xhr.send(formData);
+        });
     }
+    
 
-    /*const fetchImages = () => {
-        fetch(url + "/images")
-       .then(response => response.json())
-       .then(data => {
-        data.forEach(image => {
-            const div = document.createElement('div');
-            const img = document.createElement('img');
-            const button = document.createElement('button');
-            div.classList.add("image");
-            div.setAttribute("data-image", image);
-            img.setAttribute("src", image);
-            img.setAttribute("alt", image);
-            button.setAttribute("data-delete", image);
-            div.appendChild(img);
-            div.appendChild(button);
-            document.getElementById('productImages').appendChild(div);
-        });
-  
-       })
-       .catch(error => {
-            console.log(error);
-            console.error('Error fetching images:', error);
-        });
-    };*/
+    $('#changePrimaryImage').on('click', function(event) {
+        event.preventDefault();
+        $('#filePrimaryImage').click();
+    });
+
+    $('#filePrimaryImage').on('change', function(event){
+        
+        const formData = new FormData();
+        formData.append('file', event.target.files[0]);
+        $.ajax({
+            url: "/admin/products/images/upload/primary?id=" + productId,
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                console.log('Primary image updated successfully!');
+                // Update UI with new primary image
+                $('#productPrimaryImage').attr('src', '/admin/images/' + response.image);
+            },
+            error: function(error) {
+                console.log(error);
+                console.error('Error updating primary image:', error);
+            }
+        });  
+    });
+
 });

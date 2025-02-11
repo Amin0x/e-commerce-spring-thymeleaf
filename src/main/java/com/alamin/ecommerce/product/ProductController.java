@@ -51,7 +51,7 @@ public class ProductController {
     // Get all products
     @GetMapping("/products")
     public String getAllProducts(@RequestParam(required = false) String category, Model model) {
-    
+
         List<Product> products;
 
         if (category == null || category.isEmpty()) {
@@ -85,29 +85,4 @@ public class ProductController {
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Update an existing product
-    @PutMapping("/api/products/{id}")
-    @ResponseBody
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        if (!productService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        product.setProductId(id);
-        Product updatedProduct = productService.save(product);
-        return ResponseEntity.ok(updatedProduct);
-    }
-
-    // Delete a product by ID
-    @DeleteMapping("/api/products/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (id == null)
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-
-        if (!productService.existsById(id))
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-
-
-        productService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
 }

@@ -4,9 +4,11 @@ import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.category.CategoryService;
 import com.alamin.ecommerce.user.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -94,59 +96,6 @@ public class AdminProductController {
         return "admin/products/product_edit_form";
     }
 
-    @PostMapping("/products")
-    public ResponseEntity<Object> createProduct(@RequestBody ProductForm productForm, BindingResult result, Model model) {
-        /*if (productForm.getName().isEmpty())
-            result.rejectValue("name", "name.required", "Name is required");
-
-        if (productForm.getCategory() < 0)
-            result.rejectValue("category", "category.required", "Category is required");
-
-        if (productForm.getPrice() < 0)
-            result.rejectValue("price", "price.required", "Price is required and should be greater than 0");
-
-        if(productForm.getDescription().isEmpty())
-            result.rejectValue("description", "description.required", "Description is required");
-
-        if (result.hasErrors())
-            return "admin/products/product_create_form";*/
-
-
-        System.out.println("createProduct product form ;" + productForm);
-        Product product = new Product();
-        product.setName(productForm.name());
-        product.setPrice(productForm.price() == null? 0 : productForm.price());
-        //product.setCategory(productForm.get("category"));
-        product.setDescription(productForm.description());
-        product.setStock(productForm.stock() == null? 0 : productForm.stock());
-        product.setActive(productForm.active() != null && productForm.active());
-//        product.setSku(UUID.randomUUID().toString().replace("-", ""));
-        product.setSku("SKU" + String.valueOf(System.currentTimeMillis()));
-        product.setCreated(LocalDateTime.now());
-        product.setUpdated(LocalDateTime.now());
-
-        if (productForm.category() != null) {
-            Category category = categoryService.getCategoryById((long) productForm.category())
-                    .orElseThrow(() -> new RuntimeException("category not found"));
-            product.setCategory(category);
-        }
-
-
-
-        for (var img : productForm.images()) {
-            ProductImage productImage = new ProductImage();
-            productImage.setImage(img);
-            productImage.setProduct(product);
-            productImage.setCaption("");
-            productImage.setAltText(product.getName());
-            productImage.setTitle(product.getName());
-            product.getProductImages().add(productImage);
-
-        }
-        Product savedProduct = productService.save(product);
-        return new ResponseEntity<>(savedProduct, HttpStatus.OK);
-    }
-
     // Get all products api
     @GetMapping("/api/products")
 	public ResponseEntity<List<Product>> getAllProducts() {
@@ -221,13 +170,13 @@ public class AdminProductController {
         product.setTotalSold(productForm.totalSold());
         //product.setViewCount(productForm.viewsCount());
 
-        Set<ProductImage> imageSet = new HashSet<>(product.getProductImages());
-        for (String image : productForm.images()) {
+
+        /*for (String image : productForm.images()) {
             ProductImage productImage = new ProductImage(image, product);
             productImage.setAltText(product.getName());
             imageSet.add(productImage);
-        }
-        product.setProductImages(new ArrayList<>(imageSet));
+        }*/
+
 
         try {
             Product updatedProduct = productService.save(product);
@@ -264,20 +213,34 @@ public class AdminProductController {
             return ResponseEntity.notFound().build();
         }
         Product product = productService.findById(id).orElseThrow();
-       productService.deleteProductImage(product, Long.valueOf(imageId.get("imageId")));
+        productService.deleteProductImage(product, Long.valueOf(imageId.get("imageId")));
+
         log.info("delete image: {}" , imageId);
-//        for (var it : product.getProductImages()){
-//            if (it.getId() == Long.valueOf(imageId.get("imageId"))) {
-//                product.getProductImages().remove(it);
-//                it.setProduct(null);
-//                //productService.deleteProductImage(it.getId());
-//                productService.save(product);
-//                log.info("delete image successfully");
-//            }
-//
-//
-//        }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/products/createProduct")
+    public ResponseEntity<Object> create(@ModelAttribute ProductForm pf, BindingResult result){
+        log.info("{}", pf);
+
+        if (result.hasErrors()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Product product = productService.createProduct(pf);
+        return ResponseEntity.ok(product);
+    }
+
+    @PostMapping("/products/images/upload/primary")
+    public ResponseEntity<Object> updatePrimaryImage(@RequestParam Long id,@RequestParam MultipartFile file){
+        log.info("{}", file);
+
+        if (id == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Product product = productService.updatePrimaryImage(id, file);
+        return ResponseEntity.ok(product);
     }
 }

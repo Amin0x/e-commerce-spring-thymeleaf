@@ -76,4 +76,14 @@ public class Product {
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();
     }
+
+    public void addImage(ProductImage productImage){
+        productImages.add(productImage);
+        productImage.setProduct(this);
+    }
+
+    public void removeImage(ProductImage productImage){
+        this.productImages.remove(productImage);
+        productImage.setProduct(null);
+    }
 }

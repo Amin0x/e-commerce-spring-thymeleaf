@@ -68,7 +68,7 @@
                             </section>
                             <section class="product-primary-img">
                                 <div class="form-group">
-                                    <div>Main Image:</div>
+                                    <div class="title">Main Image:</div>
                                     <div id="MainImagePreview" class="d-flex flex-wrap"></div>
                                     <input type="file" id="filePrimeryImage" name="filePrimeryImage" class="file-primery-image">
                                     <button type="button" class="button-37" id="addMainImage">Add Primary Image</button>
@@ -98,216 +98,109 @@
             let productImage = [];
             let productPrimaryImage = '';
 
-            document.getElementById('addMainImage').addEventListener('click', function () {
-                document.getElementById('filePrimeryImage').click();
+            $('#createProduct').on('submit', function (e) {
+                e.preventDefault();
+                let formData = new FormData(document.getElementById('createProduct'));
+                formData.delete('fileImages');
+                formData.delete('filePrimeryImage');
+                for (let index = 0; index < productImage.length; index++) {
+                    const file = productImage[index];
+                    formData.append("images" , file);
+                }
+                formData.append("primaryImage", productPrimaryImage);
+
+                $.ajax({
+                    url: "/admin/products/createProduct",
+                    method: "post",
+                    data: formData,
+                    success: function (response) {
+                        let categories = response.data;
+                        
+                    },
+                    contentType: /*"application/json"*/ false,
+                    processData: false,
+                    cache: false,
+                });
             });
 
-            document.getElementById('filePrimeryImage').addEventListener('change', function () {
+            $('#filePrimeryImage').on('change', function () {
                 const file = this.files[0];
                 const reader = new FileReader();
                 reader.onload = function (event) {
-                    const img = document.createElement('img');
+                    const img = $('img');
                     img.src = event.target.result;
-                    document.getElementById('MainImagePreview').appendChild(img);
+                    $('#MainImagePreview').append(img);
                 };
                 reader.readAsDataURL(file);
-                productPrimaryImage = '';
-
-                fetch('', {
-                    method: 'Post',
-                    body: new FormData({file: file}),
-                })
-                .then(response => response.ok ? response.json() : Promise.reject(response))
-                .then(data => {
-                    productPrimaryImage = data;
-                    console.log(data);
-                })
-                .catch(error => {
-                    console.error('Error uploading image:', error);
-                });
-
-
+                productPrimaryImage = file;
             });
 
-            document.getElementById('uploadImage').addEventListener('click', function () {
-                document.getElementById('fileImages').click();
-            });
-
-            const uploadImage = (file) => {
-                console.log('Uploading image:', file);
-                const formData = new FormData();
-                formData.append('file', file);
-                fetch('/admin/upload', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.ok ? response.json() : Promise.reject(response))
-                    .then(data => {
-                        productImage.push(data.url);
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.error('Error uploading image:', error);
-                    });
-            };
-
-            const handleSubmit = async () => {
-                var formData = {
-                    name: document.getElementById('name').value,
-                    description: document.getElementById('description').value,
-                    price: document.getElementById('price').value,
-                    stock: document.getAnimations('stock').value,
-                    category: document.getElementById('category').value,
-                    brand: document.getElementById('brand').value,
-                    active: document.getElementById('active').checked ? true : false,
-                    enabled: document.getElementById('enabled').checked ? true : false,
-                    images: productImage,
-                };
-
-                try {
-                    const response = await fetch('/admin/products', {
-                        method: 'POST',
-                        body: JSON.stringify(formData),
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log(data);
-                        window.location = '/admin/products/create';
-                        return data;
-                    } else {
-                        Promise.reject(response.status);
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-            };
-
-            const validateInputData = (input) => {
-                if (input.value === '') {
-                    input.classList.add('is-invalid');
-                    input.closest('div div.message').classList.add('active');
-                    return false;
-                }
-                return true;
-            };
-
-            const validateInputs = () => {
-
-                let name = document.getElementById('name');
-                let des = document.getElementById('description');
-                let price = document.getElementById('price');
-                let stock = document.getElementById('stock');
-                let category = document.getElementById('category');
-
-                name.classList.remove('is-invalid');
-                des.classList.remove('is-invalid');
-                price.classList.remove('is-invalid');
-                stock.classList.remove('is-invalid');
-                category.classList.remove('is-invalid');
-
-                if (!validateInputData(name)) {
-                    return false;
-                }
-
-                if(!validateInputData(des)) {
-                    return false;
-                }
-
-                return true;
-            };
-
-            document.getElementById('createProduct').addEventListener('submit', function (e) {
-                e.preventDefault();
-                if (validateInputs()) {
-                    handleSubmit();
-                } else {
-                }
-            });
-
-            document.getElementById('fileImages').addEventListener('change', function () {
+            $('#fileImages').on('change', function () {
                 var files = this.files;
                 console.log("upload image");
-                for (var i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    reader.addEventListener('load', function (e) {
+                $.each(files, function (i, file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
                         console.log(reader.result);
-
-                        document.getElementById('imagesPreview').insertAdjacentHTML('beforeend', `<img src="${reader.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
-                    });
-
-                    reader.addEventListener('error', function () {
-                        console.error('Error reading file');
-                    });
-
-                    reader.addEventListener('abort', function () {
-                        console.error('File reading aborted');
-                    });
-
-                    reader.addEventListener('loadend', function () {
-                        console.log('File reading completed');
-                        uploadImage(file);
-                    });
-
-                    reader.addEventListener('progress', function (event) {
-                        console.log('File reading progress:', event.loaded, event.total);
-                    });
+                        $('#imagesPreview').append(`<img src="${reader.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
+                    };
                     console.log('Reading file:', file.name);
                     reader.readAsDataURL(file);
-                }
+                    productImage.push(file);
+                });
+            });
+
+
+            $('#addMainImage').on('click', function () {
+                $('#filePrimeryImage').click();
+            });
+
+            $('#uploadImage').on('click', function () {
+                $('#fileImages').click();
             });
 
             window.addEventListener('click', function (event) {
-                document.getElementById('category').classList.remove('active');
+                $('#category').classList.remove('active');
             });
 
-            document.getElementById('categoryInput').addEventListener('keydown', function(event) {
+            $('#categoryInput').on('keydown', function(event) {
+                event.preventDefault();
                 let  category = event.target.value;
-                fetch('/admin/categories/search/' + category)
-                .then(function(res) {
-                    if (res.ok) {
-                        return res.json();
-                    } else {
-                        console.log('Error fetch category');
-                        //Promise.reject(res.statusCode);
-                    }
-                })
-                .then(function(data) {
-                    console.log(data);
-                    const catElm = document.getElementById('category');
-                    catElm.innerHTML = "";
-                    data !== undefined && data.map(element => {
-                        const opt = document.createElement('p');
-                        opt.setAttribute("data-value", element.categoryId);
-                        opt.textContent = element.name;                        
-                        catElm.appendChild(opt);
-                        
-                        if(!catElm.classList.contains("category")){
-                            catElm.classList.add("active");
-                        }
+                if (category == '') {
+                    return false;
+                }
 
-                        document.querySelectorAll("p[data-value]").forEach(function(item) {
-                            item.addEventListener('click', function() {
-                                catElm.value = this.getAttribute("data-value");
-                                catElm.classList.remove("active");
+                $.get('/admin/categories/search/' + category)
+                    .done(function(data) {
+                        console.log(data);
+                        const $catElm = $('#category');
+                        $catElm.empty();
+                        if (data !== undefined) {
+                            data.map(function(element) {
+                                const $opt = $('<p></p>');
+                                $opt.attr("data-value", element.categoryId);
+                                $opt.text(element.name);                        
+                                $catElm.append($opt);
+                                
+                                if (!$catElm.hasClass("category")) {
+                                    $catElm.addClass("active");
+                                }
+                                
+                                $("p[data-value]").on('click', function() {
+                                    $('#categoryInput').val($(this).data("value"));
+                                    $catElm.removeClass("active");
+                                });
                             });
-                        });
-                        
+                        }
+                    })
+                    .fail(function() {
+                        console.log('Error fetch category');
                     });
-                    
-                })
-                .catch(function(error) {
-                    console.error('Error:', error);
-                });
-            });
 
+            });
         });
 
+        
     </script>
 </body>
-
 </html>

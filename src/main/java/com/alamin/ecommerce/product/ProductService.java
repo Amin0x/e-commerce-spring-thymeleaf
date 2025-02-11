@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.product;
 
 import com.alamin.ecommerce.category.Category;
+import com.alamin.ecommerce.category.CategoryService;
 import com.alamin.ecommerce.config.FileUploadService;
 import com.alamin.ecommerce.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class ProductService {
 
     @Autowired
     private ProductImageRepository productImageRepository;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private FileUploadService fileUploadService;
@@ -169,5 +173,56 @@ public class ProductService {
         product.getProductImages().remove(productImage);
         save(product);
         //productImageRepository.deleteById(id);
+    }
+
+    public Product createProduct(ProductForm pf) {
+        if (pf == null)
+            throw new IllegalArgumentException("null object");
+
+        Category category = null;
+
+        if(pf.category() != null){
+            category = categoryService.getCategoryById(Long.valueOf(pf.category())).orElseThrow();
+        }
+
+        Product product = new Product();
+        product.setActive(pf.active());
+        product.setSku(pf.sku());
+        product.setStock(pf.stock());
+        product.setCategory(category);
+        product.setEnabled(pf.enabled());
+        product.setPrice(pf.price());
+        product.setInitPrice(pf.initPrice());
+        product.setPriceUSD(0);
+        product.setViewCount(0);
+        product.setDescription(pf.description());
+        product.setName(pf.name());
+        product.setTotalSold(0);
+        product.setUpdated(LocalDateTime.now());
+        product.setCreated(LocalDateTime.now());
+
+        for (var img: pf.images()){
+            String fn = fileUploadService.uploadFile(img);
+            ProductImage productImage = new ProductImage(fn, product);
+            productImage.setAltText(product.getName());
+            productImage.setTitle(product.getName());
+            product.getProductImages().add(productImage);
+        }
+
+        String fn = fileUploadService.uploadFile(pf.primaryImage());
+        product.setImage(fn);
+        return save(product);
+    }
+
+    public String generateSku(){
+        return "SkU" + System.currentTimeMillis();
+    }
+
+    // todo delete old image file
+    public Product updatePrimaryImage(Long id, MultipartFile file) {
+        Product product = productRepository.findById(id).orElseThrow();
+        String fn = fileUploadService.uploadFile(file);
+        product.setImage(fn);
+        return save(product);
     }
 }

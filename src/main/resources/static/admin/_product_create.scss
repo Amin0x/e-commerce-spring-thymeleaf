@@ -96,9 +96,32 @@
   }
 
   .product-primary-img {
+    background-color: aliceblue;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid #dfdfdf;
+    border-radius: 5px;
+
     .file-primery-image {
       display: none;
     }
+
+    .title{
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    #MainImagePreview{
+      padding: 5px;
+      /* background-color: #ccc; */
+      margin-bottom: 12px;
+      width: 300px;
+      height: 300px;
+      /* margin-left: auto; */
+      margin-right: auto;
+    }
+
+    
   }
 
   .product-images {
