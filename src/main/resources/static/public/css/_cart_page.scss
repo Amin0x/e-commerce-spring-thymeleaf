@@ -1,4 +1,14 @@
 .cart-container {
+    padding: 0 20px;
+
+    .cart-item{
+        background-color: #fafafa;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #e7e2e2;
+    }
+    
     .title{
         font-size: 0.9rem;
         font-weight: 600;
@@ -31,5 +41,9 @@
             display: flex;
             justify-content: space-between;
         }
+    }
+
+    .checkout-button{
+        margin-top: 20px;
     }
 }

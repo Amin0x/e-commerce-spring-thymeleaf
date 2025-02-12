@@ -4,46 +4,50 @@ import com.alamin.ecommerce.user.User;
 
 public class Page {
 
-    private String title;
-    private String description;
-    private String keywords;
-    private String image;
+    private String pageTitle;
+    private String pageDescription;
+    private String pageKeywords;
+    private String pageImage;
     private String url;
-    private String author;
+    private String pageAuthor;
     private String type;
     private User user;
+    private int totalPage;
+    private int currentPage;
+    private int size;
+    private int o;
 
 
-    public String getTitle() {
-        return title;
+    public String getPageTitle() {
+        return pageTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPageTitle(String pageTitle) {
+        this.pageTitle = pageTitle;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPageDescription() {
+        return pageDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPageDescription(String pageDescription) {
+        this.pageDescription = pageDescription;
     }
 
-    public String getKeywords() {
-        return keywords;
+    public String getPageKeywords() {
+        return pageKeywords;
     }
 
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
+    public void setPageKeywords(String pageKeywords) {
+        this.pageKeywords = pageKeywords;
     }
 
-    public String getImage() {
-        return image;
+    public String getPageImage() {
+        return pageImage;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setPageImage(String pageImage) {
+        this.pageImage = pageImage;
     }
 
     public String getUrl() {
@@ -54,12 +58,12 @@ public class Page {
         this.url = url;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getPageAuthor() {
+        return pageAuthor;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setPageAuthor(String pageAuthor) {
+        this.pageAuthor = pageAuthor;
     }
 
     public String getType() {
@@ -76,5 +80,29 @@ public class Page {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

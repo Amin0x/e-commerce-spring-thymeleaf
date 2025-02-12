@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.product;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-
 
     @GetMapping("/products/{id}")
     public String showProductDetails(@PathVariable Long id, Model model) {
@@ -50,21 +50,14 @@ public class ProductController {
 
     // Get all products
     @GetMapping("/products")
-    public String getAllProducts(@RequestParam(required = false) String category, Model model) {
+    public String getAllProducts(@RequestParam(required = false) String category,  Model model) {
 
         List<Product> products;
 
         if (category == null || category.isEmpty()) {
-            // Handle null or empty category
-            products = productService.findAll();
-    
+            products = productService.getRandomProducts( 20);
         } else {
-        
-            try {
-                products = productService.findByCategory(category);
-            } catch (Exception e) {
-                throw new CategoryNotFoundException("Category not found: " + category);
-            }
+            products = productService.getRandomProductsByCategory(category, 20);
         }
     
         model.addAttribute("products", products);
@@ -73,13 +66,9 @@ public class ProductController {
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
         return "public/products";
-
     }
 
-
-    // Get a product by ID
     @GetMapping("/api/products/{id}")
-    @ResponseBody
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Optional<Product> product = productService.findById(id);
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());

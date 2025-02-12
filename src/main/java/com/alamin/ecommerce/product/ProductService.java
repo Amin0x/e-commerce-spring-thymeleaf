@@ -42,39 +42,43 @@ public class ProductService {
         return productRepository.findNewArrivalProducts();
     }
 
-    public Page<Product> getAllProducts(int pageNumber, int count) {
-        if (pageNumber < 1)
-            pageNumber = 1;
+    public Page<Product> getAllProducts(int page, int size) {
+        if (page < 1)
+            page = 1;
 
-        if (count < 10)
-            count = 10;
+        if (size < 10)
+            size = 10;
 
-        Pageable pageable = PageRequest.of(pageNumber - 1, count);
+        Pageable pageable = PageRequest.of(page - 1, size);
         return productRepository.findAll(pageable);
     }
 
     // Get product by ID
     public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);  // Returns an Optional, which may be empty if not found
+        return productRepository.findById(id);
     }
 
     // Update product
     public Product updateProduct(Long id, Product updatedProduct) {
         Optional<Product> existingProductOpt = productRepository.findById(id);
-        if (existingProductOpt.isPresent()) {
-            Product existingProduct = existingProductOpt.get();
-            // Assuming the Product class has setters for the fields
-            existingProduct.setName(updatedProduct.getName());
-            existingProduct.setCategory(updatedProduct.getCategory());
-            existingProduct.setPrice(updatedProduct.getPrice());
-            existingProduct.setDescription(updatedProduct.getDescription());
-            existingProduct.setStock(updatedProduct.getStock());
-            // Update other fields as necessary
-
-            return productRepository.save(existingProduct);  // Save the updated product
-        } else {
+        if (existingProductOpt.isEmpty()) {
             throw new IllegalArgumentException("Product with ID " + id + " not found");
         }
+
+        Product existingProduct = existingProductOpt.get();
+
+        existingProduct.setName(updatedProduct.getName());
+        existingProduct.setDescription(updatedProduct.getDescription());
+        existingProduct.setCategory(updatedProduct.getCategory());
+        existingProduct.setPrice(updatedProduct.getPrice());
+        existingProduct.setInitPrice(updatedProduct.getInitPrice());
+        existingProduct.setPriceUSD(updatedProduct.getPriceUSD());
+        existingProduct.setStock(updatedProduct.getStock());
+        existingProduct.setActive(updatedProduct.getActive());
+        existingProduct.setEnabled(updatedProduct.getEnabled());
+
+        // Save the updated product
+        return productRepository.save(existingProduct);
     }
 
     // Delete product by ID
@@ -84,16 +88,17 @@ public class ProductService {
         }
 
         Optional<Product> existingProductOpt = productRepository.findById(id);
-        if (existingProductOpt.isPresent()) {
-            productRepository.deleteById(id);  // Delete product if it exists
-        } else {
+        if (existingProductOpt.isEmpty())
             throw new IllegalArgumentException("Product with ID " + id + " not found");
-        }
+
+        // Delete product if it exists
+        Product product = existingProductOpt.get();
+        product.setEnabled(false);
+        product.setActive(false);
+        product.setDeleted(LocalDateTime.now());
+        save(product);
     }
 
-    public List<Category> getAllCategories() {
-        return null;
-    }
 
     public List<ProductImage> uploadImage(MultipartFile file, Long id) {
         if (id == null) {
@@ -125,8 +130,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public Page<Product> findAll(int page, int size) {
+        return getAllProducts(page, size);
     }
 
     public List<Product> findByCategory(String category) {
@@ -140,7 +145,7 @@ public class ProductService {
         if (id == null){
             throw new RuntimeException("Product not found");
         }
-        return productRepository.findById(id);
+        return getProductById(id);
     }
 
     public boolean existsById(Long id) {
@@ -169,6 +174,9 @@ public class ProductService {
     }
 
     public void deleteProductImage(Product product, Long id) {
+        if (id == null || product == null)
+            throw new IllegalArgumentException("null object");
+
         ProductImage productImage = productImageRepository.findById(id).orElseThrow();
         product.getProductImages().remove(productImage);
         save(product);
@@ -187,7 +195,7 @@ public class ProductService {
 
         Product product = new Product();
         product.setActive(pf.active());
-        product.setSku(pf.sku());
+        product.setSku(generateSku());
         product.setStock(pf.stock());
         product.setCategory(category);
         product.setEnabled(pf.enabled());
@@ -224,5 +232,9 @@ public class ProductService {
         String fn = fileUploadService.uploadFile(file);
         product.setImage(fn);
         return save(product);
+    }
+
+    public List<Product> getRandomProducts(int size) {
+        return productRepository.findRandomProducts(size);
     }
 }

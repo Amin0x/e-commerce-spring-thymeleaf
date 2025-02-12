@@ -1,14 +1,10 @@
 package com.alamin.ecommerce.product;
 
-import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.category.CategoryService;
 import com.alamin.ecommerce.user.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ProblemDetail;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 import com.alamin.ecommerce.exception.CategoryNotFoundException;
@@ -98,9 +93,9 @@ public class AdminProductController {
 
     // Get all products api
     @GetMapping("/api/products")
-	public ResponseEntity<List<Product>> getAllProducts() {
-   		List<Product> products = productService.findAll();
-   		return ResponseEntity.ok(products);  // HTTP status 200 OK with the list of products
+	public ResponseEntity<Page<Product>> getAllProducts(int page, int size) {
+   		Page<Product> products = productService.findAll(page, size);
+   		return ResponseEntity.ok(products);
 	}
 
     // products home page
@@ -111,7 +106,7 @@ public class AdminProductController {
 
         if (category == null || category.isEmpty()) {
             // Handle null or empty category
-            products = productService.findAll();
+            products = productService.getRandomProducts(12);
     
         } else {
         
