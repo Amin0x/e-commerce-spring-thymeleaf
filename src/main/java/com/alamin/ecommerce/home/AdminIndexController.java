@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,18 +23,22 @@ public class AdminIndexController {
     private UserService userService;
 
     @GetMapping
-    public String index(Model model){
+    public String index(@RequestParam(name = "dv", defaultValue = "m") String type, Model model){
         var user = new User();
         var activities = new ArrayList<Map<String,String>>();
 
         ArrayList<Object> data = new ArrayList<>();
 
         model.addAttribute("user", user);
-        model.addAttribute("statsUsers", userService.getUsersThisMonth());
+        model.addAttribute("statsUsers", userService.getUsersCount());
+        model.addAttribute("usersThisMonth", userService.getUsersCount());
         model.addAttribute("statsOrders", orderService.grtOrderCountThisMonth());
+        model.addAttribute("ordersThisMonth", orderService.grtOrderCountThisMonth());
         model.addAttribute("statsRevenue", orderService.getTotalRevenue());
+        model.addAttribute("revenueThisMonth", orderService.getTotalRevenue());
         model.addAttribute("activities", activities);
-        model.addAttribute("data", orderService.getTotalRevenue("y"));
+        model.addAttribute("data", orderService.getTotalRevenue(type));
+        model.addAttribute("pageTitle", "Admin Dashboard - Index");
 
         return "admin/admin_home";
     }

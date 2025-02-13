@@ -25,7 +25,7 @@ public class AdminUserController {
         var topUsers = userService.getLastUsers(10);
 
         model.addAttribute("user", new User());
-        model.addAttribute("totalUsers", userService.findCount());
+        model.addAttribute("totalUsers", userService.getUsersCount());
         model.addAttribute("totalDrivers", 567234);
         model.addAttribute("usersThisMonth", userService.getUsersThisMonth());
         model.addAttribute("driversThisMonth", 567234);
@@ -52,7 +52,7 @@ public class AdminUserController {
     public String viewUser(@PathVariable Long id, Model model) {
         User user = null;
         try {
-            user = userService.findById(id).orElseThrow();
+            user = userService.findUserById(id).orElseThrow();
         } catch (Exception e) {
             return "error/404";
             //throw new RuntimeException(e);
@@ -62,10 +62,10 @@ public class AdminUserController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editUserForm(@PathVariable Long id, Model model) {
         User user = null;
         try {
-            user = userService.findById(id).orElseThrow();
+            user = userService.findUserById(id).orElseThrow();
         } catch (Exception e) {
             return "error/404";
             //throw new RuntimeException(e);
@@ -75,10 +75,11 @@ public class AdminUserController {
     }
 
     @GetMapping("/create")
-    public String createForm(Model model) {
+    public String createUserForm(Model model) {
         String[] months = new DateFormatSymbols().getMonths();
         model.addAttribute("monthNames", months);
         model.addAttribute("user", new User());
+        
         return "admin/users/create_form";
     }
 
@@ -88,7 +89,7 @@ public class AdminUserController {
             return ResponseEntity.badRequest().build();
         }
 
-        User savedUser = userRepository.save(user);
+        User savedUser = userService.createUser(user);
         return ResponseEntity.ok(savedUser);
     }
 
@@ -98,18 +99,9 @@ public class AdminUserController {
             return "admin/users/edit_form";
         }
 
-        User newUser = userRepository.findById(id).orElseThrow();
-
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setEmail(user.getEmail());
-        newUser.setRole(user.getRole());
-        newUser.setBirthDate(user.getBirthDate());
-        newUser.setEnabled(user.getEnabled());
-        newUser.setStatus(user.getStatus());
-
-        User savedUser = userRepository.save(newUser);
+        User savedUser = userService.updateUser(id, user);
         model.addAttribute("user", savedUser);
+
         return "redirect:/admin/users/view/" + savedUser.getUserId();
     }
 }

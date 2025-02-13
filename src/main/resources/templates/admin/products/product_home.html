@@ -44,25 +44,27 @@
                 </article>
             </div>
 
-            <div class="charts-wrp box2">
-                <div class="col-md-6 sold-chart">
-                    <header>
-                        <h4>Sold Products</h4>
-                        <small>some text</small>
-                    </header>
-                    <hr size="18px">
-                    <div>
-                        <canvas id="productsSoldChart"></canvas>
-                    </div>
-                </div>
+            <div class="charts-wrp box2">                
                 <div class="col-md-6 market-chart">
                     <header>
                         <h4>Market Prices</h4>
-                        <small>Sold Products</small>
+                        <div class="font-sm">Sold Products</div>
                     </header>
                     <hr>
                     <div>
                         <canvas id="marketPriceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="charts-wrp box2">
+                <div class="col-md-6 sold-chart">
+                    <header>
+                        <h4>Sold Products</h4>
+                        <div class="font-sm">some text</div>
+                    </header>
+                    <hr size="18px">
+                    <div>
+                        <canvas id="productsSoldChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -71,7 +73,7 @@
                 <div class="list box2">
                     <header class="d-flex justify-content-between p-2">
                         <h4>Top 10 Sold Products</h4>
-                        <a href="/admin/products/all" target="">View all</a>
+                        <div><a href="/admin/products/all" target="">View all</a></div>
                     </header>
                     <table class="table d-block">
                         <tbody class="d-block">

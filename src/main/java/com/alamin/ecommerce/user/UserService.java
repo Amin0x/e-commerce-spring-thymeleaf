@@ -27,11 +27,18 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(Long id) {
+    public Optional<User> findUserById(Long id) {
         if (id == null)
             return Optional.empty();
 
         return userRepository.findById(id);
+    }
+
+    public Optional<User> findUserByUUID(String id) {
+        if (id == null)
+            return Optional.empty();
+
+        return userRepository.findByUuid(id);
     }
 
     public int getUsersThisMonth() {
@@ -62,19 +69,47 @@ public class UserService {
 
     }
 
-    private String generateFileUuid(){
-        return UUID.randomUUID().toString();
-    }
+
 
     public List<User> getLastUsers(int size) {
         return userRepository.getLastUsers(Pageable.ofSize(size));
     }
 
-    public long findCount(){
+    public long getUsersCount(){
         return userRepository.count();
     }
 
-    public Optional<User> findByName(String name) {
+    public Optional<User> findUserByName(String name) {
         return userRepository.findByUsername(name);
+    }
+
+    public User createUser(User user) {
+        User createdUser = new User();
+        createdUser.setFirstName(user.getFirstName());
+        createdUser.setLastName(user.getLastName());
+        createdUser.setUsername(user.getUsername());
+        createdUser.setPassword(user.getPassword());
+        createdUser.setEmail(user.getEmail());
+        createdUser.setStatus("ACTIVE");
+        createdUser.setEnabled(true);
+        createdUser.setBirthDate(user.getBirthDate());
+        return userRepository.save(createdUser);
+    }
+
+    public User updateUser(Long id, User user) {
+        User upatedUser = findUserById(id).orElseThrow();
+        upatedUser.setFirstName(user.getFirstName());
+        upatedUser.setLastName(user.getLastName());
+        upatedUser.setUsername(user.getUsername());
+        upatedUser.setPassword(user.getPassword());
+        upatedUser.setEmail(user.getEmail());
+        upatedUser.setStatus("ACTIVE");
+        upatedUser.setEnabled(true);
+        upatedUser.setBirthDate(user.getBirthDate());
+        return userRepository.save(upatedUser);
+    }
+
+    private String createUuid(){
+        return UUID.randomUUID().toString();
     }
 }

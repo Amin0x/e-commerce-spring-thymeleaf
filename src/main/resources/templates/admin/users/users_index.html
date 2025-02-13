@@ -66,20 +66,28 @@
                     </div>
                 </div>
 
-                <section class="top-users">
+                <section class="top-users box2">
                     <div class="card-title"><a href="/admin/users/list">Top Users This Month</a></div>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>User ID</th>
+                                <th>Email</th>
                                 <th>Registration Date</th>
+                                <th>Update Date</th>
+                                <th>Active Date</th>
                                 <th>Role</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="user : ${topUsers}">
                                 <td><a th:href="${'/admin/users/' + user.userId }" th:text="${user.firstName} + ' ' + ${user.lastName}"></a></td>
-                                <td th:text="${#temporals.format(user.productImages, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${user.username}"></td>
+                                <td th:text="${user.email}"></td>
+                                <td th:text="${#temporals.format(user.created, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${#temporals.format(user.updated, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${#temporals.format(user.lastActive, 'yyyy-MM-dd')}"></td>
                                 <td th:text="${user.role}"></td>
                             </tr>
                         </tbody>

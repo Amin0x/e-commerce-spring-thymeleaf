@@ -9,9 +9,8 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.TextStyle;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -107,17 +106,20 @@ public class OrderService {
         return totalRevenue == null ? 0 : totalRevenue;
     }
 
-    public ArrayList<Double> getTotalRevenue(String d) {
+    public Map<String, Object> getTotalRevenue(String d) {
         ArrayList<Double> res = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
 
         if (d.equals("d")) {
             LocalDate currentDate = LocalDate.now();
             for (int i = 0; i < 12; i++) {
                 LocalDate date = currentDate.plusDays(i);
-                LocalDateTime startOfDay = date.atStartOfDay();
-                LocalDateTime endOfDay = date.atTime(23, 59, 59);
-                Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
+                String dayName = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);;
+                LocalDateTime startDate = date.atStartOfDay();
+                LocalDateTime endDate = date.atTime(23, 59, 59);
+                Double v = orderRepository.getTotalRevenue(startDate, endDate);
                 res.add(v == null ? 0 : v);
+                names.add(dayName);
             }
 
 
@@ -125,31 +127,40 @@ public class OrderService {
             LocalDate currentDate = LocalDate.now();
             for (int i = 0; i < 12; i++) {
                 LocalDate date = currentDate.plusWeeks(i);
-                LocalDateTime startOfDay = date.atStartOfDay();
-                LocalDateTime endOfDay = date.atTime(23, 59, 59);
-                Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
+                String dayName = String.valueOf(i);
+                LocalDateTime startDate = date.atStartOfDay();
+                LocalDateTime endDate = date.atTime(23, 59, 59);
+                Double v = orderRepository.getTotalRevenue(startDate, endDate);
                 res.add(v == null ? 0 : v);
+                names.add(dayName);
             }
         } else if (d.equals("m")) {
             LocalDate currentDate = LocalDate.now();
             for (int i = 0; i < 12; i++) {
                 LocalDate date = currentDate.plusMonths(i);
-                LocalDateTime startOfDay = date.atStartOfDay();
-                LocalDateTime endOfDay = date.atTime(23, 59, 59);
-                Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
+                String dayName = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+                LocalDateTime startDate = date.atStartOfDay();
+                LocalDateTime endDate = date.atTime(23, 59, 59);
+                Double v = orderRepository.getTotalRevenue(startDate, endDate);
                 res.add(v == null ? 0 : v);
+                names.add(dayName);
             }
         } else if (d.equals("y")) {
             LocalDate currentDate = LocalDate.now();
             for (int i = 0; i < 12; i++) {
                 LocalDate date = currentDate.plusYears(i);
-                LocalDateTime startOfDay = date.atStartOfDay();
-                LocalDateTime endOfDay = date.atTime(23, 59, 59);
-                Double v = orderRepository.getTotalRevenue(startOfDay, endOfDay);
+                String dayName = String.valueOf(date.getYear());
+                LocalDateTime startDate = date.atStartOfDay();
+                LocalDateTime endDate = date.atTime(23, 59, 59);
+                Double v = orderRepository.getTotalRevenue(startDate, endDate);
                 res.add(v == null ? 0 : v);
+                names.add(dayName);
             }
         }
-        return res;
+        Map<String , Object> map = new HashMap<>();
+        map.put("data", res);
+        map.put("names", names);
+        return map;
     }
 
     public List<Order> getAllOrders(int page, int size, int order, boolean b) {
