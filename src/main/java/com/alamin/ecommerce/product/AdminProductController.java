@@ -119,12 +119,12 @@ public class AdminProductController {
     
         model.addAttribute("user", new User());
         model.addAttribute("products", products);
-        model.addAttribute("totalProducts", 10002020);
-        model.addAttribute("totalSold", 10002020);
-        model.addAttribute("totalUnsold", 10002020);
-        model.addAttribute("totalRevenue", 10002020);
-        model.addAttribute("topSoldProducts", products);
-        model.addAttribute("topUnsoldProducts", products);
+        model.addAttribute("totalProducts", productService.getProductsCount());
+        model.addAttribute("totalSold", productService.getTotalSoldCount());
+        model.addAttribute("totalUnsold", productService.getTotalUnsold());
+        model.addAttribute("totalRevenue", productService.getTotalRevenue());
+        model.addAttribute("topSoldProducts", productService.getBestSellingProducts());
+        model.addAttribute("topUnsoldProducts", productService.getTopUnsoldProducts());
 
 	    model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");

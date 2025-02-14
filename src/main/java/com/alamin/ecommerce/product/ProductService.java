@@ -237,4 +237,24 @@ public class ProductService {
     public List<Product> getRandomProducts(int size) {
         return productRepository.findRandomProducts(size);
     }
+
+    public long getProductsCount() {
+        return productRepository.count();
+    }
+
+    public long getTotalSoldCount() {
+        return productRepository.getTotalSoldCount();
+    }
+
+    public List<Product> getTopUnsoldProducts() {
+        return null;
+    }
+
+    public long getTotalRevenue() {
+        return 0;
+    }
+
+    public long getTotalUnsold() {
+        return 0;
+    }
 }

@@ -57,4 +57,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             AND p1.name LIKE '%:productName%'
             AND ABS(p1.price - p2.price) <= 50""")
     List<Product> getSimilarProducts(Long productId, String productName, Pageable pageable);
+
+    @Query("SELECT SUM(p.totalSold) FROM Product p")
+    Long getTotalSoldCount();
+
 }

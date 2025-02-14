@@ -61,7 +61,7 @@ body {
   padding: 1rem;
   margin-bottom: 0.9rem;
   background-color: #ffffff;
-  border: 1px solid #9d9d9d;
+  border: 1px solid #ededed;
   border-radius: 8px;
 }
 
@@ -977,11 +977,12 @@ body {
   margin-bottom: 20px;
 }
 .product-home .counter {
-  border: 1px solid #ddd;
+  border: 1px solid #eaeaea;
   border-radius: 8px;
   padding: 20px;
   text-align: center;
   width: 20%;
+  background-color: #fff;
 }
 .product-home .list-container {
   display: flex;
