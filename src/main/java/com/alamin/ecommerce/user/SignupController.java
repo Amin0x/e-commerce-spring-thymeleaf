@@ -12,13 +12,13 @@ public class SignupController {
     @GetMapping("/signup")
     public String showSignupForm(Model model) {
         model.addAttribute("signupForm", new SignupForm());
-        return "signup";
+        return "public/signup";
     }
 
     @PostMapping("/signup")
-    public String processSignup(SignupForm signupForm) {
+    public String processSignup(@Valid SignupForm signupForm) {
         // Add your form processing logic here (e.g., saving user data)
         //return "signup_success";
-        return "login";
+        return "public/login";
     }
 } 

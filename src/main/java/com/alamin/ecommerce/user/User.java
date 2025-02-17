@@ -18,6 +18,7 @@ public class User {
     private String uuid;
     @Column(length = 20)
     private String role;
+    @Column(unique = true)
     private String username;
     private String password;
     @Column(unique = true)

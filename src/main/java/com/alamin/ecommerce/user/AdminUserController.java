@@ -35,7 +35,7 @@ public class AdminUserController {
         model.addAttribute("usersRegistrationData", 9876);
         model.addAttribute("driversRegistrationLabels", 9876);
         model.addAttribute("driversRegistrationData", 9876);
-        return "admin/users/index";
+        return "admin/users/users_index";
     }
 
     @GetMapping("/all")
@@ -58,7 +58,7 @@ public class AdminUserController {
             //throw new RuntimeException(e);
         }
         model.addAttribute("user", user);
-        return "admin/users/view_user";
+        return "admin/users/user_details";
     }
 
     @GetMapping("/edit/{id}")
@@ -71,7 +71,7 @@ public class AdminUserController {
             //throw new RuntimeException(e);
         }
         model.addAttribute("user", user);
-        return "admin/users/edit_form";
+        return "admin/users/user_edit_form";
     }
 
     @GetMapping("/create")
@@ -80,7 +80,7 @@ public class AdminUserController {
         model.addAttribute("monthNames", months);
         model.addAttribute("user", new User());
         
-        return "admin/users/create_form";
+        return "admin/users/user_create_form";
     }
 
     @PostMapping
@@ -96,12 +96,12 @@ public class AdminUserController {
     @PostMapping("/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute User user, Model model) {
         if (user == null) {
-            return "admin/users/edit_form";
+            return "admin/users/user_edit_form";
         }
 
         User savedUser = userService.updateUser(id, user);
         model.addAttribute("user", savedUser);
 
-        return "redirect:/admin/users/view/" + savedUser.getUserId();
+        return "redirect:/admin/users/" + savedUser.getUserId();
     }
 }

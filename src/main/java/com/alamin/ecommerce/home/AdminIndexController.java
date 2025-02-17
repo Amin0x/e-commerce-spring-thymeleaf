@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -28,6 +30,10 @@ public class AdminIndexController {
         var activities = new ArrayList<Map<String,String>>();
 
         ArrayList<Object> data = new ArrayList<>();
+        List<String> listLabels = new ArrayList<>();
+        List<Double> listData = new ArrayList<>();
+        orderService.getTotalRevenueMonth(listData, listLabels);
+
 
         model.addAttribute("user", user);
         model.addAttribute("statsUsers", userService.getUsersCount());
@@ -37,7 +43,8 @@ public class AdminIndexController {
         model.addAttribute("statsRevenue", orderService.getTotalRevenue());
         model.addAttribute("revenueThisMonth", orderService.getTotalRevenue());
         model.addAttribute("activities", activities);
-        model.addAttribute("data", orderService.getTotalRevenue(type));
+        model.addAttribute("data", listData);
+        model.addAttribute("labels", listLabels);
         model.addAttribute("pageTitle", "Admin Dashboard - Index");
 
         return "admin/admin_home";

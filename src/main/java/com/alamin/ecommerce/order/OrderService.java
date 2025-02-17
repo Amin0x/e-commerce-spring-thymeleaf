@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 @Service
@@ -111,12 +112,13 @@ public class OrderService {
         ArrayList<String> names = new ArrayList<>();
 
         if (d.equals("d")) {
-            LocalDate currentDate = LocalDate.now();
-            for (int i = 0; i < 12; i++) {
-                LocalDate date = currentDate.plusDays(i);
-                String dayName = date.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);;
-                LocalDateTime startDate = date.atStartOfDay();
-                LocalDateTime endDate = date.atTime(23, 59, 59);
+            LocalDate currentDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+            LocalDate lastDate = currentDate.with(TemporalAdjusters.lastDayOfMonth());
+            while (currentDate.isBefore(lastDate)) {
+                currentDate = currentDate.plusDays(1);
+                String dayName = String.valueOf(currentDate.getDayOfMonth());
+                LocalDateTime startDate = currentDate.atStartOfDay();
+                LocalDateTime endDate = currentDate.atTime(23, 59, 59);
                 Double v = orderRepository.getTotalRevenue(startDate, endDate);
                 res.add(v == null ? 0 : v);
                 names.add(dayName);
@@ -161,6 +163,27 @@ public class OrderService {
         map.put("data", res);
         map.put("names", names);
         return map;
+    }
+
+    public void getTotalRevenueMonth(List<Double> listData, List<String> listLabels){
+        ArrayList<Double> data = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate lastDate = currentDate.with(TemporalAdjusters.lastDayOfMonth());
+
+        while (currentDate.isBefore(lastDate)) {
+
+            String dayName = String.valueOf(currentDate.getDayOfMonth());
+            LocalDateTime startDate = currentDate.atStartOfDay();
+            LocalDateTime endDate = currentDate.atTime(23, 59, 59);
+            Double v = orderRepository.getTotalRevenue(startDate, endDate);
+            data.add(v == null ? 0 : v);
+            names.add(dayName);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        listData.addAll(data);
+        listLabels.addAll(names);
     }
 
     public List<Order> getAllOrders(int page, int size, int order, boolean b) {

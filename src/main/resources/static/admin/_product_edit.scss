@@ -12,7 +12,7 @@
 
 .edit-product-container {
     width: 100%;
-    max-width: 600px;
+    max-width: 768px;
     margin: 50px auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -65,5 +65,9 @@
 
     form button {
         width: 100%;
+
+        @media (min-width: 700) {
+            width: fit-content;
+        }
     }
 }

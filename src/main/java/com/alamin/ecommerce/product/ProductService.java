@@ -162,8 +162,8 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public List<Product> getBestSellingProducts() {
-        return productRepository.getBestSellingProducts();
+    public List<Product> getBestSellingProducts(int i) {
+        return productRepository.getBestSellingProducts(Pageable.ofSize(Math.max(i, 10)));
     }
 
     public List<Product> getSimilarProducts(Product product) {
@@ -235,7 +235,7 @@ public class ProductService {
     }
 
     public List<Product> getRandomProducts(int size) {
-        return productRepository.findRandomProducts(size);
+        return productRepository.findRandomProductsEnabled(size);
     }
 
     public long getProductsCount() {

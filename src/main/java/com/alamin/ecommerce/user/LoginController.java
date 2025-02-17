@@ -23,7 +23,7 @@ public class LoginController {
         Model model
     ) {
         model.addAttribute("loginForm", new LoginForm());
-        return "login";
+        return "public/login";
     }
 
     @PostMapping("/login")
@@ -37,12 +37,12 @@ public class LoginController {
         boolean authenticationFailed = false;
         
         if (bindingResult.hasErrors()) {
-            return "login";
+            return "public/login";
         }
 
         if (authenticationFailed) {
             model.addAttribute("errorMessage", "Invalid username or password");
-            return "login";
+            return "public/login";
         }
         
         return "redirect:" + (url != null ? url : "/");

@@ -10,25 +10,38 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    // You can add custom queries here if needed
-    @Query(value = """
-            SELECT * FROM categories
-            ORDER BY RAND()
-            LIMIT 12""", nativeQuery = true)
-    List<Category> findRandomCategories();
 
-    // Update categories' parent
-    @Modifying
-    @Transactional
-    @Query(value = """
-            UPDATE categories
-            SET parentId = :newParent
-            WHERE parentId = :oldParent""", nativeQuery = true)
-    void updateCategoriesParent(@Param("oldParent") Long oldParent, @Param("newParent") Long newParent);
+        @Query(value = """
+                        SELECT *
+                        FROM tbl_categories AS c
+                        WHERE c.parent_id IS NULL""", nativeQuery = true)
+        List<Category> findRootCategories();
 
-    @Query(value = """
-            SELECT c
-            FROM Category c
-            WHERE c.name LIKE %:search%""")
-    List<Category> searchCategoryByName(String search);
+        @Query(value = """
+                        SELECT *
+                        FROM tbl_categories AS c
+                        WHERE c.parent_id = :parentId""", nativeQuery = true)
+        List<Category> findSubCategoriesByParent(@Param("parentId") Long parentId);
+
+        @Query(value = """
+                        SELECT *
+                        FROM tbl_categories AS c
+                        ORDER BY RAND()
+                        LIMIT 12""", nativeQuery = true)
+        List<Category> findRandomCategories();
+
+        // Update categories parent
+        @Modifying
+        @Transactional
+        @Query(value = """
+                        UPDATE tbl_categories AS c
+                        SET c.parent_id = :newParent
+                        WHERE c.parent_id = :oldParent""", nativeQuery = true)
+        void updateCategoriesParent(@Param("oldParent") Long oldParent, @Param("newParent") Long newParent);
+
+        @Query(value = """
+                        SELECT c
+                        FROM Category c
+                        WHERE c.name LIKE %:search%""")
+        List<Category> searchCategoryByName(String search);
 }

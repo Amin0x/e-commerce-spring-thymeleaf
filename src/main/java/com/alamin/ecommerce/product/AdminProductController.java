@@ -123,7 +123,7 @@ public class AdminProductController {
         model.addAttribute("totalSold", productService.getTotalSoldCount());
         model.addAttribute("totalUnsold", productService.getTotalUnsold());
         model.addAttribute("totalRevenue", productService.getTotalRevenue());
-        model.addAttribute("topSoldProducts", productService.getBestSellingProducts());
+        model.addAttribute("topSoldProducts", productService.getBestSellingProducts(10));
         model.addAttribute("topUnsoldProducts", productService.getTopUnsoldProducts());
 
 	    model.addAttribute("pageDescription", "");

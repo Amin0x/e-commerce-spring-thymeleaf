@@ -1,7 +1,5 @@
 package com.alamin.ecommerce.product;
 
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import com.alamin.ecommerce.exception.CategoryNotFoundException;
 
 @Controller
 public class ProductController {
@@ -43,7 +40,7 @@ public class ProductController {
     // Get all products
     @GetMapping("/products/bestselling")
 	public String getBestSellProducts(Model model) {
-   		List<Product> products = productService.getBestSellingProducts();
+   		List<Product> products = productService.getBestSellingProducts(10);
         model.addAttribute("products", products);
    		return "public/products_bestselling";
 	}

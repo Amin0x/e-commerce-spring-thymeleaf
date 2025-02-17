@@ -4,26 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
     <title>Admin - Products</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
 </head>
 
 <body>
 <div class="page-wrapper">
     <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-
     <main class="content">
-
         <header th:replace="~{admin/fragments/header :: header}"></header>
         <div class="product-home px-3">
-            <h1 class="my-4">Dashboard - Products</h1>
+            <h1 class="page-title my-4">Dashboard - Products</h1>
             <div class="links">
                 <a class="" href="products_list.html" th:href="@{/admin/products}">All products</a>
                 <a class="" href="products_create_form.html" th:href="@{/admin/products}">Create product</a>
-                <a class="" href="@{/admin/products}">link</a>
             </div>
             <div class="counter-container">
                 <article class="counter">
@@ -46,11 +43,11 @@
 
             <div class="charts-wrp box2">                
                 <div class="col-md-6 market-chart">
-                    <header>
-                        <h4>Market Prices</h4>
-                        <div class="font-sm">Sold Products</div>
+                    <header class="box-header with-small-txt">
+                        <h4 class="title">Market Prices</h4>
+                        <div class="font-sm mb-0">Sold Products</div>
                     </header>
-                    <hr>
+                    <div class="horizontal-line-sm"></div>
                     <div>
                         <canvas id="marketPriceChart"></canvas>
                     </div>
@@ -58,11 +55,11 @@
             </div>
             <div class="charts-wrp box2">
                 <div class="col-md-6 sold-chart">
-                    <header>
-                        <h4>Sold Products</h4>
-                        <div class="font-sm">some text</div>
+                    <header class="box-header with-small-txt">
+                        <h4 class="title">Sold Products</h4>
+                        <div class="font-sm mb-0">some text</div>
                     </header>
-                    <hr size="18px">
+                    <div class="horizontal-line-sm"></div>
                     <div>
                         <canvas id="productsSoldChart"></canvas>
                     </div>
@@ -71,16 +68,17 @@
 
             <div class="list-container">
                 <div class="list box2">
-                    <header class="d-flex justify-content-between p-2">
-                        <h4>Top 10 Sold Products</h4>
-                        <div><a href="/admin/products/all" target="">View all</a></div>
+                    <header class="box-header">
+                        <h4 class="title">Top 10 Sold Products</h4>
+                        <div><a class="link" href="/admin/products/all?sort=12&asd=1" target="">View all</a></div>
                     </header>
+                    <div class="horizontal-line-sm"></div>
                     <table class="table d-block">
                         <tbody class="d-block">
                         <tr class="d-block bg-gray" th:each="product : ${topSoldProducts}">
                             <td><span th:text="${product.productId}"></span></td>
                             <td>
-                                <a href="#" th:text="${product.name}">Product Name</a>
+                                <a th:href="@{/admin/products/{id}(id=${product.productId})}" th:text="${product.name}">Product Name</a>
                                 <span class="badge badge-primary badge-pill" th:text="${product.totalSold}">0</span>
                             </td>
                         </tr>
@@ -88,9 +86,11 @@
                     </table>
                 </div>
                 <div class="list box2">
-                    <header class="p-2">
-                        <h4>Top 10 Unsold Products</h4>
+                    <header class="box-header">
+                        <h4 class="title">Top 10 Unsold Products</h4>
+                        <div><a class="link" href="/admin/products/all?sort=12&asd=0" target="">View all</a></div>
                     </header>
+                    <div class="horizontal-line-sm"></div>
                     <ul class="list-group" th:each="product : ${topUnsoldProducts}">
                         <li class="list-group-item">
                             <a href=""><span th:text="${product.name}">Product Name</span></a>
@@ -101,7 +101,6 @@
             </div>
         </div>
     </main>
-
 </div>
 
 <script>

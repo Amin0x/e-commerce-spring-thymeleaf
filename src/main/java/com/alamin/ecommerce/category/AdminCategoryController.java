@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.category;
 
 import com.alamin.ecommerce.user.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/categories")
+@Slf4j
 public class AdminCategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
@@ -60,16 +62,10 @@ public class AdminCategoryController {
             return "redirect:/admin/categories/create";
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error("", e);
             return "redirect:/admin/categories/create";
         }
     }
-
-//    // Get all categories
-//    @GetMapping
-//    public ResponseEntity<List<Category>> getAllCategories() {
-//        return ResponseEntity.ok(categoryRepository.findAll());
-//    }
 
     // Get a category by ID
     @GetMapping("/{id}")
@@ -90,7 +86,7 @@ public class AdminCategoryController {
         try {
             categoryService.updateCategory(id, category);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
             throw new RuntimeException(e);
         }
         return ResponseEntity.ok(null);

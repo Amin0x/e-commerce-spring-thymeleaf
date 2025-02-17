@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
     <title>Edit Product</title>
     <link th:href="@{'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'}"
         href="../../../static/public/css/bootstrap.min.css" rel="stylesheet">
@@ -17,7 +18,7 @@
             <main class="content">
                 <header th:replace="~{admin/fragments/header :: header}"></header>
                 <div class="edit-product-container">
-                    <h2>Edit Product</h2>
+                    <h1 class="page-title">Edit Product</h1>
                     <form id="editProductForm">
                         <div class="form-group">
                             <label for="name">Name:</label>

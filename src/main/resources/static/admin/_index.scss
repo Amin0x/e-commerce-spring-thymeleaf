@@ -1,98 +1,102 @@
-
 /* start admin home page */
 
 .states {
-    display: flex;
-    width: 80%;
-    margin: 30px auto 0px auto;
-  }
-  
-  .state-1, .states-2, .states-3, .states-4{
-    display: flex;
-  }
-  
-  .states-4{
-    > * {
-      width: calc(25% - 10px);
-      max-width: calc(25% - 10px);
-      margin-left: 5px;
-      margin-right: 5px;
-      flex: 1;
-    }
-  }
-  
-  .states-3{
-    > * {
-      width: calc(33.33333% - 10px);
-      max-width: calc(33.33333% - 10px);
-      margin-left: 5px;
-      margin-right: 5px;
-      flex: 1;
-    }
-  }
-  
-  .states-2{
-    > * {
-      width: calc(50% - 10px);
-      max-width: calc(50% - 10px);
-      margin-left: 5px;
-      margin-right: 5px;
-      flex: 1;
-    }
-  }
-  
-  .state-card {
-    margin-left: 8px;
-    margin-right: 8px;
+  display: flex;
+  width: 80%;
+  margin: 30px auto 0px auto;
+}
+
+.state-1,
+.states-2,
+.states-3,
+.states-4 {
+  display: flex;
+}
+
+.states-4 {
+  >* {
+    width: calc(25% - 10px);
+    max-width: calc(25% - 10px);
+    margin-left: 5px;
+    margin-right: 5px;
     flex: 1;
-  
-    .state-card__body {
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-  
-    h3 {
-      font-size: 18px;
-      color: #555;
-    }
-  
-    p {
-      font-size: 24px;
-      color: #333;
-  
-      small {
-        font-size: 12px;
-        color: #ccc;
-      }
+  }
+}
+
+.states-3 {
+  >* {
+    width: calc(33.33333% - 10px);
+    max-width: calc(33.33333% - 10px);
+    margin-left: 5px;
+    margin-right: 5px;
+    flex: 1;
+  }
+}
+
+.states-2 {
+  >* {
+    width: calc(50% - 10px);
+    max-width: calc(50% - 10px);
+    margin-left: 5px;
+    margin-right: 5px;
+    flex: 1;
+  }
+}
+
+.state-card {
+  margin-left: 8px;
+  margin-right: 8px;
+  flex: 1;
+
+  .state-card__body {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 18px;
+    color: #555;
+  }
+
+  p {
+    font-size: 24px;
+    color: #333;
+
+    small {
+      font-size: 12px;
+      color: #ccc;
     }
   }
-  
-  .recent-activity {
-    margin-top: 40px;
-  
-    h2 {
-      font-size: 22px;
-      color: #333;
-      margin-bottom: 20px;
-    }
-  
-    ul {
-      list-style-type: none;
-    }
+}
+
+.recent-activity {
+  margin-top: 40px;
+
+  h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 20px;
   }
-  
-  
-  .chart-container {
-    height: 300px;
+
+  ul {
+    list-style-type: none;
   }
-  
+}
+
+.charts-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+
   .revenue {
-    width: 50%;
+    width: calc(50% - 1rem);
   }
-  
-  
-  /* end admin home page */
-  
+}
+
+
+
+
+/* end admin home page */
