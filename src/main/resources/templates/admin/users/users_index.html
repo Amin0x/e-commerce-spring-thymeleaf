@@ -31,68 +31,72 @@
                         </div>
                         <div class="counter-card">
                             <div class="card">
-                                <div class="title">Total Drivers</div>
+                                <div class="title">Active Users</div>
                                 <div class="body">
-                                    <h5 th:text="${totalDrivers}"></h5>
+                                    <h5 th:text="${activeUsers}"></h5>
                                 </div>
                             </div>
                         </div>
                         <div class="counter-card">
                             <div class="card">
-                                <div class="title">Users Registered This Month</div>
+                                <div class="title">New Users</div>
                                 <div class="body">
-                                    <h5 th:text="${usersThisMonth}"></h5>
+                                    <h5 th:text="${newUsers}"></h5>
                                 </div>
+                                <div>this month</div>
                             </div>
                         </div>
                         <div class="counter-card">
                             <div class="card">
-                                <div class="title">Drivers Registered This Month</div>
+                                <div class="title">Unactive Users</div>
                                 <div class="body">
-                                    <h5 th:text="${driversThisMonth}"></h5>
+                                    <h5 th:text="${unactiveUsers}"></h5>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="container-user-chart mb-4 box2">
-                        <div class="chart-users-reg w-50">
-                            <div class="title">User Register</div>
+                    <div class="container-user-chart mb-4">
+                        <div class="chart-users-reg box2">
+                            <div class="title">User Registeration</div>
                             <canvas id="usersRegistrationChart"></canvas>
                         </div>
-                        <div class="chart-users-reg w-50">
-                            <div class="title">User Register</div>
+                        <div class="chart-users-reg box2">
+                            <div class="title">User Vists</div>
                             <canvas id="driversRegistrationChart"></canvas>
                         </div>
                     </div>
 
                     <section class="top-users box2">
-                        <div class="card-title"><a href="/admin/users/list">Top Users This Month</a></div>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>User ID</th>
-                                    <th>Email</th>
-                                    <th>Registration Date</th>
-                                    <th>Update Date</th>
-                                    <th>Active Date</th>
-                                    <th>Role</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="user : ${topUsers}">
-                                    <td><a th:href="${'/admin/users/' + user.userId }"
-                                            th:text="${user.firstName} + ' ' + ${user.lastName}"></a></td>
-                                    <td th:text="${user.username}"></td>
-                                    <td th:text="${user.email}"></td>
-                                    <td th:text="${#temporals.format(user.created, 'yyyy-MM-dd')}"></td>
-                                    <td th:text="${#temporals.format(user.updated, 'yyyy-MM-dd')}"></td>
-                                    <td th:text="${#temporals.format(user.lastActive, 'yyyy-MM-dd')}"></td>
-                                    <td th:text="${user.role}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="card-title">New Users This Month</div>
+                        <div th:if="${#lists.isEmpty(newUsersList)} == false">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>User ID</th>
+                                        <th>Email</th>
+                                        <th>Registration Date</th>
+                                        <th>Update Date</th>
+                                        <th>Active Date</th>
+                                        <th>Role</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="user : ${newUsersList}">
+                                        <td><a th:href="${'/admin/users/' + user.userId }"
+                                                th:text="${user.firstName} + ' ' + ${user.lastName}"></a></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td th:text="${#temporals.format(user.created, 'yyyy-MM-dd')}"></td>
+                                        <td th:text="${#temporals.format(user.updated, 'yyyy-MM-dd')}"></td>
+                                        <td th:text="${#temporals.format(user.lastActive, 'yyyy-MM-dd')}"></td>
+                                        <td th:text="${user.role}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${#lists.isEmpty(newUsersList)} == true"></div>
                     </section>
                 </div>
             </main>

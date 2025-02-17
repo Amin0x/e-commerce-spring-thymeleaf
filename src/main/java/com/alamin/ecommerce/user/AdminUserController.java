@@ -22,15 +22,15 @@ public class AdminUserController {
     @GetMapping
     public String index(Model model) {
 
-        var topUsers = userService.getLastUsers(10);
+        var newUsersList = userService.getLastUsers(10);
 
         model.addAttribute("user", new User());
         model.addAttribute("totalUsers", userService.getUsersCount());
-        model.addAttribute("totalDrivers", 567234);
-        model.addAttribute("usersThisMonth", userService.getUsersThisMonth());
-        model.addAttribute("driversThisMonth", 567234);
-        model.addAttribute("topUsers", topUsers);
-        model.addAttribute("topDrivers", topUsers);
+        model.addAttribute("activeUsers", userService.getActiveUsersCount());
+        model.addAttribute("newUsers", userService.getUsersCountThisMonth());
+        model.addAttribute("unactiveUsers", 567234);
+        model.addAttribute("newUsersList", newUsersList);
+        model.addAttribute("topDrivers", newUsersList);
         model.addAttribute("usersRegistrationLabels", 9876);
         model.addAttribute("usersRegistrationData", 9876);
         model.addAttribute("driversRegistrationLabels", 9876);

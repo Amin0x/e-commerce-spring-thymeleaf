@@ -8,7 +8,13 @@
       width: calc(50% - 8px);
       max-width: calc(50% - 8px);
       flex: 1;
-      background-color: var(--primary-color);
+
+      .title{
+        font-size: 1.2rem;
+        font-weight: 600;
+        line-height: 1.5;
+        color: #757575;
+      }
     }
   }
 

@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -41,11 +44,11 @@ public class UserService {
         return userRepository.findByUuid(id);
     }
 
-    public int getUsersThisMonth() {
+    public int getUsersCountThisMonth() {
         int usersThisMonth = 0;
 
         try {
-            usersThisMonth = userRepository.getUsersThisMonth();
+            usersThisMonth = userRepository.getUsersCountThisMonth();
 
         } catch (Exception e) {
             //throw new RuntimeException(e);
@@ -54,25 +57,25 @@ public class UserService {
         return usersThisMonth;
     }
 
-    private void saveFile(MultipartFile file) {
-        if (!file.isEmpty()) {
-            try {
-                // Save the file to a directory
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get("uploads/" + file.getOriginalFilename());
-                Files.write(path, bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+    private String saveFile(byte[] bytes, String fileName) throws IOException {
+        Path path = null;
+        String strPath = "uploads/" + fileName;
+        try {
+            // Save the file to a directory
+            path = Paths.get(strPath);
+            Files.write(path, bytes);
+        } catch (IOException e) {
+            log.error("Error saving file " + fileName, e);
+            throw e;
         }
-
+        return strPath;
     }
 
 
 
+
     public List<User> getLastUsers(int size) {
-        return userRepository.getLastUsers(Pageable.ofSize(size));
+        return userRepository.getLastRegisteredUsers(Pageable.ofSize(size));
     }
 
     public long getUsersCount(){
@@ -93,6 +96,7 @@ public class UserService {
         createdUser.setStatus("ACTIVE");
         createdUser.setEnabled(true);
         createdUser.setBirthDate(user.getBirthDate());
+        createdUser.setUuid(this.createUuid());
         return userRepository.save(createdUser);
     }
 
@@ -111,5 +115,10 @@ public class UserService {
 
     private String createUuid(){
         return UUID.randomUUID().toString();
+    }
+
+    public int getActiveUsersCount() {
+       
+        return userRepository.getActiveUsersCount();
     }
 }

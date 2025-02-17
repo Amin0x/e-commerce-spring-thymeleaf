@@ -146,28 +146,24 @@
 
     document.getElementById('avatar').addEventListener('change', async function() {
         const file = this.files[0];
-        const body = new FormData();
-        body.append('file', file);
-        const response = await fetch("http://localhost:8080/admin/upload", {
-            method: 'POST',
-            body: body,
-        });
+        
+        if (!file) {
+            return;
+        }
 
-        if(response.status === 200) {
-            const data = await response.json();
-            image = data.url;
-            //document.getElementById('avatar').value = '';
+        const fileReader = new FileReader();
+        fileReader.onload = function(event) {
+            image = event.target.result;
             document.getElementById('avatarButton').textContent = '';
             document.getElementById('avatarButton').style.display = 'block';
-            document.getElementById('avatarButton').style.backgroundImage = `url('/admin/images/${data.url}')`;
+            document.getElementById('avatarButton').style.backgroundImage = `url('${image}')`;
             document.getElementById('avatarButton').style.backgroundSize = '100px';//'cover';
             document.getElementById('avatarButton').style.backgroundPosition = 'center';
             document.getElementById('avatarButton').style.backgroundRepeat = 'no-repeat';
             document.getElementById('avatarButton').style.border = '2px solid #000';
-            //submit.disabled = false;
-        } else {
-            console.error('Failed to upload image');
-        }
+        };
+
+        fileReader.readAsDataURL(file);
     });
 
     document.getElementById('avatarButton').addEventListener('click', function() {
@@ -196,31 +192,38 @@
 
         const date = new Date(year, month - 1, day);
 
-        const formData = {
+        const data = {
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
             email: document.getElementById('email').value,
             password: document.getElementById('password').value,
             role: document.getElementById('role').value,
             enabled: document.getElementById('enabled').checked,
-            birthDate: date.getTime(), //date.toISOString()
-            avatar: image,
+            birthDate: date.getTime(),
+            avatar: document.getElementById('avatar').files[0],
         };
+
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            if(data[key] !== undefined) {
+                formData.append(key, data[key]);
+            }
+        });
 
         fetch('/admin/users', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData),
+            body: formData,
         })
         .then(response => response.ok ? response.json(): Promise.reject(response.status))
         .then(data => {
             console.log('Success:', data);
-            // Handle success
+            submit.disabled = false;
+            
+            
         })
         .catch((error) => {
             console.error('Error:', error);
+            submit.disabled = false;
             // Handle error
         });
     });
