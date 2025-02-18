@@ -1,7 +1,5 @@
 package com.alamin.ecommerce.category;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
 
 public class CategoryDto{

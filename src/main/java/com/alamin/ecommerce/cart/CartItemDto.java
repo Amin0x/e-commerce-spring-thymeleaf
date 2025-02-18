@@ -1,6 +1,5 @@
 package com.alamin.ecommerce.cart;
 
-import com.alamin.ecommerce.product.Product;
 import com.alamin.ecommerce.product.ProductDto;
 
 public class CartItemDto {

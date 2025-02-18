@@ -1,6 +1,5 @@
 package com.alamin.ecommerce.cart;
 
-import com.alamin.ecommerce.user.User;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

@@ -25,7 +25,6 @@ public class Checkout {
         order.setEstimatedArrival("");
         order.setPaymentMethod("");
         order.setPaymentStatus("");
-        order.setShippingAddress(null);
         order.setShipping(BigDecimal.valueOf(0.0));
         order.setStatus(OrderStatus.PENDING);
         order.setTax(BigDecimal.valueOf(0));

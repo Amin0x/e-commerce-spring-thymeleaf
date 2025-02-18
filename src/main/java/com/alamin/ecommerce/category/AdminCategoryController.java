@@ -59,6 +59,7 @@ public class AdminCategoryController {
 
             Category newCategory = new Category(name, description, parent);
             Category category = categoryService.createCategory(newCategory);
+            
             return "redirect:/admin/categories/create";
 
         } catch (Exception e) {

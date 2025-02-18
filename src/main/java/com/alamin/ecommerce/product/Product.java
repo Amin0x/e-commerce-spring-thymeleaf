@@ -2,8 +2,6 @@ package com.alamin.ecommerce.product;
 
 import com.alamin.ecommerce.category.Category;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;

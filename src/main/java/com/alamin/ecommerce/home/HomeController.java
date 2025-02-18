@@ -1,8 +1,6 @@
 package com.alamin.ecommerce.home;
 
-import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.product.*;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

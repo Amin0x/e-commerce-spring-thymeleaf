@@ -3,7 +3,6 @@ package com.alamin.ecommerce.invoice;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import lombok.*;
 
 @Data

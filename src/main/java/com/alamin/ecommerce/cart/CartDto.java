@@ -1,9 +1,5 @@
 package com.alamin.ecommerce.cart;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

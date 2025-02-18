@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -29,7 +28,6 @@ public class AdminIndexController {
         var user = new User();
         var activities = new ArrayList<Map<String,String>>();
 
-        ArrayList<Object> data = new ArrayList<>();
         List<String> listLabels = new ArrayList<>();
         List<Double> listData = new ArrayList<>();
         orderService.getTotalRevenueMonth(listData, listLabels);

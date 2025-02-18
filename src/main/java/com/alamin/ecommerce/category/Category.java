@@ -1,17 +1,11 @@
 package com.alamin.ecommerce.category;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import java.util.List;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import lombok.*;
-
-import com.alamin.ecommerce.product.Product;
 
 @Data
 @Entity
