@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/admin/users")
@@ -23,18 +24,22 @@ public class AdminUserController {
     public String index(Model model) {
 
         var newUsersList = userService.getLastUsers(10);
+        var usersRegistrationLabels = userService.getUsersRegisrationLabelsMonth();
+        var usersRegistrationData = userService.getUsersRegisrationMonth();
+        var visitorLabels = new ArrayList<>();
+        var visitorData = new ArrayList<>();
 
         model.addAttribute("user", new User());
         model.addAttribute("totalUsers", userService.getUsersCount());
         model.addAttribute("activeUsers", userService.getActiveUsersCount());
         model.addAttribute("newUsers", userService.getUsersCountThisMonth());
-        model.addAttribute("unactiveUsers", 567234);
+        model.addAttribute("unactiveUsers", userService.getUnactiveUsersCount());
         model.addAttribute("newUsersList", newUsersList);
         model.addAttribute("topDrivers", newUsersList);
-        model.addAttribute("usersRegistrationLabels", 9876);
-        model.addAttribute("usersRegistrationData", 9876);
-        model.addAttribute("driversRegistrationLabels", 9876);
-        model.addAttribute("driversRegistrationData", 9876);
+        model.addAttribute("usersRegistrationLabels", usersRegistrationLabels);
+        model.addAttribute("usersRegistrationData", usersRegistrationData);
+        model.addAttribute("visitorLabels", visitorLabels);
+        model.addAttribute("visitorData", visitorData);
         return "admin/users/users_index";
     }
 

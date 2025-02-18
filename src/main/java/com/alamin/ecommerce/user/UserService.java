@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,7 +44,6 @@ public class UserService {
 
         return userRepository.findByUuid(id);
     }
-
     public int getUsersCountThisMonth() {
         int usersThisMonth = 0;
 
@@ -57,7 +57,7 @@ public class UserService {
         return usersThisMonth;
     }
 
-    private String saveFile(byte[] bytes, String fileName) throws IOException {
+    private String saveFileFromJson(byte[] bytes, String fileName) throws IOException {
         Path path = null;
         String strPath = "uploads/" + fileName;
         try {
@@ -114,11 +114,35 @@ public class UserService {
     }
 
     private String createUuid(){
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
     public int getActiveUsersCount() {
        
         return userRepository.getActiveUsersCount();
+    }
+
+    public int getUnactiveUsersCount(){
+        return userRepository.getUnactiveUsersCount();
+    }
+
+    public List<Integer> getUsersRegisrationMonth() {
+        List<Integer> usersRegisrationMonth = null;
+        try {
+            usersRegisrationMonth = userRepository.getUsersRegisrationCountMonth();
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+        }
+        return usersRegisrationMonth;
+    }
+
+    public List<Integer> getUsersRegisrationLabelsMonth() {
+        List<Integer> usersRegisrationLabelsMonth = null;
+        try {
+            usersRegisrationLabelsMonth = userRepository.getUsersRegisrationLabelsMonth();
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+        }
+        return usersRegisrationLabelsMonth;
     }
 }

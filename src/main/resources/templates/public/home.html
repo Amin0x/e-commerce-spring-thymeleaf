@@ -51,7 +51,7 @@
 
         <section th:if="false" class="categories-container">
             <div>
-                <h4>التصنيفات</h4>
+                <h4 class="title">التصنيفات</h4>
             </div>
             <div class="row">
                 <div class="col-md-4">
@@ -63,7 +63,7 @@
         </section>
         <section  th:if="${#lists.isEmpty(mustSellingProducts) == false}" class="container-fluid">
             <div>
-                <h4>المنتجات الأكثر مبيعا</h4>
+                <h4 class="title">المنتجات الأكثر مبيعا</h4>
             </div>
             <div class="products row">
                 <div th:each="product : ${mustSellingProducts}" class="mb-2 product-card col-3">
@@ -96,13 +96,13 @@
 
         <section>
             <div>
-                <h4>أحدث المنتجات</h4>
+                <h4 class="title">أحدث المنتجات</h4>
             </div>
         </section>
 
         <section th:if="${#lists.isEmpty(products)} == false" class="products-container">
             <div>
-                <h4>كل المنتجات</h4>
+                <h4 class="title">كل المنتجات</h4>
             </div>
             <div class="products">
                 <div th:each="product : ${products}" class="mb-2 product-card">

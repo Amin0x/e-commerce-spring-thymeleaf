@@ -1,11 +1,11 @@
 package com.alamin.ecommerce.order;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
-
 import lombok.*;
 
 @Data
@@ -33,10 +33,29 @@ public class Order {
     private BigDecimal shipping;
     private LocalDateTime orderDate;
     private LocalDateTime shippingDate;
-    @Embedded
-    private Address shippingAddress;
+    @NotEmpty
+    private String shippingStreet;
+
+    @NotEmpty
+    private String shippingCity;
+
+    @NotEmpty
+    private String shippingState;
+
+    @NotEmpty
+    private String shippingCountry;
+
+    private String shippingPostalCode;
+
+    @NotEmpty
+    private String shippingPhone;
+
+    @NotEmpty
     private String paymentMethod;
+
+    @NotEmpty
     private String cardNumber;
+
     private String paymentStatus;
     private String transactionId;
     private String carrier;
@@ -49,17 +68,12 @@ public class Order {
 
     // Default constructor
     public Order() {
-        this.uuid = new UUID(System.currentTimeMillis(), System.currentTimeMillis()).toString();
-        this.orderDate = LocalDateTime.now(); // Set order date to current time by default
-        this.status = OrderStatus.PENDING; // Default status is PENDING
-        this.updated = LocalDateTime.now();
     }
 
     // Constructor with parameters
-    public Order(Customer customer, List<OrderItem> orderItems, Address shippingAddress, BigDecimal totalAmount, String paymentMethod, String transactionId) {
+    public Order(Customer customer, List<OrderItem> orderItems, BigDecimal totalAmount, String paymentMethod, String transactionId) {
         this.customer = customer;
         this.orderItems = orderItems;
-        this.shippingAddress = shippingAddress;
         this.totalAmount = totalAmount;
         this.paymentMethod = paymentMethod;
         this.transactionId = transactionId;

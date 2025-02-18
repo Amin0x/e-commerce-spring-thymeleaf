@@ -1125,11 +1125,16 @@ body {
   margin-inline-end: 15px;
 }
 
-.order-counters {
+.orders-wrapper {
+  margin-top: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.orders-wrapper .order-counters {
   display: flex;
   justify-content: space-evenly;
 }
-.order-counters .counter-item {
+.orders-wrapper .order-counters .counter-item {
   width: 20%;
   background-color: #323232;
   padding: 16px 8px;
@@ -1138,13 +1143,16 @@ body {
   border-radius: 4px;
   color: #eceaea;
 }
-.order-counters .counter-item .counter-title {
+.orders-wrapper .order-counters .counter-item .counter-title {
   text-transform: uppercase;
   font-size: 1rem;
   font-weight: 400;
 }
-.order-counters .counter-item .counter-value {
+.orders-wrapper .order-counters .counter-item .counter-value {
   font-size: 1.8rem;
+}
+.orders-wrapper .orders {
+  margin-top: 20px;
 }
 
 /* star product create page */
