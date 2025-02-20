@@ -484,8 +484,12 @@ body {
   flex-wrap: wrap;
 }
 .products-container .products .product-card {
+  display: flex;
   margin: 0 5px;
   width: calc(50% - 10px);
+}
+.products-container .products .product-card .card .card-body .button-31 {
+  margin-top: auto;
 }
 @media screen and (min-width: 666px) {
   .products-container .products .product-card {

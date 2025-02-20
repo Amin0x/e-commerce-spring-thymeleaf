@@ -1,15 +1,14 @@
 package com.alamin.ecommerce.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
@@ -19,6 +18,72 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    //todo: remove save or make private
+    private Order saveOrder(Order order) {
+
+        return orderRepository.save(order);
+    }
+
+    public Order createOrder(OrderDto orderDetails) {
+
+        Order order = new Order();
+
+        //order.setOrderItems();
+        order.setCarrier("");
+        order.setCardNumber("");
+        order.setEstimatedArrival("");
+        order.setPaymentMethod("");
+        order.setPaymentStatus("");
+        order.setShipping(BigDecimal.valueOf(0.0));
+        order.setStatus(OrderStatus.PENDING);
+        order.setTax(BigDecimal.valueOf(0));
+        order.setTotalAmount(BigDecimal.valueOf(0));
+        order.setTransactionId("");
+        Address address = new Address();
+        address.setState("khartoum");
+        address.setCity("khartoum");
+        address.setCountry("sudan");
+        address.setPostalCode("111111");
+        Customer customer = new Customer(orderDetails.firstName(), orderDetails.lastName(), address, null);
+        customer.setEmail("test@test.com");
+        order.setCustomer(customer);
+
+        return orderRepository.save(order);
+    }
+
+    public Optional<Order> findById(Long id) {
+        return orderRepository.findById(id);
+    }
+
+    public Optional<Order> getOrderById(Long id) {
+        return this.findById(id);
+    }
+
+    public Page<Order> getAllOrders(int page, int size, int order, int sort) {
+        if (size < 1 || page < 0 || order < 1 || order > 8)
+            throw new IllegalArgumentException("");
+
+        String s = "";
+        Sort sort1 = Sort.unsorted();
+
+        switch (order){
+            case 1:
+                s = "";
+                break;
+            case 2:
+                s = "";
+            default: s = "b";
+        }
+
+        if (sort == 0){
+            sort1 = Sort.by(Sort.Direction.ASC, s);
+        } else if (sort == 1) {
+            sort1 = Sort.by(Sort.Direction.DESC, s);
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, size, sort1);
+        return orderRepository.findAll(pageRequest);
+    }
 
     public Page<Order> getAllOrders(int page, int size, int order, boolean asc, LocalDate startDate, LocalDate endDate) {
         // Create a PageRequest with pagination and sorting
@@ -45,14 +110,6 @@ public class OrderService {
         } else {
             return orderRepository.findAll(pageRequest);
         }
-    }
-
-    public Optional<Order> getOrderById(Long id) {
-        return orderRepository.findById(id);
-    }
-
-    public Order saveOrder(Order order) {
-        return orderRepository.save(order);
     }
 
     public void deleteOrder(Long id) {
@@ -86,18 +143,6 @@ public class OrderService {
     }
 
 
-    @Scheduled(cron = "0 0 0 * * *")
-    public void runAtMidnight() {
-        System.out.println("Task is running at midnight!");
-    }
-
-    // run at midnight on the last day of the month
-    @Scheduled(cron = "0 0 0 L * ?")
-    public void runOnLastDayOfMonth() {
-        System.out.println("Task is running on the last day of the month at midnight!");
-    }
-
-
     public int grtOrderCountThisMonth() {
         return orderRepository.grtOrderCountThisMonth();
     }
@@ -107,63 +152,6 @@ public class OrderService {
         return totalRevenue == null ? 0 : totalRevenue;
     }
 
-    public Map<String, Object> getTotalRevenue(String d) {
-        ArrayList<Double> res = new ArrayList<>();
-        ArrayList<String> names = new ArrayList<>();
-
-        if (d.equals("d")) {
-            LocalDate currentDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-            LocalDate lastDate = currentDate.with(TemporalAdjusters.lastDayOfMonth());
-            while (currentDate.isBefore(lastDate)) {
-                currentDate = currentDate.plusDays(1);
-                String dayName = String.valueOf(currentDate.getDayOfMonth());
-                LocalDateTime startDate = currentDate.atStartOfDay();
-                LocalDateTime endDate = currentDate.atTime(23, 59, 59);
-                Double v = orderRepository.getTotalRevenue(startDate, endDate);
-                res.add(v == null ? 0 : v);
-                names.add(dayName);
-            }
-
-
-        } else if (d.equals("w")) {
-            LocalDate currentDate = LocalDate.now();
-            for (int i = 0; i < 12; i++) {
-                LocalDate date = currentDate.plusWeeks(i);
-                String dayName = String.valueOf(i);
-                LocalDateTime startDate = date.atStartOfDay();
-                LocalDateTime endDate = date.atTime(23, 59, 59);
-                Double v = orderRepository.getTotalRevenue(startDate, endDate);
-                res.add(v == null ? 0 : v);
-                names.add(dayName);
-            }
-        } else if (d.equals("m")) {
-            LocalDate currentDate = LocalDate.now();
-            for (int i = 0; i < 12; i++) {
-                LocalDate date = currentDate.plusMonths(i);
-                String dayName = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-                LocalDateTime startDate = date.atStartOfDay();
-                LocalDateTime endDate = date.atTime(23, 59, 59);
-                Double v = orderRepository.getTotalRevenue(startDate, endDate);
-                res.add(v == null ? 0 : v);
-                names.add(dayName);
-            }
-        } else if (d.equals("y")) {
-            LocalDate currentDate = LocalDate.now();
-            for (int i = 0; i < 12; i++) {
-                LocalDate date = currentDate.plusYears(i);
-                String dayName = String.valueOf(date.getYear());
-                LocalDateTime startDate = date.atStartOfDay();
-                LocalDateTime endDate = date.atTime(23, 59, 59);
-                Double v = orderRepository.getTotalRevenue(startDate, endDate);
-                res.add(v == null ? 0 : v);
-                names.add(dayName);
-            }
-        }
-        Map<String , Object> map = new HashMap<>();
-        map.put("data", res);
-        map.put("names", names);
-        return map;
-    }
 
     public void getTotalRevenueMonth(List<Double> listData, List<String> listLabels){
         ArrayList<Double> data = new ArrayList<>();
@@ -186,11 +174,28 @@ public class OrderService {
         listLabels.addAll(names);
     }
 
-    public List<Order> getAllOrders(int page, int size, int order, boolean b) {
-        return orderRepository.findAll();
+    public void getTotalRevenueYear(List<Double> listData, List<String> listLabels){
+        ArrayList<Double> data = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now().with(TemporalAdjusters.firstDayOfYear());
+        LocalDate lastDate = currentDate.with(TemporalAdjusters.lastDayOfYear());
+
+        while (currentDate.isBefore(lastDate)) {
+
+            String dayName = String.valueOf(currentDate.getDayOfMonth());
+            LocalDateTime startDate = currentDate.atStartOfDay();
+            LocalDateTime endDate = currentDate.atTime(23, 59, 59);
+            Double v = orderRepository.getTotalRevenue(startDate, endDate);
+            data.add(v == null ? 0 : v);
+            names.add(dayName);
+            currentDate = currentDate.plusMonths(1);
+        }
+
+        listData.addAll(data);
+        listLabels.addAll(names);
     }
 
-    public Optional<Order> findById(Long id) {
-        return orderRepository.findById(id);
-    }
+
+
+
 }

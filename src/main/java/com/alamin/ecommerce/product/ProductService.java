@@ -162,8 +162,11 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public List<Product> getBestSellingProducts(int i) {
-        return productRepository.getBestSellingProducts(Pageable.ofSize(Math.max(i, 10)));
+    public List<Product> getBestSellingProducts(int size) {
+        if(size < 1)
+            throw new IllegalArgumentException("page size :" + size + " is 0 or negative");
+
+        return productRepository.getBestSellingProducts(Pageable.ofSize(size));
     }
 
     public List<Product> getSimilarProducts(Product product) {
@@ -222,7 +225,7 @@ public class ProductService {
         return save(product);
     }
 
-    public String generateSku(){
+    private String generateSku(){
         return "SkU" + System.currentTimeMillis();
     }
 
@@ -256,5 +259,9 @@ public class ProductService {
 
     public long getTotalUnsold() {
         return 0;
+    }
+
+    public List<Product> getLastAddedProducts(int count) {        
+        return productRepository.getLastAddedProducts(Pageable.ofSize(count));
     }
 }

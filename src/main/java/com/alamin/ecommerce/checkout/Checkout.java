@@ -2,9 +2,11 @@ package com.alamin.ecommerce.checkout;
 
 import com.alamin.ecommerce.order.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 
@@ -14,31 +16,17 @@ public class Checkout {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    RestTemplate restTemplate;
+
     @RequestMapping("/checkout")
     public void checkout(@RequestBody OrderDto orderDto){
+        //if not authenticated redirect to auth link
 
-        Order order = new Order();
+        //create order with not complete status
+        Order saveOrder = orderService.createOrder(orderDto);
 
-        //order.setOrderItems();
-        order.setCarrier("");
-        order.setCardNumber("");
-        order.setEstimatedArrival("");
-        order.setPaymentMethod("");
-        order.setPaymentStatus("");
-        order.setShipping(BigDecimal.valueOf(0.0));
-        order.setStatus(OrderStatus.PENDING);
-        order.setTax(BigDecimal.valueOf(0));
-        order.setTotalAmount(BigDecimal.valueOf(0));
-        order.setTransactionId("");
-        Address address = new Address();
-        address.setState("khartoum");
-        address.setCity("khartoum");
-        address.setCountry("sudan");
-        address.setPostalCode("111111");
-        Customer customer = new Customer(orderDto.firstName(), orderDto.lastName(), address, null);
-        customer.setEmail("test@test.com");
-        order.setCustomer(customer);
-
-        Order saveOrder = orderService.saveOrder(order);
+        ResponseEntity<String> response = restTemplate.postForEntity("url", null, String.class);
+        //redirect to payment gateway
     }
 }

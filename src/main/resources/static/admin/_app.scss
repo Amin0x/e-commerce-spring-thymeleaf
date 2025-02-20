@@ -17,8 +17,7 @@ $background: #ccc;
   --on-primary-color: #181818;
   --on-secondary-color: #2d3b48;
   --background-color: #f4f7fc;
-  --font-family-primary: 'nunito', 'Cairo', Arial, sans-serif;
-  --font-family-secondary: 'Cairo', Arial, sans-serif;
+  --font-family-primary: system-ui, -apple-system, "Segoe UI", "nunito", "Cairo", Arial, sans-serif;
   --box-shadow-light: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   --box-shadow-medium: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   --box-shadow-dark: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -63,7 +62,7 @@ body {
   font-weight: 700;
 }
 
-.box2 {
+.box-round {
   padding: 1rem;
   margin-bottom: 0.9rem;
   background-color: #ffffff;
@@ -448,321 +447,321 @@ body {
   box-shadow: none;
 }
 
-.horizontal-line-sm{
+.hline-sm{
   height: 1px;
   background-color: #e5e5e5;
 }
 
-.horizontal-line-lg{
+.hline-lg{
   height: 2px;
   background-color: #e5e5e5;
 }
 
-.m-0{
+.margin-0{
   margin: 0;
 }
 
-.m-1{
+.margin-4{
   margin: 4px;
 }
 
-.m-2{
+.margin-8{
   margin: 8px;
 }
 
-.m-3{
+.margin-12{
   margin: 12px;
 }
 
-.m-4{
+.margin-16{
   margin: 16px;
 }
 
-.m-5{
+.margin-20{
   margin: 20px;
 }
 
-.m-6{
+.margin-24{
   margin: 24px;
 }
 
-.mx-0{
+.marginx-0{
   margin-left: 0;
   margin-right: 0;
 }
 
-.mx-1{
+.marginx-4{
   margin-left: 4px;
   margin-right: 4px;
 }
 
-.mx-2{
+.marginx-8{
   margin-left: 8px;
   margin-right: 8px;
 }
 
-.mx-3{
+.marginx-12{
   margin-left: 12px;
   margin-right: 12px;
 }
 
-.mx-4{
+.marginx-16{
   margin-left: 16px;
   margin-right: 16px;
 }
 
-.mx-5{
+.marginx-20{
   margin-left: 20px;
   margin-right: 20px;
 }
 
-.mx-6{
+.marginx-24{
   margin-left: 24px;
   margin-right: 24px;
 }
 
-.my-0{
+.marginy-0{
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.my-1{
+.marginy-1{
   margin-top: 4px;
   margin-bottom: 4px;
 }
 
-.my-2{
+.marginy-2{
   margin-top: 8px;
   margin-bottom: 8px;
 }
 
-.my-3{
+.marginy-3{
   margin-top: 12px;
   margin-bottom: 12px;
 }
 
-.my-4{
+.marginy-4{
   margin-top: 16px;
   margin-bottom: 16px;
 }
 
-.my-5{
+.marginy-5{
   margin-top: 20px;
   margin-bottom: 20px;
 }
 
-.my-6{
+.marginy-6{
   margin-top: 24px;
   margin-bottom: 24px;
 }
 
-.mt-0{
+.margint-0{
   margin-top: 0;
 }
 
-.mt-1{
+.margint-4{
   margin-top: 4px;
 }
 
-.mt-2{
+.margint-8{
   margin-top: 8px;
 }
 
-.mt-3{
+.margint-12{
   margin-top: 12px;
 }
 
-.mt-4{
+.margint-16{
   margin-top: 16px;
 }
 
-.mt-5{
+.margint-20{
   margin-top: 20px;
 }
 
-.mt-6{
+.margint-24{
   margin-top: 24px;
 }
 
-.mb-0{
+.marginb-0{
   margin-bottom: 0;
 }
 
-.mb-1{
+.marginb-4{
   margin-bottom: 4px;
 }
 
-.mb-2{
+.marginb-8{
   margin-bottom: 8px;
 }
 
-.mb-3{
+.marginb-12{
   margin-bottom: 12px;
 }
 
-.mb-4{
+.marginb-16{
   margin-bottom: 16px;
 }
 
-.mb-5{
+.marginb-20{
   margin-bottom: 20px;
 }
 
-.mb-6{
+.marginb-24{
   margin-bottom: 24px;
 }
 
-.p-0{
+.padding-0{
   padding: 0;
 }
 
-.p-1{
+.padding-4{
   padding: 4px;
 }
 
-.p-2{
+.padding-8{
   padding: 8px;
 }
 
-.p-3{
+.padding-12{
   padding: 12px;
 }
 
-.p-4{
+.padding-16{
   padding: 16px;
 }
 
-.p-5{
+.padding-20{
   padding: 20px;
 }
 
-.p-6{
+.padding-24{
   padding: 24px;
 }
 
-.px-0{
+.paddingx-0{
   padding-left: 0;
   padding-right: 0;
 }
 
-.px-1{
+.paddingx-4{
   padding-left: 4px;
   padding-right: 4px;
 }
 
-.px-2{
+.paddingx-8{
   padding-left: 8px;
   padding-right: 8px;
 }
 
-.px-3{
+.paddingx-12{
   padding-left: 12px;
   padding-right: 12px;
 }
 
-.px-4{
+.paddingx-16{
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.px-5{
+.paddingx-20{
   padding-left: 20px;
   padding-right: 20px;
 }
 
-.px-6{
+.paddingx-24{
   padding-left: 24px;
   padding-right: 24px;
 }
 
-.py-0{
+.paddingy-0{
   padding-top: 0;
   padding-bottom: 0;
 }
 
-.py-1{
+.paddingy-4{
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-.py-2{
+.paddingy-8{
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.py-3{
+.paddingy-12{
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-.py-4{
+.paddingy-16{
   padding-top: 16px;
   padding-bottom: 16px;
 }
 
-.py-5{
+.paddingy-20{
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-.py-6{
+.paddingy-24{
   padding-top: 24px;
   padding-bottom: 24px;
 }
 
-.pt-0{
+.paddingt-0{
   padding-top: 0;
 }
 
-.pt-1{
+.paddingt-4{
   padding-top: 4px;
 }
 
-.pt-2{
+.paddingt-8{
   padding-top: 8px;
 }
 
-.pt-3{
+.paddingt-12{
   padding-top: 12px;
 }
 
-.pt-4{
+.paddingt-16{
   padding-top: 16px;
 }
 
-.pt-5{
+.paddingt-20{
   padding-top: 20px;
 }
 
-.pt-6{
+.paddingt-24{
   padding-top: 24px;
 }
 
-.pb-0{
+.paddingb-0{
   padding-top: 0;
 }
 
-.pb-1{
+.paddingb-4{
   padding-top: 4px;
 }
 
-.pb-2{
+.paddingb-8{
   padding-top: 8px;
 }
 
-.pb-3{
+.paddingb-12{
   padding-top: 12px;
 }
 
-.pb-4{
+.paddingb-16{
   padding-top: 16px;
 }
 
-.pb-5{
+.paddingb-20{
   padding-top: 20px;
 }
 
-.pb-6{
+.paddingb-24{
   padding-top: 24px;
 }
 

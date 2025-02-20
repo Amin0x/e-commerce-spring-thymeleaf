@@ -30,6 +30,7 @@ public class HomeController {
         model.addAttribute("products", getProducts());
         model.addAttribute("newProducts", getNewArrivalProducts());
         model.addAttribute("mustSellingProducts", getMustSellingProducts());
+        model.addAttribute("categoryList", categoryService.getRandomCategories());
 
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");

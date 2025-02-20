@@ -16,8 +16,8 @@ public class Inventory {
     private Long id;
     private int quantity;
     private int price;
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
     @OneToOne
     @JoinColumn(name ="product_id", referencedColumnName = "product_id")

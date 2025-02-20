@@ -24,7 +24,7 @@ public class AdminOrderController {
         model.addAttribute("totalSale", 10);
         model.addAttribute("orderCompleted", 10);
         model.addAttribute("orderUncompleted", 10);
-        model.addAttribute("lastOrders", orderService.getAllOrders(1,10,1,true));
+        model.addAttribute("lastOrders", orderService.getAllOrders(1,10,1,1));
         model.addAttribute("totalOrder99999", 10);
         return "admin/orders/order_index";
     }

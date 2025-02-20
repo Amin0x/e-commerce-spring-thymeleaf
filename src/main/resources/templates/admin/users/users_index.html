@@ -57,17 +57,17 @@
                     </div>
 
                     <div class="container-user-chart mb-4">
-                        <div class="chart-users-reg box2">
+                        <div class="chart-users-reg box-round">
                             <div class="title">User Registeration</div>
                             <canvas id="usersRegistrationChart"></canvas>
                         </div>
-                        <div class="chart-users-reg box2">
+                        <div class="chart-users-reg box-round">
                             <div class="title">User Vists</div>
                             <canvas id="driversRegistrationChart"></canvas>
                         </div>
                     </div>
 
-                    <section class="top-users box2">
+                    <section class="top-users box-round">
                         <div class="card-title">New Users This Month</div>
                         <div th:if="${#lists.isEmpty(newUsersList)} == false">
                             <table class="table table-bordered">

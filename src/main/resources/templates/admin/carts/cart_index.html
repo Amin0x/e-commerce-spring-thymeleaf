@@ -33,47 +33,32 @@
                 </div>
                 <div class="stat-card">
                     <h3>Orders</h3>
-                    <p><span th:text="${cartState2}">120</span></p>
+                    <p><span th:text="${cartState4}">120</span></p>
                     <p><small>this month</small></p>
                 </div>
                 <div class="stat-card">
                     <h3>Revenue</h3>
-                    <p><span th:text="${cartState3}">$5,000</span></p>
+                    <p><span th:text="${cartState5}">$5,000</span></p>
                     <p><small>this month</small></p>
                 </div>
             </section>
 
             <section class="d-flex justify-content-between gap-sm">
-                <div th:if="${carts != null}" style="width: 50%;">
+                <div th:if="${carts != null}">
                     <h1>Last 10 Carts</h1>
                     <div class="carts box" style="list-style-type: none;">
                         <ul style="list-style-type: none; padding: 0;">
                             <li th:each="cart : ${carts}" th:if="${cart != null}" style="list-style-type: none; display: flex; flex-wrap: nowrap;">
                                 <p th:text="${cart.cartId}" style="width: 60%;">123</p>
-                                <p th:text="${cart.quantity}" style="width: 10%;">4567</p>
-                                <p th:text="${cart.quantity}" style="width: 10%;">4567</p>
-                                <p th:text="${cart.quantity}" style="width: 10%;">4567</p>
-                                <p th:text="${cart.quantity}" style="width: 10%;">4567</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div th:if="${carts != null}" style="width: 50%;">
-                    <h1>Last 10 Carts</h1>
-                    <div class="carts box" style="list-style-type: none;">
-                        <ul style="list-style-type: none; padding: 0;">
-                            <li th:each="cart : ${carts}" style="list-style-type: none; display: flex; flex-wrap: nowrap;">
-                                <p th:text="${cart.cartId}" style="width: 60%;">123</p>
-                                <p th:text="${cart.quantity}" style="width: 10%;">4567</p>
-                                <p th:text="${cart.quantity}" style="width: 10%;">4567</p>
-                                <p th:text="${cart.quantity}" style="width: 10%;">4567</p>
-                                <p th:text="${cart.quantity}" style="width: 10%;">4567</p>
+                                <p th:text="${cart.total}" style="width: 10%;">4567</p>
+                                <p th:text="${cart.created}" style="width: 10%;">4567</p>
+                                <p th:text="${cart.updated}" style="width: 10%;">4567</p>
+                                <p th:text="${#lists.size(cart.cartItems)}" style="width: 10%;">4567</p>
                             </li>
                         </ul>
                     </div>
                 </div>
             </section>
-
 
             <section>
                 <div class="summary">
@@ -93,5 +78,4 @@
     <!-- Footer -->
     <footer th:replace="~{admin/fragments/footer::footer}"></footer>
 </body>
-
 </html>

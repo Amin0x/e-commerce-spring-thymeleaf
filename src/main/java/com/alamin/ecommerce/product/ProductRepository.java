@@ -71,4 +71,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         @Query("SELECT SUM(p.totalSold) FROM Product p")
         Long getTotalSoldCount();
 
+        @Query("SELECT p FROM Product p ORDER BY p.created DESC")
+        List<Product> getLastAddedProducts(Pageable ofSize);
+
 }

@@ -43,6 +43,8 @@ public class AdminIndexController {
         model.addAttribute("activities", activities);
         model.addAttribute("data", listData);
         model.addAttribute("labels", listLabels);
+        model.addAttribute("orderChartLabels", null);
+        model.addAttribute("orderChartData", null);
         model.addAttribute("pageTitle", "Admin Dashboard - Index");
 
         return "admin/admin_home";

@@ -44,7 +44,7 @@
                     </article>
                 </section>
                 <section th:if="false" class="recent-activity">
-                    <div class="recent-activity__content box2">
+                    <div class="recent-activity__content box-round">
                         <h2 class="box-title">Recent Activity</h2>
                         <ul>
                             <li th:each="activity : ${activities}" th:text="${activity.description}">Sample activity
@@ -53,15 +53,15 @@
                     </div>
                 </section>
                 <section class="charts-container">
-                    <section class="revenue box2">
+                    <section class="revenue box-round">
                         <h2>Revenue</h2>
                         <p><small>Revenue in last 30 days</small></p>
-                        <div class="horizontal-line-sm"></div>
+                        <div class="hline-sm"></div>
                         <div style="width: 100%; height: 300px;">
                             <canvas id="myChart" style="height: 300px; max-width: 100%"></canvas>
                         </div>
                     </section>
-                    <section class="revenue box2">
+                    <section class="revenue box-round">
                         <h2>Orders</h2>
                         <p><small>Orders count in last 30 days</small></p>
                         <div style="width: 100%; height: 300px;">
@@ -69,7 +69,7 @@
                         </div>
                     </section>
                 </section>
-                <section class="revenue box2">
+                <section class="revenue box-round">
                     <h2>Revenue</h2>
                     <p><small>Revenue in last 30 days</small></p>
                     <div style="width: 100%; height: 300px;">

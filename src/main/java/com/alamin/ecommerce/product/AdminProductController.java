@@ -103,11 +103,12 @@ public class AdminProductController {
     public String showProductsHomePage(@RequestParam(required = false) String category, Model model) {
     
         List<Product> products;
+        List<Product> lastAddedProducts = productService.getLastAddedProducts(12);
 
         if (category == null || category.isEmpty()) {
             // Handle null or empty category
             products = productService.getRandomProducts(12);
-    
+            
         } else {
         
             try {
@@ -119,6 +120,7 @@ public class AdminProductController {
     
         model.addAttribute("user", new User());
         model.addAttribute("products", products);
+        model.addAttribute("lastAddedProducts", lastAddedProducts);
         model.addAttribute("totalProducts", productService.getProductsCount());
         model.addAttribute("totalSold", productService.getTotalSoldCount());
         model.addAttribute("totalUnsold", productService.getTotalUnsold());

@@ -32,12 +32,15 @@ public class Product {
     private LocalDateTime updated;
     private LocalDateTime deleted;
 
-    @OneToOne()
-    @JoinColumn(name = "category_id", referencedColumnName = "categoryId", unique = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", referencedColumnName = "categoryId")
     private Category category;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product",cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<ProductImage> productImages = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product",cascade = CascadeType.ALL)
+    private List<ProductPrice> productPrices = new ArrayList<>();
 
     // Default constructor
     public Product() {

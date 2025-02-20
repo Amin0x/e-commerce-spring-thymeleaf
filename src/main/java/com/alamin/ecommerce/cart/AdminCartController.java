@@ -20,10 +20,14 @@ public class AdminCartController {
     public String showCartIndex(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("carts", cartService.findAll());
-        model.addAttribute("cartState1", "");
-        model.addAttribute("cartState2", "");
-        model.addAttribute("cartState3", "");
-        model.addAttribute("pageTitle", "");
+        model.addAttribute("cartState1", 299);
+        model.addAttribute("cartState2", 44);
+        model.addAttribute("cartState3", 4895);
+        model.addAttribute("cartState4", 89489);
+        model.addAttribute("cartState5", 284985);
+        model.addAttribute("totalCarts", 1000);
+        model.addAttribute("totalPrice", 1000);
+        model.addAttribute("pageTitle", "Admin Dashboard - Carts Index");
         return "admin/carts/cart_index";
     }
 
