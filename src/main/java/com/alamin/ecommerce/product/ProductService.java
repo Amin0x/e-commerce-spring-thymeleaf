@@ -30,10 +30,13 @@ public class ProductService {
     @Autowired
     private FileUploadService fileUploadService;
 
-    public List<Product> getRandomProductsByCategory(String category, int size) {
+    @Autowired
+    private ProductReviewRepository productReviewRepository;
+
+    public List<Product> getRandomProductsByCategory(Long category, int size) {
         if (size < 5) size = 5;
 
-        if (category.isEmpty()) throw new ResourceNotFoundException("null category name");
+        if (category == null) throw new ResourceNotFoundException("null category name");
 
         return productRepository.findRandomProductsByCategory(category, size);
     }
@@ -263,5 +266,13 @@ public class ProductService {
 
     public List<Product> getLastAddedProducts(int count) {        
         return productRepository.getLastAddedProducts(Pageable.ofSize(count));
+    }
+
+    public List<Product> getLastAddedProductsRandom(int count) {
+        return productRepository.getLastAddedProductsRandom(Pageable.ofSize(count));
+    }
+
+    public List<ProductReview> getProductReviews(Long productId){
+        return productReviewRepository.findByProductId(productId);
     }
 }

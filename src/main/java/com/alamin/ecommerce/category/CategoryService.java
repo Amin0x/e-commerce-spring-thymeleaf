@@ -1,5 +1,7 @@
 package com.alamin.ecommerce.category;
 
+import com.alamin.ecommerce.product.Product;
+import com.alamin.ecommerce.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +17,7 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
 
     public List<Category> getRandomCategories() {
         return categoryRepository.findRandomCategories();
@@ -95,5 +98,9 @@ public class CategoryService {
         if (search == null)
             throw new IllegalArgumentException("null not allowed");
         return categoryRepository.searchCategoryByName(search);
+    }
+
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
     }
 }

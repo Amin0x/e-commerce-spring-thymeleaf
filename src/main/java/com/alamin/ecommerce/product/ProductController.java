@@ -49,13 +49,12 @@ public class ProductController {
     @GetMapping("/products")
     public String getAllProducts(@RequestParam(required = false) String category,  Model model) {
 
-        List<Product> products;
+        List<Product> products = null;
 
-        if (category == null || category.isEmpty()) {
+        if (category == null || category.isEmpty())
             products = productService.getRandomProducts( 20);
-        } else {
-            products = productService.getRandomProductsByCategory(category, 20);
-        }
+
+
     
         model.addAttribute("products", products);
 	    model.addAttribute("pageDescription", "");

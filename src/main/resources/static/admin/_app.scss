@@ -249,7 +249,6 @@ body {
   opacity: .5;
 }
 
-
 /* CSS */
 .button-23 {
   background-color: #FFFFFF;
@@ -457,32 +456,54 @@ body {
   background-color: #e5e5e5;
 }
 
+.flex-row{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-col-50{
+  width: 50%;
+}
+
+.flex-col-25{
+  width: 25%;
+}
+
+.flex-col-20{
+  width: 20%;
+}
+
 .margin-0{
-  margin: 0;
+  margin: 0 !important;
 }
 
 .margin-4{
-  margin: 4px;
+  margin: 4px !important;
 }
 
 .margin-8{
-  margin: 8px;
+  margin: 8px !important;
 }
 
 .margin-12{
-  margin: 12px;
+  margin: 12px !important;
 }
 
 .margin-16{
-  margin: 16px;
+  margin: 16px !important;
 }
 
 .margin-20{
-  margin: 20px;
+  margin: 20px !important;
 }
 
 .margin-24{
-  margin: 24px;
+  margin: 24px !important;
 }
 
 .marginx-0{
@@ -521,162 +542,162 @@ body {
 }
 
 .marginy-0{
-  margin-top: 0;
-  margin-bottom: 0;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .marginy-1{
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
 }
 
 .marginy-2{
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
 }
 
 .marginy-3{
-  margin-top: 12px;
-  margin-bottom: 12px;
+  margin-top: 12px !important;
+  margin-bottom: 12px !important;
 }
 
 .marginy-4{
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 16px !important;
+  margin-bottom: 16px !important;
 }
 
 .marginy-5{
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
 }
 
 .marginy-6{
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
 }
 
 .margint-0{
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .margint-4{
-  margin-top: 4px;
+  margin-top: 4px !important;
 }
 
 .margint-8{
-  margin-top: 8px;
+  margin-top: 8px !important;
 }
 
 .margint-12{
-  margin-top: 12px;
+  margin-top: 12px !important;
 }
 
 .margint-16{
-  margin-top: 16px;
+  margin-top: 16px !important;
 }
 
 .margint-20{
-  margin-top: 20px;
+  margin-top: 20px  !important;
 }
 
 .margint-24{
-  margin-top: 24px;
+  margin-top: 24px !important;
 }
 
 .marginb-0{
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 
 .marginb-4{
-  margin-bottom: 4px;
+  margin-bottom: 4px !important;
 }
 
 .marginb-8{
-  margin-bottom: 8px;
+  margin-bottom: 8px !important;
 }
 
 .marginb-12{
-  margin-bottom: 12px;
+  margin-bottom: 12px !important;
 }
 
 .marginb-16{
-  margin-bottom: 16px;
+  margin-bottom: 16px !important;
 }
 
 .marginb-20{
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 
 .marginb-24{
-  margin-bottom: 24px;
+  margin-bottom: 24px !important;
 }
 
 .padding-0{
-  padding: 0;
+  padding: 0 !important;
 }
 
 .padding-4{
-  padding: 4px;
+  padding: 4px !important;
 }
 
 .padding-8{
-  padding: 8px;
+  padding: 8px !important;
 }
 
 .padding-12{
-  padding: 12px;
+  padding: 12px !important;
 }
 
 .padding-16{
-  padding: 16px;
+  padding: 16px !important;
 }
 
 .padding-20{
-  padding: 20px;
+  padding: 20px !important;
 }
 
 .padding-24{
-  padding: 24px;
+  padding: 24px !important;
 }
 
 .paddingx-0{
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .paddingx-4{
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
 }
 
 .paddingx-8{
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
 }
 
 .paddingx-12{
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
 }
 
 .paddingx-16{
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 16px !important;
+  padding-right: 16px  !important;
 }
 
 .paddingx-20{
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }
 
 .paddingx-24{
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
 }
 
 .paddingy-0{
-  padding-top: 0;
-  padding-bottom: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .paddingy-4{

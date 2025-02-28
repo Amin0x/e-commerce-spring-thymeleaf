@@ -1,5 +1,6 @@
 
 body{
+  margin: 0;
   font-size: 16px;
   color: #292929;
   background-color: #FFFFFF;
@@ -275,8 +276,24 @@ body{
   }
 }
 
+.flex-row{
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.marginb-12{
+  margin-bottom: 12px;
+}
+
 @import 'navbar';
 @import 'footer';
 @import 'home_page';
 @import 'cart_page';
 @import 'product_details_page';
+@import 'products_page';
+

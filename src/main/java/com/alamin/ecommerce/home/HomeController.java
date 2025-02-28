@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.home;
 
 import com.alamin.ecommerce.product.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.alamin.ecommerce.category.CategoryService;
@@ -28,8 +28,8 @@ public class HomeController {
     public String home(Model model) {
 
         model.addAttribute("products", getProducts());
-        model.addAttribute("newProducts", getNewArrivalProducts());
-        model.addAttribute("mustSellingProducts", getMustSellingProducts());
+        model.addAttribute("newProducts", getNewArrivalProducts(12));
+        model.addAttribute("mustSellingProducts", productService.getBestSellingProducts(12));
         model.addAttribute("categoryList", categoryService.getRandomCategories());
 
         model.addAttribute("pageDescription", "");
@@ -38,6 +38,11 @@ public class HomeController {
         model.addAttribute("pageTitle", "");
 
         return "public/home";
+    }
+
+    @GetMapping("/offers")
+    public String offers(){
+        return "public/offers";
     }
 
     @GetMapping("/about")
@@ -50,16 +55,14 @@ public class HomeController {
         return ResponseEntity.ok("success");
     }
 
-    private List<Product> getMustSellingProducts(){
-        return new ArrayList<>();
-    }
 
     private List<Product> getSimilarProducts(Product product){
-        return new ArrayList<>();
+        return productService.getSimilarProducts(product);
     }
 
-    private List<Product> getNewArrivalProducts(){
-        return new ArrayList<>();
+    private List<Product> getNewArrivalProducts(int i){
+
+        return productService.getLastAddedProductsRandom(i);
     }
 
     private List<ProductDto> getProducts(){

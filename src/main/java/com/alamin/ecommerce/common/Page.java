@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.dto;
+package com.alamin.ecommerce.common;
 
 import com.alamin.ecommerce.user.User;
 
@@ -16,6 +16,24 @@ public class Page {
     private int currentPage;
     private int size;
     private int o;
+
+    public Page(String pageTitle, String pageDescription, String pageKeywords, String pageImage, String url, String pageAuthor, String type, User user, int totalPage, int currentPage, int size, int o) {
+        this.pageTitle = pageTitle;
+        this.pageDescription = pageDescription;
+        this.pageKeywords = pageKeywords;
+        this.pageImage = pageImage;
+        this.url = url;
+        this.pageAuthor = pageAuthor;
+        this.type = type;
+        this.user = user;
+        this.totalPage = totalPage;
+        this.currentPage = currentPage;
+        this.size = size;
+        this.o = o;
+    }
+
+    public Page() {
+    }
 
 
     public String getPageTitle() {

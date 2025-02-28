@@ -44,6 +44,42 @@ public class ProductDto {
         }
     }
 
+    public ProductDto(String name,
+                      Long productId,
+                      String description,
+                      Integer price,
+                      Integer initPrice,
+                      Integer priceUSD,
+                      String sku,
+                      Integer stock,
+                      Integer totalSold,
+                      Integer viewCount,
+                      Boolean active,
+                      Boolean enabled,
+                      String image,
+                      List<ProductImage> productImages,
+                      Long categoryId,
+                      boolean isNew,
+                      float percent) {
+        this.name = name;
+        this.productId = productId;
+        this.description = description;
+        this.price = price;
+        this.initPrice = initPrice;
+        this.priceUSD = priceUSD;
+        this.sku = sku;
+        this.stock = stock;
+        this.totalSold = totalSold;
+        this.viewCount = viewCount;
+        this.active = active;
+        this.enabled = enabled;
+        this.image = image;
+        this.productImages = productImages;
+        this.categoryId = categoryId;
+        this.isNew = isNew;
+        this.percent = percent;
+    }
+
     public Long getProductId() {
         return productId;
     }

@@ -21,10 +21,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         @Query(value = """
                         SELECT p.* FROM tbl_products AS p
                         JOIN tbl_categories AS c ON p.category_id = c.category_id
-                        WHERE c.name = :category
+                        WHERE c.category_id = :category
                         ORDER BY RAND()
                         LIMIT :size""", nativeQuery = true)
-        List<Product> findRandomProductsByCategory(@Param("category") String category, int size);
+        List<Product> findRandomProductsByCategory(@Param("category") Long categoryId, @Param("size") int size);
 
         @Query(value = """
                         SELECT p.* FROM tbl_products AS p
@@ -74,4 +74,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         @Query("SELECT p FROM Product p ORDER BY p.created DESC")
         List<Product> getLastAddedProducts(Pageable ofSize);
 
+        @Query("SELECT p FROM Product p ORDER BY p.created, RAND() DESC")
+        List<Product> getLastAddedProductsRandom(Pageable pageable);
 }
