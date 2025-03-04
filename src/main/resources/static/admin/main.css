@@ -117,12 +117,12 @@ body {
   flex: 1;
 }
 
-.page-wrapper {
+.wrapper {
   display: flex;
   flex-wrap: nowrap;
   min-height: 100vh;
 }
-.page-wrapper .content {
+.wrapper .content {
   flex: 1 0 auto;
   max-width: calc(100% - 200px);
 }

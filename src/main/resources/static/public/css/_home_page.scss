@@ -59,7 +59,7 @@
         display: flex;
         flex-wrap: wrap;
 
-        .product-card{
+        .product-card-b{
             display: flex;
             margin: 0 5px;
             width: calc(50% - 10px);
@@ -82,25 +82,25 @@
         }
 
         @media screen and (min-width: 666px){
-            .product-card{
+            .product-card-b{
                 width: calc(33.33333333% - 10px);
             }
         }
 
         @media screen and (min-width: 800px){
-            .product-card{
+            .product-card-b{
                 width: calc(25% - 10px);
             }
         }
 
         @media screen and (min-width: 1024px){
-            .product-card{
+            .product-card-b{
                 width: calc(20% - 10px);
             }
         }
 
         @media screen and (min-width: 1440px){
-            .product-card{
+            .product-card-b{
                 width: calc(16.666666% - 10px);
             }
         }

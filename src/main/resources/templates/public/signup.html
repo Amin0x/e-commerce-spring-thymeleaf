@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,49 +8,96 @@
     <meta name="author" content="Your Name or Company Name">
     <meta name="keywords" content="home, page, example, bootstrap, website">
     <title>Signup</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css}"
+        href="../../static/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/public/css/style.css}" href="../../static/public/css/style.css">
 </head>
+
 <body>
-
-    <div class="page-warper">
-        
-    <div class="signup-container p-3">
-        <h2 class="mb-4">Signup</h2>
-        <form th:action="@{/signup}" th:object="${signupForm}" method="post" id="signupForm">
-            <div class="form-group mb-4">
-                <label for="email" class="fw-bold fs-6">Email:</label>
-                <input type="email" class="form-control" th:field="*{email}" id="email">
-                <div class="error"></div>
-            </div>
-            <div class="form-group mb-4">
-                <label for="password" class="fw-bold fs-6">Password:</label>
-                <input type="password" class="form-control" th:field="*{password}" id="password">
-                <div class="error"></div>
-            </div>
-            <div class="form-group mb-4 fs-6">
-                <label for="confirmPassword" class="fw-bold fs-6">Confirm Password:</label>
-                <input type="password" class="form-control" th:field="*{confirmPassword}" id="confirmPassword">
-                <div class="error"></div>
-            </div>
-            <button type="submit" class="btn btn-primary">Signup</button>
-        </form>
-    </div>
-
+    <div class="wrapper">
+        <div class="signup-container">
+            <h2 class="title">التسجيل</h2>
+            <form th:action="@{/signup}" th:object="${signupForm}" method="post" id="signupForm">
+                <div class="email">
+                    <label for="email" class="input-label">الايميل:</label>
+                    <input type="email" name="email" class="input" th:field="*{email}" id="email">
+                    <div class="error"></div>
+                </div>
+                <div class="password">
+                    <label for="password" class="input-label">كلمة المرور:</label>
+                    <input type="password" name="password" class="input" th:field="*{password}" id="password">
+                    <div class="error"></div>
+                </div>
+                <div class="confirm-password">
+                    <label for="confirmPassword" class="input-label">تاكيد كلمة المرور:</label>
+                    <input type="password" class="input" name="confirmPassword" th:field="*{confirmPassword}"
+                        id="confirmPassword">
+                    <div class="error"></div>
+                </div>
+                <button type="submit" class="button-send">ارسال</button>
+            </form>
+        </div>
     </div>
 
     <script src="@{/js/jquery-3.6.0.min.js}"></script>
     <script src="@{/js/bootstrap.min.js}"></script>
     <script>
-        document.getElementById('signupForm').addEventListener('submit', function(event) {
-            var password = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('confirmPassword').value;
+        document.addEventListener("DOMContentLoaded", function (e) {
+            var email = document.getElementById('email');
+            var password = document.getElementById('password');
+            var confirmPassword = document.getElementById('confirmPassword');
 
-            if (password !== confirmPassword) {
-                alert('Passwords do not match.');
-                event.preventDefault(); // Prevent form submission
-            }
-        });
+            document.getElementById('signupForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                if (password.value.length < 8 || password.value === '') {
+                    password.classList.add('error');
+                    return false;
+                }
+
+                if (password.value !== confirmPassword.value || confirmPassword.value == '') {
+                    confirmPassword.classList.add('error');
+                    return false;
+                }
+
+                if (email.value == '') {
+                    email.classList.add('error');
+                    return false;
+                }
+
+                fetch("/signup", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({email: email.value, password: email.value, confirmPassword: confirmPassword.value}),
+                }).then(response=> {
+                    if (response.status == 200) {
+                        return response.json()
+                    }
+
+                    return Promise.reject(response.statusText)
+                })
+                .then(data => {
+                    console.log(data);
+                    if(data.status === "success") {
+                        window.location.href = "http://localhost/";
+                    }
+                })
+            });
+
+            email.addEventListener('change', function (e) {
+                this.classList.remove('error');
+            });
+
+            password.addEventListener('change', function (e) {
+                this.classList.remove('error');
+            });
+
+            confirmPassword.addEventListener('change', function (e) {
+                this.classList.remove('error');
+            });
+        })
+
     </script>
 </body>
+
 </html>

@@ -1,9 +1,47 @@
+.footer {
+    margin-top: 60px;
 
-.footer-top{
-    background-color: #f5f5f5;
-}
+    .footer-top {
+        background-color: #f5f5f5;
+        padding: 40px;
 
-.footer-bottom{
-    background-color: #205d59;
-    color: #fff;
+        .about-company,
+        .contact-us,
+        .flow-us {
+            width: 250px;
+            margin-bottom: 20px;
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .footer-top {
+            padding: 40px 15px;
+        }
+    }
+
+    .footer-bottom {
+        background-color: #205d59;
+        color: #fff;
+    }
+
+    .footer-header {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
+
+    .footer-link {
+        text-decoration: none !important;
+        color: inherit !important;
+    }
+
+    .footer-text {
+        margin: 0;
+    }
+
+    .social-media {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
 }

@@ -4,68 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Successful</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin: 50px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 400px;
-            border: 2px solid #4CAF50; /* Green border */
-        }
-        .icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto;
-        }
-        h1 {
-            color: #4CAF50;
-            margin-top: 20px;
-        }
-        p {
-            font-size: 18px;
-            color: #555;
-        }
-        .btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .btn:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="../../static/public/css/style.css">
 </head>
 <body>
-
-    <div class="container">
-        <!-- SVG Icon for Payment Success -->
-        <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 11l3 3L22 4"></path>
-                <circle cx="12" cy="12" r="10"></circle>
-            </svg>
+    <div class="wrapper">
+        <div th:repalce="~{fragments/header::header}"></div>
+        <div class="content-container payment-success">
+            <div class="payment-container">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <circle cx="12" cy="12" r="10"></circle>
+                    </svg>
+                </div>
+                <h1>Payment Successful</h1>
+                <p>Your payment has been successfully processed. Thank you for your purchase!</p>
+                <a href="/" class="btn">Go to Home</a>
+            </div>
         </div>
-        <h1>Payment Successful</h1>
-        <p>Your payment has been successfully processed. Thank you for your purchase!</p>
-        <a href="/" class="btn">Go to Home</a>
+        <div th:repalce="~{fragments/footer::footer}"></div>
     </div>
-
 </body>
 </html>

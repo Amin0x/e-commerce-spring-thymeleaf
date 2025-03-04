@@ -34,13 +34,14 @@ public class LoginController {
         Model model, 
         RedirectAttributes redirectAttributes 
     ) {
+        System.out.println(loginForm);
         boolean authenticationFailed = false;
         
         if (bindingResult.hasErrors()) {
             return "public/login";
         }
 
-        if (authenticationFailed) {
+        if (!authenticationFailed) {
             model.addAttribute("errorMessage", "Invalid username or password");
             return "public/login";
         }

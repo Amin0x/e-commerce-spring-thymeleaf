@@ -4,33 +4,36 @@
 <head>
     <title>Footer Fragment</title>
     <link rel="stylesheet" href="/static/public/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/public/css/style.css">
+    <link rel="stylesheet" href="../../static/public/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body dir="rtl">
     <footer th:fragment="footer" class="footer">
         <div class="footer-wrp">
-            <section class="footer-top p-5" id="footer">
-                <div class="row">
-                    <article class="col-lg-4 col-sm-12">
-                        <h5 class="footer-header m-0">عن الشركة</h5>
-                        <p class="mb-0">الرياض.</p>
-                        <p class="mb-0">المملكة العربية السعودية</p>
-                        <p class="mb-0"><a href="#">سياسة الخصوصية</a></p>
-
+            <section class="footer-top" id="footer">
+                <div class="flex-row">
+                    <article class="about-company">
+                        <h5 class="footer-header">عن الشركة</h5>
+                        <p class="footer-text">الرياض.</p>
+                        <p class="footer-text">المملكة العربية السعودية</p>
+                        <p class="footer-text"><a class="footer-link" href="/privecy">سياسة الخصوصية</a></p>
+                        <p class="footer-text"><a class="footer-link" href="/faq">الاسئلة الاكثر شيوعا</a></p>
+                        <p class="footer-text"><a class="footer-link" href="/return-police">سياسة الاسترجاع</a></p>
+                        <p class="footer-text"><a class="footer-link" href="/about">عن الشركة</a></p>
+                        <p class="footer-text"><a class="footer-link" href="/help">المساعدة</a></p>
                     </article>
-                    <article class="col-lg-4 col-sm-12">
-                        <h5 class="footer-header m-0">تواصل معنا</h5>                        
-                        <p class="mb-0"><bdi>+966-123456789</bdi></p>
-                        <p class="mb-0">am@am.com</p>
+                    <article class="contact-us">
+                        <h5 class="footer-header">تواصل معنا</h5>                        
+                        <p class="footer-text"><bdi>+966-123456789</bdi></p>
+                        <p class="footer-text">am@am.com</p>
                     </article>
-                    <article class="col-lg-4 col-sm-12">
-                        <h5 class="footer-header m-0">تابعنا</h5>
-                        <ul class="social-media list-unstyled p-0">
-                            <li><a class="footer-link text-reset text-decoration-none" href="#">فيسبوك</a></li>
-                            <li><a class="footer-link text-reset text-decoration-none" href="#">تويتر</a></li>
-                            <li><a class="footer-link text-reset text-decoration-none" href="#">انستغرام</a></li>
+                    <article class="flow-us">
+                        <h5 class="footer-header">تابعنا</h5>
+                        <ul class="social-media">
+                            <li><a class="footer-link" href="#">فيسبوك</a></li>
+                            <li><a class="footer-link" href="#">تويتر</a></li>
+                            <li><a class="footer-link" href="#">انستغرام</a></li>
                         </ul>
                     </article>
                 </div>
