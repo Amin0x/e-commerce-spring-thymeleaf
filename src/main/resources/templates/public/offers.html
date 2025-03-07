@@ -1,11 +1,27 @@
-<!doctype html>
-<html lang="en" dir="rtl">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta th:content="${pageDescription}" name="description" content="Home page description for your website.">
+    <meta th:content="${pageAuthor}" name="author" content="Your Name or Company Name">
+    <meta th:content="${pageKeywords}" name="keywords" content="home, page, example, bootstrap, website">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <title>Document</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="../../static/public/css/bootstrap.rtl.min.css" th:href="@{/public/css/bootstrap.rtl.min.css}"
+        rel="stylesheet">
+    <link href="../../static/public/css/style.css" th:href="@{/public/css/style.css}" rel="stylesheet">
 </head>
 <body>
-<h1>العروض</h1>
+    <div class="wrapper">  
+        <div id="navbar"></div>
+        <div class="content" id="content">
+            <h1>العروض</h1>
+            
+        </div>
+        <div id="footer"></div>
+    </div>
 </body>
 </html>

@@ -44,4 +44,54 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
                         FROM Category c
                         WHERE c.name LIKE %:search%""")
         List<Category> searchCategoryByName(String search);
+
+        @Query(value = """
+                        SELECT c
+                        FROM Category c
+                        WHERE c.active = :active
+                        AND c.enabled = :enabled""", nativeQuery = true)
+        List<Category> getCategoriesByActiveAndEnabled(boolean active, boolean enabled);
+
+        @Query(value = """
+                        SELECT c
+                        FROM Category c
+                        WHERE c.parent.id = :id
+                        AND c.active = true""")
+        List<Category> getCategoriesByParentIdAndActive(Long id);
+
+        @Query(value = """
+                        SELECT c
+                        FROM Category c
+                        WHERE c.parent.id = :id
+                        AND c.active = :active""")
+        List<Category> getCategoriesByParentIdAndActive(Long id, boolean active);
+
+        @Query(value = """
+                        SELECT c
+                        FROM Category c
+                        WHERE c.active = :active""")
+        List<Category> getCategoriesByActive(boolean active);
+
+        @Query(value = """
+                        SELECT c
+                        FROM Category c
+                        WHERE c.parent.id = :id""")
+        List<Category> getSubcategoriesByParentId(Long id);
+
+        @Query(value = """
+                        WITH RECURSIVE category_path AS (
+                            SELECT id, name, parent_id, 1 AS level
+                            FROM tbl_categories
+                            WHERE id = :categoryId
+                            UNION ALL
+                            SELECT c.id, c.name, c.parent_id, cp.level + 1
+                            FROM tbl_categories c
+                            JOIN category_path cp ON c.id = cp.parent_id
+                        )
+                        SELECT *
+                        FROM category_path
+                        ORDER BY level DESC
+                        """, nativeQuery = true)
+        List<Category> getCategoryPathToRoot(@Param("categoryId") Long categoryId);
+
 }

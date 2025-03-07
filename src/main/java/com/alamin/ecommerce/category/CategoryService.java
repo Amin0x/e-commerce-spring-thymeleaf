@@ -1,7 +1,5 @@
 package com.alamin.ecommerce.category;
 
-import com.alamin.ecommerce.product.Product;
-import com.alamin.ecommerce.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +21,7 @@ public class CategoryService {
         return categoryRepository.findRandomCategories();
     }
 
-    // Get category by ID
+
     public Optional<Category> getCategoryById(Long id) {
         return categoryRepository.findById(id);
     }
@@ -102,5 +100,43 @@ public class CategoryService {
 
     public List<Category> findAll() {
         return categoryRepository.findAll();
+    }
+
+    public List<Category> getCategoriesByParentIdAndActive(Long id) {
+
+        if (id == null) {
+            throw new IllegalArgumentException("null not allowed");            
+        }
+
+        return categoryRepository.getCategoriesByParentIdAndActive(id);
+    }
+
+    public List<Category> getCategoriesByParentIdAndActive(Long id, boolean active) {
+
+        if(id == null)
+            throw new IllegalArgumentException("null not allowed");
+
+        return categoryRepository.getCategoriesByParentIdAndActive(id, active);
+    }
+
+    public List<Category> getCategoriesByActive(boolean active) {
+        
+        return categoryRepository.getCategoriesByActive(active);
+    }
+
+    public List<Category> getSubcategoriesByParentId(Long id) {
+
+        if(id == null)
+            throw new IllegalArgumentException("null not allowed");
+
+        return categoryRepository.getSubcategoriesByParentId(id);
+    }
+
+    List<Category> getCategoryPathToRoot( Long categoryId){
+        
+        if(categoryId == null)
+            throw new IllegalArgumentException("null not allowed");
+
+        return categoryRepository.getCategoryPathToRoot(categoryId);
     }
 }

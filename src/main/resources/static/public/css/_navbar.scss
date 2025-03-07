@@ -1,4 +1,13 @@
 .navbar-wrp {
+    .notification-bar{
+        background-color: #FB8C00;
+        color: #fff;
+        padding: 5px 15px;
+
+        p{
+            margin: 0;
+        }
+    }
     .nav-content {
         display: flex;
         flex-direction: row;

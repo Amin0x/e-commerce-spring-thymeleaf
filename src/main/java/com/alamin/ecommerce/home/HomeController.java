@@ -31,7 +31,7 @@ public class HomeController {
         model.addAttribute("newProducts", getNewArrivalProducts(12));
         model.addAttribute("mustSellingProducts", productService.getBestSellingProducts(12));
         model.addAttribute("categoryList", categoryService.getRandomCategories());
-
+        model.addAttribute("notification", "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, natus. Nesciunt tempore nobis id hic. Nobis quaerat qui quibusdam repellendus!");
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
