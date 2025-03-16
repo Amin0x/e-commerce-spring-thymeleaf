@@ -7,6 +7,42 @@
         border-radius: 8px;
         margin-bottom: 15px;
         border: 1px solid #e7e2e2;
+
+        .item-quantity{
+            button{
+                height: 30px;
+                width: 30px;
+                padding: 0;
+                outline: none;
+                border: 1px solid #dbdbdb;
+                background-color: white;
+                font-size: 1rem;
+                font-weight: 500;
+            }
+
+            span{
+                    display: inline-block;
+                    /* height: 30px; */
+                    width: 30px;
+                    padding: 0;
+                    text-align: center;
+                    vertical-align: baseline;
+                }
+        }
+
+        .button-delete{
+                padding: 0;
+                border: none;
+                background: transparent;
+
+                svg{
+                    fill: #BDBDBD;
+                }
+
+                &:hover svg{
+                        fill: #9E9E9E;
+                    }
+        }
     }
     
     .title{

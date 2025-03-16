@@ -1,7 +1,6 @@
 package com.alamin.ecommerce.home;
 
 import com.alamin.ecommerce.product.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,29 +34,64 @@ public class HomeController {
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
-        model.addAttribute("pageTitle", "");
+        model.addAttribute("pageTitle", "الرئيسية");
 
         return "public/home";
     }
 
     @GetMapping("/offers")
-    public String offers(){
+    public String offersPage(Model model){
+        model.addAttribute("notification", "");
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "العروض والتخفيضات");
         return "public/offers";
     }
 
     @GetMapping("/about")
-    public String about() {
-        return "about"; // Resolves to about.html in templates
+    public String aboutPage(Model model) {
+        model.addAttribute("notification", "");
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "عن المتجر");
+        return "public/about";
+    }
+
+    @GetMapping("/faq")
+    public String faqPage(Model model) {
+        model.addAttribute("notification", "");
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "الاسئلة الشائعة");
+        return "public/faq"; // Resolves to about.html in templates
+    }
+
+    @GetMapping("/privacy")
+    public String privacyPage(Model model) {
+        model.addAttribute("notification", "");
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "الاسئلة الشائعة");
+        return "public/privacy"; // Resolves to about.html in templates
+    }
+
+    @GetMapping("/return-policy")
+    public String policyPage(Model model) {
+        model.addAttribute("notification", null);
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "ألأسئلة الشائعة");
+        return "public/return_policy"; // Resolves to about.html in templates
     }
 
     @PostMapping("/subscribe")
-    public ResponseEntity<String> subscribe() {
+    public ResponseEntity<String> subscribeToMailingList() {
         return ResponseEntity.ok("success");
-    }
-
-
-    private List<Product> getSimilarProducts(Product product){
-        return productService.getSimilarProducts(product);
     }
 
     private List<Product> getNewArrivalProducts(int i){

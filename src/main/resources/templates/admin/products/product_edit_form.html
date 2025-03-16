@@ -75,7 +75,7 @@
                             <div class="product-images">
                                 <div class="image">
                                     <img class="img-item" id="productPrimaryImage" th:src="@{'/admin/images/' + ${product.image}}" src="/static/public/imgs/img1.jpg" th:alt="${product.name}">
-                                    <button type="button" class="delete-btn" id="changePrimaryImage">Change Product Image</button>
+                                    <button type="button" class="delete-btn" id="changePrimaryImage">Add or Change Product Image</button>
                                     <input type="file" id="filePrimaryImage" name="productPrimaryImage" style="display: none;">
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
         const productId = /*[[${product.productId}]]*/  1;  
         let images = [];      
     </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../../static/public/js/jquery-3.7.1.min.js"></script>
     <script th:src="@{/admin/js/product_edit_form.js}" src="../../../static/admin/js/product_edit_form.js"></script>
 </body>
 

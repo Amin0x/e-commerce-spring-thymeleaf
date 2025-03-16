@@ -1,11 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>سياسة الاسترجاع</title>
+    <title th:text="${pageTitle}">سياسة الاسترجاع</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="../../static/public/css/bootstrap.rtl.min.css" th:href="@{/public/css/bootstrap.rtl.min.css}"
+        rel="stylesheet">
+    <link href="../../static/public/css/style.css" th:href="@{/public/css/style.css}" rel="stylesheet">
+    <style>
+        .return-policy{
+            padding: 0 1rem;
+            margin-top: 2rem;
+        }
+
+        .policy-content{
+            max-width: 750px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #007BFF;
+        }
+        p {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .highlight {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d9534f;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>return policy</h1>
+    <div class="wrapper">
+        <header class="header">
+            <nav th:replace="~{fragments/navbar :: navbar}" class="navbar-wrp"></nav>
+        </header>
+        <main class="content return-policy">
+            <div class="policy-content">
+                <h1>سياسة الاسترجاع</h1>
+                <p>نحن في <اسم المتجر> نقدر رضاك عن المنتجات التي تشتريها منا. إذا لم تكن راضياً عن مشترياتك لأي سبب كان، يمكنك استرجاع المنتجات وفقاً للشروط والأحكام التالية:</p>
+                
+                <p class="highlight">1. فترة الاسترجاع:</p>
+                <p>يمكنك استرجاع المنتجات خلال 14 يوماً من تاريخ استلام الطلب.</p>
+                
+                <p class="highlight">2. حالة المنتج:</p>
+                <p>يجب أن تكون المنتجات المراد استرجاعها في حالتها الأصلية وغير مستخدمة، مع جميع الملحقات والتغليف الأصلي.</p>
+                
+                <p class="highlight">3. إثبات الشراء:</p>
+                <p>يجب تقديم إثبات الشراء (فاتورة أو إيصال) عند طلب الاسترجاع.</p>
+                
+                <p class="highlight">4. رسوم الاسترجاع:</p>
+                <p>قد تكون هناك رسوم استرجاع تعتمد على سياسة المتجر ونوع المنتج.</p>
+                
+                <p class="highlight">5. عملية الاسترجاع:</p>
+                <p>يرجى الاتصال بخدمة العملاء عبر البريد الإلكتروني <a href="mailto:email@store.com">email@store.com</a> أو عبر الهاتف على الرقم +123-456-7890 لبدء عملية الاسترجاع. سيتم توجيهك حول كيفية إعادة المنتج وتلقي الاسترداد المالي.</p>
+                
+                <p>لأي استفسارات إضافية، لا تتردد في الاتصال بنا. نحن هنا لخدمتك!</p>
+            </div>
+        </main>
+        <footer th:replace="~{fragments/footer :: footer}" class="mt-3"></footer>
+    </div>
 </body>
 </html>

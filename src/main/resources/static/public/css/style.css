@@ -1,5 +1,5 @@
 :root {
-  --color_background: transparent;
+  --color_background: #ffffff;
   --color_primary: #000000;
   --color_secondary: #000000;
   --color_on_primary: #000000;
@@ -750,6 +750,35 @@ body {
   margin-bottom: 15px;
   border: 1px solid #e7e2e2;
 }
+.cart-container .cart-item .item-quantity button {
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  outline: none;
+  border: 1px solid #dbdbdb;
+  background-color: white;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.cart-container .cart-item .item-quantity span {
+  display: inline-block;
+  /* height: 30px; */
+  width: 30px;
+  padding: 0;
+  text-align: center;
+  vertical-align: baseline;
+}
+.cart-container .cart-item .button-delete {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+.cart-container .cart-item .button-delete svg {
+  fill: #BDBDBD;
+}
+.cart-container .cart-item .button-delete:hover svg {
+  fill: #9E9E9E;
+}
 .cart-container .title {
   font-size: 0.9rem;
   font-weight: 600;
@@ -877,46 +906,125 @@ body {
   padding-left: 12px;
   padding-right: 12px;
 }
-.all-products .flex-row .product-card {
+.all-products .title h1 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.all-products .product-card {
   display: flex;
   width: 100%;
   margin-bottom: 12px;
 }
-.all-products .flex-row .product-card .card {
+.all-products .product-card .product {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
   flex: 1;
 }
-.all-products .flex-row .image {
+.all-products .image, .all-products .product-image {
+  position: relative;
   margin-bottom: 4px;
 }
-.all-products .flex-row .image .product-img {
-  width: 100%;
+.all-products .image .product-img, .all-products .image img, .all-products .product-image .product-img, .all-products .product-image img {
+  display: block;
+  width: auto;
+  height: 200px;
+  margin: 0 auto;
   -o-object-fit: cover;
      object-fit: cover;
 }
-.all-products .flex-row .product-new,
-.all-products .flex-row .product-popular {
+.all-products .image .image img, .all-products .product-image .image img {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.all-products .product-links {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+.all-products .product-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.all-products .product-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.all-products .product-links li a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+}
+.all-products .product-new,
+.all-products .product-popular,
+.all-products .favorite {
   position: absolute;
   display: inline-block;
-  width: 45px;
-  height: 45px;
 }
-.all-products .flex-row .product-details {
+.all-products .product-new {
+  top: 5px;
+  right: 5px;
+  background-color: rgb(17, 73, 73);
+  color: rgb(253, 253, 253);
+  padding: 2px 5px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+.all-products .favorite {
+  bottom: 5px;
+  right: 5px;
+  background-color: rgb(17, 73, 73);
+  color: rgb(253, 253, 253);
+  padding: 2px 5px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+.all-products .product-popular {
+  top: 5px;
+  left: 5px;
+  background-color: rgb(17, 73, 73);
+  color: rgb(253, 253, 253);
+  padding: 2px 5px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+.all-products .product-info {
   padding-left: 12px;
   padding-right: 12px;
 }
-.all-products .flex-row .product-details .product-title {
+.all-products .product-info .rating {
+  list-style: none;
+  margin: 0;
+}
+.all-products .product-info .rating li {
+  display: inline-block;
+}
+.all-products .product-info .rating li:not(:first-child) {
+  margin-right: 5px;
+}
+.all-products .product-details {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.all-products .product-details .product-title {
   font-size: 1.2rem;
   font-weight: 500;
   color: #000000;
 }
-.all-products .flex-row .product-details .product-price {
+.all-products .product-details .product-price {
   margin-bottom: 0;
   font-size: 1.5rem;
   font-weight: 500;
   line-height: 1.2;
   color: green;
 }
-.all-products .flex-row .product-details .product-discount {
+.all-products .product-details .product-discount {
   margin-bottom: 0;
   font-size: 1.2rem;
   font-weight: 400;
@@ -924,34 +1032,35 @@ body {
   line-height: 1.2;
   text-decoration: line-through;
 }
-.all-products .flex-row .product-details button.add-cart {
-  width: 100%;
-  display: block;
-  margin: auto auto 20px auto;
+.all-products button.add-cart {
+  margin-top: auto;
+  margin-left: 13px;
+  margin-right: 13px;
+  margin-bottom: 15px;
 }
 @media screen and (min-width: 768px) {
-  .all-products .flex-row .product-card {
+  .all-products .product-card {
     width: calc(50% - 12px);
     margin-right: 6px;
     margin-left: 6px;
   }
 }
 @media screen and (min-width: 920px) {
-  .all-products .flex-row .product-card {
+  .all-products .product-card {
     width: calc(33.3333333% - 12px);
     margin-right: 6px;
     margin-left: 6px;
   }
 }
 @media screen and (min-width: 1080px) {
-  .all-products .flex-row .product-card {
+  .all-products .product-card {
     width: calc(25% - 12px);
     margin-right: 6px;
     margin-left: 6px;
   }
 }
 @media screen and (min-width: 1200px) {
-  .all-products .flex-row .product-card {
+  .all-products .product-card {
     width: calc(20% - 12px);
     margin-right: 6px;
     margin-left: 6px;
@@ -1100,4 +1209,54 @@ body {
   height: 1px;
   background-color: #cccccc;
   margin: 30px 0;
+}
+
+.subscribe {
+  margin-top: 80px;
+  margin-bottom: -60px;
+  background-color: #d9eadd;
+  padding: 60px 0;
+}
+.subscribe .subscribe-content {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.subscribe .subscribe-content .image {
+  font-size: 60px;
+}
+.subscribe .subscribe-content .subscription-title {
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.subscribe .subscribe-content .subscription-desc {
+  font-size: 0.9rem;
+  margin: 0;
+}
+.subscribe .subscription-form {
+  width: 478px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+.subscribe .subscription-form .email {
+  width: 100%;
+  padding: 9px 8px;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  line-height: 1.5;
+  font-size: 1rem;
+  margin-bottom: 11px;
+}
+.subscribe .subscription-form .subscribe-btn {
+  padding: 9px 8px;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  line-height: 1.5;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  background-color: #000;
+  color: #fff;
 }/*# sourceMappingURL=style.css.map */

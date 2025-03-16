@@ -20,19 +20,19 @@
         </div>
         <section class="flex-row">
           <div th:each="product : ${products}" class="product-card">
-              <div class="card">
+              <div class="product">
                   <div class="image">
-                      <div class="icon"><i class="far fa-heart"></i></div>
-                      <img th:src="@{${product.image}}" src="../../static/public/imgs/img12.jpg" class="product-img" alt="Product Image" th:alt="${product.name}">
-                      <div th:if="true" class="product-new">New</div>
-                      <div th:if="true" class="product-popular">Sale</div>
+                      <img th:src="|@{/uploads/images/}${product.image}|" src="../../static/public/imgs/img12.jpg" class="product-img" alt="Product Image" th:alt="${product.name}">
+                      <div th:if="true" class="product-new">جديد</div>
+                      <div th:if="true" class="product-popular">مرغوب</div>
+                      <div class="favorite"><i class="far fa-heart"></i></div>
                   </div>
                   <div class="product-details">
                       <h5 th:text="${product.name}" class="product-title">عنوان المنتج عنوان المنتج عنوان المنتج</h5>
                       <p th:text="${product.price}" class="product-price"><strong>$49.99</strong></p>
                       <p th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}" class="product-discount"><strong>$49.99</strong></p>
-                      <button th:data-add-to-cart="${product.productId}" data-quantity="1" type="button" role="button" class="button-37 add-cart">اضافة الي السلة</button>
                   </div>
+                  <button th:data-add-to-cart="${product.productId}" data-quantity="1" type="button" role="button" class="button-37 add-cart">اضافة الي السلة</button>
               </div>
           </div>
         </section>

@@ -98,7 +98,7 @@ public class CartService {
         Cart cart = null;
 
         if (principal != null) {
-            user = userService.findUserByName(principal.getName()).orElseThrow();
+            user = userService.getUserByName(principal.getName()).orElseThrow();
         }
 
         if (user == null)

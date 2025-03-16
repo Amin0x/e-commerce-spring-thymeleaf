@@ -1,30 +1,32 @@
 package com.alamin.ecommerce.user;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/admin/address")
 public class AddressController {
+    @Autowired
     private CityRepository cityRepository;
+    @Autowired
     private CountryRepository countryRepository;
+    @Autowired
     private StateRepository stateRepository;
 
     @GetMapping("/city/{id}")
-    public City getCityById(int id) {
+    public City getCityById(@PathVariable int id) {
         return cityRepository.findById(id).orElse(null);
     }
 
     @PostMapping("/city")
-    public City createCity(City city) {
+    public City createCity(@RequestBody City city) {
         return cityRepository.save(city);
     }
 
-    public City updateCity(City city) {
+    @PostMapping("/city/{id}")
+    public City updateCity(@RequestBody City city) {
         City existingCity = cityRepository.findById(city.getCityId()).orElse(null);
         if (existingCity != null) {
             existingCity.setName(city.getName());
@@ -55,8 +57,8 @@ public class AddressController {
         return countryRepository.save(country);
     }
 
-    @PostMapping("/country/update")
-    public Country updateCountry(Country country) {
+    @PostMapping("/country/update/{id}")
+    public Country updateCountry(@PathVariable int id,@RequestBody Country country) {
         Country existingCountry = countryRepository.findById(country.getCountryId()).orElse(null);
         if (existingCountry != null) {
             existingCountry.setName(country.getName());
@@ -71,9 +73,14 @@ public class AddressController {
         return countryRepository.findAll();
     }
 
-    @GetMapping("/country/{id}")
-    public List<Country> getCountryByName(String countryName) {
+    @GetMapping("/country/{countryName}")
+    public List<Country> getCountryByName(@PathVariable String countryName) {
         return countryRepository.findByName(countryName);
+    }
+
+    @GetMapping("/country/{id}")
+    public Country getCountryById(@PathVariable int id) {
+        return countryRepository.findById(id).orElseThrow();
     }
 
     @PostMapping("/state")

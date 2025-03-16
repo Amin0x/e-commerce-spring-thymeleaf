@@ -24,8 +24,8 @@ public class AdminUserController {
     public String index(Model model) {
 
         var newUsersList = userService.getLastUsers(10);
-        var usersRegistrationLabels = userService.getUsersRegisrationLabelsMonth();
-        var usersRegistrationData = userService.getUsersRegisrationMonth();
+        var usersRegistrationLabels = userService.getUsersRegistrationLabelsMonth();
+        var usersRegistrationData = userService.getUsersRegistrationMonth();
         var visitorLabels = new ArrayList<>();
         var visitorData = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class AdminUserController {
         model.addAttribute("totalUsers", userService.getUsersCount());
         model.addAttribute("activeUsers", userService.getActiveUsersCount());
         model.addAttribute("newUsers", userService.getUsersCountThisMonth());
-        model.addAttribute("unactiveUsers", userService.getUnactiveUsersCount());
+        model.addAttribute("unactiveUsers", userService.getInactiveUsersCount());
         model.addAttribute("newUsersList", newUsersList);
         model.addAttribute("topDrivers", newUsersList);
         model.addAttribute("usersRegistrationLabels", usersRegistrationLabels);
@@ -45,7 +45,7 @@ public class AdminUserController {
 
     @GetMapping("/all")
     public String allUsers(Model model) {
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("pageNumber", 10);
         model.addAttribute("totalPages", 10);
         model.addAttribute("i", 10);
@@ -57,7 +57,7 @@ public class AdminUserController {
     public String viewUser(@PathVariable Long id, Model model) {
         User user = null;
         try {
-            user = userService.findUserById(id).orElseThrow();
+            user = userService.getUserById(id).orElseThrow();
         } catch (Exception e) {
             return "error/404";
             //throw new RuntimeException(e);
@@ -70,7 +70,7 @@ public class AdminUserController {
     public String editUserForm(@PathVariable Long id, Model model) {
         User user = null;
         try {
-            user = userService.findUserById(id).orElseThrow();
+            user = userService.getUserById(id).orElseThrow();
         } catch (Exception e) {
             return "error/404";
             //throw new RuntimeException(e);

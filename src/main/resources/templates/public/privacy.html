@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta th:content="${pageDescription}" name="description" content="Home page description for your website.">
+    <meta th:content="${pageAuthor}" name="author" content="Your Name or Company Name">
+    <meta th:content="${pageKeywords}" name="keywords" content="home, page, example, bootstrap, website">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <title th:text="${pageTitle}">Document</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/public/css/bootstrap.rtl.min.css}" href="../../static/public/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <nav th:replace="~{fragments/navbar :: navbar}" class="navbar-wrp"></nav>
+        </header>
+        <div class="content" id="content">
+            <h2>سياسة الخصوصية</h2>
+            <h3>1. المقدمة</h3>
+            <p>نحن نقدر خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح هذه السياسة كيفية جمع المعلومات واستخدامها ومشاركتها وحمايتها على موقعنا الإلكتروني. باستخدامك لموقعنا، فإنك توافق على الممارسات الموضحة في هذه السياسة.</p>
+
+            <h3>2. جمع المعلومات</h3>
+            <p><strong>2.1 المعلومات التي نجمعها:</strong></p>
+            <ul>
+                <li>البيانات الشخصية: الاسم، البريد الإلكتروني، العنوان، رقم الهاتف، إلخ.</li>
+                <li>البيانات المالية: تفاصيل الدفع والمعلومات البنكية.</li>
+                <li>بيانات الاستخدام: بيانات التصفح، عنوان IP، الموقع الجغرافي، إلخ.</li>
+            </ul>
+            <p><strong>2.2 كيف نجمع المعلومات:</strong></p>
+            <ul>
+                <li>عند التسجيل في الموقع.</li>
+                <li>عند إجراء عملية شراء.</li>
+                <li>من خلال ملفات تعريف الارتباط.</li>
+            </ul>
+
+            <h3>3. استخدام المعلومات</h3>
+            <p>نستخدم المعلومات التي نجمعها من أجل:</p>
+            <ul>
+                <li>معالجة الطلبات والمعاملات المالية.</li>
+                <li>تحسين خدماتنا وتجربة المستخدم.</li>
+                <li>إرسال التحديثات والإشعارات والعروض الترويجية.</li>
+                <li>تحليل البيانات لاكتشاف الاتجاهات والأنماط.</li>
+            </ul>
+
+            <h3>4. مشاركة المعلومات</h3>
+            <p>لا نشارك معلوماتك الشخصية مع أطراف ثالثة إلا في الحالات التالية:</p>
+            <ul>
+                <li>مع مزودي الخدمات الذين يساعدوننا في تشغيل الموقع.</li>
+                <li>مع الشركاء التجاريين لأغراض التسويق (بعد الحصول على موافقتك).</li>
+                <li>للامتثال للقوانين والتنظيمات القانونية.</li>
+            </ul>
+
+            <h3>5. حماية المعلومات</h3>
+            <p>نحن نتخذ تدابير أمنية صارمة لحماية بياناتك الشخصية، بما في ذلك:</p>
+            <ul>
+                <li>استخدام تقنيات التشفير.</li>
+                <li>تطبيق جدران الحماية.</li>
+                <li>تقييد الوصول إلى البيانات على أساس الحاجة فقط.</li>
+            </ul>
+
+            <h3>6. حقوق المستخدم</h3>
+            <p>لديك حقوق معينة فيما يتعلق ببياناتك الشخصية، بما في ذلك:</p>
+            <ul>
+                <li>الحق في الوصول إلى بياناتك.</li>
+                <li>الحق في تعديل بياناتك.</li>
+                <li>الحق في حذف بياناتك.</li>
+                <li>الحق في الاعتراض على معالجة بياناتك.</li>
+            </ul>
+
+            <h3>7. ملفات تعريف الارتباط (Cookies)</h3>
+            <p>نستخدم ملفات تعريف الارتباط لتحسين تجربتك على الموقع. يمكنك إدارة إعدادات ملفات تعريف الارتباط من خلال متصفحك.</p>
+
+            <h3>8. التعديلات على سياسة الخصوصية</h3>
+            <p>قد نقوم بتحديث سياسة الخصوصية من وقت لآخر. سنقوم بإعلامك بأي تغييرات عن طريق نشر السياسة الجديدة على موقعنا.</p>
+
+            <h3>9. الاتصال بنا</h3>
+            <p>إذا كان لديك أي استفسارات أو طلبات تتعلق ببياناتك الشخصية، يمكنك الاتصال بنا عبر:</p>
+            <ul>
+                <li>البريد الإلكتروني: support@example.com</li>
+                <li>الهاتف: 123-456-7890</li>
+            </ul>
+        </div>
+        <footer th:replace="~{fragments/footer :: footer}" class="mt-3"></footer>
+    </div>
+</body>
+</html>

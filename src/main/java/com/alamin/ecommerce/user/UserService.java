@@ -1,6 +1,8 @@
 package com.alamin.ecommerce.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
@@ -20,32 +22,36 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> getAllUsers() {
+
+        List<User> users = userRepository.findAll();
+        return users;
     }
 
-    public List<User> findAll(int page, int size) {
-        return userRepository.findAll();
+    public Page<User> getAllUsers(int page, int size) {
+        Page<User> users = userRepository.findAll(PageRequest.of(page, size));
+        return users;
     }
 
-    public Optional<User> findUserById(Long id) {
+    public Optional<User> getUserById(Long id) {
         if (id == null)
             return Optional.empty();
 
         return userRepository.findById(id);
     }
 
-    public Optional<User> findUserByUUID(String id) {
+    public Optional<User> getUserByUUID(String id) {
         if (id == null)
             return Optional.empty();
 
-        return userRepository.findByUuid(id);
+        return userRepository.getUserByUuid(id);
     }
+
     public int getUsersCountThisMonth() {
         int usersThisMonth = 0;
 
         try {
-            usersThisMonth = userRepository.getUsersCountThisMonth();
+            usersThisMonth = userRepository.getCreatedUsersThisMonthCount();
 
         } catch (Exception e) {
             //throw new RuntimeException(e);
@@ -72,15 +78,15 @@ public class UserService {
 
 
     public List<User> getLastUsers(int size) {
-        return userRepository.getLastRegisteredUsers(Pageable.ofSize(size));
+        return userRepository.getLastCreatedUsers(Pageable.ofSize(size));
     }
 
     public long getUsersCount(){
         return userRepository.count();
     }
 
-    public Optional<User> findUserByName(String name) {
-        return userRepository.findByUsername(name);
+    public Optional<User> getUserByName(String name) {
+        return userRepository.getUserByUsername(name);
     }
 
     public User createUser(User user) {
@@ -98,7 +104,7 @@ public class UserService {
     }
 
     public User updateUser(Long id, User user) {
-        User upatedUser = findUserById(id).orElseThrow();
+        User upatedUser = getUserById(id).orElseThrow();
         upatedUser.setFirstName(user.getFirstName());
         upatedUser.setLastName(user.getLastName());
         upatedUser.setUsername(user.getUsername());
@@ -116,27 +122,27 @@ public class UserService {
 
     public int getActiveUsersCount() {
        
-        return userRepository.getActiveUsersCount();
+        return userRepository.getEnabledUsersCount();
     }
 
-    public int getUnactiveUsersCount(){
-        return userRepository.getUnactiveUsersCount();
+    public int getInactiveUsersCount(){
+        return userRepository.getDisabledUsersCount();
     }
 
-    public List<Integer> getUsersRegisrationMonth() {
+    public List<Integer> getUsersRegistrationMonth() {
         List<Integer> usersRegisrationMonth = null;
         try {
-            usersRegisrationMonth = userRepository.getUsersRegisrationCountMonth();
+            usersRegisrationMonth = userRepository.getUsersRegistrationCountMonth();
         } catch (Exception e) {
             //throw new RuntimeException(e);
         }
         return usersRegisrationMonth;
     }
 
-    public List<Integer> getUsersRegisrationLabelsMonth() {
+    public List<Integer> getUsersRegistrationLabelsMonth() {
         List<Integer> usersRegisrationLabelsMonth = null;
         try {
-            usersRegisrationLabelsMonth = userRepository.getUsersRegisrationLabelsMonth();
+            usersRegisrationLabelsMonth = userRepository.getUsersRegistrationLabelsMonth();
         } catch (Exception e) {
             //throw new RuntimeException(e);
         }

@@ -23,8 +23,17 @@
             <h4 class="title">السلة</h4>
             <div class="cart-item" th:if="${cart} != null">
                 <table class="" style="width: 100%; text-indent: initial;  border-spacing: 2px; border-color: gray;">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>المنتج</td>
+                            <td>الكمية</td>
+                            <td>السعر</td>
+                            <td></td>
+                        </tr>
+                    </thead>
                     <tbody>
-                        <tr class="bottom-boarder" th:each="item : ${cart?.cartItems}">
+                        <tr th:if="false" class="bottom-boarder" th:each="item : ${cart?.cartItems}">
                             <td>
                                 <img width="80px" th:if="${item.product?.image != null}" th:src="@{'/uploads/images/' + ${item.product?.image}}" th:alt="${item.product.name}"/>
                                 <svg th:if="${item.product?.image == null}" width="80px" height="80px" viewBox="0 0 48 48" id="a" xmlns="http://www.w3.org/2000/svg"><defs><style>.b{fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="b" d="M29.4995,12.3739c.7719-.0965,1.5437,.4824,1.5437,1.2543h0l2.5085,23.8312c.0965,.7719-.4824,1.5437-1.2543,1.5437l-23.7347,2.5085c-.7719,.0965-1.5437-.4824-1.5437-1.2543h0l-2.5085-23.7347c-.0965-.7719,.4824-1.5437,1.2543-1.5437l23.7347-2.605Z"/><path class="b" d="M12.9045,18.9347c-1.7367,.193-3.0874,1.7367-2.8945,3.5699,.193,1.7367,1.7367,3.0874,3.5699,2.8945,1.7367-.193,3.0874-1.7367,2.8945-3.5699s-1.8332-3.0874-3.5699-2.8945h0Zm8.7799,5.596l-4.6312,5.6925c-.193,.193-.4824,.2894-.6754,.0965h0l-1.0613-.8683c-.193-.193-.5789-.0965-.6754,.0965l-5.0171,6.1749c-.193,.193-.193,.5789,.0965,.6754-.0965,.0965,.0965,.0965,.193,.0965l19.9719-2.1226c.2894,0,.4824-.2894,.4824-.5789,0-.0965-.0965-.193-.0965-.2894l-7.8151-9.0694c-.2894-.0965-.5789-.0965-.7719,.0965h0Z"/><path class="b" d="M16.2814,13.8211l.6754-6.0784c.0965-.7719,.7719-1.3508,1.5437-1.2543l23.7347,2.5085c.7719,.0965,1.3508,.7719,1.2543,1.5437h0l-2.5085,23.7347c0,.6754-.7719,1.2543-1.5437,1.2543l-6.1749-.6754"/><path class="b" d="M32.7799,29.9337l5.3065,.5789c.2894,0,.4824-.193,.5789-.4824,0-.0965,0-.193-.0965-.2894l-5.789-10.5166c-.0965-.193-.4824-.2894-.6754-.193h0l-.3859,.3859"/></svg>
@@ -34,24 +43,25 @@
                                 
                                 <div class="item-price"><strong th:text="${item.total}">100.00 SDG</strong></div>
                             </td>
-                            <td><div class="item-quantity"><button class="" type="button" data-item-inc="">+</button><span th:text="${item.quantity}">1</span><button type="button">-</button></div></td>
+                            <td><div class="item-quantity"><button th:data-item-del="${item.id}" type="button" data-item-inc="100">+</button><span th:text="${item.quantity}">1</span><button th:data-item-del="${item.id}" type="button" data-item-dec="100">-</button></div></td>
                             <td><strong class="item-price" th:text="${item.price}">100.00 SDG</strong></td>
-                            <td><button type="button" class="button-delete" data-item-del="">حذف</button></td>
+                            <td><button th:data-item-del="${item.id}" type="button" class="button-delete" data-item-del="100">
+                                <?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px">    <path d="M12,2C6.47,2,2,6.47,2,12c0,5.53,4.47,10,10,10s10-4.47,10-10C22,6.47,17.53,2,12,2z M16.707,15.293 c0.391,0.391,0.391,1.023,0,1.414C16.512,16.902,16.256,17,16,17s-0.512-0.098-0.707-0.293L12,13.414l-3.293,3.293 C8.512,16.902,8.256,17,8,17s-0.512-0.098-0.707-0.293c-0.391-0.391-0.391-1.023,0-1.414L10.586,12L7.293,8.707 c-0.391-0.391-0.391-1.023,0-1.414s1.023-0.391,1.414,0L12,10.586l3.293-3.293c0.391-0.391,1.023-0.391,1.414,0 s0.391,1.023,0,1.414L13.414,12L16.707,15.293z"/></svg></button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div th:if="${cart} != null">
+            <div th:unless="${cart} != null">
                 <div class="cart-no-item">لاتوجد اي منتجات تمت اضافتها للسلة</div>
             </div>
             <div class="total-wrp">
                 <div class="subtotal">
                     <strong>المجموع الفرعي:</strong><span>1000 SDG</span>
                 </div>
-                <div class="shipping"><strong>الضريبة</strong><span>287.34 SDG</span></div>
-                <div class="tax"><strong>التوصيل</strong><span>287.34 SDG</span></div>                
+                <div class="shipping"><strong>الضريبة</strong><span id="shipping">287.34 SDG</span></div>
+                <div class="tax"><strong>التوصيل</strong><span id="tax">287.34 SDG</span></div>                
                 <div class="total">
-                    المجموع: <span th:text="${cart?.total}">0.00 SDG</span>
+                    المجموع: <span th:text="${cart?.total}" id="total">0.00 SDG</span>
                 </div>
             </div>
             <div class="checkout-button">
@@ -60,9 +70,122 @@
         </section>
         <footer th:replace="~{fragments/footer :: footer}" class="mt-3"></footer>
     </main>
-
+    <script th:src="@{'/public/js/jquery-3.7.1.min.js'}" src="../../static/public/js/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script>
+  
+
+    let cart = null;
+        
+
+    const cartRender = (productImage, productName, productPrice, productId, quantity, total) => {
+        if(productImage == null){
+            productImage = '<svg width="80px" height="80px" viewBox="0 0 48 48" id="a" xmlns="http://www.w3.org/2000/svg"><defs><style>.b{fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="b" d="M29.4995,12.3739c.7719-.0965,1.5437,.4824,1.5437,1.2543h0l2.5085,23.8312c.0965,.7719-.4824,1.5437-1.2543,1.5437l-23.7347,2.5085c-.7719,.0965-1.5437-.4824-1.5437-1.2543h0l-2.5085-23.7347c-.0965-.7719,.4824-1.5437,1.2543-1.5437l23.7347-2.605Z"/><path class="b" d="M12.9045,18.9347c-1.7367,.193-3.0874,1.7367-2.8945,3.5699,.193,1.7367,1.7367,3.0874,3.5699,2.8945,1.7367-.193,3.0874-1.7367,2.8945-3.5699s-1.8332-3.0874-3.5699-2.8945h0Zm8.7799,5.596l-4.6312,5.6925c-.193,.193-.4824,.2894-.6754,.0965h0l-1.0613-.8683c-.193-.193-.5789-.0965-.6754,.0965l-5.0171,6.1749c-.193,.193-.193,.5789,.0965,.6754-.0965,.0965,.0965,.0965,.193,.0965l19.9719-2.1226c.2894,0,.4824-.2894,.4824-.5789,0-.0965-.0965-.193-.0965-.2894l-7.8151-9.0694c-.2894-.0965-.5789-.0965-.7719,.0965h0Z"/><path class="b" d="M16.2814,13.8211l.6754-6.0784c.0965-.7719,.7719-1.3508,1.5437-1.2543l23.7347,2.5085c.7719,.0965,1.3508,.7719,1.2543,1.5437h0l-2.5085,23.7347c0,.6754-.7719,1.2543-1.5437,1.2543l-6.1749-.6754"/><path class="b" d="M32.7799,29.9337l5.3065,.5789c.2894,0,.4824-.193,.5789-.4824,0-.0965,0-.193-.0965-.2894l-5.789-10.5166c-.0965-.193-.4824-.2894-.6754-.193h0l-.3859,.3859"/></svg>';
+        } else{
+            productImage = `<img width="80px"  src="/uploads/images/${productImage}" alt="${productName}"/>`;
+        }
+        return `<tr class="bottom-boarder">
+                            <td>${productImage}</td>
+                            <td>
+                                <div class="product-name">${productName}</div>                                
+                                <div class="item-price">${total}</div>
+                            </td>
+                            <td><div class="item-quantity">
+                                <button type="button" data-item-inc="${productId}" onclick="cartItemIncerment(${productId})">+</button>
+                                <span th:text="${quantity}">1</span>
+                                <button type="button" data-item-dec="${productId}" onclick="cartItemDecerment(${productId})">-</button>
+                            </div></td>
+                            <td><strong class="item-price">${productPrice} SDG</strong></td>
+                            <td><button type="button" class="button-delete" data-item-del="${productId}" onclick="buttonDeleteItemClicked(${productId})">
+                                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px">
+                                    <path d="M12,2C6.47,2,2,6.47,2,12c0,5.53,4.47,10,10,10s10-4.47,10-10C22,6.47,17.53,2,12,2z M16.707,15.293 c0.391,0.391,0.391,1.023,0,1.414C16.512,16.902,16.256,17,16,17s-0.512-0.098-0.707-0.293L12,13.414l-3.293,3.293 C8.512,16.902,8.256,17,8,17s-0.512-0.098-0.707-0.293c-0.391-0.391-0.391-1.023,0-1.414L10.586,12L7.293,8.707 c-0.391-0.391-0.391-1.023,0-1.414s1.023-0.391,1.414,0L12,10.586l3.293-3.293c0.391-0.391,1.023-0.391,1.414,0 s0.391,1.023,0,1.414L13.414,12L16.707,15.293z"/>
+                                </svg></button>
+                            </td>
+                        </tr>`;
+    }
+
+    const updateCart = ()=>{
+        $("tbody").empty();
+
+        if(cart != null && cart.cartItems.length > 0){
+            cart.cartItems.forEach(cart => {
+                $('tbody').append(cartRender(cart.productImage, cart.productName, cart.productPrice, cart.productId, cart.quantity, cart.total))
+            })
+        }
+        
+    }
+
+    const getCart = () => {
+        $.ajax({
+            url: '/carts/getCart',
+            method: 'get',
+            success: (data, status, xhr)=>{
+                console.log(data);
+                cart = data;
+                updateCart();
+            },
+            error: (xhr, status, error)=>{
+                console.log("error loading cart", status, error)
+            },
+        })
+    }
+
+    const buttonDeleteItemClicked = (id)=>{
+        $.ajax({
+            url: '/carts/delete',
+            method: 'post',
+            data: {id: id},
+            success: (data, status, xhr)=>{
+                console.log(data);
+                //can we use event target 
+                $("[data-item-del="+id+"]").closest('tr').remove();
+            },
+            failed: (xhr, status, error)=>{
+                console.log(error);
+            }
+        });
+    };
+        
+      
+
+    const cartItemIncerment = (id) => {
+        $.ajax({
+            url: '/carts/increment',
+            method: 'post',
+            data: {id: id},
+            success: (data, status, xhr)=>{
+                console.log(data);
+                $(this).closest('tr').find('.item-quantity span').text(data.quantity);
+                $(this).closest('tr').find('.item-price').text(data.total);
+            },
+            failed: (xhr, status, error)=>{
+                console.log(error);
+            }
+        });
+    }
+
+    const cartItemDecerment = (id) => {
+        $.ajax({
+            url: '/carts/decrement',
+            method: 'post',
+            data: {id: id},
+            success: (data, status, xhr)=>{
+                console.log(data);
+                $(this).closest('tr').find('.item-quantity span').text(data.quantity);
+                $(this).closest('tr').find('.item-price').text(data.total);
+            },
+            failed: (xhr, status, error)=>{
+                console.log(error);
+            }
+        });
+    }
+    
+    //load cart on page load
+    $(document).ready(function(){
+        getCart();
+    })
+</script>
 </body>
 
 </html>

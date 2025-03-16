@@ -3,6 +3,7 @@ package com.alamin.ecommerce.user;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,47 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class SignupController {
+public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private HttpSession session;
+
+    @GetMapping("/login")
+    public String showLoginForm(@RequestParam(required = false) String url, Model model) {
+
+        model.addAttribute("loginForm", new LoginForm());
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "تسجيل الدخول");
+        return "public/login";
+    }
+
+    @PostMapping("/login")
+    public String processLogin(@RequestParam(required = false) String url, @Valid LoginForm loginForm,
+                               BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+
+        System.out.println(loginForm);
+        boolean authenticationFailed = false;
+
+        if (bindingResult.hasErrors()) {
+            return "public/login";
+        }
+
+        if (!authenticationFailed) {
+            model.addAttribute("errorMessage", "Invalid username or password");
+            return "public/login";
+        }
+
+        return "redirect:" + (url != null ? url : "/");
+    }
 
     @GetMapping("/signup")
     public String showSignupForm(Model model) {

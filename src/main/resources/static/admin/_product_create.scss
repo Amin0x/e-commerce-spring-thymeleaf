@@ -8,23 +8,55 @@
   width: 800px;
   margin: 0 auto;
 
-  .product-info {
+  .price-input,
+  .stock-input,
+  .control-input,
+  .input-brand,
+  .name-input {
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    line-height: 1.5;
+    font-size: 16px;
+  }
 
-    .mame,
-    .description,
-    .price,
-    .stock {
-      margin-bottom: 15px;
-    }
+  .input-section {
+    margin-bottom: 15px;
+  }
 
-    .product-row {
-      display: flex;
+  .name-input,
+  .input-brand,
+  .description-input {
+    width: 100%;
+    outline: none !important;
+  }
 
-      .price {
-        margin-right: .8rem;
-      }
+  .description {
+    .description-input {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.5;
+      display: inline-block;
+      overflow-wrap: break-word;
+      margin: 0em;
+      padding: .5rem;
+      white-space: pre-wrap;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
   }
+
+  .product-row {
+    display: flex;
+
+    .price {
+      margin-right: .8rem;
+    }
+  }
+
 
   .product-enabled {
     display: flex;
@@ -56,13 +88,13 @@
     }
   }
 
-  .category-wrp {
+  .product-category {
     margin-bottom: .8rem;
 
     .category {
       position: relative;
 
-      #category {
+      .category-dropdown {
         display: none;
         position: absolute;
         top: 100%;
@@ -106,102 +138,74 @@
       display: none;
     }
 
-    .title{
+    .title {
       font-size: 0.9rem;
       font-weight: 700;
     }
 
-    #MainImagePreview{
+    .primary-image-preview {
+      position: relative;
       padding: 5px;
-      /* background-color: #ccc; */
       margin-bottom: 12px;
       width: 300px;
       height: 300px;
-      /* margin-left: auto; */
       margin-right: auto;
+
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        aspect-ratio: 1/1;
+      }
+
+      .delete-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        padding: 10px;
+        background-color: transparent;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
     }
 
-    
-  }
-
-  .product-images {
-    input {
-      display: none;
+    .product-images {
+      input {
+        display: none;
+      }
     }
-  }
 
-  #imagesPreview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    max-width: 100%;
-    min-height: 300px;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    margin-bottom: 1rem;
-  }
+    #imagesPreview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      max-width: 100%;
+      min-height: 300px;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      margin-bottom: 1rem;
+    }
 
-  .submit-button {
-    margin-top: 1.5rem;
-  }
+    .submit-button {
+      margin-top: 1.5rem;
+    }
 
-  .product-brand {
-    margin-bottom: 1rem;
-  }
+    .product-brand {
+      margin-bottom: 1rem;
+    }
 
-  label {
-    display: block;
-  }
+    label {
+      display: block;
+    }
 
-  textarea {
-    font-size: 16px;
-    color: #333;
-    letter-spacing: normal;
-    word-spacing: normal;
-    line-height: 1.5;
-    text-transform: none;
-    text-indent: 0px;
-    text-shadow: none;
-    display: inline-block;
-    text-align: start;
-    appearance: auto;
-    overflow-wrap: break-word;
-    background-color: #f9f9f9;
-    margin: 0em;
-    border-width: 1px;
-    border-style: solid;
-    border-color: light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-    padding: .5rem;
-    white-space: pre-wrap;
-  }
 
-  input {
-    /* display: block; */
-    /* width: 100%; */
-    padding: 0.5rem;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    outline: none;
-    line-height: 1.5;
-    font-size: 16px;
-  }
 
-  h2 {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-
-  button {
-    width: 100%;
-  }
-
-  #name,
-  #description {
-    width: 100%;
-    outline: none !important;
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
   }
 }
-
-/* end product create page */

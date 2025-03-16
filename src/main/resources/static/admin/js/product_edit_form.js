@@ -1,6 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
-    
-    const deleteButtons = document.querySelectorAll('button[data-delete]');
+$(document).ready( function() {
     
     function handleSubmit() {
         const formData = {
@@ -23,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
             data: JSON.stringify(formData),
             success: function(data) {
                 console.log('Product updated successfully!');
-                // Redirect or update UI as needed
+                
             },
             error: function(response) {
                 console.error('Failed to update product:', response.statusText);
@@ -39,9 +37,10 @@ document.addEventListener("DOMContentLoaded", function() {
         handleSubmit();
     });
 
-    deleteButtons.forEach(handleDeleteButtonsClick);
-    function handleDeleteButtonsClick(b) {
-        $(b).on('click', function(e) {
+    $('[data-delete]').each(handleDeleteButtonsClick);
+    
+    function handleDeleteButtonsClick(index, btn) {
+        $(this).on('click', function(e) {
             e.preventDefault();
             
             console.log('Delete image with ID:');
@@ -52,12 +51,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 method: "DELETE",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    imageId: $(button).data('delete'),
+                    imageId: $(btn).data('delete'),
                     id: productId
                 }),
                 success: function(res) {
                     console.log('Image deleted successfully.');
-                    $(b).parent().remove();
+                    $(btn).parent().remove();
                 },
                 error: function(err) {
                     console.error('Failed to delete image:', err.statusText);
@@ -154,7 +153,6 @@ document.addEventListener("DOMContentLoaded", function() {
             processData: false,
             success: function(response) {
                 console.log('Primary image updated successfully!');
-                // Update UI with new primary image
                 $('#productPrimaryImage').attr('src', '/admin/images/' + response.image);
             },
             error: function(error) {

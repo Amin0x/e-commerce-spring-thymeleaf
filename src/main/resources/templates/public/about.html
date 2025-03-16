@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="rtl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +7,31 @@
     <meta th:content="${pageDescription}" name="description" content="Home page description for your website.">
     <meta th:content="${pageAuthor}" name="author" content="Your Name or Company Name">
     <meta th:content="${pageKeywords}" name="keywords" content="home, page, example, bootstrap, website">
+    <meta th:content="${pageRobots}" name="robots" content="index, follow">
+    <meta th:content="${pageTitle}" name="title" content="ِAbout Us">
+    <meta th:content="${pageCanonical}" name="canonical" content="https://www.example.com/about">
+    <title th:text="${pageTitle}">عن الموقع</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <title>Document</title>
+    <link th:href="@{/public/css/bootstrap.rtl.min.css}" href="../../static/public/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="../../static/public/css/bootstrap.rtl.min.css" th:href="@{/public/css/bootstrap.rtl.min.css}"
-        rel="stylesheet">
-    <link href="../../static/public/css/style.css" th:href="@{/public/css/style.css}" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #007BFF;
+        }
+        .info, .location-map, .contact-us {
+            margin: 20px 0;
+        }
+        .info div {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">  
@@ -20,15 +39,27 @@
         <div class="content" id="content">
             <h1>عن الموقع</h1>
             <div class="info">
-                <div class="address"></div>
-                <div class="phone"></div>
-                <div class="email"></div>
+                <div class="address">
+                    <h2>عنواننا:</h2>
+                    <p>123 شارع المثال، مدينة الأمثلة، المملكة العربية السعودية</p>
+                </div>
+                <div class="phone">
+                    <h2>هاتف:</h2>
+                    <p>+966-123-456-789</p>
+                </div>
+                <div class="email">
+                    <h2>البريد الإلكتروني:</h2>
+                    <p><a href="mailto:info@example.com">info@example.com</a></p>
+                </div>
             </div>
             <div class="location-map">
-
+                <h2>خريطة الموقع:</h2>
+                <!-- يمكنك إضافة خريطة تفاعلية هنا -->
+                <p>خريطة لموقعنا لتسهيل الوصول إلينا.</p>
             </div>
             <div class="contact-us">
-
+                <h2>اتصل بنا:</h2>
+                <p>إذا كان لديك أي استفسارات أو تحتاج إلى مساعدة، لا تتردد في الاتصال بنا عبر البريد الإلكتروني أو الهاتف.</p>
             </div>
         </div>
         <div id="footer"></div>

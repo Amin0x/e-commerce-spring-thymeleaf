@@ -2,99 +2,197 @@
     padding-left: 12px;
     padding-right: 12px;
 
-    .flex-row {
-        .product-card {
+    .title{
+        h1{
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    .product-card {
+        display: flex;
+        width: 100%;
+        margin-bottom: 12px;
+
+        .product{
             display: flex;
-            width: 100%;
-            margin-bottom: 12px;
+            flex-direction: column;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            flex: 1;
+        }
+    }
 
-            .card{
-                flex: 1;
-            }
+    .image, .product-image {
+        position: relative;
+        margin-bottom: 4px;
+
+        .product-img, img {
+            display: block;
+            width: auto;
+            height: 200px;
+            margin: 0 auto;
+            object-fit: cover;
         }
 
-        .image {
-            margin-bottom: 4px;
-
-            .product-img {
-                width: 100%;
-                object-fit: cover;
-            }
-        }
-
-        .product-new,
-        .product-popular {
-            position: absolute;
-            display: inline-block;
-            width: 45px;
-            height: 45px;
-        }
-
-        .product-details {
-            padding-left: 12px;
-            padding-right: 12px;
-
-            .product-title {
-                font-size: 1.2rem;
-                font-weight: 500;
-                color: #000000;
-            }
-
-            .product-price {
-                margin-bottom: 0;
-                font-size: 1.5rem;
-                font-weight: 500;
-                line-height: 1.2;
-                color: green;
-            }
-
-            .product-discount {
-                margin-bottom: 0;
-                font-size: 1.2rem;
-                font-weight: 400;
-                color: #464646;
-                line-height: 1.2;
-                text-decoration: line-through;
-            }
-
-            button.add-cart {
-                width: 100%;
-                display: block;
-                margin: auto auto 20px auto;
-            }
-        }
-
-        @media screen and (min-width: 768px) {
-            .product-card {
-                width: calc(50% - 12px);
-                margin-right: 6px;
-                margin-left: 6px;
-            }
-        }
-
-        @media screen and (min-width: 920px) {
-            .product-card {
-                width: calc(33.3333333% - 12px);
-                margin-right: 6px;
-                margin-left: 6px;
-            }
-        }
-
-        @media screen and (min-width: 1080px) {
-            .product-card {
-                width: calc(25% - 12px);
-                margin-right: 6px;
-                margin-left: 6px;
-            }
-        }
-
-        @media screen and (min-width: 1200px) {
-            .product-card {
-                width: calc(20% - 12px);
-                margin-right: 6px;
-                margin-left: 6px;
+        .image{
+            img{
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
             }
         }
     }
 
+    .product-links{
+        position: absolute;
+        top: 5px;
+        left: 5px;
+    }
+
+    .product-links{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .product-links{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        li{
+            a{
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                border: 1px solid #e0e0e0;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    .product-new,
+    .product-popular,
+    .favorite {
+        position: absolute;
+        display: inline-block;        
+    }
+
+    .product-new {
+        top: 5px;
+        right: 5px;
+        background-color: rgb(17, 73, 73);
+        color: rgb(253, 253, 253);
+        padding: 2px 5px;
+        font-size: 0.8rem;
+        border-radius: 4px;
+    }
+
+    .favorite{
+        bottom: 5px;
+        right: 5px;
+        background-color: rgb(17, 73, 73);
+        color: rgb(253, 253, 253);
+        padding: 2px 5px;
+        font-size: 0.8rem;
+        border-radius: 4px;
+    }
+
+    .product-popular {
+        top: 5px;
+        left: 5px;
+        background-color: rgb(17, 73, 73);
+        color: rgb(253, 253, 253);
+        padding: 2px 5px;
+        font-size: 0.8rem;
+        border-radius: 4px;        
+    }
+
+    .product-info{
+        padding-left: 12px;
+        padding-right: 12px;
+
+        .rating{
+            list-style: none;
+            margin: 0;
+
+            li{
+                display: inline-block;
+
+                &:not(:first-child){
+                    margin-right: 5px;
+                }
+            }
+
+            
+        }
+    }
+
+    .product-details {
+        padding-left: 12px;
+        padding-right: 12px;
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #000000;
+        }
+
+        .product-price {
+            margin-bottom: 0;
+            font-size: 1.5rem;
+            font-weight: 500;
+            line-height: 1.2;
+            color: green;
+        }
+
+        .product-discount {
+            margin-bottom: 0;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #464646;
+            line-height: 1.2;
+            text-decoration: line-through;
+        }
+    }
+
+    button.add-cart {           
+        margin-top: auto;
+        margin-left: 13px;
+        margin-right: 13px;
+        margin-bottom: 15px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .product-card {
+            width: calc(50% - 12px);
+            margin-right: 6px;
+            margin-left: 6px;
+        }
+    }
+
+    @media screen and (min-width: 920px) {
+        .product-card {
+            width: calc(33.3333333% - 12px);
+            margin-right: 6px;
+            margin-left: 6px;
+        }
+    }
+
+    @media screen and (min-width: 1080px) {
+        .product-card {
+            width: calc(25% - 12px);
+            margin-right: 6px;
+            margin-left: 6px;
+        }
+    }
+
+    @media screen and (min-width: 1200px) {
+        .product-card {
+            width: calc(20% - 12px);
+            margin-right: 6px;
+            margin-left: 6px;
+        }
+    }
 }

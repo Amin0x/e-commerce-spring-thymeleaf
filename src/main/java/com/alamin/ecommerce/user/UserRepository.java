@@ -13,38 +13,40 @@ public interface UserRepository extends JpaRepository<User, Long> {
     int getUsersCount();
 
     @Query("SELECT COUNT(u) FROM User u WHERE FUNCTION('MONTH', u.created) = FUNCTION('MONTH', NOW())")
-    int getUsersCountThisMonth();
+    int getCreatedUsersThisMonthCount();
 
     @Query("SELECT COUNT(u) FROM User u WHERE u.enabled = TRUE")
-    int getActiveUsersCount();
+    int getEnabledUsersCount();
 
     @Query("SELECT COUNT(u) FROM User u WHERE u.enabled = FALSE")
-    int getUnactiveUsersCount();
+    int getDisabledUsersCount();
 
     @Query("SELECT u FROM User u ORDER BY u.created DESC")
-    List<User> getLastRegisteredUsers(Pageable pageable);
+    List<User> getLastCreatedUsers(Pageable pageable);
 
-    Optional<User> findByUsername(String name);
+    @Query("SELECT u FROM User u WHERE u.username = :name")
+    Optional<User> getUserByUsername(@Param("name") String name);
 
-    Optional<User> findByUuid(String id);
+    @Query("SELECT u FROM User u WHERE u.uuid = :uuid")
+    Optional<User> getUserByUuid(@Param("uuid") String uuid);
 
     @Query(value = "SELECT YEAR(created) FROM tbl_users GROUP BY YEAR(created) ORDER BY YEAR(created) DESC Limit 10", nativeQuery = true)
-    List<Integer> getUsersRegisrationLabelsYear();
+    List<Integer> getUsersRegistrationLabelsYear();
 
     @Query(value = "SELECT COUNT(created) FROM tbl_users GROUP BY YEAR(created) ORDER BY YEAR(created) DESC Limit 10", nativeQuery = true)
-    List<Integer> getUsersRegisrationCountYear();
+    List<Integer> getUsersRegistrationCountYear();
 
     @Query(value = "SELECT MONTH(created) FROM tbl_users WHERE YEAR(created) = :year GROUP BY MONTH(created) ORDER BY MONTH(created) ASC", nativeQuery = true)
-    List<Integer> getUsersRegisrationLabelsMonth(@Param("year") int year);
+    List<Integer> getUsersRegistrationLabelsMonth(@Param("year") int year);
 
     @Query(value = "SELECT MONTH(created) FROM tbl_users WHERE YEAR(created) = YEAR(NOW()) GROUP BY MONTH(created) ORDER BY MONTH(created) ASC", nativeQuery = true)
-    List<Integer> getUsersRegisrationLabelsMonth();
+    List<Integer> getUsersRegistrationLabelsMonth();
 
     @Query(value = "SELECT COUNT(created) FROM tbl_users WHERE YEAR(created) = :year GROUP BY MONTH(created) ORDER BY MONTH(created) ASC", nativeQuery = true)
-    List<Integer> getUsersRegisrationCountMonth(@Param("year") int year);
+    List<Integer> getUsersRegistrationCountMonth(@Param("year") int year);
 
     @Query(value = "SELECT COUNT(created) FROM tbl_users WHERE YEAR(created) = YEAR(NOW()) GROUP BY MONTH(created) ORDER BY MONTH(created) ASC", nativeQuery = true)
-    List<Integer> getUsersRegisrationCountMonth();
+    List<Integer> getUsersRegistrationCountMonth();
     
     @Query(value = "SELECT COUNT(u) FROM User u WHERE u.enabled = TRUE AND MONTH(u.created) = :month AND YEAR(u.created) = :year")
     List<Integer> getUsersByMonthAndYear(@Param("month") int month, @Param("year") int year);

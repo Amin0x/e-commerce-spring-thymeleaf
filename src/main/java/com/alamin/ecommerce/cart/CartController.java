@@ -3,6 +3,7 @@ package com.alamin.ecommerce.cart;
 import com.alamin.ecommerce.product.Product;
 import com.alamin.ecommerce.product.ProductService;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+@Slf4j
 @Controller
 public class CartController {
 
@@ -31,24 +33,30 @@ public class CartController {
         return "public/cart";
     }
     
-    @GetMapping("/api/cart/get")
-    public ResponseEntity<Cart> getCart(HttpSession session) {
+    @GetMapping("/carts/getCart")
+    public ResponseEntity<Object> getCart(HttpSession session) {
         Cart cart = cartService.getCartBySession(session);
-        return ResponseEntity.ok(cart);
+        if (cart == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+        CartDto cartDto = new CartDto(cart);
+        return ResponseEntity.ok(cartDto);
     }
 
-    @PostMapping("/api/carts/add")
-    public ResponseEntity<Cart> addItemToCart(@RequestParam Long productId,
+    @PostMapping("/carts/addToCart")
+    public ResponseEntity<CartDto> addItemToCart(@RequestParam Long productId,
                                               @RequestParam int quantity,
                                               HttpSession session, Principal principal) {
         Product product = productService.getProductById(productId).orElseThrow();
         Cart updatedCart = cartService.addItemToCart(product, session, principal);
-        return ResponseEntity.ok(updatedCart);
+        CartDto updatedCartDto = new CartDto(updatedCart);
+        return ResponseEntity.ok(updatedCartDto);
     }
 
-    @PostMapping("/api/carts/delete/{id}")
-    public ResponseEntity<Void> removeCartItem(@PathVariable Long id, HttpSession session, Principal principal) {
+    @PostMapping("/carts/delete")
+    public ResponseEntity<Void> removeCartItem(@RequestParam Long id, HttpSession session, Principal principal) {
         try {
+            log.info("id: {}", id);
             cartService.removeCartItem(id, session, principal);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -58,7 +66,19 @@ public class CartController {
     }
 
 
+    @PostMapping("/carts/increment")
+    public ResponseEntity<Object> cartItemIncrement(@RequestParam Long id, HttpSession session, Principal principal) {
+       
 
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @PostMapping("/carts/decrement")
+    public ResponseEntity<Object> cartItemDecrement(@RequestParam Long id, HttpSession session, Principal principal) {
+        
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
 
 
 

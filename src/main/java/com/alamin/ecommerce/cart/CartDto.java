@@ -8,10 +8,8 @@ public class CartDto {
 
     private Long cartId;
     private int total;
-    private String sessionId;
     private LocalDateTime created;
     private LocalDateTime updated;
-    private String userId;
     private List<CartItemDto> cartItems = new ArrayList<>();
 
     public CartDto() {
@@ -20,10 +18,8 @@ public class CartDto {
     public CartDto(Cart cart) {
         this.cartId = cart.getCartId();
         this.total = cart.getTotal();
-        this.sessionId = cart.getSessionId();
         this.created = cart.getCreated();
         this.updated = cart.getUpdated();
-        this.userId = cart.getUserId();
 
         this.cartItems = cart.getCartItems().stream().map(CartItemDto::new).toList();
 
@@ -46,13 +42,6 @@ public class CartDto {
         this.total = total;
     }
 
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
 
     public LocalDateTime getCreated() {
         return created;
@@ -68,14 +57,6 @@ public class CartDto {
 
     public void setUpdated(LocalDateTime updated) {
         this.updated = updated;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public List<CartItemDto> getCartItems() {
