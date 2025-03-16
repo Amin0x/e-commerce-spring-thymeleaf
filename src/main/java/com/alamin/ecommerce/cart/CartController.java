@@ -69,14 +69,22 @@ public class CartController {
     @PostMapping("/carts/increment")
     public ResponseEntity<Object> cartItemIncrement(@RequestParam Long id, HttpSession session, Principal principal) {
        
-
+        try {
+            cartService.incrementCartItem(id, session, principal);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @PostMapping("/carts/decrement")
     public ResponseEntity<Object> cartItemDecrement(@RequestParam Long id, HttpSession session, Principal principal) {
-        
+        try {
+            cartService.decrementCartItem(id, session, principal);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 

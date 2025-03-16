@@ -123,4 +123,48 @@ public class CartService {
     public boolean existsById(Long id) {
         return cartRepository.existsById(id);
     }
+
+    public void incrementCartItem(Long id, HttpSession session, Principal principal) {
+        Cart cart = getCartBySession(session);
+        if (cart == null) {
+            return;
+        }
+
+        for (var ci : cart.getCartItems()) {
+            if (Objects.equals(ci.getId(), id)) {
+                ci.setQuantity(ci.getQuantity() + 1);
+                ci.setTotal(ci.getQuantity() * ci.getPrice());
+            }
+        }
+
+        //update total
+        int total = 0;
+        for (var it:cart.getCartItems()){
+            total += it.getQuantity() * it.getPrice();
+        }
+        cart.setTotal(total);
+        saveCart(cart);
+    }
+
+    public void decrementCartItem(Long id, HttpSession session, Principal principal) {
+        Cart cart = getCartBySession(session);
+        if (cart == null) {
+            return;
+        }
+
+        for (var ci : cart.getCartItems()) {
+            if (Objects.equals(ci.getId(), id)) {
+                ci.setQuantity(ci.getQuantity() - 1);
+                ci.setTotal(ci.getQuantity() * ci.getPrice());
+            }
+        }
+
+        //update total
+        int total = 0;
+        for (var it:cart.getCartItems()){
+            total += it.getQuantity() * it.getPrice();
+        }
+        cart.setTotal(total);
+        saveCart(cart);
+    }
 }
