@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -40,52 +42,73 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
         CartDto cartDto = new CartDto(cart);
-        return ResponseEntity.ok(cartDto);
+        Map<String, Object> data = new HashMap<>();
+        data.put("cart", cartDto);
+        data.put("totalItems", cartDto.getCartItems().stream().mapToInt(CartItemDto::getQuantity).sum());
+        data.put("tax", 0);
+        data.put("shipping", productService.getShipping(cart));
+        return ResponseEntity.ok(data);
     }
 
     @PostMapping("/carts/addToCart")
-    public ResponseEntity<CartDto> addItemToCart(@RequestParam Long productId,
-                                              @RequestParam int quantity,
+    public ResponseEntity<Object> addItemToCart(@RequestParam Long productId,
+                                              @RequestParam(defaultValue = "1") int quantity,
                                               HttpSession session, Principal principal) {
         Product product = productService.getProductById(productId).orElseThrow();
         Cart updatedCart = cartService.addItemToCart(product, session, principal);
         CartDto updatedCartDto = new CartDto(updatedCart);
-        return ResponseEntity.ok(updatedCartDto);
+        Map<String, Object> data = new HashMap<>();
+        data.put("cart", updatedCartDto);
+        data.put("totalItems", updatedCartDto.getCartItems().stream().mapToInt(CartItemDto::getQuantity).sum());
+        return ResponseEntity.ok(data);
     }
 
     @PostMapping("/carts/delete")
-    public ResponseEntity<Void> removeCartItem(@RequestParam Long id, HttpSession session, Principal principal) {
+    public ResponseEntity<Object> removeCartItem(@RequestParam Long id, HttpSession session, Principal principal) {
+        Cart cart = null;
         try {
             log.info("id: {}", id);
-            cartService.removeCartItem(id, session, principal);
+            cart = cartService.removeCartItem(id, session, principal);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(new CartDto(cart));
     }
 
 
     @PostMapping("/carts/increment")
     public ResponseEntity<Object> cartItemIncrement(@RequestParam Long id, HttpSession session, Principal principal) {
-       
+
+        Cart cart = null;
         try {
-            cartService.incrementCartItem(id, session, principal);
+            cart = cartService.incrementCartItem(id, session, principal);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        Map<String, Object> data = new HashMap<>();
+        CartDto cartDto = new CartDto(cart);
+        data.put("cart", cartDto);
+        data.put("totalItems", cartDto.getCartItems().stream().mapToInt(CartItemDto::getQuantity).sum());
+        return ResponseEntity.ok(data);
     }
 
     @PostMapping("/carts/decrement")
     public ResponseEntity<Object> cartItemDecrement(@RequestParam Long id, HttpSession session, Principal principal) {
+        Cart cart = null;
         try {
-            cartService.decrementCartItem(id, session, principal);
+            cart = cartService.decrementCartItem(id, session, principal);
+        } catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("something went wrong");
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        Map<String, Object> data = new HashMap<>();
+        CartDto cartDto = new CartDto(cart);
+        data.put("cart", cartDto);
+        data.put("totalItems", cartDto.getCartItems().stream().mapToInt(CartItemDto::getQuantity).sum());
+        return ResponseEntity.ok(data);
     }
 
 

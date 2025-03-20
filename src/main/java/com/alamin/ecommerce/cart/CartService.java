@@ -93,7 +93,7 @@ public class CartService {
     }
 
     // Update the quantity of a product in the cart can be negitive to remove the product
-    public Cart removeCartItem(Long itemId, HttpSession session, Principal principal) {
+    public Cart removeCartItem(Long id, HttpSession session, Principal principal) {
         User user = null;
         Cart cart = null;
 
@@ -108,10 +108,18 @@ public class CartService {
 
 
         List<CartItem> cartItems = cart.getCartItems();
-        if (cartItems == null)
-            cartItems = new ArrayList<>();
+        boolean found = false;
+        for (var ci : cartItems) {
+            if (Objects.equals(ci.getId(), id)) {
+                cartItems.remove(ci);
+                found = true;
+                break;
+            }
+        }
 
-
+        if (!found) {
+            throw new RuntimeException("Item not found in cart");
+        }
         return saveCart(cart);
     }
 
@@ -124,10 +132,10 @@ public class CartService {
         return cartRepository.existsById(id);
     }
 
-    public void incrementCartItem(Long id, HttpSession session, Principal principal) {
+    public Cart incrementCartItem(Long id, HttpSession session, Principal principal) {
         Cart cart = getCartBySession(session);
         if (cart == null) {
-            return;
+            throw new RuntimeException("Cart not found");
         }
 
         for (var ci : cart.getCartItems()) {
@@ -143,19 +151,23 @@ public class CartService {
             total += it.getQuantity() * it.getPrice();
         }
         cart.setTotal(total);
-        saveCart(cart);
+        return saveCart(cart);
     }
 
-    public void decrementCartItem(Long id, HttpSession session, Principal principal) {
+    public Cart decrementCartItem(Long id, HttpSession session, Principal principal) {
         Cart cart = getCartBySession(session);
         if (cart == null) {
-            return;
+            throw new RuntimeException("Cart not found");
         }
 
         for (var ci : cart.getCartItems()) {
             if (Objects.equals(ci.getId(), id)) {
-                ci.setQuantity(ci.getQuantity() - 1);
-                ci.setTotal(ci.getQuantity() * ci.getPrice());
+                if (ci.getQuantity() > 1) {
+                    ci.setQuantity(ci.getQuantity() - 1);
+                    ci.setTotal(ci.getQuantity() * ci.getPrice());
+                } else {
+                    throw new RuntimeException("quantity cant be less than one");
+                }
             }
         }
 
@@ -165,6 +177,6 @@ public class CartService {
             total += it.getQuantity() * it.getPrice();
         }
         cart.setTotal(total);
-        saveCart(cart);
+        return saveCart(cart);
     }
 }

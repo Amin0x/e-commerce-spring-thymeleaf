@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex,nofollow">
-    <title th:text="">Create Product</title>
+    <title>Create Product</title>
     <link th:if="false" th:href="@{'/public/css/bootstrap.min.css'}" href="../../../static/public/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
 </head>
@@ -113,8 +113,7 @@
                     method: "post",
                     data: formData,
                     success: function (response) {
-                        let categories = response.data;
-                        
+                        let categories = response.data;                        
                     },
                     contentType: /*"application/json"*/ false,
                     processData: false,

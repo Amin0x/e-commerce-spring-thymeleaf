@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.product;
 
+import com.alamin.ecommerce.cart.Cart;
 import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.category.CategoryService;
 import com.alamin.ecommerce.config.FileUploadService;
@@ -32,6 +33,9 @@ public class ProductService {
 
     @Autowired
     private ProductReviewRepository productReviewRepository;
+
+    @Autowired
+    private ProductPriceRepository productPriceRepository;
 
     public List<Product> getRandomProductsByCategory(Long category, int size) {
         if (size < 5) size = 5;
@@ -274,5 +278,74 @@ public class ProductService {
 
     public List<ProductReview> getProductReviews(Long productId){
         return productReviewRepository.findByProductId(productId);
+    }
+
+    public ProductReview createProductReview(ProductReview productReview){
+        ProductReview pr = new ProductReview();
+        pr.setReview(productReview.getReview());
+        pr.setProductId(productReview.getProductId());
+        pr.setStar(productReview.getStar());
+        pr.setReviewType(productReview.getReviewType());
+        pr.setUserId(productReview.getUserId());
+        pr.setCreatedAt(LocalDateTime.now());
+        pr.setUpdatedAt(LocalDateTime.now());
+
+        return productReviewRepository.save(pr);
+    }
+
+    public ProductReview updateProductReview(Long id, ProductReview productReview){
+        ProductReview pr = productReviewRepository.findById(id).orElseThrow();
+        pr.setReview(productReview.getReview());
+        pr.setUpdatedAt(LocalDateTime.now());
+        return productReviewRepository.save(pr);
+    }
+
+    public void deleteProductReview(Long id){
+        productReviewRepository.deleteById(id);
+    }
+
+    public ProductPrice addProductPrice(Long productId, ProductPrice price) {
+        return productPriceRepository.save(price);
+    }
+
+    public ProductPrice updateProductPrice(Long productId, ProductPrice price) {
+        return productPriceRepository.save(price);
+    }
+
+    public void deleteProductPrice(Long id) {
+        return;
+    }
+
+    public long getProduct5StarReviewsCount(Long id) {
+        return productReviewRepository.count2StarsByProductId(id);
+    }
+
+    public long getProduct4StarReviewsCount(Long id) {
+        return productReviewRepository.count4StarsByProductId(id);
+    }
+
+    public long getProduct3StarReviewsCount(Long id) {
+        return productReviewRepository.count3StarsByProductId(id);
+    }
+
+    public long getProduct2StarReviewsCount(Long id) {
+        return productReviewRepository.count2StarsByProductId(id);
+    }
+
+    public long getProduct1StarReviewsCount(Long id) {
+        return productReviewRepository.count1StarByProductId(id);
+    }
+
+    public double getProductReviewAvg(Long id) {
+        Double avg = productReviewRepository.averageReviewByProductId(id);
+        return avg == null? 0.0 : avg;
+    }
+
+    public long getReviewsCount(Long id) {
+        return productReviewRepository.count();
+    }
+
+    public long getShipping(Cart cart) {
+        return 0;
     }
 }

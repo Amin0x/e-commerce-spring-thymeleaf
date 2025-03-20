@@ -16,20 +16,20 @@
 
 <body>
     <main class="wrapper">
-        <nav th:replace="~{fragments/navbar :: navbar}" class="navbar-wrp"></nav>
+        <nav th:replace="~{public/fragments/navbar :: navbar}" class="navbar-wrp"></nav>
         <section class="product-details">
             <section th:replace="public/search_fragment::searchHeader">
 
             </section>
 
             <section class="product-info" id="productInfo">
-                <h2 class="product-name" th:text="${product.name}">فاست نيتبوك 12.5 بوصة خفيف الوزن ورقيق جدا 4 جيجابايت
-                    + 64 جيجابايت لابتوب لابتوب انتل N3350 64 بت كواد كور نتبووك ويندوز 10</h2>
+                <h2 class="product-name" th:text="${product.name}">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veniam, dolor?
+                </h2>
                 <div class="product-info__details">
                     <div class="product-image-wrap">
                         <div class="product-image text-center">
-                            <img th:src="@{'/uploads/images/'+ ${product.image}}" class="img-fluid"
-                                 th:alt="product.name">
+                            <img th:src="@{'/uploads/images/'+ ${product.image}}" th:alt="product.name" class="img-fluid">
                         </div>
                     </div>
                     <div class="product-attribs">
@@ -39,34 +39,32 @@
                             <p class="price-discount d-inline-block"><span th:text="${discountPercent}">5%</span> خصم</p>
                         </div>
                         <div class="review-rate">
-                            <i class="fas fa-star"></i> <span>4.5</span> (<span>283</span> مراجعة)
+                            <i class="fas fa-star"></i> <span th:text="${reviewAvg}">4.5</span> (<span th:text="${reviewsCount}">283</span> مراجعة)
                         </div>
                         <div class="product-description">
                             <h4 class="description-title">الوصف</h4>
                             <p class="description-body" th:text="${product.description}">
-                                فاست نيتبوك 12.5 بوصة خفيف الوزن ورقيق جدا 4 جيجابايت + 64 جيجابايت لابتوب لابتوب انتل
-                                N3350
-                                64
-                                بت كواد كور نتبووك ويندوز 10.
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam ipsa commodi molestias.
                             </p>
                         </div>
                         <div class="add-to-cart">
-                            <button class="button-31" id="addToCartButton">اضافة للعربة</button>
+                            <button th:onclick="|addToCart(${product.productId})|" class="button-31" id="addToCartButton">اضافة للعربة</button>
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="similar-products">
+            <section th:if="${#lists.isEmpty(similarProducts) == false}" class="similar-products">
                 <h4>منتجات مشابه</h4>
                 <div class="similar-products-container">
                     <article class="product-card" th:each="similarProduct : ${similarProducts}">
                         <div class="product-item">
-                            <div class="image"><img th:src="@{${similarProduct.imageUrl}}"
-                                                    src="../../static/public/imgs/img10.jpg"
-                                                    alt="Similar Product Image"></div>
+                            <div class="image">
+                                <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img10.jpg" alt="Similar Product Image">
+                            </div>
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">كمبيوتر محمول Yepo جديد Intel Core i7 Windows 11
-                                    Pro شاشة 15.6 بوصة 2K HD MX450 2G بطاقة رسومات مستقلة كمبيوتر مكتبي للأعمال</div>
+                                <div th:text="${similarProduct.name}" class="title">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, debitis?
+                                </div>
                                 <div class="price-container">
                                     <p class="price"><span th:text="${similarProduct.price}">1599</span> SDG</p>
                                     <p class="discount-price"><span th:text="${similarProduct.price}">1599</span> SDG</p>
@@ -78,7 +76,7 @@
             </section>
 
 
-            <section class="people-see">
+            <section th:if="${#lists.isEmpty(peopleSeeProducts) == false}" class="people-see">
                 <div class="flex-row all-products">
                     <div class="product-card">
                         <div class="product">
@@ -145,21 +143,32 @@
             </section>
         </section>
 
-        <footer th:replace="~{fragments/footer :: footer}" class="mt-3"></footer>
+        <footer th:replace="~{public/fragments/footer :: footer}" class="mt-3"></footer>
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        const addToCart = () => {
-            fetch('', {
+        const addToCart = (id) => {
+            const formData = new FormData();
+            formData.append('productId', id);
+            fetch('/carts/addToCart', {
                 method: 'POST',
+                body:formData,
             })
-            .then(response => response.json())
-            .then(data => {})
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('خطأ في الاتصال');
+                }                
+            })
+            .then(data => {
+                if (data != null) {                    
+                    document.querySelector('#cartItemsCount').textContent = data.totalItems;
+                }
+            })
         }
-        document.querySelector('#addToCartButton').addEventListener('click', (e) => {
-            e.preventDefault();
-        });
+        
     </script>
 </body>
 

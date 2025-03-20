@@ -105,9 +105,9 @@
                     method: 'GET',
                 });
 
-                if(res.ok){
+                if(res != undefined && res.status == 200){
                     const data = await res.json();
-                    document.getElementById("cartItemsCount").textContent = data.cartItems.length;
+                    document.getElementById("cartItemsCount").textContent = data.totalItems;
                 }
             });
             document.getElementById("dropdownCartButton").addEventListener("click", function() {

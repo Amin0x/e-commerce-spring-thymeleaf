@@ -42,6 +42,7 @@ public class CategoryController {
 
         model.addAttribute("products", products);
         model.addAttribute("category", category.get());
+        model.addAttribute("username", null);
         return "public/category";
     }
 

@@ -6,32 +6,38 @@
     <meta name="robots" content="noindex,nofollow">
     <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="../../../static/admin/main.css" rel="stylesheet">
+    <link href="../../../static/admin/main.css" th:href="@{/admin/main.css}" rel="stylesheet">
 </head>
 <body>
 <div class="wrapper">
-    <form th:action="@{/admin/categories}" method="post" enctype="application/x-www-form-urlencoded">
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+    <aside th:replace="~{admin/fragments/navigation::navigation}"></aside>
+    <div class="content">
+        <header th:replace="~{admin/fragments/header :: header}"></header>
+        <div class="form-wrap" style="padding: 20px 30px;">
+            <form th:action="@{/admin/categories}" method="post" enctype="application/x-www-form-urlencoded" style="max-width: 900px;">
+                <h1 style="font-size: 1.5rem; font-weight: 500;">Create Category</h1>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="parent">Parent Category:</label>
+                    <select class="form-control" id="parent" name="parentId">
+                        <option value="">None</option>
+                        <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="description">Description:</label>
-            <textarea class="form-control" id="description" name="description" required></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="parent">Parent Category:</label>
-            <select class="form-control" id="parent" name="parentId">
-                <option value="">None</option>
-                <!-- Add options dynamically from the server-side -->
-                <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
+    </div>
 </div>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
 </body>
 </html>

@@ -24,6 +24,8 @@ public class AdminCategoryController {
     @GetMapping("/create")
     public String createCategoryPage(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute("user", new User());
+
         return "admin/categories/create-category";
     }
 
@@ -31,6 +33,7 @@ public class AdminCategoryController {
     public String indexPage(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("user", new User());
+
         return "admin/categories/category_home";
     }
 

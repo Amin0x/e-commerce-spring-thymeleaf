@@ -240,4 +240,16 @@ public class AdminProductController {
         Product product = productService.updatePrimaryImage(id, file);
         return ResponseEntity.ok(product);
     }
+
+    @PostMapping("/products/price/{productId}")
+    public ResponseEntity<Object> addProductPrice(@RequestParam Long productId,@RequestParam ProductPrice price){
+        log.info("{}", price);
+
+        if (productId == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ProductPrice productPrice = productService.addProductPrice(productId, price);
+        return ResponseEntity.ok(productPrice);
+    }
 }

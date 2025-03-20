@@ -30,7 +30,7 @@
 <body>
     <div class="wrapper">
         <header class="header">
-            <nav th:replace="~{fragments/navbar :: navbar}" class="navbar-wrp"></nav>
+            <nav th:replace="~{public/fragments/navbar :: navbar}" class="navbar-wrp"></nav>
         </header>
         <main class="content">
             <section th:if="false" class="banner-container">
@@ -45,22 +45,76 @@
                 </div>
             </section>
             <div style="margin-top: 50px;">
-                <section th:if="false" class="categories">
+                <section th:if="true" class="categories">
                     <div class="section-title">
-                        <h4 class="title">التصنيفات</h4>
+                        <h4 class="title">الاصناف</h4>
                     </div>
                     <div class="category-wrp">
-                        <div class="category" th:each="category : ${categroyList}">
+                        <div class="category">
                             <div class="category-card">
-                                <a th:href="@{/categories/{id}(id=${category.categoryId})}" href="#"
-                                    style="text-decoration: none;">
-                                    <div class="card">
-                                        <div class="card-img p-0">
-                                            <img th:src="${category.image} == null? '/public/imgs/img14.jpg':'/uploads/images/' + category.image"
-                                                class="card-img" alt="Product Image" src="">
+                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                    <div class="category-card__box">
+                                        <div class="category-img">
+                                            <img th:src="@{/public/imgs/p19109999.jpg}" class="card-img" alt="category Image" src="../../static/public/imgs/p19109999.jpg">
                                         </div>
-                                        <div class="card-body">
-                                            <p class="card-title" th:text="${#strings.abbreviate(category.name, 40)}">Title</p>
+                                        <div class="category-card__title">
+                                            <p class="card-title">الخضروات والفواكه</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="category">
+                            <div class="category-card">
+                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                    <div class="category-card__box">
+                                        <div class="category-img">
+                                            <img th:src="@{/uploads/images/}" class="card-img" alt="category Image" src="">
+                                        </div>
+                                        <div class="category-card__title">
+                                            <p class="card-title">منتجات الالبان </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="category">
+                            <div class="category-card">
+                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                    <div class="category-card__box">
+                                        <div class="category-img">
+                                            <img th:src="@{/public/imgs/products-6231.webp}" alt="category Image" src="../../static/public/imgs/products-6231.webp">
+                                        </div>
+                                        <div class="category-card__title">
+                                            <p class="card-title">المعلبات</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="category">
+                            <div class="category-card">
+                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                    <div class="category-card__box">
+                                        <div class="category-img">
+                                            <img th:src="@{/uploads/images/}" class="card-img" alt="category Image" src="">
+                                        </div>
+                                        <div class="category-card__title">
+                                            <p class="card-title">زيوت</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="category">
+                            <div class="category-card">
+                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                    <div class="category-card__box">
+                                        <div class="category-img">
+                                            <img th:src="@{/public/imgs/colorful-candy-lollipops-sweet-wallpaper-preview.jpg}" class="card-img" alt="category Image" src="../../static/public/imgs/colorful-candy-lollipops-sweet-wallpaper-preview.jpg">
+                                        </div>
+                                        <div class="category-card__title">
+                                            <p class="card-title">حلويات</p>
                                         </div>
                                     </div>
                                 </a>
@@ -143,7 +197,7 @@
                 </form>
             </section>
         </main>
-        <footer th:replace="~{fragments/footer :: footer}" class="mt-3"></footer>
+        <footer th:replace="~{public/fragments/footer :: footer}" class="mt-3"></footer>
     </div>
     <script th:src="@{'/public/js/jquery-3.7.1.min.js'}" src="../../static/public/js/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" crossorigin="anonymous"></script>
@@ -161,7 +215,7 @@
                         data: { productId: productId, quantity: quantity },
                         success: function (response) {
                             console.log(response);
-                            $('#cartItemsCount').text(response.cartItems.length);
+                            $('#cartItemsCount').text(response.totalItems);
                         }
                     });
                     return false;

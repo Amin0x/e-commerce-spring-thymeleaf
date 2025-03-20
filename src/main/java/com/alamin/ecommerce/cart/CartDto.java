@@ -22,8 +22,6 @@ public class CartDto {
         this.updated = cart.getUpdated();
 
         this.cartItems = cart.getCartItems().stream().map(CartItemDto::new).toList();
-
-
     }
 
     public Long getCartId() {

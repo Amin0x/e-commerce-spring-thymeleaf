@@ -1,11 +1,11 @@
 .cart-container {
-    padding: 0 20px;
+    padding: 0 0.125rem;
 
     .cart-item{
         background-color: #fafafa;
         padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 15px;
+        border-radius: 5px;
+        margin-bottom: 1rem;
         border: 1px solid #e7e2e2;
 
         .item-quantity{
@@ -21,27 +21,26 @@
             }
 
             span{
-                    display: inline-block;
-                    /* height: 30px; */
-                    width: 30px;
-                    padding: 0;
-                    text-align: center;
-                    vertical-align: baseline;
-                }
+                display: inline-block;
+                width: 30px;
+                padding: 0;
+                text-align: center;
+                vertical-align: baseline;
+            }
         }
 
         .button-delete{
-                padding: 0;
-                border: none;
-                background: transparent;
+            padding: 0;
+            border: none;
+            background: transparent;
 
-                svg{
-                    fill: #BDBDBD;
-                }
+            svg{
+                fill: #BDBDBD;
+            }
 
-                &:hover svg{
-                        fill: #9E9E9E;
-                    }
+            &:hover svg{
+                fill: #9E9E9E;
+            }
         }
     }
     
@@ -66,20 +65,34 @@
     }
 
     .item-price{}
+
+    .checkout-total{
+        width: 400px;
+    }
         
     .total-wrp{
-        width: 400px;
-        border-radius: 1rem;
+        border-radius: 0.3125rem;
         background-color: #f2f2f2;
         padding: .8rem;
         
-        .shipping, .tax, .subtotal, .total{
+        .total__entary{
             display: flex;
             justify-content: space-between;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .cval {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .ttcval{
+            color: rgb(18, 99, 32);
         }
     }
 
     .checkout-button{
-        margin-top: 20px;
+        margin-top: 1.2rem;
     }
 }

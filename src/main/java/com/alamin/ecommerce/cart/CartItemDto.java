@@ -17,6 +17,7 @@ public class CartItemDto {
         this.quantity  = cartItem.getQuantity();
         this.price = cartItem.getPrice();
         this.total = cartItem.getTotal();
+        this.product = new ProductDto(cartItem.getProduct());
     }
 
     public Long getId() {

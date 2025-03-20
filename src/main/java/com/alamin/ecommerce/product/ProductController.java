@@ -1,11 +1,14 @@
 package com.alamin.ecommerce.product;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +28,33 @@ public class ProductController {
         List<Product> similarProducts = productService.getSimilarProducts(product);
         double percent = Math.ceil((double) product.getPrice() / product.getInitPrice());
 
+        List<ProductReview> productReviews;
+        productReviews = productService.getProductReviews(id);
+
+        List<Product> peopleSeeProducts = Collections.emptyList();
+
+        long product5StarReviewsCount = productService.getProduct5StarReviewsCount(id);
+        long product4StarReviewsCount = productService.getProduct4StarReviewsCount(id);
+        long product3StarReviewsCount = productService.getProduct3StarReviewsCount(id);
+        long product2StarReviewsCount = productService.getProduct2StarReviewsCount(id);
+        long product1StarReviewsCount = productService.getProduct1StarReviewsCount(id);
+
+        double reviewAvg = productService.getProductReviewAvg(id);
+        long reviewsCount = productService.getReviewsCount(id);
+
         model.addAttribute("product", product);
         model.addAttribute("percent", percent);
         model.addAttribute("similarProducts", similarProducts);
+        model.addAttribute("peopleSeeProducts", peopleSeeProducts);
+        model.addAttribute("productReviews", productReviews);
+        model.addAttribute("product5StarReviewsCount", product5StarReviewsCount);
+        model.addAttribute("product4StarReviewsCount", product4StarReviewsCount);
+        model.addAttribute("product3StarReviewsCount", product3StarReviewsCount);
+        model.addAttribute("product2StarReviewsCount", product2StarReviewsCount);
+        model.addAttribute("product1StarReviewsCount", product1StarReviewsCount);
+        model.addAttribute("reviewAvg", reviewAvg);
+        model.addAttribute("reviewsCount", reviewsCount);
+
 	    model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
@@ -35,7 +62,6 @@ public class ProductController {
 
         return "public/product_details";
     }
-
 
     // Get all products
     @GetMapping("/products/bestselling")
@@ -54,8 +80,6 @@ public class ProductController {
         if (category == null || category.isEmpty())
             products = productService.getRandomProducts( 20);
 
-
-    
         model.addAttribute("products", products);
 	    model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
@@ -68,6 +92,30 @@ public class ProductController {
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Optional<Product> product = productService.findById(id);
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/products/review/{id}")
+    public ResponseEntity<Object> createProductReview(@RequestBody ProductReview productReview){
+        ProductReview productReview1 = productService.createProductReview(productReview);
+        return new ResponseEntity<>(productReview1, HttpStatus.OK);
+    }
+
+    @PostMapping("/products/review/update/{id}")
+    public ResponseEntity<Object> updateProductReview(@PathVariable Long id,@RequestBody ProductReview productReview){
+        if (id == null){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        ProductReview productReview1 = productService.updateProductReview(id, productReview);
+        return new ResponseEntity<>(productReview1, HttpStatus.OK);
+    }
+
+    @PostMapping("/products/review/delete/{id}")
+    public ResponseEntity<Object> deleteProductReview(@PathVariable Long id){
+        if (id == null){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        productService.deleteProductReview(id);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
 }
