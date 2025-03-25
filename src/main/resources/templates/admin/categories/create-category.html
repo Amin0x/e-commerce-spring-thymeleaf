@@ -66,8 +66,62 @@
     </div>
 </div>
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
-<script>
 
+<script>
+    const form = document.querySelector('form');
+    const submitBtn = document.querySelector('button[type="submit"]');
+    const formMessage = document.getElementById('formMessage');
+    const formMessageText = document.getElementById('formMessageText');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+
+        // Add your form validation logic here
+        if (formData.get('name') === '') {
+            formMessage.classList.add('error');
+            formMessageText.textContent = 'Name is required.';
+            return;
+        }
+
+        if (formData.get('description') === '') {
+            formMessage.classList.add('error');
+            formMessageText.textContent = 'Description is required.';
+            return;
+        }
+
+        if (formData.get('image') === null) {
+            formMessage.classList.add('error');
+            formMessageText.textContent = 'Image is required.';
+            return;
+        }
+
+        submitBtn.disabled = true;
+        formMessage.classList.remove('error');
+        formMessageText.textContent = '';
+
+        // Add your API call logic here
+        fetch('/admin/categories', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                formMessage.classList.remove('error');
+                formMessageText.textContent = 'Category created successfully.';
+                form.reset();
+                submitBtn.disabled = false;
+            } else {
+                throw new Error('Failed to create category.');
+            }
+        })
+        .catch(error => {
+            formMessage.classList.add('error');
+            formMessageText.textContent = error.message;
+            submitBtn.disabled = false;
+        });
+    });
 </script>
+
 </body>
 </html>
