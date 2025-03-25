@@ -85,8 +85,11 @@
                             <div class="product-images" id="productImages">
                                 <div class="image" th:each="image : ${product.productImages}" th:data-image="${image.id}">
                                     <img class="img-item" th:src="@{'/admin/images/' + ${image.image}}" src="/static/public/imgs/img1.jpg" th:alt="${image.altText}">
-                                    <button type="button" class="delete-btn" th:data-delete="${image.id}">delete</button>
+                                    <button type="button" class="delete-btn btn btn-sm btn-danger" th:data-delete="${image.id}">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
                                 </div>
+
                             </div>
                         </div>
                         <div class="image-upload">
