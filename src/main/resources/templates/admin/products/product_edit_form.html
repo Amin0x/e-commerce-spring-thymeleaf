@@ -23,33 +23,38 @@
                         <div class="form-group">
                             <label for="name">Name:</label>
                             <input type="text" class="form-control" id="name" name="name" th:value="${product.name}">
+                            <small id="nameError" class="form-text text-danger" th:if="${#fields.hasErrors('name')}"
+                                    th:errors="*{name}"></small>
                         </div>
                         <div class="form-group">
                             <label for="description">Description:</label>
-                            <textarea class="form-control" id="description" name="description" rows="3"
-                                th:text="${product.description}"></textarea>
+                            <textarea class="form-control" id="description" name="description" rows="3" th:text="${product.description}"></textarea>
+                            <small id="descriptionError" class="form-text text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></small>
                         </div>
                         <div class="form-group">
                             <label for="price">Price:</label>
                             <input type="number" class="form-control" id="price" name="price" th:value="${product.price}">
+                            <small id="priceError" class="form-text text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></small>
                         </div>
                         <div class="form-group">
                             <label for="initPrice">Initial Price:</label>
-                            <input type="number" class="form-control" id="initPrice" name="initPrice"
-                                th:value="${product.initPrice}">
+                            <input type="number" class="form-control" id="initPrice" name="initPrice" th:value="${product.initPrice}">
+                            <small id="initPriceError" class="form-text text-danger" th:if="${#fields.hasErrors('initPrice')}" th:errors="*{initPrice}"></small>
                         </div>
                         <div class="form-group">
                             <label for="sku">SKU:</label>
                             <input type="text" class="form-control" id="sku" name="sku" th:value="${product.sku}">
+                            <small id="skuError" class="form-text text-danger" th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}"></small>
                         </div>
                         <div class="form-group">
                             <label for="stock">Stock:</label>
                             <input type="number" class="form-control" id="stock" name="stock" th:value="${product.stock}">
+                            <small id="stockError" class="form-text text-danger" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></small>
                         </div>
                         <div class="form-group">
                             <label for="totalSold">Total Sold:</label>
-                            <input type="number" class="form-control" id="totalSold" name="totalSold"
-                                th:value="${product.totalSold}">
+                            <input type="number" class="form-control" id="totalSold" name="totalSold" th:value="${product.totalSold}">
+                            <small id="totalSoldError" class="form-text text-danger" th:if="${#fields.hasErrors('totalSold')}" th:errors="*{totalSold}"></small>
                         </div>
                         <div class="d-flex gap-5 my-4">
                             <div class="flex-grow-1">
@@ -69,6 +74,7 @@
                                     th:selected="${category.id} == ${product?.category?.id}? 'ture':'false'">
                                 </option>
                             </select>
+                            <small id="categoryError" class="form-text text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></small>
                         </div>
                         <div class="form-group">
                             <div>Primary Image:</div>
@@ -77,6 +83,7 @@
                                     <img class="img-item" id="productPrimaryImage" th:src="@{'/admin/images/' + ${product.image}}" src="/static/public/imgs/img1.jpg" th:alt="${product.name}">
                                     <button type="button" class="delete-btn" id="changePrimaryImage">Add or Change Product Image</button>
                                     <input type="file" id="filePrimaryImage" name="productPrimaryImage" style="display: none;">
+                                    <small id="productPrimaryImageError" class="form-text text-danger" th:if="${#fields.hasErrors('productPrimaryImage')}" th:errors="*{productPrimaryImage}"></small>
                                 </div>
                             </div>
                         </div>
