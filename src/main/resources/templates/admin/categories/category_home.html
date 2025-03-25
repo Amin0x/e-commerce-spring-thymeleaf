@@ -46,12 +46,19 @@
                 </tbody>
             </table>
             <div class="pagination">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#" title="Previous">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#" title="Next">Next</a></li>
+                <ul class="pagination" th:if="${totalPages > 0}">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/categories(page=${currentPage - 1})}" title="Previous">Previous</a>
+                    </li>
+                    
+                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${pageNum == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/admin/categories(page=${pageNum})}" th:text="${pageNum + 1}"></a>
+                    </li>
+                    
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/categories(page=${currentPage + 1})}" title="Next">Next</a>
+                    </li>
                 </ul>
             </div>
 
@@ -72,9 +79,7 @@
                         <label for="parent">Parent Category:</label>
                         <select class="form-control" id="parent" name="parentId">
                             <option value="">None</option>
-                            <!-- Add options dynamically from the server-side -->
-                            <option th:each="category : ${categories}" th:value="${category.id}"
-                                    th:text="${category.name}"></option>
+                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                         </select>
                     </div>
                     <div class="mt-3">
