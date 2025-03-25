@@ -9,6 +9,24 @@
     <link th:href="@{'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'}" href="../../../static/public/css/bootstrap.min.css" rel="stylesheet">
     
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
+    <style>
+        .breadcrumb-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .breadcrumb-list {
+            list-style: none;
+            padding: 0;
+        }
+        .breadcrumb-item {
+            display: inline-block;
+        }
+        .breadcrumb-link {
+            text-decoration: none;
+            font-size: 0.9rem;
+            color: black;
+        }
+    </style>
 </head>
 <body>
 
@@ -17,15 +35,24 @@
     <main class="content">
         <header th:replace="~{admin/fragments/header :: header}"></header>
         <div class="px-3 py-4">
-            <h2 class="page-title mb-4">All Products</h2>
-            <div class="mb-4">
-                <form th:action="@{/admin/products/search}" method="get" class="form-inline">
-                    <input type="text" name="q" class="form-control mr-sm-2" placeholder="Search..."
-                           th:value="${param.q}">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <h2 class="page-title mb-4">All Products</h2>            
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb-list">
+                    <li class="breadcrumb-item"><a class="breadcrumb-link" href="/admin">Item 1</a></li>
+                    <li class="breadcrumb-item"><a class="breadcrumb-link" href="/admin/products">Item 2</a></li>
+                    <li class="breadcrumb-item"><a class="breadcrumb-link" href="/admin/products/list">Item 3</a></li>
+                </ul>
+            </div>
+            <div class="search-container mb-4">
+                <form action="/admin/products/search" method="get" class="search-form">
+                    <div class="search-input-group input-group" style="    width: 800px; margin-inline: auto;">
+                        <input type="text" name="q" class="form-control" placeholder="Search..." style="width: 650px;" value="">
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </form>
             </div>
-
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -59,7 +86,6 @@
                     </tr>
                 </tbody>
             </table>
-
             <div class="d-flex justify-content-between">
                 <div>
                     Page <span th:text="${currentPage}">1</span> of <span th:text="${totalPages}">10</span>
@@ -74,6 +100,7 @@
                 </div>
             </div>
         </div>
+
     </main>
 </div>
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
