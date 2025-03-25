@@ -8,6 +8,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" >
     <link href="../../../static/public/css/bootstrap.min.css" th:href="@{/public/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
+    <style>
+        .btn-delete { color: rgb(227, 100, 46); }
+        .btn-edit { color: rgb(67, 137, 10); }
+        .btn-sub { color: rgb(47, 102, 172); }
+        .btn-menu { color: rgb(81, 92, 72); }
+    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -34,13 +40,19 @@
                     <td th:text="${category.name}"></td>
                     <td th:text="${category.parent} == null? 'Root' : ${category.parent.name}"></td>
                     <td></td>
-                    <td><a href="javascript:void(0)" class="btn delete-button" title="delete" th:data-delete="${category.id}"
-                           style="color: rgb(227, 100, 46);"><i class="fas fa-trash-alt"></i> del</a>
-                        <a th:href="@{/admin/categories/edit/} + ${category.id}" href="" class="btn"
-                           style="color: rgb(67, 137, 10);"><i class="fas fa-edit"></i> edit</a>
-                        <a th:href="@{/admin/categories/edit/parent/} + ${category.id}" href="" class="btn"
-                           style="color: rgb(47, 102, 172);"><i class="fas fa-plus-circle"></i> sub</a>
-                        <a href="javascript:void(0)" class="btn" title="menu" data-menu="" style="color: rgb(81, 92, 72);"><i class="fas fa-bars"></i> menu</a>
+                    <td>
+                        <a th:data-delete="${category.id}" href="#" class="btn delete-button btn-delete" title="delete">
+                            <i class="fas fa-trash-alt"></i> del
+                        </a>
+                        <a th:href="@{/admin/categories/edit/} + ${category.id}" href="#" class="btn btn-edit">
+                            <i class="fas fa-edit"></i> edit
+                        </a>
+                        <a th:href="@{/admin/categories/edit/parent/} + ${category.id}" href="#" class="btn btn-sub">
+                            <i class="fas fa-plus-circle"></i> sub
+                        </a>
+                        <a data-menu="" href="#" class="btn btn-menu" title="menu">
+                            <i class="fas fa-bars"></i> menu
+                        </a>
                     </td>
                 </tr>
                 </tbody>
