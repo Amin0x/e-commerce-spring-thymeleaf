@@ -58,7 +58,7 @@
                             </thead>
                             <tbody>
                                 <tr th:each="prod : ${lastAddedProducts}">
-                                    <td><span th:text="${prod.productId}"></span></td>
+                                    <td><span th:text="${prod.id}"></span></td>
                                     <td th:text="${prod.name}"></td>
                                     <td><span th:text="${prod.totalSold}">0</span></td>
                                 </tr>
@@ -79,9 +79,9 @@
                     <table class="table">                        
                         <tbody>
                         <tr th:each="product : ${topSoldProducts}">
-                            <td><span th:text="${product.productId}"></span></td>
+                            <td><span th:text="${product.id}"></span></td>
                             <td>
-                                <a th:href="@{/admin/products/{id}(id=${product.productId})}" th:text="${product.name}">Product Name</a>
+                                <a th:href="@{/admin/products/{id}(id=${product.id})}" th:text="${product.name}">Product Name</a>
                             </td>
                             <td><span th:text="${product.totalSold}">0</span></td>
                         </tr>

@@ -12,7 +12,7 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long invoiceId;
+    private Long id;
     private String customerName;
     private double totalAmount;
 

@@ -132,10 +132,10 @@
                                 <div class="card-img p-0">
                                     <a class="circle-container position-absolute"
                                         style="cursor: pointer; font-size: 1.2rem;"
-                                        th:data-heart="${product.productId}">
+                                        th:data-heart="${product.id}">
                                         <i class="far fa-heart"></i>
                                     </a>
-                                    <a th:href="@{/products/{id}(id=${product.productId})}" href="#"
+                                    <a th:href="@{/products/{id}(id=${product.id})}" href="#"
                                         style="text-decoration: none;">
                                         <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
                                             class="product-img" alt="Product Image" src="">
@@ -158,10 +158,10 @@
                     <div class="products">
                         <div th:each="product : ${products}" class="product-card-b">
                             <div class="product-image flex-column">
-                                <a class="circle-container" th:data-heart="${product.productId}">
+                                <a class="circle-container" th:data-heart="${product.id}">
                                     <i class="far fa-heart"></i>
                                 </a>
-                                <a th:href="@{/products/{id}(id=${product.productId})}" href="#">
+                                <a th:href="@{/products/{id}(id=${product.id})}" href="#">
                                     <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
                                         class="product-img" alt="Product Image" src="">
                                 </a>
@@ -177,7 +177,7 @@
                                 </div>
                             </div>
                             <div class="add-to-cart">
-                                <button type="button" class="button-31" th:data-add-cart="${product.productId}">اضافة للعربة</button>
+                                <button type="button" class="button-31" th:data-add-cart="${product.id}">اضافة للعربة</button>
                             </div>
                         </div>
                     </div>

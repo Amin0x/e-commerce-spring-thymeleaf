@@ -3,10 +3,12 @@ package com.alamin.ecommerce.category;
 import com.alamin.ecommerce.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +22,7 @@ public class AdminCategoryController {
     private CategoryRepository categoryRepository;
     @Autowired
     private CategoryService categoryService;
+    
 
     @GetMapping("/create")
     public String createCategoryPage(Model model) {
@@ -41,7 +44,7 @@ public class AdminCategoryController {
     public String updateCategoryPage(@PathVariable Long id, Model model) {
         model.addAttribute("category", categoryRepository.findById(id).orElseThrow());
         List<Category> categories = categoryRepository.findAll();
-        categories.removeIf((item)->{return Objects.equals(item.getCategoryId(), id);});
+        categories.removeIf((item)->{return Objects.equals(item.getId(), id);});
         model.addAttribute("categories", categories);
         model.addAttribute("user", new User());
 
@@ -53,17 +56,16 @@ public class AdminCategoryController {
     public String createCategory(
             @RequestParam String name,
             @RequestParam String description,
-            @RequestParam(required = false) Long parentId
+            @RequestParam(required = false) Long parentId,
+            @RequestParam(required = false) MultipartFile image
     ) {
-        try {
-            Category parent = null;
-            if (parentId != null)
-                 parent = categoryService.getCategoryById(parentId).orElse(null);
+        try {            
 
-            Category newCategory = new Category(name, description, parent);
-            Category category = categoryService.createCategory(newCategory);
-            
-            return "redirect:/admin/categories/create";
+            Category category = categoryService.createCategory(name, description, parentId, image);
+            if (category == null) {
+                return "redirect:/admin/categories/create";
+            }
+            return "redirect:/admin/categories";
 
         } catch (Exception e) {
             log.error("", e);
@@ -98,11 +100,16 @@ public class AdminCategoryController {
 
     // Delete a category by ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        if (!categoryRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        categoryRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Object> deleteCategory(@PathVariable Long id) {     
+        
+        try{
+            categoryService.deleteCategory(id);
+
+        } catch (Exception e) {
+            log.error(" something went wrong: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } 
+        
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

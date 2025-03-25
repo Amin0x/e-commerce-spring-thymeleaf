@@ -14,7 +14,7 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Long id;
     private int total;
     private String sessionId;
     private LocalDateTime created;

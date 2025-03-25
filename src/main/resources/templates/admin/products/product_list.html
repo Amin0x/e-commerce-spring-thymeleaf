@@ -42,7 +42,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="product, iter : ${products}" th:class="${iter.odd} ? 'odd'">
-                        <td th:text="${product.productId}">1</td>
+                        <td th:text="${product.id}">1</td>
                         <td th:text="${product.name}">Product Title</td>
                         <td th:text="${product.price}">100.00</td>
                         <td th:text="${product.priceUSD}">20.00</td>
@@ -51,9 +51,9 @@
                         <td th:text="${product.stock}">200</td>
                         <td th:text="${product.sku}">SKU1234</td>
                         <td>
-                            <a th:href="@{/admin/products/edit/{id}(id=${product.productId})}"
+                            <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
                             class="btn btn-primary btn-sm">Edit</a>
-                            <a th:href="@{/admin/products/delete/{id}(id=${product.productId})}"
+                            <a th:href="@{/admin/products/delete/{id}(id=${product.id})}"
                             class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>

@@ -18,11 +18,8 @@
     <div class="wrapper">
         <div class="wrapper">
             <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-
             <main class="content">
-
                 <header th:replace="~{admin/fragments/header :: header}"></header>
-
                 <div class="orders-wrapper">
                     <h1 class="page-title mb-5">Orders Index</h1>
                     <div class="order-counters">
@@ -61,13 +58,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="order : ${lastOrders}">
-                                        <td th:text="${order.orderId}">100</td>
-                                        <td th:text="${order.customer.firstName}">John Doe</td>
+                                    <tr th:if="false" th:each="order : ${lastOrders}">
+                                        <td th:text="${order.id}">100</td>
+                                        <td th:text="${order.customer?.firstName}">John Doe</td>
                                         <td th:text="${order.totalAmount}">12/12/2024 08:30 pm</td>
                                         <td th:text="${order.status}">Shipped</td>
-                                        <td th:text="${#temporals.format(order.orderDate, 'dd MMMM yyyy HH:mm')}">
-                                            12/12/2024 08:30 pm</td>
+                                        <td th:text="${#temporals.format(order.orderDate, 'dd MMMM yyyy HH:mm')}">12/12/2024 08:30 pm</td>
                                     </tr>
                                 </tbody>
                             </table>

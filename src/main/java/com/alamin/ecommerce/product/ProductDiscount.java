@@ -20,6 +20,7 @@ public class ProductDiscount {
     private Double maximumDiscountAmount;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
     public Long getId() {

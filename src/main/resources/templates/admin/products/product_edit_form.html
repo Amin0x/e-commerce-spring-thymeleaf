@@ -64,9 +64,9 @@
                         <div class="form-group">
                             <label for="category">Category:</label>
                             <select class="form-control" id="category" name="category">
-                                <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                                <option th:each="category : ${categories}" th:value="${category.id}"
                                     th:text="${category.name}"
-                                    th:selected="${category.categoryId} == ${product?.category?.categoryId}? 'ture':'false'">
+                                    th:selected="${category.id} == ${product?.category?.id}? 'ture':'false'">
                                 </option>
                             </select>
                         </div>
@@ -93,7 +93,7 @@
                             <div id="dropZone" class="drop-zone">Drag and drop your image here</div>
                             <input type="file" id="fileInput" name="file" style="display: none;">
                         </div>
-                        <input type="hidden" id="productId" name="id" th:value="${product.productId}">
+                        <input type="hidden" id="productId" name="id" th:value="${product.id}">
                         <div><button type="submit" class="button-37">Save Changes</button></div>                        
                     </form>
                 </div>
@@ -102,7 +102,7 @@
         <footer th:replace="~{admin/fragments/footer::footer}"></footer>
     </div>
     <script th:inline="javascript">
-        const productId = /*[[${product.productId}]]*/  1;  
+        const productId = /*[[${product.id}]]*/  1;
         let images = [];      
     </script>
     <script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../../static/public/js/jquery-3.7.1.min.js"></script>

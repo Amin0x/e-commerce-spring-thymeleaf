@@ -177,10 +177,10 @@ public class ProductService {
     }
 
     public List<Product> getSimilarProducts(Product product) {
-        if (product == null || product.getProductId() == null)
+        if (product == null || product.getId() == null)
             throw new ResourceNotFoundException("cant get similar products");
 
-        return productRepository.getSimilarProducts(product.getProductId(), product.getName(), PageRequest.ofSize(30));
+        return productRepository.getSimilarProducts(product.getId(), product.getName(), PageRequest.ofSize(30));
     }
 
     public void deleteProductImage(Product product, Long id) {

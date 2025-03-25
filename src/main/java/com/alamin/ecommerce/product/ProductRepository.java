@@ -20,17 +20,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         @Query(value = """
                         SELECT p.* FROM tbl_products AS p
-                        JOIN tbl_categories AS c ON p.category_id = c.category_id
-                        WHERE c.category_id = :category
+                        JOIN tbl_categories AS c ON p.category_id = c.id
+                        WHERE c.id = :cid
                         ORDER BY RAND()
                         LIMIT :size""", nativeQuery = true)
-        List<Product> findRandomProductsByCategory(@Param("category") Long categoryId, @Param("size") int size);
+        List<Product> findRandomProductsByCategory(@Param("cid") Long categoryId, @Param("size") int size);
 
         @Query(value = """
                         SELECT p.* FROM tbl_products AS p
-                        JOIN tbl_categories AS c ON p.category_id = c.category_id
+                        JOIN tbl_categories AS c ON p.category_id = c.id
                         WHERE c.name = :category
-                        ORDER BY p.productId
+                        ORDER BY p.id
                         LIMIT 20""", nativeQuery = true)
         List<Product> findByCategory(String category);
 
@@ -56,8 +56,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         SELECT p1
                         FROM Product p1
                         JOIN Product p2 ON p1.category = p2.category
-                        WHERE p2.productId = :productId
-                        AND p1.productId != p2.productId
+                        WHERE p2.id = :productId
+                        AND p1.id != p2.id
                         AND p1.name LIKE '%:productName%'
                         AND ABS(p1.price - p2.price) <= 50""")
         List<Product> getSimilarProducts(Long productId, String productName, Pageable pageable);

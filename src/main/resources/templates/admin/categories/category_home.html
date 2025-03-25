@@ -30,17 +30,17 @@
                 </thead>
                 <tbody class="table">
                 <tr th:each="category : ${categories}">
-                    <td th:text="${category.categoryId}"></td>
+                    <td th:text="${category.id}"></td>
                     <td th:text="${category.name}"></td>
                     <td th:text="${category.parent} == null? 'Root' : ${category.parent.name}"></td>
                     <td></td>
-                    <td><a href="" class="btn delete-button" title="delete" data-delete=""
+                    <td><a href="javascript:void(0)" class="btn delete-button" title="delete" th:data-delete="${category.id}"
                            style="color: rgb(227, 100, 46);"><i class="fas fa-trash-alt"></i> del</a>
-                        <a th:href="@{/admin/categories/edit/} + ${category.categoryId}" href="" class="btn"
+                        <a th:href="@{/admin/categories/edit/} + ${category.id}" href="" class="btn"
                            style="color: rgb(67, 137, 10);"><i class="fas fa-edit"></i> edit</a>
-                        <a th:href="@{/admin/categories/edit/parent/} + ${category.categoryId}" href="" class="btn"
+                        <a th:href="@{/admin/categories/edit/parent/} + ${category.id}" href="" class="btn"
                            style="color: rgb(47, 102, 172);"><i class="fas fa-plus-circle"></i> sub</a>
-                        <a href="" class="btn" title="menu" data-menu="" style="color: rgb(81, 92, 72);"><i class="fas fa-bars"></i> menu</a>
+                        <a href="javascript:void(0)" class="btn" title="menu" data-menu="" style="color: rgb(81, 92, 72);"><i class="fas fa-bars"></i> menu</a>
                     </td>
                 </tr>
                 </tbody>
@@ -73,7 +73,7 @@
                         <select class="form-control" id="parent" name="parentId">
                             <option value="">None</option>
                             <!-- Add options dynamically from the server-side -->
-                            <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                            <option th:each="category : ${categories}" th:value="${category.id}"
                                     th:text="${category.name}"></option>
                         </select>
                     </div>
@@ -104,7 +104,27 @@
     document.querySelectorAll('.delete-button').forEach(function(elm) {
         elm.addEventListener('click', function(e) {
             e.preventDefault();
-            alert('Delete button clicked');
+            const id = elm.getAttribute('data-delete');
+            const fd = new FormData();
+            fd.append('id', id);
+            fetch('/admin/categories/'+id, {
+                method: 'delete',
+                body: fd,
+            })
+            .then(response => {
+                if(response.status === 200){
+                    return response.json();
+                }
+
+                throw new Error("cant delete category");
+            })
+            .then(data => {
+                console.log(data);
+                elm.closest('tr').remove();
+            })
+            .catch(error => {
+                console.log(error);
+            })
         });
     });
 
@@ -126,14 +146,8 @@
     document.querySelectorAll('[data-menu]').forEach(function(elm) {
         elm.addEventListener('click', function(e) {
             e.preventDefault();
-            alert('Menu button clicked');
-        });
-    });
-
-    document.querySelectorAll('[data-delete]').forEach(function(elm) {
-        elm.addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Delete button clicked');
+            const id = e.target.getAttribute('data-menu');
+            console.log('Menu button clicked, id = ' + id);
         });
     });
 

@@ -49,7 +49,7 @@
                     <div class="carts box" style="list-style-type: none;">
                         <ul style="list-style-type: none; padding: 0;">
                             <li th:each="cart : ${carts}" th:if="${cart != null}" style="list-style-type: none; display: flex; flex-wrap: nowrap;">
-                                <p th:text="${cart.cartId}" style="width: 60%;">123</p>
+                                <p th:text="${cart.id}" style="width: 60%;">123</p>
                                 <p th:text="${cart.total}" style="width: 10%;">4567</p>
                                 <p th:text="${cart.created}" style="width: 10%;">4567</p>
                                 <p th:text="${cart.updated}" style="width: 10%;">4567</p>

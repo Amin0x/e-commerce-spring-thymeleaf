@@ -60,25 +60,18 @@ public class OrderService {
     }
 
     public Page<Order> getAllOrders(int page, int size, int order, int sort) {
-        if (size < 1 || page < 0 || order < 1 || order > 8)
-            throw new IllegalArgumentException("");
+        if (size < 1 || page < 0 || order < 1 )
+            throw new IllegalArgumentException("that's not how it works");
 
         String s = "";
-        Sort sort1 = Sort.unsorted();
+        Sort sort1;
 
-        switch (order){
-            case 1:
-                s = "";
-                break;
-            case 2:
-                s = "";
-            default: s = "b";
-        }
-
-        if (sort == 0){
-            sort1 = Sort.by(Sort.Direction.ASC, s);
-        } else if (sort == 1) {
-            sort1 = Sort.by(Sort.Direction.DESC, s);
+        if (order == 1) {
+            sort1 = Sort.by(sort == 0?Sort.Direction.ASC:Sort.Direction.DESC, "orderDate");
+        } else if (order == 2) {
+            sort1 = Sort.by(sort == 0?Sort.Direction.ASC:Sort.Direction.DESC, "totalAmount");
+        } else {
+            sort1 = Sort.unsorted();
         }
 
         PageRequest pageRequest = PageRequest.of(page, size, sort1);
@@ -87,19 +80,15 @@ public class OrderService {
 
     public Page<Order> getAllOrders(int page, int size, int order, boolean asc, LocalDate startDate, LocalDate endDate) {
         // Create a PageRequest with pagination and sorting
-        String orderCol = null;
-        switch (order) {
-            case 1:
-                orderCol = "orderDate";
-                break;
-            case 2:
-                orderCol = "";
-                break;
-            case 3:
-                orderCol = "";
-                break;
-            default:
-                orderCol = "orderDate";
+        String orderCol;
+        if (order == 1) {
+            orderCol = "orderDate";
+        } else if (order == 2) {
+            orderCol = "";
+        } else if (order == 3) {
+            orderCol = "";
+        } else {
+            orderCol = "orderDate";
         }
 
         Sort sort = asc ? Sort.by(Sort.Order.asc(orderCol)) : Sort.by(Sort.Order.desc(orderCol));

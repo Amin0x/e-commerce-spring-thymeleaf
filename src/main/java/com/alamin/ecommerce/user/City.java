@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cityId;
+    private Integer id;
     private String name;
     private String nameAr;
     private String estimatedDelivery;
@@ -19,18 +19,18 @@ public class City {
     }
 
     public City(Integer id, String name, String nameAr, State state) {
-        this.cityId = id;
+        this.id = id;
         this.name = name;
         this.state = state;
         this.nameAr = nameAr;
     }
 
-    public Integer getCityId() {
-        return cityId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNameAr() {

@@ -16,7 +16,7 @@ public class CartDto {
     }
 
     public CartDto(Cart cart) {
-        this.cartId = cart.getCartId();
+        this.cartId = cart.getId();
         this.total = cart.getTotal();
         this.created = cart.getCreated();
         this.updated = cart.getUpdated();

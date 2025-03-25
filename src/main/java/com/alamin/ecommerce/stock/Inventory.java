@@ -20,6 +20,6 @@ public class Inventory {
     private LocalDateTime updateDate;
 
     @OneToOne
-    @JoinColumn(name ="product_id", referencedColumnName = "product_id")
+    @JoinColumn(name ="product_id")
     private Product product;
 }

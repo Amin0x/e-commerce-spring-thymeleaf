@@ -63,7 +63,7 @@ public class CartService {
 
         boolean found = false;
         for (var ci : cart.getCartItems()) {
-            if (Objects.equals(ci.getProduct().getProductId(), item.getProductId())) {
+            if (Objects.equals(ci.getProduct().getId(), item.getId())) {
                 ci.setQuantity(ci.getQuantity() + 1);
                 ci.setTotal(ci.getQuantity() * ci.getPrice());
                 ci.setPrice(item.getPrice());

@@ -45,7 +45,7 @@
                                     <input type="text" name="categoryInput" class="control-input" id="categoryInput" autocomplete="off">
                                     <div id="category" class="category-dropdown">
                                         <p data-value="">Root</p>
-                                        <p th:each="category : ${categories}" th:data-value="${category.categoryId}" th:text="${category.name}">Category</p>
+                                        <p th:each="category : ${categories}" th:data-value="${category.id}" th:text="${category.name}">Category</p>
                                     </div>
                                 </div>                                
                             </div>
@@ -188,7 +188,7 @@
                         if (data !== undefined) {
                             data.map(function(element) {
                                 const $opt = $('<p></p>');
-                                $opt.attr("data-value", element.categoryId);
+                                $opt.attr("data-value", element.id);
                                 $opt.text(element.name);                        
                                 $catElm.append($opt);
                                 

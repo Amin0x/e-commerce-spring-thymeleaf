@@ -107,6 +107,6 @@ public class AdminUserController {
         User savedUser = userService.updateUser(id, user);
         model.addAttribute("user", savedUser);
 
-        return "redirect:/admin/users/" + savedUser.getUserId();
+        return "redirect:/admin/users/" + savedUser.getId();
     }
 }

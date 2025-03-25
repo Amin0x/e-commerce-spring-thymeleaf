@@ -17,6 +17,7 @@ public class ProductImage {
     private String caption;
     private String title;
     private LocalDateTime createdAt;
+
     @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "product_id")

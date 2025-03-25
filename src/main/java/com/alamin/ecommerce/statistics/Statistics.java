@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class Statistics {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long statisticId;
+  private Long id;
   private LocalDateTime stDate;
   private int stValue;
   private String type;
@@ -24,11 +24,11 @@ public class Statistics {
 
   // Getter and Setter for id
   public Long getId() {
-    return statisticId;
+    return id;
   }
 
   public void setId(Long id) {
-    this.statisticId = id;
+    this.id = id;
   }
 
   // Getter and Setter for dateVal

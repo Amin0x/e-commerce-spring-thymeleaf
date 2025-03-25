@@ -32,7 +32,7 @@
                       <p th:text="${product.price}" class="product-price"><strong>$49.99</strong></p>
                       <p th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}" class="product-discount"><strong>$49.99</strong></p>
                   </div>
-                  <button th:data-add-to-cart="${product.productId}" data-quantity="1" type="button" role="button" class="button-37 add-cart">اضافة الي السلة</button>
+                  <button th:data-add-to-cart="${product.id}" data-quantity="1" type="button" role="button" class="button-37 add-cart">اضافة الي السلة</button>
               </div>
           </div>
         </section>

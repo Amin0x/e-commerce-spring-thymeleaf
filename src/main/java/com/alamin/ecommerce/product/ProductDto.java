@@ -27,7 +27,7 @@ public class ProductDto {
     }
 
     public ProductDto(Product product){
-        this.productId = product.getProductId();
+        this.productId = product.getId();
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = product.getPrice();
@@ -40,7 +40,7 @@ public class ProductDto {
         this.image = product.getImage();
         this.productImages = product.getProductImages();
         if (product.getCategory() != null) {
-            this.categoryId = product.getCategory().getCategoryId();
+            this.categoryId = product.getCategory().getId();
         }
     }
 

@@ -12,9 +12,9 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
         @Query(value = """
-                        SELECT *
-                        FROM tbl_categories AS c
-                        WHERE c.parent_id IS NULL""", nativeQuery = true)
+                        SELECT c
+                        FROM Category c
+                        WHERE c.parent IS NULL""")
         List<Category> findRootCategories();
 
         @Query(value = """
@@ -82,7 +82,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
                         WITH RECURSIVE category_path AS (
                             SELECT id, name, parent_id, 1 AS level
                             FROM tbl_categories
-                            WHERE id = :categoryId
+                            WHERE id = :id
                             UNION ALL
                             SELECT c.id, c.name, c.parent_id, cp.level + 1
                             FROM tbl_categories c
@@ -92,6 +92,11 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
                         FROM category_path
                         ORDER BY level DESC
                         """, nativeQuery = true)
-        List<Category> getCategoryPathToRoot(@Param("categoryId") Long categoryId);
+        List<Category> getCategoryPathToRoot(@Param("id") Long id);
+
+        @Modifying
+        @Transactional
+        @Query("UPDATE Category c SET c.parent = NULL WHERE c.parent.id = :id")
+        void setAsRootCategory(Long id);
 
 }

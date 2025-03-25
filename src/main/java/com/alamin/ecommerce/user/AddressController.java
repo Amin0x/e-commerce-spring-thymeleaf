@@ -27,7 +27,7 @@ public class AddressController {
 
     @PostMapping("/city/{id}")
     public City updateCity(@RequestBody City city) {
-        City existingCity = cityRepository.findById(city.getCityId()).orElse(null);
+        City existingCity = cityRepository.findById(city.getId()).orElse(null);
         if (existingCity != null) {
             existingCity.setName(city.getName());
             existingCity.setState(city.getState());
@@ -59,7 +59,7 @@ public class AddressController {
 
     @PostMapping("/country/update/{id}")
     public Country updateCountry(@PathVariable int id,@RequestBody Country country) {
-        Country existingCountry = countryRepository.findById(country.getCountryId()).orElse(null);
+        Country existingCountry = countryRepository.findById(country.getId()).orElse(null);
         if (existingCountry != null) {
             existingCountry.setName(country.getName());
             return countryRepository.save(existingCountry);

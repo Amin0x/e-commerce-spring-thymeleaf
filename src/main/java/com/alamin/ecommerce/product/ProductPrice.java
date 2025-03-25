@@ -16,6 +16,7 @@ public class ProductPrice {
     private boolean active;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
     public Long getId() {
