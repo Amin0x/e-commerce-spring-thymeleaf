@@ -13,6 +13,17 @@
         .btn-edit { color: rgb(67, 137, 10); }
         .btn-sub { color: rgb(47, 102, 172); }
         .btn-menu { color: rgb(81, 92, 72); }
+        .pagination { margin-top: 20px; }
+        .pagination li { display: inline-block; }
+        .pagination li.active { background-color: #4CAF50; color: white; border: none; }
+        .pagination li.disabled { background-color: #f2f2f2; color: #d1d1d1; border: none; }
+        .pagination li a { color: black; float: left; padding: 8px 16px; text-decoration: none; }
+        .pagination li a:hover:not(.active) { background-color: #ddd; }
+        .pagination li.next { float: right; }
+        .pagination li.previous { float: left; }
+        .pagination li.disabled { pointer-events: none; }
+        .pagination li.next a { float: right; }
+        .pagination li.previous a { float: left; }
     </style>
 </head>
 <body>
