@@ -89,6 +89,22 @@
         addcart.addEventListener('click', function (e) {
           e.preventDefault();
           const productId = addcart.getAttribute('data-add-cart');
+          const fd = new FormData();
+          fd.append('productId', productId);
+          fd.append('quantity', 1);
+
+          fetch('/carts/addToCart', {
+            method: 'POST',
+            body: fd,
+          }).then(response => response.json()).then(data => {
+            if (data.status === 'success') {
+              console.log('added to cart successfully : ' + productId );
+            } else {
+              console.log('failed to add to cart : ' + productId );
+            }
+          }).catch(error => {
+            console.error('Error:', error);
+          });
         });
       });
     });
