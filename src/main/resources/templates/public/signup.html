@@ -39,60 +39,25 @@
         </div>
     </div>
 
-    <script src="@{/js/jquery-3.6.0.min.js}"></script>
-    <script src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../static/public/js/jquery-3.7.1.min.js"></script>
+    <script th:src="@{/public/js/bootstrap.bundle.min.js}" src="../../static/public/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/public/js/main.js}" src="../../static/public/js/main.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function (e) {
-            var email = document.getElementById('email');
-            var password = document.getElementById('password');
-            var confirmPassword = document.getElementById('confirmPassword');
+        document.addEventListener("DOMContentLoaded", function (e) {           
 
             document.getElementById('signupForm').addEventListener('submit', function (event) {
-                event.preventDefault();
-
-                if (password.value.length < 8 || password.value === '') {
-                    password.classList.add('error');
-                    return false;
-                }
-
-                if (password.value !== confirmPassword.value || confirmPassword.value == '') {
-                    confirmPassword.classList.add('error');
-                    return false;
-                }
-
-                if (email.value == '') {
-                    email.classList.add('error');
-                    return false;
-                }
-
-                fetch("/signup", {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({email: email.value, password: email.value, confirmPassword: confirmPassword.value}),
-                }).then(response=> {
-                    if (response.status == 200) {
-                        return response.json()
-                    }
-
-                    return Promise.reject(response.statusText)
-                })
-                .then(data => {
-                    console.log(data);
-                    if(data.status === "success") {
-                        window.location.href = "http://localhost/";
-                    }
-                })
+                handleSignupFormSubmit(event);
             });
 
-            email.addEventListener('change', function (e) {
+            document.getElementById('email').addEventListener('change', function (e) {
                 this.classList.remove('error');
             });
 
-            password.addEventListener('change', function (e) {
+            document.getElementById('password').addEventListener('change', function (e) {
                 this.classList.remove('error');
             });
 
-            confirmPassword.addEventListener('change', function (e) {
+            document.getElementById('confirmPassword').addEventListener('change', function (e) {
                 this.classList.remove('error');
             });
         })

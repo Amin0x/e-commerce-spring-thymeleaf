@@ -66,7 +66,7 @@
               <div th:if="(${product.price} &lt; ${product.initPrice})" class="product-discount">
                 <span th:text="|${product.initPrice} جنيه|">$49.99 ج.س</span>
               </div>
-              <button type="button" class="button-31" th:data-add-cart="${product.id}" th:onclick="'addToCart('+${product.id}+', 1)'">اضافة للعربة</button>
+              <button type="button" class="button-31" th:data-add-cart="${product.id}">اضافة للعربة</button>
             </div>
           </div>
         </div>
