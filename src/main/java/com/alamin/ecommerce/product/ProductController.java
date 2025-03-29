@@ -1,7 +1,6 @@
 package com.alamin.ecommerce.product;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +65,10 @@ public class ProductController {
     // Get all products
     @GetMapping("/products/bestselling")
 	public String getBestSellProducts(Model model) {
-   		List<Product> products = productService.getBestSellingProducts(10);
+   		List<Product> products = productService.getBestSellingProducts(30);
+        products.stream().forEach(product -> {
+            product.setImage("/uploads/images/" + product.getImage());
+        });
         model.addAttribute("products", products);
    		return "public/products_bestselling";
 	}

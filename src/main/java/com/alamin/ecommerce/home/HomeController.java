@@ -39,6 +39,7 @@ public class HomeController {
         return "public/home";
     }
 
+    
     @GetMapping("/offers")
     public String offersPage(Model model){
         model.addAttribute("notification", "");
