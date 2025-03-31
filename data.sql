@@ -1,5 +1,20 @@
 
-INSERT INTO tbl_users (user_id, username, email, password, role, first_name, last_name, birth_date, enabled, updated, created, avatar, status, uuid) VALUES
+INSERT INTO tbl_users 
+(id, 
+username, 
+email, 
+password, 
+role, 
+first_name, 
+last_name, 
+birth_date, 
+enabled, 
+updated, 
+created, 
+avatar, 
+status, 
+uuid) 
+VALUES
 (1, 'user1', 'user1@example.com', 'password1', 'USER', 'FirstName1', 'LastName1', '1990-01-01', TRUE, NOW(), NOW(), 'avatar1', 'ACTIVE', 'uuid1'),
 (2, 'user2', 'user2@example.com', 'password2', 'USER', 'FirstName2', 'LastName2', '1991-01-01', TRUE, NOW(), NOW(), 'avatar2', 'ACTIVE', 'uuid2'),
 (3, 'user3', 'user3@example.com', 'password3', 'USER', 'FirstName3', 'LastName3', '1992-01-01', TRUE, NOW(), NOW(), 'avatar3', 'ACTIVE', 'uuid3'),
@@ -52,7 +67,7 @@ INSERT INTO tbl_users (user_id, username, email, password, role, first_name, las
 (50, 'user50', 'user50@example.com', 'password50', 'USER', 'FirstName50', 'LastName50', '2011-01-01', TRUE, NOW(), NOW(), 'avatar50', 'ACTIVE', 'uuid50');
 
 
-INSERT INTO categories (category_id, name, description, parent_id, active, created, updated) VALUES
+INSERT INTO categories (id, name, description, parent_id, active, created, updated) VALUES
 (1000, 'category1', 'Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.', NULL,  1, NOW(), NOW()),
 (1001, 'category2', 'Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.', 1000, 1, NOW(), NOW()),
 (1002, 'category3', 'Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.', 1001, 1, NOW(), NOW()),
@@ -64,26 +79,21 @@ INSERT INTO product_images (product_id, image) VALUES
 ('3', 'image1.jpg'),
 ('4', 'image1.jpg');
 
-INSERT INTO products (name, description, price, category_id, created, updated) VALUES
-('product1', 'Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.', 100, 1, NOW(), NOW()),
-('product2', 'Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.', 200, 2, NOW(), NOW()),
-('product3', 'Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.', 300, 3, NOW(), NOW()),
-('product4', 'Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec semm', 400, 4, NOW(), NOW());
 
-INSERT INTO `amin_db_123`.`products`
-(`product_id`,
-`active`,
-`created`,
-`deleted`,
-`description`,
-`init_price`,
-`name`,
-`price`,
-`sku`,
-`stock`,
-`total_sold`,
-`updated`,
-`category_id`)
+INSERT INTO tbl_products
+(id,
+active,
+created,
+deleted,
+description,
+init_price,
+name,
+price,
+sku,
+stock,
+total_sold,
+updated,
+category_id)
 VALUES
 (1,  1, '2024-01-01', NULL, 'description1',  100,  'product1',  100,  'sku1',  100,  100,  '2024-01-01', 1),
 (2,  1, '2024-01-01', '2024-01-02 10:00:00', 'description2',  200,  'product2',  200,  'sku2',  200,  200,  '2024-01-01', 2),
@@ -137,7 +147,7 @@ VALUES
 (50, 1, '2024-01-01', '2024-01-26 10:00:00', 'description50', 5000, 'product50', 5000, 'sku50', 5000, 5000, '2024-01-01', 2);
 
 
-INSERT INTO `tbl_statistics` (`statistic_id`, `st_date`,`st_value`,`type`) VALUES
+INSERT INTO tbl_statistics (statistic_id, st_date,st_value,type) VALUES
 (1001, '2024-01-01', 100, 'VISITORS'),
 (1002, '2024-01-01', 200, 'VISITORS'),
 (1003, '2024-01-01', 300, 'VISITORS'),
@@ -189,7 +199,7 @@ INSERT INTO `tbl_statistics` (`statistic_id`, `st_date`,`st_value`,`type`) VALUE
 (1049, '2024-01-01', 4900, 'VISITORS'),
 (1050, '2024-01-01', 5000, 'VISITORS');
 
-INSERT INTO tbl_country (`id`,`name`, `name_ar`) VALUES
+INSERT INTO tbl_country (id,name, name_ar) VALUES
 (1, 'Afghanistan', 'أفغانستان'),
 (2, 'Albania', 'ألبانيا'),
 (3, 'Algeria', 'الجزائر'),
@@ -385,7 +395,7 @@ INSERT INTO tbl_country (`id`,`name`, `name_ar`) VALUES
 (193, 'Zambia', 'زامبيا'),
 (194, 'Zimbabwe', 'زيمبابوي');
 
-INSERT INTO `tbl_state` (`id`,`name`, `name_ar`, `country_id`) VALUES
+INSERT INTO tbl_state (id,name, name_ar, country_id) VALUES
 (1, 'Khartoum', 'الخرطوم', 164),
 (2, 'North Kordofan', 'شمال كردفان', 164),
 (3, 'South Kordofan', 'جنوب كردفان', 164),
@@ -459,16 +469,16 @@ INSERT INTO tbl_carts (user_id, price, total, product_id, quantity, created, upd
 (4, 300, 900, 3, 3, NOW(), NOW()),
 (4, 400, 1600, 4, 4, NOW(), NOW());
 
-INSERT INTO `amin_db_123`.`tbl_customers`
-(`id`,
-`city`,
-`country`,
-`postal_code`,
-`state`,
-`street`,
-`first_name`,
-`last_name`,
-`user_id`)
+INSERT INTO tbl_customers
+(id,
+city,
+country,
+postal_code,
+state,
+street,
+first_name,
+last_name,
+user_id)
 VALUES
 (1, 'Khartoum', 'Sudan', '11111', 'Khartoum', 'street1', 'FirstName1', 'LastName1', 1),
 (2, 'Khartoum', 'Sudan', '11111', 'Khartoum', 'street2', 'FirstName2', 'LastName2', 2),
@@ -502,12 +512,12 @@ VALUES
 (30, 'Khartoum', 'Sudan', '11111', 'Khartoum', 'street30', 'FirstName30', 'LastName30', 30);
 
 INSERT INTO tbl_inventories
-(`id`,
-`created`,
-`price`,
-`quantity`,
-`updated`,
-`product_id`)
+(id,
+created,
+price,
+quantity,
+updated,
+product_id)
 VALUES
 (1, NOW(), 100, 100, NOW(), 1),
 (2, NOW(), 200, 200, NOW(), 2),
@@ -562,12 +572,12 @@ VALUES
 
 
 INSERT INTO tbl_invoices
-(`invoice_id`,
-`created`,
-`customer_name`,
-`deleted`,
-`total_amount`,
-`updated`)
+(invoice_id,
+created,
+customer_name,
+deleted,
+total_amount,
+updated)
 VALUES
 (1, NOW(), 'FirstName1 LastName1', 0, 100, NOW()),
 (2, NOW(), 'FirstName2 LastName2', 0, 200, NOW()),
@@ -601,11 +611,11 @@ VALUES
 (30, NOW(), 'FirstName30 LastName30', 0, 3000, NOW());
 
 INSERT INTO tbl_order_items
-(`item_id`,
-`price`,
-`quantity`,
-`order_id`,
-`product_id`)
+(item_id,
+price,
+quantity,
+order_id,
+product_id)
 VALUES
 (1, 100, 1, 1, 1),
 (2, 200, 2, 2, 2),
@@ -659,21 +669,21 @@ VALUES
 (50, 5000, 50, 50, 50);
 
 INSERT INTO tbl_orders
-(`order_id`,
-`order_date`,
-`payment_method`,
-`city`,
-`country`,
-`postal_code`,
-`state`,
-`street`,
-`shipping_date`,
-`status`,
-`total_amount`,
-`transaction_id`,
-`updated`,
-`uuid`,
-`customer_id`)
+(order_id,
+order_date,
+payment_method,
+city,
+country,
+postal_code,
+state,
+street,
+shipping_date,
+status,
+total_amount,
+transaction_id,
+updated,
+uuid,
+customer_id)
 VALUES
 (1, NOW(), 'Cash', 'Khartoum', 'Sudan', '11111', 'Khartoum', 'street1', NOW(), 'Delivered', 100, '123456', NOW(), '123456', 1),
 (2, NOW(), 'Cash', 'Khartoum', 'Sudan', '11111', 'Khartoum', 'street2', NOW(), 'Delivered', 200, '123456', NOW(), '123456', 3),
@@ -812,3 +822,152 @@ VALUES
 (48, '2021-02-17', 4800, 'Sales'),
 (49, '2021-02-18', 4900, 'Sales'),
 (50, '2021-02-19', 5000, 'Sales');
+
+
+INSERT INTO tbl_product_price
+(`id`,
+`active`,
+`create_date`,
+`expiry_date`,
+`price`,
+`product_product_id`,
+`product_id`)
+VALUES
+(1, 1, NOW(), '2023-12-31', 100, 1, 1),
+(2, 1, NOW(), '2023-12-31', 200, 2, 2),
+(3, 1, NOW(), '2023-12-31', 300, 3, 3),
+(4, 1, NOW(), '2023-12-31', 400, 4, 4),
+(5, 1, NOW(), '2023-12-31', 500, 5, 5),
+(6, 1, NOW(), '2023-12-31', 600, 6, 6),
+(7, 1, NOW(), '2023-12-31', 700, 7, 7),
+(8, 1, NOW(), '2023-12-31', 800, 8, 8),
+(9, 1, NOW(), '2023-12-31', 900, 9, 9),
+(10, 1, NOW(), '2023-12-31', 1000, 10, 10);
+(11, 1, NOW(), '2023-12-31', 1100, 11, 11),
+(12, 1, NOW(), '2023-12-31', 1200, 12, 12),
+(13, 1, NOW(), '2023-12-31', 1300, 13, 13),
+(14, 1, NOW(), '2023-12-31', 1400, 14, 14),
+(15, 1, NOW(), '2023-12-31', 1500, 15, 15),
+(16, 1, NOW(), '2023-12-31', 1600, 16, 16),
+(17, 1, NOW(), '2023-12-31', 1700, 17, 17),
+(18, 1, NOW(), '2023-12-31', 1800, 18, 18),
+(19, 1, NOW(), '2023-12-31', 1900, 19, 19),
+(20, 1, NOW(), '2023-12-31', 2000, 20, 20),
+(21, 1, NOW(), '2023-12-31', 2100, 21, 21),
+(22, 1, NOW(), '2023-12-31', 2200, 22, 22),
+(23, 1, NOW(), '2023-12-31', 2300, 23, 23),
+(24, 1, NOW(), '2023-12-31', 2400, 24,24);
+(25, 1, NOW(), '2023-12-31', 2500, 25, 25),
+(26, 1, NOW(), '2023-12-31', 2600, 26, 26),
+(27, 1, NOW(), '2023-12-31', 2700, 27, 27),
+(28, 1, NOW(), '2023-12-31', 2800, 28, 28),
+(29, 1, NOW(), '2023-12-31', 2900, 29, 29),
+(30, 1, NOW(), '2023-12-31', 3000, 30, 30);
+
+INSERT INTO tbl_product_reviews
+(`id`,
+`product_id`,
+`review`,
+`review_type`,
+`star`,
+`user_id`,
+`created_at`,
+`updated_at`,
+`negative_like`,
+`positive_like`)
+VALUES
+(1, 1, 'This product is fantastic!', 'Positive', 5, 1, NOW(), NOW(), 0, 0),
+(2, 1, 'I am not satisfied with this product.', 'Negative', 2, 2, NOW(), NOW(), 0, 0),
+(3, 1, 'Great value for money!', 'Positive', 4, 3, NOW(), NOW(), 0, 0),
+(4, 1, 'Not worth the price.', 'Negative', 1, 4, NOW(), NOW(), 0, 0),
+(5, 1, 'Excellent quality!', 'Positive', 5, 5, NOW(), NOW(), 0, 0),
+(6, 1, 'I would not recommend this product.', 'Negative', 2, 6, NOW(), NOW(), 0, 0),
+(7, 1, 'Very satisfied with my purchase.', 'Positive', 4, 7, NOW(), NOW(), 0, 0),
+(8, 1, 'The product did not meet my expectations.', 'Negative', 1, 8, NOW(), NOW(), 0, 0),
+(9, 1, 'Highly recommend!', 'Positive', 5, 9, NOW(), NOW(), 0, 0),
+(10,2,'This is the worst product I have ever bought.', 'Negative',1 ,10,NOW() ,NOW() ,0 ,0);
+(11,2,'I love this product!', 'Positive',5 ,11,NOW() ,NOW() ,0 ,0),
+(12,2,'Not what I expected.', 'Negative',2 ,12,NOW() ,NOW() ,0 ,0),
+(13,3,'Great product!', 'Positive',4 ,13,NOW() ,NOW() ,0 ,0),
+(14,3,'I am very disappointed with this product.', 'Negative',1 ,14,NOW() ,NOW() ,0 ,0),
+(15,3,'Fantastic quality!', 'Positive',5 ,15,NOW() ,NOW() ,0 ,0),
+(16,3,'I would not buy this again.', 'Negative',2 ,16,NOW() ,NOW() ,0 ,0),
+(17,4,'Very happy with my purchase.', 'Positive',4 ,17,NOW() ,NOW() ,0 ,0),
+(18,4,'The product is not as described.', 'Negative',1 ,18,NOW() ,NOW() ,0 ,0),
+(19,4,'Highly satisfied!', 'Positive',5 ,19,NOW() ,NOW() ,0 ,0),
+(20,4,'This product is a scam.', 'Negative',1, 20, NOW(), NOW(), 0, 0),
+(21,4,'I love this product!', 'Positive',5 ,21,NOW() ,NOW() ,0 ,0),
+(22,4,'Not what I expected.', 'Negative',2 ,22,NOW() ,NOW() ,0 ,0),
+(23,5,'Great product!', 'Positive',4 ,23,NOW() ,NOW() ,0 ,0),
+(24,5,'I am very disappointed with this product.', 'Negative',1 ,24,NOW() ,NOW() ,0 ,0),
+(25,5,'Fantastic quality!', 'Positive',5 ,25,NOW() ,NOW() ,0 ,0),
+(26,5,'I would not buy this again.', 'Negative',2 ,26,NOW() ,NOW() ,0 ,0),
+(27,6,'Very happy with my purchase.', 'Positive',4 ,27,NOW() ,NOW() ,0 ,0),
+(28,6,'The product is not as described.', 'Negative',1 ,28,NOW() ,NOW() ,0 ,0),
+(29,6,'Highly satisfied!', 'Positive',5 ,29,NOW() ,NOW() ,0 ,0),
+(30,6,'This product is a scam.', 'Negative',1, 30, NOW(), NOW(), 0, 0);
+(31,7,'I love this product!', 'Positive',5 ,31,NOW() ,NOW() ,0 ,0),
+(32,7,'Not what I expected.', 'Negative',2 ,32,NOW() ,NOW() ,0 ,0),
+(33,33,'Great product!', 'Positive',4 ,33,NOW() ,NOW() ,0 ,0),
+(34,34,'I am very disappointed with this product.', 'Negative',1 ,34,NOW() ,NOW() ,0 ,0),
+(35,35,'Fantastic quality!', 'Positive',5 ,35,NOW() ,NOW() ,0 ,0),
+(36,36,'I would not buy this again.', 'Negative',2 ,36,NOW() ,NOW() ,0 ,0),
+(37,37,'Very happy with my purchase.', 'Positive',4 ,37,NOW() ,NOW() ,0 ,0),
+(38,38,'The product is not as described.', 'Negative',1 ,38,NOW() ,NOW() ,0 ,0),
+(39,39,'Highly satisfied!', 'Positive',5 ,39,NOW() ,NOW() ,0 ,0),
+(40,40,'This product is a scam.', 'Negative',1, 40, NOW(), NOW(), 0, 0),
+(41,41,'I love this product!', 'Positive',5 ,41,NOW() ,NOW() ,0 ,0),
+(42,42,'Not what I expected.', 'Negative',2 ,42,NOW() ,NOW() ,0 ,0),
+(43,43,'Great product!', 'Positive',4 ,43,NOW() ,NOW() ,0 ,0),
+(44,44,'I am very disappointed with this product.', 'Negative',1 ,44,NOW() ,NOW() ,0 ,0),
+(45,45,'Fantastic quality!', 'Positive',5 ,45,NOW() ,NOW() ,0 ,0),
+(46,46,'I would not buy this again.', 'Negative',2 ,46,NOW() ,NOW() ,0 ,0),
+(47,47,'Very happy with my purchase.', 'Positive',4 ,47,NOW() ,NOW() ,0 ,0),
+(48,48,'The product is not as described.', 'Negative',1 ,48,NOW() ,NOW() ,0 ,0),
+(49,49,'Highly satisfied!', 'Positive',5 ,49,NOW() ,NOW() ,0 ,0),
+(50,50,'This product is a scam.', 'Negative',1, 50, NOW(), NOW(), 0, 0);
+(51,51,'I love this product!', 'Positive',5 ,51,NOW() ,NOW() ,0 ,0),
+(52,52,'Not what I expected.', 'Negative',2 ,52,NOW() ,NOW() ,0 ,0),
+(53,53,'Great product!', 'Positive',4 ,53,NOW() ,NOW() ,0 ,0),
+(54,54,'I am very disappointed with this product.', 'Negative',1 ,54,NOW() ,NOW() ,0 ,0),
+(55,55,'Fantastic quality!', 'Positive',5 ,55,NOW() ,NOW() ,0 ,0),
+(56,56,'I would not buy this again.', 'Negative',2 ,56,NOW() ,NOW() ,0 ,0),
+(57,57,'Very happy with my purchase.', 'Positive',4 ,57,NOW() ,NOW() ,0 ,0),
+(58,58,'The product is not as described.', 'Negative',1 ,58,NOW() ,NOW() ,0 ,0),
+(59,59,'Highly satisfied!', 'Positive',5 ,59,NOW() ,NOW() ,0 ,0),
+(60,60,'This product is a scam.', 'Negative',1, 60, NOW(), NOW(), 0, 0);
+
+INSERT INTO tbl_product_discount
+(`id`,
+`coupon_code`,
+`create_date`,
+`discount_unit`,
+`discount_value`,
+`maximum_discount_amount`,
+`minimum_order_value`,
+`valid_from`,
+`valid_until`,
+`product_id`)
+VALUES
+(1, 'DISCOUNT10', NOW(), 'Percentage', '10', 50, 100, '2023-01-01', '2023-12-31', 1),
+(2, 'DISCOUNT20', NOW(), 'Percentage', '20', 100, 200, '2023-01-01', '2023-12-31', 2),
+(3, 'DISCOUNT30', NOW(), 'Percentage', '30', 150, 300, '2023-01-01', '2023-12-31', 3),
+(4, 'DISCOUNT40', NOW(), 'Percentage', '40', 200, 400, '2023-01-01', '2023-12-31', 4),
+(5, 'DISCOUNT50', NOW(), 'Percentage', '50', 250, 500, '2023-01-01', '2023-12-31', 5),
+(6, 'DISCOUNT60', NOW(), 'Percentage', '60', 300, 600, '2023-01-01', '2023-12-31', 6),
+(7, 'DISCOUNT70', NOW(), 'Percentage', '70', 350, 700, '2023-01-01', '2023-12-31', 7),
+(8, 'DISCOUNT80', NOW(), 'Percentage', '80', 400, 800, '2023-01-01', '2023-12-31', 8),
+(9, 'DISCOUNT90', NOW(), 'Percentage', '90', 450, 900, '2023-01-01', '2023-12-31', 9),
+(10,'DISCOUNT100', NOW(), 'Percentage', '100', 500, 1000, '2023-01-01', '2023-12-31', 10),
+(11,'DISCOUNT110', NOW(), 'Percentage', '110', 550, 1100, '2023-01-01', '2023-12-31', 11),
+(12,'DISCOUNT120', NOW(), 'Percentage', '120', 600, 1200, '2023-01-01', '2023-12-31', 12),
+(13,'DISCOUNT130', NOW(), 'Percentage', '130', 650, 1300, '2023-01-01', '2023-12-31', 13),
+(14,'DISCOUNT140', NOW(), 'Percentage', '140', 700, 1400, '2023-01-01', '2023-12-31', 14),
+(15,'DISCOUNT150', NOW(), 'Percentage', '150', 750, 1500, '2023-01-01', '2023-12-31', 15),
+(16,'DISCOUNT160', NOW(), 'Percentage', '160', 800, 1600, '2023-01-01', '2023-12-31', 16),
+(17,'DISCOUNT170', NOW(), 'Percentage', '170', 850, 1700, '2023-01-01', '2023-12-31', 17),
+(18,'DISCOUNT180', NOW(), 'Percentage', '180', 900, 1800, '2023-01-01', '2023-12-31', 18),
+(19,'DISCOUNT190', NOW(), 'Percentage', '190', 950, 1900, '2023-01-01', '2023-12-31', 19),
+(20,'DISCOUNT200' ,NOW() ,'Percentage','200' ,1000 ,2000 ,'2023-01-01' ,'2023-12-31' ,20);
+
+
