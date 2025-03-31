@@ -112,12 +112,16 @@ public class ProductDto {
         this.price = price;
     }
 
-    public Integer getbasePrice() {
+    public Integer getBasePrice() {
         return basePrice;
     }
 
-    public void setbasePrice(Integer basePrice) {
+    public void setBasePrice(Integer basePrice) {
         this.basePrice = basePrice;
+    }
+
+    public boolean isNew() {
+        return isNew;
     }
 
     public Integer getPriceUSD() {
@@ -198,10 +202,6 @@ public class ProductDto {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public boolean getNew() {
-        return isNew;
     }
 
     public void setNew(boolean aNew) {
