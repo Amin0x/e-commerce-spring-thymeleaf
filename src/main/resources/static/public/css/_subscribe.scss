@@ -1,12 +1,12 @@
 .subscribe {
     margin-top: 80px;
     margin-bottom: -60px;
-    background-color: #d9eadd;
     padding: 60px 0;
+    background-color: #F5F5F5;
 
     .subscribe-content {
-        text-align: center;
         margin-bottom: 1rem;
+        text-align: center;
 
 
         .image {
@@ -20,37 +20,37 @@
         }
 
         .subscription-desc {
-            font-size: 0.9rem;
             margin: 0;
+            font-size: 0.9rem;
         }
 
     }
 
     .subscription-form {
         width: 478px;
+        margin: 0 auto;
         display: flex;
         flex-direction: column;
-        margin: 0 auto;
 
         .email {
             width: 100%;
+            margin-bottom: 11px;
             padding: 9px 8px;
             outline: none;
             border: 1px solid #ccc;
             border-radius: 5px;
             line-height: 1.5;
             font-size: 1rem;
-            margin-bottom: 11px;
         }
 
         .subscribe-btn {
             padding: 9px 8px;
+            margin-bottom: 20px;
             outline: none;
             border: 1px solid #ccc;
             border-radius: 5px;
             line-height: 1.5;
             font-size: 1rem;
-            margin-bottom: 20px;
             background-color: #000;
             color: #fff;
         }

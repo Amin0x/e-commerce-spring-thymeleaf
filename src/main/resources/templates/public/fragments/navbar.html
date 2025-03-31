@@ -135,8 +135,8 @@
             window.onclick = function(event) {
                 if (!event.target.matches('.dropdown')) {
                     var dropdowns = document.getElementsByClassName("profile-menu");                    
-                    if (openDropdown.classList.contains('active')) {
-                        openDropdown.classList.remove('active');
+                    if (dropdowns.classList.contains('active')) {
+                        dropdowns.classList.remove('active');
                     }                    
                 }
             }

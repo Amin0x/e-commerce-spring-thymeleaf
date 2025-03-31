@@ -26,6 +26,7 @@
                 <h2 class="product-name" th:text="${product.name}">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veniam, dolor?
                 </h2>
+                <div class="product-brand"><a href="#" class="brand-link">Lorem, ipsum dolor.</a></div>
                 <div class="product-info__details">
                     <div class="product-image-wrap">
                         <div class="product-image text-center">
@@ -77,6 +78,7 @@
 
 
             <section th:if="${#lists.isEmpty(peopleSeeProducts) == false}" class="people-see">
+                <div class="title"><h4></h4></div>
                 <div class="flex-row all-products">
                     <div class="product-card">
                         <div class="product">
@@ -110,7 +112,9 @@
 
 
             <section th:if="false" class="user-reviews">
-                <h4>المراجعات</h4>
+                <div class="title">
+                    <h4>المراجعات</h4>
+                </div>
                 <article th:each="review : ${product.reviews}">
                     <div class="review-item">
                         <h5 class="review__user" th:text="${review.userName}">احمد علي</h5>

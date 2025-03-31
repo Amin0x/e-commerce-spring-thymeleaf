@@ -1,6 +1,26 @@
+
+.product-details {
+    padding: 0 1.2rem;
+}
+
 .product-info {
     .product-name {
         color: inherit !important;
+    }
+
+    .product-info__details{
+        display: block;
+
+        .product-attribs {
+            margin-inline-start: 1rem;
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .product-info__details{
+            display: flex;
+
+        }
     }
 
     .product-image-wrap {
@@ -118,3 +138,4 @@
 .user-reviews {
     max-width: 800px;
 }
+

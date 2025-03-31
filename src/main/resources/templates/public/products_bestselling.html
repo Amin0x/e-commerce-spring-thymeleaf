@@ -21,6 +21,7 @@
     .products{width: 100%; display: flex; flex: 1 0 auto; margin-bottom: 15px;}
     .product-card{width: 100%; border: 1px solid #ccc; border-radius: 5px; display: flex; flex-direction: column;}
     .product-card__image{position: relative;}
+    .product-card__image::before{ background-color: #0f1111; content: ''; height: 100%; opacity: .03; position: absolute; top: 0; width: 100%;}
     .product-image{width: 100%; height: 200px; object-fit: cover; text-align: center;}
     .product-card__body{display: flex; flex-direction: column; flex-grow: 1; padding: 1rem;}
     .product-title{font-size: 0.9rem; font-weight: 500; color: black; margin-bottom: 12px;}
@@ -71,6 +72,16 @@
           </div>
         </div>
       </section>
+      <div class="paginate">
+        <a href="#">1</a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#">100</a>
+      </div>
     </div>
     <div th:replace="public/fragments/footer :: footer"></div>
   </main>
@@ -97,8 +108,9 @@
             method: 'POST',
             body: fd,
           }).then(response => response.json()).then(data => {
-            if (data.status === 'success') {
+            if (data !== undefined && data.totalItems === undefined) {
               console.log('added to cart successfully : ' + productId );
+              document.querySelector('#cartItemsCount').textContent = data.totalItems;
             } else {
               console.log('failed to add to cart : ' + productId );
             }

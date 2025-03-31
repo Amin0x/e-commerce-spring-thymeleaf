@@ -43,142 +43,201 @@
                     <button class="button-37">اضافة للعربة</button>
                 </div>
             </section>
-            <div style="margin-top: 50px;">
-                <section th:if="true" class="categories">
-                    <div class="section-title">
-                        <h4 class="title">الاصناف</h4>
-                    </div>
-                    <div class="category-wrp">
-                        <div class="category">
-                            <div class="category-card">
-                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
-                                    <div class="category-card__box">
-                                        <div class="category-img">
-                                            <img th:src="@{/public/imgs/p19109999.jpg}" class="card-img" alt="category Image" src="../../static/public/imgs/p19109999.jpg">
-                                        </div>
-                                        <div class="category-card__title">
-                                            <p class="card-title">الخضروات والفواكه</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="category">
-                            <div class="category-card">
-                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
-                                    <div class="category-card__box">
-                                        <div class="category-img">
-                                            <img th:src="@{/uploads/images/}" class="card-img" alt="category Image" src="">
-                                        </div>
-                                        <div class="category-card__title">
-                                            <p class="card-title">منتجات الالبان </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="category">
-                            <div class="category-card">
-                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
-                                    <div class="category-card__box">
-                                        <div class="category-img">
-                                            <img th:src="@{/public/imgs/products-6231.webp}" alt="category Image" src="../../static/public/imgs/products-6231.webp">
-                                        </div>
-                                        <div class="category-card__title">
-                                            <p class="card-title">المعلبات</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="category">
-                            <div class="category-card">
-                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
-                                    <div class="category-card__box">
-                                        <div class="category-img">
-                                            <img th:src="@{/uploads/images/}" class="card-img" alt="category Image" src="">
-                                        </div>
-                                        <div class="category-card__title">
-                                            <p class="card-title">زيوت</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="category">
-                            <div class="category-card">
-                                <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
-                                    <div class="category-card__box">
-                                        <div class="category-img">
-                                            <img th:src="@{/public/imgs/colorful-candy-lollipops-sweet-wallpaper-preview.jpg}" class="card-img" alt="category Image" src="../../static/public/imgs/colorful-candy-lollipops-sweet-wallpaper-preview.jpg">
-                                        </div>
-                                        <div class="category-card__title">
-                                            <p class="card-title">حلويات</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section th:if="${#lists.isEmpty(mustSellingProducts) == false}" class="top-products">
-                    <div class="section-title">
-                        <h4 class="title">المنتجات الأكثر مبيعا</h4>
-                    </div>
-                    <div class="products">
-                        <div th:each="product : ${mustSellingProducts}" class="product-card-a">
-                            <div class="card-a">
-                                <div class="card-img p-0">
-                                    <a class="circle-container position-absolute" style="cursor: pointer; font-size: 1.2rem;" th:data-heart="${product.id}">
-                                        <i class="far fa-heart"></i>
-                                    </a>
-                                    <a th:href="@{/products/{id}(id=${product.id})}" href="#" style="text-decoration: none;">
-                                        <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
-                                            class="product-img" alt="Product Image" src="">
+        
+            <section th:if="true" class="categories" style="margin-top: 50px;">
+                <div class="section-title">
+                    <h4 class="title">الاصناف</h4>
+                </div>
+                <div class="category-wrp">
+                    <div class="category">
+                        <div class="category-card">
+                            <div class="category-card__box">
+                                <div class="category-img">
+                                    <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                        <img th:src="@{/public/imgs/p19109999.jpg}" class="card-img" alt="category Image" src="../../static/public/imgs/p19109999.jpg">
                                     </a>
                                 </div>
-                                <div class="card-body">
-                                    <p class="product-title" th:text="${#strings.abbreviate(product.name, 40)}">Title</p>
-                                    <p class="product-price" th:text="|${product.price} جنيه|">200</p>
-                                    <p class="product-price-discount" th:text="${product.initPrice} + ' جنيه'">100</p>
+                                <div class="category-card__title">
+                                    <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                        <p class="card-title">الخضروات والفواكه</p>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-                <section th:if="false">
-                    <div class="section-title"><h4 class="title">أحدث المنتجات</h4></div>
-                </section>
-                <section th:if="${#lists.isEmpty(products)} == false" class="all-products">
-                    <div class="section-title"><h4 class="title">كل المنتجات</h4></div>
-                    <div class="products">
-                        <div th:each="product : ${products}" class="product-card-b">
-                            <div class="product-image flex-column">
-                                <a class="circle-container" th:data-heart="${product.id}">
+                    <div class="category">
+                        <div class="category-card">
+                            <div class="category-card__box">
+                                <div class="category-img">
+                                    <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                        <img th:src="@{/public/imgs/colorful-candy-lollipops-sweet-wallpaper-preview.jpg}" class="card-img" alt="category Image" src="">
+                                    </a>
+                                </div>
+                                <div class="category-card__title">
+                                    <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                        <p class="card-title">منتجات الالبان </p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category">
+                        <div class="category-card">
+                            <div class="category-card__box">
+                                <div class="category-img">
+                                    <a th:href="@{/categories/12}" href="#" style="text-decoration: none;"><img th:src="@{/public/imgs/products-6231.webp}" alt="category Image" src="../../static/public/imgs/products-6231.webp"></a>
+                                </div>
+                                <div class="category-card__title">
+                                    <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                        <p class="card-title">المعلبات</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category">
+                        <div class="category-card">                                
+                            <div class="category-card__box">
+                                <div class="category-img">
+                                    <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                        <img th:src="@{/public/imgs/colorful-candy-lollipops-sweet-wallpaper-preview.jpg}" class="card-img" alt="category Image" src="">
+                                    </a>
+                                </div>
+                                <div class="category-card__title">
+                                    <a th:href="@{/categories/12}" href="#" style="text-decoration: none;">
+                                        <p class="card-title">زيوت</p>
+                                    </a>
+                                </div>
+                            </div>                               
+                        </div>
+                    </div>
+                    <div class="category">
+                        <div class="category-card">
+                            <div class="category-card__box">
+                                <div class="category-img">
+                                    <a href=""><img th:src="@{/public/imgs/colorful-candy-lollipops-sweet-wallpaper-preview.jpg}" class="card-img" alt="category Image" src="../../static/public/imgs/colorful-candy-lollipops-sweet-wallpaper-preview.jpg"></a>
+                                </div>
+                                <div class="category-card__title">
+                                    <a href="">
+                                        <p class="card-title">حلويات</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section th:if="${#lists.isEmpty(mustSellingProducts) == false}" class="top-products products-container">
+                <div class="section-title">
+                    <h4 class="title">المنتجات الأكثر مبيعا</h4>
+                </div>
+                <div class="products">
+                    <div th:each="product : ${mustSellingProducts}" class="product-card-a">
+                        <div class="card-a">
+                            <div class="card-img p-0">
+                                <a class="circle-container position-absolute" style="cursor: pointer; font-size: 1.2rem;" th:data-heart="${product.id}">
                                     <i class="far fa-heart"></i>
                                 </a>
-                                <a th:href="@{/products/{id}(id=${product.id})}" href="#">
-                                    <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
-                                        class="product-img" alt="Product Image" src="">
+                                <a th:href="@{/products/{id}(id=${product.id})}" href="#" style="text-decoration: none;">
+                                    <img th:src="${'/uploads/images/' + product.image }" class="product-img" alt="Product Image" src="">
                                 </a>
-                                <div th:if="product.new" class="product-new">جديد</div>
                             </div>
-                            <div class="product-details">
-                                <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
-                                <div>
-                                    <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
-                                    <div th:if="(${product.price} &lt; ${product.initPrice})" class="price-discount">
-                                        <span th:text="|${#numbers.formatInteger(product.initPrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="add-to-cart">
-                                <button type="button" class="button-31" th:data-add-cart="${product.id}">اضافة للعربة</button>
+                            <div class="card-body">
+                                <p class="product-title" th:text="${#strings.abbreviate(product.name, 40)}">Title</p>
+                                <p class="product-price" th:text="|${product.price} جنيه|">200</p>
+                                <p class="product-price-discount" th:text="${product.initPrice} + ' جنيه'">100</p>
                             </div>
                         </div>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
+            <section class="all-products products-container">
+                <div class="section-title"><h4 class="title">أحدث المنتجات</h4></div>
+                <div class="products">
+                    <div th:each="product : ${products}" class="product-card-b">
+                        <div class="product-image">
+                            <a class="circle-container" th:data-heart="${product.productId}">
+                                <i class="far fa-heart"></i>
+                            </a>
+                            <a th:href="@{/products/{id}(id=${product.productId})}" href="#">
+                                <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
+                                    class="product-img" alt="Product Image" src="">
+                            </a>
+                            <div th:if="product.new" class="product-new">جديد</div>
+                        </div>
+                        <div class="product-details">
+                            <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
+                            <div>
+                                <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
+                                <div th:if="(${product.price} &lt; ${product.initPrice})" class="price-discount">
+                                    <span th:text="|${#numbers.formatInteger(product.initPrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-to-cart">
+                            <button type="button" class="button-31" th:data-add-cart="${product.productId}">اضافة للعربة</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="all-products products-container">
+                <div class="section-title"><h4 class="title">كل المنتجات</h4></div>
+                <div class="products">
+                    <div th:each="product : ${products}" class="product-card-b">
+                        <div class="product-image">
+                            <a class="circle-container" th:data-heart="${product.productId}">
+                                <i class="far fa-heart"></i>
+                            </a>
+                            <a th:href="@{/products/{id}(id=${product.productId})}" href="#">
+                                <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
+                                    class="product-img" alt="Product Image" src="">
+                            </a>
+                            <div th:if="product.new" class="product-new">جديد</div>
+                        </div>
+                        <div class="product-details">
+                            <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
+                            <div>
+                                <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
+                                <div th:if="(${product.price} &lt; ${product.initPrice})" class="price-discount">
+                                    <span th:text="|${#numbers.formatInteger(product.initPrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-to-cart">
+                            <button type="button" class="button-31" th:data-add-cart="${product.productId}">اضافة للعربة</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="all-products products-container">
+                <div class="section-title"><h4 class="title">كل المنتجات</h4></div>
+                <div class="products">
+                    <div th:each="product : ${products}" class="product-card-b">
+                        <div class="product-image">
+                            <a class="circle-container" th:data-heart="${product.productId}">
+                                <i class="far fa-heart"></i>
+                            </a>
+                            <a th:href="@{/products/{id}(id=${product.productId})}" href="#">
+                                <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
+                                    class="product-img" alt="Product Image" src="">
+                            </a>
+                            <div th:if="product.new" class="product-new">جديد</div>
+                        </div>
+                        <div class="product-details">
+                            <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
+                            <div>
+                                <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
+                                <div th:if="(${product.price} &lt; ${product.initPrice})" class="price-discount">
+                                    <span th:text="|${#numbers.formatInteger(product.initPrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-to-cart">
+                            <button type="button" class="button-31" th:data-add-cart="${product.productId}">اضافة للعربة</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <section class="subscribe">
                 <div class="subscribe-content">
                     <div class="image"><i class="fas fa-envelope"></i></div>

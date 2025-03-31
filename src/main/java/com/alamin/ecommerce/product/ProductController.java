@@ -105,7 +105,7 @@ public class ProductController {
     @PostMapping("/products/review/update/{id}")
     public ResponseEntity<Object> updateProductReview(@PathVariable Long id,@RequestBody ProductReview productReview){
         if (id == null){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         ProductReview productReview1 = productService.updateProductReview(id, productReview);
         return new ResponseEntity<>(productReview1, HttpStatus.OK);
@@ -114,10 +114,10 @@ public class ProductController {
     @PostMapping("/products/review/delete/{id}")
     public ResponseEntity<Object> deleteProductReview(@PathVariable Long id){
         if (id == null){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         productService.deleteProductReview(id);
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

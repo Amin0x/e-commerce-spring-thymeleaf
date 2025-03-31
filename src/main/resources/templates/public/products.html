@@ -16,7 +16,7 @@
         <nav th:replace="~{public/fragments/navbar :: navbar}" class="navbar-wrp"></nav>
       <div class="all-products">
         <div class="title">
-          <h1 class="marginy-20">جميع المنتجات</h1>
+          <h1 class="marginy-20" th:text="جميع المنتجات">جميع المنتجات</h1>
         </div>
         <section class="flex-row">
           <div th:each="product : ${products}" class="product-card">
