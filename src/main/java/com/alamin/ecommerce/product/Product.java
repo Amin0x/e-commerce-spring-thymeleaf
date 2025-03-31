@@ -15,10 +15,21 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
+    private String uuid;
+    @Column(unique = true, nullable = false)
+    private String slug;
+    private String barcode;
+    private String brand;
+    private String model;
+    private String color;
+    private String size;
+    private String material;
+    private String style;
     private String name;
     private String description;
     private Integer price;
-    private Integer initPrice;
+    private Integer basePrice;
     private Integer priceUSD;
     private String sku;
     private Integer stock;
@@ -56,7 +67,7 @@ public class Product {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.initPrice = price;
+        this.basePrice = price;
         this.image = image;
         this.stock = 0;
         this.totalSold = 0;

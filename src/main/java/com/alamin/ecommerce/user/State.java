@@ -59,4 +59,45 @@ public class State {
     public void setCities(List<City> cities) {
         this.cities = cities;
     }
+
+    public String getNameAr() {
+        return nameAr;
+    }
+
+    public void setNameAr(String nameAr) {
+        this.nameAr = nameAr;
+    }
+
+    @Override
+    public String toString() {
+        return "State [id=" + id + ", name=" + name + ", nameAr=" + nameAr + ", country=" + country + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((nameAr == null) ? 0 : nameAr.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        State other = (State) obj;
+        if (id != other.id)
+            return false;
+        
+            
+        return true;
+    }
+
+    
 }

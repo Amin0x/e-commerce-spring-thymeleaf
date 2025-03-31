@@ -78,7 +78,7 @@ public class ProductService {
         existingProduct.setDescription(updatedProduct.getDescription());
         existingProduct.setCategory(updatedProduct.getCategory());
         existingProduct.setPrice(updatedProduct.getPrice());
-        existingProduct.setInitPrice(updatedProduct.getInitPrice());
+        existingProduct.setBasePrice(updatedProduct.getBasePrice());
         existingProduct.setPriceUSD(updatedProduct.getPriceUSD());
         existingProduct.setStock(updatedProduct.getStock());
         existingProduct.setActive(updatedProduct.getActive());
@@ -210,7 +210,7 @@ public class ProductService {
         product.setCategory(category);
         product.setEnabled(pf.enabled());
         product.setPrice(pf.price());
-        product.setInitPrice(pf.initPrice());
+        product.setBasePrice(pf.initPrice());
         product.setPriceUSD(0);
         product.setViewCount(0);
         product.setDescription(pf.description());
@@ -348,4 +348,5 @@ public class ProductService {
     public long getShipping(Cart cart) {
         return 0;
     }
+
 }

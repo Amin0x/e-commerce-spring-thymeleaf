@@ -25,7 +25,7 @@ public class ProductController {
 
         Product product = productService.getProductById(id).orElseThrow(()-> new IllegalArgumentException("not fund"));
         List<Product> similarProducts = productService.getSimilarProducts(product);
-        double percent = Math.ceil((double) product.getPrice() / product.getInitPrice());
+        double percent = Math.ceil((double) product.getPrice() / product.getBasePrice());
 
         List<ProductReview> productReviews;
         productReviews = productService.getProductReviews(id);

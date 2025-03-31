@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
+    Optional<Category> findBySlug(String id);
+    
         @Query(value = """
                         SELECT c
                         FROM Category c
@@ -98,5 +101,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         @Transactional
         @Query("UPDATE Category c SET c.parent = NULL WHERE c.parent.id = :id")
         void setAsRootCategory(Long id);
+
+        
 
 }

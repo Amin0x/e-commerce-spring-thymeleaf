@@ -107,7 +107,7 @@ public class HomeController {
         return products.stream().map(product -> {
             ProductDto productDto = new ProductDto(product);
             productDto.setNew(product.getCreated().isAfter(LocalDateTime.now().minusMonths(2)));
-            productDto.setPercent(product.getInitPrice() == 0? 0.0f : (float) (product.getPrice() / product.getInitPrice()));
+            productDto.setPercent(product.getBasePrice() == 0? 0.0f : (float) (product.getPrice() / product.getBasePrice()));
             return productDto;
         }).toList();
     }

@@ -45,5 +45,21 @@ public class CategoryController {
         return "public/category";
     }
 
+    @GetMapping("/{slug}")
+    public String getCategoryProducts(@PathVariable String id, Model model) {
+        Optional<Category> categoryOptional = categoryService.findByCategorySlug(id);
+        if (categoryOptional.isEmpty())
+            return "error/404";
+        
+        Category category = categoryOptional.get();
+
+        List<Product> products = productService.getRandomProductsByCategory(category.getId(), 24);
+
+        model.addAttribute("products", products);
+        model.addAttribute("category", category);
+        model.addAttribute("username", null);
+        return "public/category";
+    }
+
 
 }

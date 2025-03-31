@@ -163,7 +163,7 @@ public class AdminProductController {
         product.setDescription(productForm.description());
         product.setPrice(productForm.price() == null? 0: productForm.price());
         product.setStock(productForm.stock());
-        product.setInitPrice(productForm.initPrice());
+        product.setBasePrice(productForm.initPrice());
         product.setTotalSold(productForm.totalSold());
         //product.setViewCount(productForm.viewsCount());
 

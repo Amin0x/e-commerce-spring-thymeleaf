@@ -172,4 +172,11 @@ public class CategoryService {
 
         return categoryRepository.getCategoryPathToRoot(categoryId);
     }
+
+    public Optional<Category> findByCategorySlug(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("null not allowed");
+        }
+        return categoryRepository.findBySlug(id);
+    }
 }

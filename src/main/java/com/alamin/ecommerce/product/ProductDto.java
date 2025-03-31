@@ -31,7 +31,7 @@ public class ProductDto {
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = product.getPrice();
-        this.initPrice = product.getInitPrice();
+        this.initPrice = product.getBasePrice();
         this.priceUSD = product.getPriceUSD();
         this.sku = product.getSku();
         this.stock = product.getStock();
