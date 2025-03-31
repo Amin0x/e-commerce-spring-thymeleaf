@@ -9,7 +9,7 @@ public class ProductDto {
     private String name;
     private String description;
     private Integer price;
-    private Integer initPrice;
+    private Integer basePrice;
     private Integer priceUSD;
     private String sku;
     private Integer stock;
@@ -31,7 +31,7 @@ public class ProductDto {
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = product.getPrice();
-        this.initPrice = product.getBasePrice();
+        this.basePrice = product.getBasePrice();
         this.priceUSD = product.getPriceUSD();
         this.sku = product.getSku();
         this.stock = product.getStock();
@@ -48,7 +48,7 @@ public class ProductDto {
                       Long productId,
                       String description,
                       Integer price,
-                      Integer initPrice,
+                      Integer basePrice,
                       Integer priceUSD,
                       String sku,
                       Integer stock,
@@ -65,7 +65,7 @@ public class ProductDto {
         this.productId = productId;
         this.description = description;
         this.price = price;
-        this.initPrice = initPrice;
+        this.basePrice = basePrice;
         this.priceUSD = priceUSD;
         this.sku = sku;
         this.stock = stock;
@@ -112,12 +112,12 @@ public class ProductDto {
         this.price = price;
     }
 
-    public Integer getInitPrice() {
-        return initPrice;
+    public Integer getbasePrice() {
+        return basePrice;
     }
 
-    public void setInitPrice(Integer initPrice) {
-        this.initPrice = initPrice;
+    public void setbasePrice(Integer basePrice) {
+        this.basePrice = basePrice;
     }
 
     public Integer getPriceUSD() {

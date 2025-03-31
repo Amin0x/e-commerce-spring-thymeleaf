@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -91,33 +93,73 @@ public class ProductController {
     }
 
     @GetMapping("/api/products/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> product = productService.findById(id);
-        return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Object> getProductById(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try{
+            Optional<Product> product = productService.findById(id);
+            if(product.isEmpty()){
+                response.put("status", "error");
+                response.put("message", "Product not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+            response.put("status", "success");
+            response.put("message", "Product fetched successfully");
+            response.put("product", product.get());
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Error fetching product: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @PostMapping("/products/review/{id}")
     public ResponseEntity<Object> createProductReview(@RequestBody ProductReview productReview){
-        ProductReview productReview1 = productService.createProductReview(productReview);
-        return new ResponseEntity<>(productReview1, HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            ProductReview productReview1 = productService.createProductReview(productReview);
+            return new ResponseEntity<>(productReview1, HttpStatus.CREATED);
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Error creating product review: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @PostMapping("/products/review/update/{id}")
     public ResponseEntity<Object> updateProductReview(@PathVariable Long id,@RequestBody ProductReview productReview){
+        Map<String, Object> response = new HashMap<>();
         if (id == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            response.put("status", "error");
+            response.put("message", "id is null");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        ProductReview productReview1 = productService.updateProductReview(id, productReview);
-        return new ResponseEntity<>(productReview1, HttpStatus.OK);
+
+        try {
+            ProductReview productReview1 = productService.updateProductReview(id, productReview);
+            return new ResponseEntity<>(productReview1, HttpStatus.OK);
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Error updating product review: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+        
     }
 
     @PostMapping("/products/review/delete/{id}")
     public ResponseEntity<Object> deleteProductReview(@PathVariable Long id){
+        Map<String, Object> response = new HashMap<>();
         if (id == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            response.put("status", "error");
+            response.put("message", "id is null");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+        
         productService.deleteProductReview(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        response.put("status", "success");
+        response.put("message", "Product review deleted successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

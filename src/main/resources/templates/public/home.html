@@ -145,7 +145,7 @@
                             <div class="card-body">
                                 <p class="product-title" th:text="${#strings.abbreviate(product.name, 40)}">Title</p>
                                 <p class="product-price" th:text="|${product.price} جنيه|">200</p>
-                                <p class="product-price-discount" th:text="${product.initPrice} + ' جنيه'">100</p>
+                                <p class="product-price-discount" th:text="${product.basePrice} + ' جنيه'">100</p>
                             </div>
                         </div>
                     </div>
@@ -169,8 +169,8 @@
                             <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
                             <div>
                                 <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
-                                <div th:if="(${product.price} &lt; ${product.initPrice})" class="price-discount">
-                                    <span th:text="|${#numbers.formatInteger(product.initPrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
+                                <div th:if="(${product.price} &lt; ${product.basePrice})" class="price-discount">
+                                    <span th:text="|${#numbers.formatInteger(product.basePrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
                                 </div>
                             </div>
                         </div>
@@ -198,8 +198,8 @@
                             <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
                             <div>
                                 <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
-                                <div th:if="(${product.price} &lt; ${product.initPrice})" class="price-discount">
-                                    <span th:text="|${#numbers.formatInteger(product.initPrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
+                                <div th:if="(${product.price} &lt; ${product.basePrice})" class="price-discount">
+                                    <span th:text="|${#numbers.formatInteger(product.basePrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
                                 </div>
                             </div>
                         </div>
@@ -227,8 +227,8 @@
                             <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
                             <div>
                                 <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
-                                <div th:if="(${product.price} &lt; ${product.initPrice})" class="price-discount">
-                                    <span th:text="|${#numbers.formatInteger(product.initPrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
+                                <div th:if="(${product.price} &lt; ${product.basePrice})" class="price-discount">
+                                    <span th:text="|${#numbers.formatInteger(product.basePrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
                                 </div>
                             </div>
                         </div>
