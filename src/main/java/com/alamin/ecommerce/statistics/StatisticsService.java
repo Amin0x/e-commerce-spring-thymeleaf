@@ -1,25 +1,14 @@
 package com.alamin.ecommerce.statistics;
 
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class StatisticsService {
-    public Statistics saveStatistics(Statistics statistics) {
-        return null;
-    }
+public interface StatisticsService {
+    Statistics saveStatistics(Statistics statistics);
 
-    public List<Statistics> getAllStatistics() {
-        return null;
-    }
+    List<Statistics> getAllStatistics();
 
-    public Optional<Statistics> getStatisticsById(Long id) {
-        return Optional.empty();
-    }
+    Optional<Statistics> getStatisticsById(Long id);
 
-    public void deleteStatistics(Long id) {
-
-    }
+    void deleteStatistics(Long id);
 }

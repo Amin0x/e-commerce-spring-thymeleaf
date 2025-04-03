@@ -1,251 +1,259 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex,nofollow">
     <title>Create Product</title>
-    <link th:if="false" th:href="@{'/public/css/bootstrap.min.css'}" href="../../../static/public/css/bootstrap.min.css" rel="stylesheet">
+    <link th:if="false" th:href="@{'/public/css/bootstrap.min.css'}" href="../../../static/public/css/bootstrap.min.css"
+          rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
 </head>
 
 <body>
-    <div>
-        <div class="wrapper">
-            <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-            <div class="create-product-container">
-                <h2>Create New Product</h2>
-                <div class="box-round p-3">
-                    <div class="form-box">
-                        <form th:action="@{/admin/products}" id="createProduct">
-                            <div class="product-info">
-                                <div class="name input-section">
-                                    <label for="name">Name:</label>
-                                    <input type="text" class="name-input" name="name" th:value="${name}" id="name">
-                                    <div class="error-message" id="nameError"></div>
+<div>
+    <div class="wrapper">
+        <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
+        <div class="create-product-container">
+            <h2>Create New Product</h2>
+            <div class="box-round p-3">
+                <div class="form-box">
+                    <form th:action="@{/admin/products}" id="createProduct">
+                        <div class="product-info">
+                            <div class="name input-section">
+                                <label for="name">Name:</label>
+                                <input type="text" class="name-input" name="name" th:value="${name}" id="name">
+                                <div class="error-message" id="nameError"></div>
+                            </div>
+                            <div class="description input-section">
+                                <label for="description">Description:</label>
+                                <textarea class="description-input" th:value="${description}" name="description"
+                                          id="description" rows="3"></textarea>
+                                <div class="error-message" id="descriptionError"></div>
+                            </div>
+                            <div class="product-row input-section">
+                                <div class="price">
+                                    <label for="price">Price:</label>
+                                    <input type="number" name="price" class="price-input" th:value="${price}"
+                                           id="price">
+                                    <div class="error-message" id="priceError"></div>
                                 </div>
-                                <div class="description input-section">
-                                    <label for="description">Description:</label>
-                                    <textarea class="description-input" th:value="${description}" name="description" id="description" rows="3"></textarea>
-                                    <div class="error-message" id="descriptionError"></div>
-                                </div>
-                                <div class="product-row input-section">
-                                    <div class="price">
-                                        <label for="price">Price:</label>
-                                        <input type="number" name="price" class="price-input" th:value="${price}" id="price">
-                                        <div class="error-message" id="priceError"></div>
-                                    </div>
-                                    <div class="stock">
-                                        <label for="stock">Stock:</label>
-                                        <input type="number" name="stock" class="stock-input" th:vlaue="${stock}" id="stock" value="0">
-                                        <div class="error-message" id="stockError"></div>
-                                    </div>
+                                <div class="stock">
+                                    <label for="stock">Stock:</label>
+                                    <input type="number" name="stock" class="stock-input" th:vlaue="${stock}" id="stock"
+                                           value="0">
+                                    <div class="error-message" id="stockError"></div>
                                 </div>
                             </div>
-                            <div class="product-category">                               
-                                <div class="category">
-                                    <label for="categoryInput">Category:</label>
-                                    <input type="text" name="categoryInput" class="control-input" id="categoryInput" autocomplete="off">
-                                    <div class="error-message" id="categoryError"></div>
-                                    <div id="category" class="category-dropdown">
-                                        <p data-value="">Root</p>
-                                        <p th:each="category : ${categories}" th:data-value="${category.id}" th:text="${category.name}">Category</p>
-                                    </div>
-                                </div>                                
-                            </div>
-                            <div class="product-brand input-section">
-                                <label for="brand">Brand:</label>
-                                <input type="text" name="brand" class="input-brand" th:vlaue="${brand}" id="brand">
-                                <div class="error-message" id="brandError"></div>
-                            </div>
-                            <div class="product-enabled input-section">
-                                <div class="active-checkbox">
-                                    <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}">
-                                    <label for="enabled">Enabled</label>
-                                </div>
-                                <div class="enabled-checkbox">
-                                    <input type="checkbox" id="active" name="active" th:value="${active}">
-                                    <label for="active">Active</label>
+                        </div>
+                        <div class="product-category">
+                            <div class="category">
+                                <label for="categoryInput">Category:</label>
+                                <input type="text" name="categoryInput" class="control-input" id="categoryInput"
+                                       autocomplete="off">
+                                <div class="error-message" id="categoryError"></div>
+                                <div id="category" class="category-dropdown">
+                                    <p data-value="">Root</p>
+                                    <p th:each="category : ${categories}" th:data-value="${category.id}"
+                                       th:text="${category.name}">Category</p>
                                 </div>
                             </div>
-                            <div class="product-primary-img input-section">
-                                <div class="">
-                                    <div class="title">Primary Image:</div>
-                                    <div id="primaryImagePreview" class="d-flex flex-wrap primary-image-preview"></div>
-                                    <input type="file" id="filePrimeryImage" name="filePrimeryImage" class="file-primery-image">
-                                    <div class="error-message" id="filePrimeryImageError"></div>
-                                    <button type="button" class="button-37" id="addMainImage">Add Primary Image</button>
-                                </div>
+                        </div>
+                        <div class="product-brand input-section">
+                            <label for="brand">Brand:</label>
+                            <input type="text" name="brand" class="input-brand" th:vlaue="${brand}" id="brand">
+                            <div class="error-message" id="brandError"></div>
+                        </div>
+                        <div class="product-enabled input-section">
+                            <div class="active-checkbox">
+                                <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}">
+                                <label for="enabled">Enabled</label>
                             </div>
-                            <div class="product-images input-section">
-                                <div>
-                                    <div>Add Product Images:</div>
-                                    <div id="imagesPreview" class="d-flex flex-wrap"></div>
-                                    <input type="file" id="fileImages" name="fileImages" style="display: none;" multiple>
-                                    <div class="error-message" id="fileImagesError"></div>
-                                    <button type="button" class="button-37" id="uploadImage">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                                            <path d="M12 0C5.372 0 0 5.372 0 12c0 6.628 5.372 12 12 12s12-5.372 12-12c0-6.628-5.372-12-12-12zm0 21.8c-5.423 0-9.8-4.377-9.8-9.8 0-5.423 4.377-9.8 9.8-9.8 5.423 0 9.8 4.377 9.8 9.8 0 5.423-4.377 9.8-9.8 9.8zM11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z" />
-                                        </svg>
-                                    </button>
-                                    
-                                </div>
+                            <div class="enabled-checkbox">
+                                <input type="checkbox" id="active" name="active" th:value="${active}">
+                                <label for="active">Active</label>
                             </div>
-                            <button type="submit" class="button-37 submit-button" id="submitButton">Create Product</button>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="product-primary-img input-section">
+                            <div class="">
+                                <div class="title">Primary Image:</div>
+                                <div id="primaryImagePreview" class="d-flex flex-wrap primary-image-preview"></div>
+                                <input type="file" id="filePrimeryImage" name="filePrimeryImage"
+                                       class="file-primery-image">
+                                <div class="error-message" id="filePrimeryImageError"></div>
+                                <button type="button" class="button-37" id="addMainImage">Add Primary Image</button>
+                            </div>
+                        </div>
+                        <div class="product-images input-section">
+                            <div>
+                                <div>Add Product Images:</div>
+                                <div id="imagesPreview" class="d-flex flex-wrap"></div>
+                                <input type="file" id="fileImages" name="fileImages" style="display: none;" multiple>
+                                <div class="error-message" id="fileImagesError"></div>
+                                <button type="button" class="button-37" id="uploadImage">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                         fill="currentColor">
+                                        <path d="M12 0C5.372 0 0 5.372 0 12c0 6.628 5.372 12 12 12s12-5.372 12-12c0-6.628-5.372-12-12-12zm0 21.8c-5.423 0-9.8-4.377-9.8-9.8 0-5.423 4.377-9.8 9.8-9.8 5.423 0 9.8 4.377 9.8 9.8 0 5.423-4.377 9.8-9.8 9.8zM11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z"/>
+                                    </svg>
+                                </button>
+
+                            </div>
+                        </div>
+                        <button type="submit" class="button-37 submit-button" id="submitButton">Create Product</button>
+                    </form>
                 </div>
             </div>
         </div>
-        <footer th:replace="~{admin/fragments/footer::footer}"></footer>
     </div>
+    <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</div>
 
-    <script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../../static/public/js/jquery-3.7.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            let productImage = [];
-            let productPrimaryImage = '';
+<script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../../static/public/js/jquery-3.7.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
 
-            $('#createProduct').on('submit', function (e) {
-                e.preventDefault();
-                $('submitButton').attr('disabled', 'disabled');
-                let formData = new FormData(document.getElementById('createProduct'));
-                formData.delete('fileImages');
-                formData.delete('filePrimeryImage');
-                for (let index = 0; index < productImage.length; index++) {
-                    const file = productImage[index];
-                    formData.append("images" , file);
-                }
-                formData.append("primaryImage", productPrimaryImage);
-                formData.set("enabled", $("#enabled").is(":checked")? "true":"false");
-                formData.set("active", $("#active").is(":checked")? "true":"false");
+    $(document).ready(function () {
+        let productImage = [];
+        let productPrimaryImage = '';
 
-                $.ajax({
-                    url: "/admin/products/createProduct",
-                    method: "post",
-                    data: formData,
-                    success: function (response) {
-                        let categories = response.data;
-                        $('#createProduct')[0].reset();
-                        $('submitButton').removeAttr('disabled');
-                        productImage = [];
-                        productPrimaryImage = ''; 
-                        $('#imagesPreview').empty();                       
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(xhr.responseText);
-                        const errors = xhr.responseJSON.errors;
-                        $('submitButton').removeAttr('disabled');
-                        if (errors !== undefined) {
-                            $.each(errors, function (key, value) {
-                                const errorElement = $("#" + key + "Error");
-                                errorElement.text(value[0]);
-                            });
-                        } else {
-                            console.log("No errors found in the response.");
-                        }
-                    },
-                    contentType: /*"application/json"*/ false,
-                    processData: false,
-                    cache: false,
-                });
-            });
+        $('#createProduct').on('submit', function (e) {
+            e.preventDefault();
+            $('submitButton').attr('disabled', 'disabled');
+            let formData = new FormData(document.getElementById('createProduct'));
+            formData.delete('fileImages');
+            formData.delete('filePrimeryImage');
+            for (let index = 0; index < productImage.length; index++) {
+                const file = productImage[index];
+                formData.append("images" , file);
+            }
+            formData.append("primaryImage", productPrimaryImage);
+            formData.set("enabled", $("#enabled").is(":checked")? "true":"false");
+            formData.set("active", $("#active").is(":checked")? "true":"false");
 
-           
-
-            $('#filePrimeryImage').on('change', function () {
-                const file = this.files[0];
-                if (file === undefined || file.type === undefined || file.type.indexOf('image') === -1) {
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const img = $('<img>');
-                    const btn = $('<button>');
-                    btn.on('click', function () {
-                        $(this).parent().empty();
-                    });
-                    btn.text('x').attr('id', "deletePrimaryImage");
-                    img.attr( "src", event.target.result);
-                    $('#primaryImagePreview').empty();
-                    $('#primaryImagePreview').append(img).append(btn);
-                };
-                reader.readAsDataURL(file);
-                productPrimaryImage = file;
-            });
-
-            $('#fileImages').on('change', function () {
-                var files = this.files;
-                console.log("upload image");
-                $.each(files, function (i, file) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        console.log("read file successfully");
-                        $('#imagesPreview').append(`<img src="${reader.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
-                    };
-                    console.log('Reading file:', file.name);
-                    reader.readAsDataURL(file);
-                    productImage.push(file);
-                });
-            });
-
-
-            $('#addMainImage').on('click', function () {
-                const fv = $('#filePrimeryImage').val;
-                if (fv !== '') {
-                    $('#filePrimeryImage').val('');
-                }
-                $('#filePrimeryImage').click();
-            });
-
-            $('#uploadImage').on('click', function () {
-                $('#fileImages').click();
-            });
-
-            window.addEventListener('click', function (event) {
-                $('#category').removeClass('active');
-            });
-
-            $('#categoryInput').on('keydown', function(event) {
-                event.preventDefault();
-                let  category = event.target.value;
-                if (category == '') {
-                    return false;
-                }
-
-                $.get('/admin/categories/search/' + category)
-                    .done(function(data) {
-                        console.log(data);
-                        const $catElm = $('#category');
-                        $catElm.empty();
-                        if (data !== undefined) {
-                            data.map(function(element) {
-                                const $opt = $('<p></p>');
-                                $opt.attr("data-value", element.id);
-                                $opt.text(element.name);                        
-                                $catElm.append($opt);
-                                
-                                if (!$catElm.hasClass("category")) {
-                                    $catElm.addClass("active");
-                                }
-                                
-                                $("p[data-value]").on('click', function() {
-                                    $('#categoryInput').val($(this).data("value"));
-                                    $catElm.removeClass("active");
-                                });
-                            });
-                        }
-                    })
-                    .fail(function() {
-                        console.log('Error fetch category');
-                    });
-
+            $.ajax({
+                url: "/admin/products/createProduct",
+                method: "post",
+                data: formData,
+                success: function (response) {
+                    let categories = response.data;
+                    $('#createProduct')[0].reset();
+                    $('submitButton').removeAttr('disabled');
+                    productImage = [];
+                    productPrimaryImage = '';
+                    $('#imagesPreview').empty();
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                    const errors = xhr.responseJSON.errors;
+                    $('submitButton').removeAttr('disabled');
+                    if (errors !== undefined) {
+                        $.each(errors, function (key, value) {
+                            const errorElement = $("#" + key + "Error");
+                            errorElement.text(value[0]);
+                        });
+                    } else {
+                        console.log("No errors found in the response.");
+                    }
+                },
+                contentType: /*"application/json"*/ false,
+                processData: false,
+                cache: false,
             });
         });
 
-        
-    </script>
+
+
+        $('#filePrimeryImage').on('change', function () {
+            const file = this.files[0];
+            if (file === undefined || file.type === undefined || file.type.indexOf('image') === -1) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const img = $('<img>');
+                const btn = $('<button>');
+                btn.on('click', function () {
+                    $(this).parent().empty();
+                });
+                btn.text('x').attr('id', "deletePrimaryImage");
+                img.attr( "src", event.target.result);
+                $('#primaryImagePreview').empty();
+                $('#primaryImagePreview').append(img).append(btn);
+            };
+            reader.readAsDataURL(file);
+            productPrimaryImage = file;
+        });
+
+        $('#fileImages').on('change', function () {
+            var files = this.files;
+            console.log("upload image");
+            $.each(files, function (i, file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    console.log("read file successfully");
+                    $('#imagesPreview').append(`<img src="${reader.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
+                };
+                console.log('Reading file:', file.name);
+                reader.readAsDataURL(file);
+                productImage.push(file);
+            });
+        });
+
+
+        $('#addMainImage').on('click', function () {
+            const fv = $('#filePrimeryImage').val;
+            if (fv !== '') {
+                $('#filePrimeryImage').val('');
+            }
+            $('#filePrimeryImage').click();
+        });
+
+        $('#uploadImage').on('click', function () {
+            $('#fileImages').click();
+        });
+
+        window.addEventListener('click', function (event) {
+            $('#category').removeClass('active');
+        });
+
+        $('#categoryInput').on('keydown', function(event) {
+            event.preventDefault();
+            let  category = event.target.value;
+            if (category == '') {
+                return false;
+            }
+
+            $.get('/admin/categories/search/' + category)
+                .done(function(data) {
+                    console.log(data);
+                    const $catElm = $('#category');
+                    $catElm.empty();
+                    if (data !== undefined) {
+                        data.map(function(element) {
+                            const $opt = $('<p></p>');
+                            $opt.attr("data-value", element.id);
+                            $opt.text(element.name);
+                            $catElm.append($opt);
+
+                            if (!$catElm.hasClass("category")) {
+                                $catElm.addClass("active");
+                            }
+
+                            $("p[data-value]").on('click', function() {
+                                $('#categoryInput').val($(this).data("value"));
+                                $catElm.removeClass("active");
+                            });
+                        });
+                    }
+                })
+                .fail(function() {
+                    console.log('Error fetch category');
+                });
+
+        });
+
+
+</script>
 </body>
 </html>

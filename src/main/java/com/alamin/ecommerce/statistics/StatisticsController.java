@@ -13,7 +13,7 @@ import java.util.Optional;
 public class StatisticsController {
 
     @Autowired
-    private StatisticsService statisticsService;
+    private StatisticsServiceImpl statisticsService;
 
     // Create a new statistic
     @PostMapping
