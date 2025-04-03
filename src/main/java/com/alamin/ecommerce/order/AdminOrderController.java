@@ -48,7 +48,7 @@ public class AdminOrderController {
 
     @GetMapping("/{id}")
     public String orderDetails(@PathVariable Long id, Model model){
-        Order order = orderService.findById(id).orElseThrow();
+        Order order = orderService.getOrderById(id).orElseThrow();
         Double total = 0.0;
         String estimatedDelivery = "";
         String customerAddress = "";
@@ -59,7 +59,6 @@ public class AdminOrderController {
         model.addAttribute("customerAddress", customerAddress);
         return "admin/orders/order_details";
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {

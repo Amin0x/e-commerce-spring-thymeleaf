@@ -18,6 +18,11 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    public static int roundToNearestMultiple(int number) {
+        int multiple = (int) Math.pow(10, Math.floor(Math.log10(number)));
+        return (int) (Math.round((double) number / multiple) * multiple);
+    }
+
     @Override
     public Order createOrder(OrderDto orderDetails) {
 
@@ -43,23 +48,22 @@ public class OrderServiceImpl implements OrderService {
         customer.setEmail("test@test.com");
         order.setCustomer(customer);
 
-        return orderRepository.save(order);
-    }
-
-    @Override
-    public Optional<Order> findById(Long id) {
-        return orderRepository.findById(id);
+        return saveOrder(order);
     }
 
     @Override
     public Optional<Order> getOrderById(Long id) {
-        return this.findById(id);
+        try {
+            return orderRepository.findById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("id is null");
+        }
     }
 
     @Override
     public Page<Order> getAllOrders(int page, int size, int order, int sort) {
         if (size < 1 || page < 0 || order < 1 )
-            throw new IllegalArgumentException("that's not how it works");
+            throw new RuntimeException("that's not how it works");
 
         String s = "";
         Sort sort1;
@@ -102,12 +106,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(Long id) {
-        orderRepository.deleteById(id);
+        try {
+            orderRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("id is null");
+        }
     }
 
     @Override
     public Order updateOrder(Long id, Order orderDetails) {
-        Optional<Order> existingOrder = orderRepository.findById(id);
+        Optional<Order> existingOrder = getOrderById(id);
         if (existingOrder.isPresent()) {
             Order order = existingOrder.get();
             order.setOrderDate(orderDetails.getOrderDate());
@@ -185,7 +193,7 @@ public class OrderServiceImpl implements OrderService {
         listLabels.addAll(names);
     }
 
-
-
-
+    private Order saveOrder(Order order) {
+        return orderRepository.save(order);
+    }
 }

@@ -7,20 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderService {
-    static int roundToNearestMultiple(int number) {
-        int multiple = (int) Math.pow(10, Math.floor(Math.log10(number)));
-        return (int) (Math.round((double) number / multiple) * multiple);
-    }
-
-    //todo: remove save or make private
-    default Order saveOrder(Order order) {
-
-        return orderRepository.save(order);
-    }
 
     Order createOrder(OrderDto orderDetails);
-
-    Optional<Order> findById(Long id);
 
     Optional<Order> getOrderById(Long id);
 

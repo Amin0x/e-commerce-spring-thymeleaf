@@ -19,31 +19,41 @@ public class Product {
     private String uuid;
     @Column(unique = true, nullable = false)
     private String slug;
+    @Column(unique = true, nullable = false)
     private String barcode;
+    @Column(nullable = false)
     private String brand;
     private String model;
     private String color;
     private String size;
     private String material;
     private String style;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private Integer price;
     private Integer basePrice;
     private Integer priceUSD;
+    @Column(nullable = false)
     private String sku;
     private Integer stock;
+    @Column(nullable = false)
     private Integer totalSold;
+    @Column(nullable = false)
     private Integer viewCount;
     private Boolean active;
     private Boolean enabled;
     private String image;
+    @Column(nullable = false)
     private LocalDateTime created;
+    @Column(nullable = false)
     private LocalDateTime updated;
     private LocalDateTime deleted;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = {CascadeType.ALL}, orphanRemoval = true)
