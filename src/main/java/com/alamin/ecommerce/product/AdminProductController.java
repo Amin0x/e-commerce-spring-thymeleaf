@@ -179,17 +179,28 @@ public class AdminProductController {
             Product updatedProduct = productService.save(product);
             return ResponseEntity.ok(updatedProduct);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("failed to update product:", e);
             throw new RuntimeException(e);
         }
     }
 
     // Upload an image
     @PostMapping("/products/images/upload")
-    public ResponseEntity<List<ProductImage>> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("id") Long id) {
-        List<ProductImage> productImages = productService.uploadImage(file, id);
-
-        return ResponseEntity.ok(productImages);
+    public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("id") Long id) {
+        try {
+            List<ProductImage> productImages = productService.uploadImage(file, id);
+            return ResponseEntity.ok(productImages);
+        } catch (Exception e) {
+            log.error("Failed to upload image", e);
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            errorResponse.put("timestamp", new Date());
+            errorResponse.put("path", "/products/images/upload");
+            errorResponse.put("message", "Failed to upload image");
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     // Delete a product by ID
@@ -218,38 +229,88 @@ public class AdminProductController {
     }
 
     @PostMapping("/products/createProduct")
-    public ResponseEntity<Object> create(@ModelAttribute ProductForm pf, BindingResult result){
+    public ResponseEntity<Object> create(@ModelAttribute ProductForm pf, BindingResult result) {
         log.info("{}", pf);
+        Map<String, Object> response = new HashMap<>();
+       
 
         if (result.hasErrors()) {
-            return ResponseEntity.notFound().build();
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("message", "Invalid product data");
+            response.put("errors", result.getAllErrors());
+            return ResponseEntity.badRequest().body(response);
         }
-
-        Product product = productService.createProduct(pf);
-        return ResponseEntity.ok(product);
+        
+        try {
+            Product product = productService.createProduct(pf);
+            response.put("status", HttpStatus.CREATED.value());
+            response.put("message", "Product created successfully");
+            response.put("product", product);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);            
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("message", "Failed to create product");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @PostMapping("/products/images/upload/primary")
     public ResponseEntity<Object> updatePrimaryImage(@RequestParam Long id,@RequestParam MultipartFile file){
         log.info("{}", file);
-
-        if (id == null) {
-            return ResponseEntity.notFound().build();
+        Map<String, Object> response = new HashMap<>();
+        if (file.isEmpty()) {
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("message", "File is empty");
+            return ResponseEntity.badRequest().body(response);
         }
 
-        Product product = productService.updatePrimaryImage(id, file);
-        return ResponseEntity.ok(product);
+        if (id == null) {
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("message", "Product ID is required");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        try {
+            Product product = productService.updatePrimaryImage(id, file);
+            response.put("status", HttpStatus.OK.value());
+            response.put("message", "Primary image updated successfully");
+            response.put("product", product);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("update image error :", e);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("message", "Failed to update primary image");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+        
     }
 
     @PostMapping("/products/price/{productId}")
     public ResponseEntity<Object> addProductPrice(@RequestParam Long productId,@RequestParam ProductPrice price){
         log.info("{}", price);
-
+        Map<String, Object> response = new HashMap<>();
         if (productId == null) {
-            return ResponseEntity.notFound().build();
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("message", "Product ID is required");
+            return ResponseEntity.badRequest().body(response);
         }
 
-        ProductPrice productPrice = productService.addProductPrice(productId, price);
-        return ResponseEntity.ok(productPrice);
+        try {
+            ProductPrice productPrice = productService.addProductPrice(productId, price);
+            response.put("status", HttpStatus.OK.value());
+            response.put("message", "Product price updated successfully");
+            response.put("productPrice", productPrice);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("update product price error:", e);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("message", "Failed to update product price");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+        
     }
 }

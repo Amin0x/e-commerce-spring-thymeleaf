@@ -8,8 +8,10 @@ public class Setting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String nameValue;
+    private String domainName;
+    private String apiKeyValue;
+    private Integer maxProductCount;
+    private Boolean bannerEnable;
 
     public Integer getId() {
         return id;
@@ -19,19 +21,35 @@ public class Setting {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getApiKeyValue() {
+        return apiKeyValue;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setApiKeyValue(String apiKeyValue) {
+        this.apiKeyValue = apiKeyValue;
     }
 
-    public String getNameValue() {
-        return nameValue;
+    public String getDomainName() {
+        return domainName;
     }
 
-    public void setNameValue(String nameValue) {
-        this.nameValue = nameValue;
+    public void setDomainName(String domainName) {
+        this.domainName = domainName;
+    }
+
+    public Integer getMaxProductCount() {
+        return maxProductCount;
+    }
+
+    public void setMaxProductCount(Integer maxProductCount) {
+        this.maxProductCount = maxProductCount;
+    }
+
+    public Boolean getBannerEnable() {
+        return bannerEnable;
+    }
+
+    public void setBannerEnable(Boolean bannerEnable) {
+        this.bannerEnable = bannerEnable;
     }
 }

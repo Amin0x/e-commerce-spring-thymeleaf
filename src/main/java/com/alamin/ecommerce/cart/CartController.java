@@ -70,7 +70,7 @@ public class CartController {
         Map<String, Object> data = new HashMap<>();
         try {
             Product product = productService.getProductById(productId).orElseThrow();
-            Cart updatedCart = cartService.addItemToCart(product, session, principal);
+            Cart updatedCart = cartService.addCartItem(product, session, principal);
             CartDto updatedCartDto = new CartDto(updatedCart);
             
             data.put("cart", updatedCartDto);
@@ -142,11 +142,6 @@ public class CartController {
 
         try {
             cart = cartService.decrementCartItem(id, session, principal);
-        } catch (RuntimeException e){
-            data.put("error", e.getMessage());
-            data.put("status", HttpStatus.BAD_REQUEST);
-            data.put("message", "something went wrong");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(data);
         } catch (Exception e) {
             data.put("error", e.getMessage());
             data.put("status", HttpStatus.BAD_REQUEST);

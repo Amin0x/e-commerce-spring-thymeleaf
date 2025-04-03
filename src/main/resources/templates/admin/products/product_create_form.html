@@ -23,22 +23,23 @@
                                 <div class="name input-section">
                                     <label for="name">Name:</label>
                                     <input type="text" class="name-input" name="name" th:value="${name}" id="name">
-                                    <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                    <div class="error-message" id="nameError"></div>
                                 </div>
                                 <div class="description input-section">
                                     <label for="description">Description:</label>
                                     <textarea class="description-input" th:value="${description}" name="description" id="description" rows="3"></textarea>
+                                    <div class="error-message" id="descriptionError"></div>
                                 </div>
                                 <div class="product-row input-section">
                                     <div class="price">
                                         <label for="price">Price:</label>
                                         <input type="number" name="price" class="price-input" th:value="${price}" id="price">
-                                        <div class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                                        <div class="error-message" id="priceError"></div>
                                     </div>
                                     <div class="stock">
                                         <label for="stock">Stock:</label>
                                         <input type="number" name="stock" class="stock-input" th:vlaue="${stock}" id="stock" value="0">
-                                        <div class="error-message" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></div>
+                                        <div class="error-message" id="stockError"></div>
                                     </div>
                                 </div>
                             </div>
@@ -46,7 +47,7 @@
                                 <div class="category">
                                     <label for="categoryInput">Category:</label>
                                     <input type="text" name="categoryInput" class="control-input" id="categoryInput" autocomplete="off">
-                                    <div class="error-message" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+                                    <div class="error-message" id="categoryError"></div>
                                     <div id="category" class="category-dropdown">
                                         <p data-value="">Root</p>
                                         <p th:each="category : ${categories}" th:data-value="${category.id}" th:text="${category.name}">Category</p>
@@ -56,17 +57,16 @@
                             <div class="product-brand input-section">
                                 <label for="brand">Brand:</label>
                                 <input type="text" name="brand" class="input-brand" th:vlaue="${brand}" id="brand">
-                                <div class="error-message" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></div>
+                                <div class="error-message" id="brandError"></div>
                             </div>
                             <div class="product-enabled input-section">
                                 <div class="active-checkbox">
-                                    <div class="error-message" th:if="${#fields.hasErrors('enabled')}" th:errors="*{enabled}"></div>
                                     <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}">
-                                    <label for="active">Enabled</label>
+                                    <label for="enabled">Enabled</label>
                                 </div>
                                 <div class="enabled-checkbox">
                                     <input type="checkbox" id="active" name="active" th:value="${active}">
-                                    <label for="enabled">Active</label>
+                                    <label for="active">Active</label>
                                 </div>
                             </div>
                             <div class="product-primary-img input-section">
@@ -74,20 +74,25 @@
                                     <div class="title">Primary Image:</div>
                                     <div id="primaryImagePreview" class="d-flex flex-wrap primary-image-preview"></div>
                                     <input type="file" id="filePrimeryImage" name="filePrimeryImage" class="file-primery-image">
-                                    <div class="error-message" th:if="${#fields.hasErrors('filePrimeryImage')}" th:errors="*{filePrimeryImage}"></div>
+                                    <div class="error-message" id="filePrimeryImageError"></div>
                                     <button type="button" class="button-37" id="addMainImage">Add Primary Image</button>
                                 </div>
                             </div>
                             <div class="product-images input-section">
                                 <div>
-                                    <div>Product Image:</div>
+                                    <div>Add Product Images:</div>
                                     <div id="imagesPreview" class="d-flex flex-wrap"></div>
-                                    <input type="file" id="fileImages" name="fileImages" class="d-none" multiple>
-                                    <div class="error-message" th:if="${#fields.hasErrors('fileImages')}" th:errors="*{fileImages}"></div>
-                                    <button type="button" class="button-37" id="uploadImage">Upload Image</button>
+                                    <input type="file" id="fileImages" name="fileImages" style="display: none;" multiple>
+                                    <div class="error-message" id="fileImagesError"></div>
+                                    <button type="button" class="button-37" id="uploadImage">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                                            <path d="M12 0C5.372 0 0 5.372 0 12c0 6.628 5.372 12 12 12s12-5.372 12-12c0-6.628-5.372-12-12-12zm0 21.8c-5.423 0-9.8-4.377-9.8-9.8 0-5.423 4.377-9.8 9.8-9.8 5.423 0 9.8 4.377 9.8 9.8 0 5.423-4.377 9.8-9.8 9.8zM11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z" />
+                                        </svg>
+                                    </button>
+                                    
                                 </div>
                             </div>
-                            <button type="submit" class="button-37 submit-button">Create Product</button>
+                            <button type="submit" class="button-37 submit-button" id="submitButton">Create Product</button>
                         </form>
                     </div>
                 </div>
@@ -105,6 +110,7 @@
 
             $('#createProduct').on('submit', function (e) {
                 e.preventDefault();
+                $('submitButton').attr('disabled', 'disabled');
                 let formData = new FormData(document.getElementById('createProduct'));
                 formData.delete('fileImages');
                 formData.delete('filePrimeryImage');
@@ -121,7 +127,25 @@
                     method: "post",
                     data: formData,
                     success: function (response) {
-                        let categories = response.data;                        
+                        let categories = response.data;
+                        $('#createProduct')[0].reset();
+                        $('submitButton').removeAttr('disabled');
+                        productImage = [];
+                        productPrimaryImage = ''; 
+                        $('#imagesPreview').empty();                       
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                        const errors = xhr.responseJSON.errors;
+                        $('submitButton').removeAttr('disabled');
+                        if (errors !== undefined) {
+                            $.each(errors, function (key, value) {
+                                const errorElement = $("#" + key + "Error");
+                                errorElement.text(value[0]);
+                            });
+                        } else {
+                            console.log("No errors found in the response.");
+                        }
                     },
                     contentType: /*"application/json"*/ false,
                     processData: false,

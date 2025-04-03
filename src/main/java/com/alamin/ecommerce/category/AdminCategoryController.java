@@ -10,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -29,7 +31,7 @@ public class AdminCategoryController {
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("user", new User());
 
-        return "admin/categories/create-category";
+        return "admin/categories/category_create";
     }
 
     @GetMapping()
@@ -48,54 +50,104 @@ public class AdminCategoryController {
         model.addAttribute("categories", categories);
         model.addAttribute("user", new User());
 
-        return "admin/categories/edit_category";
+        return "admin/categories/category_edit";
     }
 
     // Create a new category
     @PostMapping()
-    public String createCategory(
+    public ResponseEntity<Object> createCategory(
             @RequestParam String name,
             @RequestParam String description,
             @RequestParam(required = false) Long parentId,
             @RequestParam(required = false) MultipartFile image
     ) {
-        try {            
-
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
             Category category = categoryService.createCategory(name, description, parentId, image);
             if (category == null) {
-                return "redirect:/admin/categories/create";
+                response.put("status", HttpStatus.BAD_REQUEST);
+                response.put("message", "Category already exists");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            } else {
+                response.put("status", HttpStatus.OK);
+                response.put("message", "Category created successfully");
+                response.put("category", category);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
             }
-            return "redirect:/admin/categories";
 
         } catch (Exception e) {
             log.error("", e);
-            return "redirect:/admin/categories/create";
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("message", "Something went wrong: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
     // Get a category by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        return category.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Object> getCategoryById(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Optional<Category> category = categoryRepository.findById(id);
+            if (category.isPresent()) {
+                response.put("status", HttpStatus.OK);
+                response.put("category", category.get());
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } else {
+                response.put("status", HttpStatus.NOT_FOUND);
+                response.put("message", "Category not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+            
+        } catch (Exception e) {
+            log.error("", e);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("message", "Something went wrong: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+        
     }
 
     @GetMapping("/search/{search}")
-    public ResponseEntity<List<Category>> searchCategoryByName(@PathVariable String search) {
-        List<Category> category = categoryService.searchCategoryByName(search);
-        return ResponseEntity.ok(category);
+    public ResponseEntity<Object> searchCategoryByName(@PathVariable String search) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<Category> category = categoryService.searchCategoryByName(search);
+            if (category.isEmpty()) {
+                response.put("status", HttpStatus.NOT_FOUND);
+                response.put("message", "Category not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            } else {
+                response.put("status", HttpStatus.OK);
+                response.put("categories", category);
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+        } catch (Exception e) {
+            log.error("", e);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("message", "Something went wrong: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+        
     }
 
     // Update an existing category
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody CategoryDto category) {
+    public ResponseEntity<Object> updateCategory(@PathVariable Long id, @RequestBody CategoryDto category) {
+        Map<String, Object> response = new HashMap<>();
         try {
-            categoryService.updateCategory(id, category);
+            Category updateCategory = categoryService.updateCategory(id, category);
+            response.put("status", HttpStatus.OK);
+            response.put("message", "Category updated successfully");
+            response.put("category", updateCategory);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             log.error("", e);
-            throw new RuntimeException(e);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("message", "Something went wrong: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        return ResponseEntity.ok(null);
     }
 
     // Delete a category by ID
