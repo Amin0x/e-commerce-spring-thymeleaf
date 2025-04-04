@@ -18,6 +18,8 @@ public interface CategoryService {
     // Update category
     Category updateCategory(Long id, CategoryDto categoryDto);
 
+    Category updateCategoryImage(Long id, MultipartFile image);
+
     // Get all categories with pagination and sorting
     List<Category> getAllCategories(int page, int size, int order, boolean asc);
 

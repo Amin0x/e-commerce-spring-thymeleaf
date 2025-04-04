@@ -1321,20 +1321,6 @@ body {
   cursor: pointer;
   transition: all 0.3s;
 }
-.create-product-container .product-primary-img .product-images input {
-  display: none;
-}
-.create-product-container .product-primary-img #imagesPreview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  max-width: 100%;
-  min-height: 300px;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-  margin-bottom: 1rem;
-}
 .create-product-container .product-primary-img .submit-button {
   margin-top: 1.5rem;
 }
@@ -1349,6 +1335,20 @@ body {
   font-weight: 700;
   margin-bottom: 20px;
 }
+.create-product-container .product-images input {
+  display: none;
+}
+.create-product-container .product-images #imagesPreview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 100%;
+  min-height: 300px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  margin-bottom: 1rem;
+}
 
 #createCategoryModel {
   position: absolute;
@@ -1360,6 +1360,72 @@ body {
   outline: none;
   border: none;
   box-shadow: 0px 3px 10px rgba(143, 136, 136, 0.2);
+}
+
+.cart-container {
+  padding-inline: 1rem;
+}
+
+.sec-title .title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.cart-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.cart-stats .cart-state__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 200px;
+  margin-right: 20px;
+}
+.cart-stats .cart-state__card:last-child {
+  margin-right: 0;
+}
+.cart-stats .cart-state__card .title {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #333;
+}
+.cart-stats .cart-state__card .state-val {
+  font-size: 1.5rem;
+  color: #205fbc;
+}
+.cart-stats .cart-state__card .sub-value {
+  font-size: 0.875rem;
+  color: #999;
+}
+.cart-stats .cart-state__card:nth-child(1) {
+  background-color: #e0f7fa;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.summary .card {
+  width: calc(50% - 0.5rem);
+  padding-inline: 1rem;
+  padding-block: 0rem;
+}
+.summary .card .title {
+  font-size: 0.9rem;
+  margin-block: 0.3rem;
+  font-weight: 500;
+  color: #333;
 }
 
 .user-index-container .container-user-chart {

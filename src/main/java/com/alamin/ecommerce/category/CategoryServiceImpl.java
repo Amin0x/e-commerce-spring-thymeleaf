@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alamin.ecommerce.config.FileUploadService;
+import com.alamin.ecommerce.exception.ResourceNotFoundException;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -88,7 +89,6 @@ public class CategoryServiceImpl implements CategoryService {
             existingCategory.setParent(parent);
             existingCategory.setName(categoryDto.getName());
             existingCategory.setDescription(categoryDto.getDescription());
-            existingCategory.setImageUrl(categoryDto.getImageUrl());
             existingCategory.setActive(categoryDto.getActive());
             existingCategory.setUpdated(LocalDateTime.now());
             return categoryRepository.save(existingCategory);
@@ -193,5 +193,14 @@ public class CategoryServiceImpl implements CategoryService {
             throw new IllegalArgumentException("null not allowed");
         }
         return categoryRepository.findBySlug(id);
+    }
+
+    @Override
+    public Category updateCategoryImage(Long id, MultipartFile image) {
+        String fileName = fileUploadService.uploadFile(image);
+        Category category = getCategoryById(id).orElseThrow(() -> new ResourceNotFoundException("cant find category with id:" + id));
+        category.setImageUrl(fileName);
+        
+        return categoryRepository.save(category);
     }
 }

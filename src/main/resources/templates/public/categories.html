@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Company Name">
-    <meta name="keywords" content="Company Name">
-    <meta name="robots" content="index, follow">
-    <title th:text="${title}">Product List</title>
+    <meta name="author" content="Company Name" th:content="${pageAuthor}">
+    <meta name="copyright" content="Company Name" th:content="${pageCopyright}">
+    <meta name="description" content="Company Name" th:content="${pageDescription}">
+    <meta name="keywords" content="Company Name" th:content="${pageKeywords}">
+    <meta name="robots" content="index, follow" th:content="${PageRobots}">
+    <title th:text="${pageTitle}">categories List</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link th:href="@{/public/css/bootstrap.min.css}" href="../../static/public/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
@@ -18,22 +20,17 @@
     </header>    
     <main class="content all-products">
         <div class="title">
-            <h1 th:text="${category.name}">جميع المنتجات</h1>
+            <h1 th:text="${category.name}">جميع الاصناف</h1>
         </div>
         <section class="flex-row">
-            <div th:each="product : ${products}" class="product-card">
+            <div th:each="category : ${categories}" class="product-card">
                 <div class="product">
                     <div class="image">                        
-                        <img th:src="|@{/uploads/images/}${product.image}|" src="../../static/public/imgs/img12.jpg" class="product-img" alt="Product Image" th:alt="${product.name}">
-                        <div th:if="true" class="product-new">جديد</div>
-                        <div th:if="true" class="product-popular">مرغوب</div>
+                        <img th:src="@{${category.image}" src="../../static/public/imgs/img12.jpg" class="product-img" alt="Product Image" th:alt="${category.name}">
                     </div>
                     <div class="product-details">
-                        <h5 th:text="${product.name}" class="product-title">عنوان المنتج عنوان المنتج عنوان المنتج</h5>
-                        <p th:text="${product.price}" class="product-price"><strong>$49.99</strong></p>
-                        <p th:if="(${product.price} &lt; ${product.initPrice})" th:text="${product.initPrice}" class="product-discount"><strong>$49.99</strong></p>
+                        <h5 th:text="${category.name}" class="product-title">عنوان المنتج عنوان المنتج عنوان المنتج</h5>
                     </div>
-                    <button th:data-add-to-cart="${product.id}" data-quantity="1" type="button" role="button" class="button-37 add-cart">اضافة الي السلة</button>
                 </div>
             </div>
         </section>

@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.category;
 
+import com.alamin.ecommerce.exception.ResourceAlreadyExistsException;
 import com.alamin.ecommerce.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,12 @@ public class AdminCategoryController {
 
     @GetMapping("/edit/{id}")
     public String updateCategoryPage(@PathVariable Long id, Model model) {
-        model.addAttribute("category", categoryRepository.findById(id).orElseThrow());
+        Optional<Category> category = categoryRepository.findById(id).or(() -> Optional.empty());
+        if (category.isEmpty()) {
+            return "error/404";
+        }
+        model.addAttribute("category", category.get());
+        model.addAttribute("categoryId", id);
         List<Category> categories = categoryRepository.findAll();
         categories.removeIf((item)->{return Objects.equals(item.getId(), id);});
         model.addAttribute("categories", categories);
@@ -64,24 +70,22 @@ public class AdminCategoryController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            Category category = categoryService.createCategory(name, description, parentId, image);
-            if (category == null) {
-                response.put("status", HttpStatus.BAD_REQUEST);
-                response.put("message", "Category already exists");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            } else {
-                response.put("status", HttpStatus.OK);
-                response.put("message", "Category created successfully");
-                response.put("category", category);
-                return ResponseEntity.status(HttpStatus.OK).body(response);
-            }
+            Category category = categoryService.createCategory(name, description, parentId, image);            
+            response.put("status", HttpStatus.OK);
+            response.put("message", "Category created successfully");
+            response.put("category", category);
+            return ResponseEntity.status(HttpStatus.OK).body(response);            
 
+        }catch(ResourceAlreadyExistsException e) {
+            response.put("status", HttpStatus.BAD_REQUEST);
+            response.put("message", "Category already exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         } catch (Exception e) {
             log.error("", e);
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             response.put("message", "Something went wrong: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
+        } 
     }
 
     // Get a category by ID
@@ -109,6 +113,24 @@ public class AdminCategoryController {
         
     }
 
+    @PostMapping("/{id}/image")
+    public ResponseEntity<Object> updateCategoryImage(@PathVariable Long id, @RequestParam MultipartFile image){
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Category category = categoryService.updateCategoryImage(id, image);
+            response.put("status", HttpStatus.OK);
+            response.put("category", category);
+            response.put("message", "successfully");            
+        } catch (Exception e) {
+            log.error("", e);
+            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("message", "Something went wrong: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @GetMapping("/search/{search}")
     public ResponseEntity<Object> searchCategoryByName(@PathVariable String search) {
         Map<String, Object> response = new HashMap<>();
@@ -134,7 +156,7 @@ public class AdminCategoryController {
 
     // Update an existing category
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateCategory(@PathVariable Long id, @RequestBody CategoryDto category) {
+    public ResponseEntity<Object> updateCategory(@PathVariable Long id, @ModelAttribute CategoryDto category) {
         Map<String, Object> response = new HashMap<>();
         try {
             Category updateCategory = categoryService.updateCategory(id, category);

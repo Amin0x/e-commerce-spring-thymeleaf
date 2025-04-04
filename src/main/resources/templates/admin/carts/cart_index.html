@@ -6,76 +6,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex,nofollow">
     <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../static/admin/main.css" th:href="@{/css/admin/main.css}">
+    <link rel="stylesheet" href="../../../static/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css" 
+    th:href="@{/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../../static/admin/main.css" th:href="@{/admin/main.css}">
+    <style>
+        .section-row{
+            margin-bottom: 30px;
+        }
+        .top-links{
+            margin-bottom: 30px;
+        }
+        .top-links .link{
+            display: inline-block;            
+        }
+        .top-links .link a{
+            text-decoration: none;
+            color: beige;
+            background-color: rgb(14, 44, 33);
+            border-radius: 4px;
+            margin-inline-end: 8px;
+            padding-inline: 12px;
+            padding-block: 6px;
+        }
+        .top-links .link a:hover{
+            background-color: rgb(35, 82, 51);
+        }
+    </style>
 </head>
 
 <body>
-    <div class="wrapper">
+    <div class="wrapper">        
         <nav id="sidebar" th:replace="~{admin/fragments/navigation :: navigation}"></nav>
-        <main class="main-content">
-            <section class="stats">
-                <div class="stat-card">
-                    <h3>Users</h3>
-                    <p><span th:text="${cartState1}">250</span></p>
-                    <p><small>this month</small></p>
+        <main class="content">
+            <div class="cart-container">
+                <div class="top-links">
+                    <div class="link"><a href="#">All Carts</a></div>
+                    <div class="link"><a href="#">link</a></div>
+                    <div class="link"><a href="#">link</a></div>
+                    <div class="link"><a href="#">link</a></div>
+                    <div class="link"><a href="#">link</a></div>
                 </div>
-                <div class="stat-card">
-                    <h3>Orders</h3>
-                    <p><span th:text="${cartState2}">120</span></p>
-                    <p><small>this month</small></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Revenue</h3>
-                    <p><span th:text="${cartState3}">$5,000</span></p>
-                    <p><small>this month</small></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Orders</h3>
-                    <p><span th:text="${cartState4}">120</span></p>
-                    <p><small>this month</small></p>
-                </div>
-                <div class="stat-card">
-                    <h3>Revenue</h3>
-                    <p><span th:text="${cartState5}">$5,000</span></p>
-                    <p><small>this month</small></p>
-                </div>
-            </section>
-
-            <section class="d-flex justify-content-between gap-sm">
-                <div th:if="${carts != null}">
-                    <h1>Last 10 Carts</h1>
-                    <div class="carts box" style="list-style-type: none;">
-                        <ul style="list-style-type: none; padding: 0;">
-                            <li th:each="cart : ${carts}" th:if="${cart != null}" style="list-style-type: none; display: flex; flex-wrap: nowrap;">
-                                <p th:text="${cart.id}" style="width: 60%;">123</p>
-                                <p th:text="${cart.total}" style="width: 10%;">4567</p>
-                                <p th:text="${cart.created}" style="width: 10%;">4567</p>
-                                <p th:text="${cart.updated}" style="width: 10%;">4567</p>
-                                <p th:text="${#lists.size(cart.cartItems)}" style="width: 10%;">4567</p>
-                            </li>
-                        </ul>
+                <section class="cart-stats section-row">
+                    <div class="cart-state__card">
+                        <p class="title">Users</p>
+                        <p class="state-val"><span th:text="${cartState1}">250</span></p>
+                        <p class="sub-value"><span>this month</span></p>
                     </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="summary">
-                    <div class="card">
-                        <h2>Total Carts</h2>
-                        <p><span th:text="${totalCarts}"></span></p>
+                    <div class="cart-state__card">
+                        <p class="title">Orders</p>
+                        <p class="state-val"><span th:text="${cartState2}">120</span></p>
+                        <p class="sub-value"><span>this month</span></p>
                     </div>
-                    <div class="card">
-                        <h2>Total Price</h2>
-                        <p><span th:text="${totalPrice}"></span></p>
+                    <div class="cart-state__card">
+                        <p class="title">Revenue</p>
+                        <p class="state-val"><span th:text="${cartState3}">$5,000</span></p>
+                        <p class="sub-value"><span>this month</span></p>
                     </div>
-                </div>
-            </section>
+                    <div class="cart-state__card">
+                        <p class="title">Orders</p>
+                        <p class="state-val"><span th:text="${cartState4}">120</span></p>
+                        <p class="sub-value"><span>this month</span></p>
+                    </div>
+                    <div class="cart-state__card">
+                        <p class="title">Revenue</p>
+                        <p class="state-val"><span th:text="${cartState5}">$5,000</span></p>
+                        <p class="sub-value"><span>this month</span></p>
+                    </div>
+                </section>
+                <section class="section-carts section-row">
+                    <div class="sec-title"><h2 class="title">Last 10 Carts</h2></div>
+                    <div class="carts box">
+                        <div th:if="${carts != null}">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Total</th>
+                                        <th>Created</th>
+                                        <th>Updated</th>
+                                        <th>Items</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="cart : ${carts}" th:if="${cart != null}">
+                                        <td th:text="${cart.id}">123</td>
+                                        <td th:text="${cart.total}">4567</td>
+                                        <td th:text="${cart.created}">4567</td>
+                                        <td th:text="${cart.updated}">4567</td>
+                                        <td th:text="${#lists.size(cart.cartItems)}">4567</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:unless="${carts != null}">
+                            <div class="sec-title"><p class="title">No Carts Found</p></div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section-row" style="margin-bottom: 1.2rem;">
+                    <div class="summary">
+                        <div class="card">
+                            <p class="title">Total Carts</p>
+                            <hr>
+                            <p><span th:text="${totalCarts}"></span></p>
+                        </div>
+                        <div class="card">
+                            <p class="title">Total Price</p>
+                            <hr>
+                            <p><span th:text="${totalPrice}"></span></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </main>
-        
+        <!-- Footer -->
     </div>
-    <!-- Footer -->
     <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+    
 </body>
 </html>
