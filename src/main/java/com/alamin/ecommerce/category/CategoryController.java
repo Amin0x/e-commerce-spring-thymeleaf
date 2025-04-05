@@ -26,8 +26,24 @@ public class CategoryController {
 
     // Get all categories
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.findAll();
+    public String getAllCategories(Model model) {
+        List<Category> categories = categoryRepository.findAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("username", null);
+        model.addAttribute("pageTitle", "Categories - E-commerce");
+        model.addAttribute("pageDescription", "Explore our categories of products.");
+        model.addAttribute("pageKeywords", "categories, products, ecommerce");
+        model.addAttribute("pageUrl", "/categories");
+        model.addAttribute("pageImage", "https://example.com/image.jpg"); // Replace with actual image URL
+        model.addAttribute("pageType", "website"); // or "article" based on your content
+        model.addAttribute("pageAuthor", "Your Name"); // Replace with actual author name
+        model.addAttribute("pagePublishedTime", "2023-10-01T12:00:00Z"); // Replace with actual published time
+        model.addAttribute("pageModifiedTime", "2023-10-01T12:00:00Z"); // Replace with actual modified time
+        model.addAttribute("pageSection", "Categories"); // Replace with actual section name
+        model.addAttribute("pageTags", "categories, products, ecommerce"); // Replace with actual tags
+        model.addAttribute("pageLanguage", "en-US"); // Replace with actual language code
+        model.addAttribute("pageCharset", "UTF-8"); // Replace with actual charset
+        return "public/categories";
     }
 
     // Get a category by ID

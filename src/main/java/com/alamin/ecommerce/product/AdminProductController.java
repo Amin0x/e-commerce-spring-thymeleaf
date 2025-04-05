@@ -27,6 +27,9 @@ public class AdminProductController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @GetMapping("/products/all")
     public String showAllProductPage(
             @RequestParam(defaultValue = "1") int page,
@@ -313,4 +316,6 @@ public class AdminProductController {
         }
         
     }
+
+   
 }

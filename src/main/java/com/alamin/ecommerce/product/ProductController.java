@@ -20,28 +20,28 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products/{id}")
-    public String showProductDetails(@PathVariable Long id, Model model) {
+    public String showProductDetails(@PathVariable String id, Model model) {
 
         if (id == null)
             throw new IllegalArgumentException("null argument");
 
-        Product product = productService.getProductById(id).orElseThrow(()-> new IllegalArgumentException("not fund"));
+        Product product = productService.getProductBySlug(id).orElseThrow(()-> new IllegalArgumentException("not fund"));
         List<Product> similarProducts = productService.getSimilarProducts(product);
         double percent = Math.ceil((double) product.getPrice() / product.getBasePrice());
 
         List<ProductReview> productReviews;
-        productReviews = productService.getProductReviews(id);
+        productReviews = productService.getProductReviews(product.getId());
 
         List<Product> peopleSeeProducts = Collections.emptyList();
 
-        long product5StarReviewsCount = productService.getProduct5StarReviewsCount(id);
-        long product4StarReviewsCount = productService.getProduct4StarReviewsCount(id);
-        long product3StarReviewsCount = productService.getProduct3StarReviewsCount(id);
-        long product2StarReviewsCount = productService.getProduct2StarReviewsCount(id);
-        long product1StarReviewsCount = productService.getProduct1StarReviewsCount(id);
+        long product5StarReviewsCount = productService.getProduct5StarReviewsCount(product.getId());
+        long product4StarReviewsCount = productService.getProduct4StarReviewsCount(product.getId());
+        long product3StarReviewsCount = productService.getProduct3StarReviewsCount(product.getId());
+        long product2StarReviewsCount = productService.getProduct2StarReviewsCount(product.getId());
+        long product1StarReviewsCount = productService.getProduct1StarReviewsCount(product.getId());
 
-        double reviewAvg = productService.getProductReviewAvg(id);
-        long reviewsCount = productService.getReviewsCount(id);
+        double reviewAvg = productService.getProductReviewAvg(product.getId());
+        long reviewsCount = productService.getReviewsCount(product.getId());
 
         model.addAttribute("product", product);
         model.addAttribute("percent", percent);

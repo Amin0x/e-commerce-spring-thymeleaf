@@ -12,6 +12,7 @@ public class ProductDto {
     private Integer basePrice;
     private Integer priceUSD;
     private String sku;
+    private String slug;
     private Integer stock;
     private Integer totalSold;
     private Integer viewCount;
@@ -214,5 +215,13 @@ public class ProductDto {
 
     public void setPercent(float percent) {
         this.percent = percent;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 }

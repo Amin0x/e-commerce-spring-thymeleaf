@@ -45,25 +45,6 @@ public interface ProductService {
 
     Product createProduct(ProductForm pf);
 
-    default String createSlug(String name) {
-        String slug = name.replaceAll("[^a-zA-Z0-9\\s]", "").replaceAll("\\s+", "-").toLowerCase();
-        slug = slug.replaceAll(" ", "-");
-        slug = slug.replaceAll("--", "-");
-        slug = slug.replaceAll("-+", "-");
-        slug = slug.replaceAll("-$", "");
-        slug = slug.replaceAll("^-", "");
-        slug = slug.replaceAll("_$", "");
-        return slug;
-    }
-
-    default String generateSku() {
-        // Generate a unique SKU using a combination of the current timestamp and a random string
-        // You can customize this logic to fit your requirements
-        String timestamp = String.valueOf(System.currentTimeMillis());
-        String randomString = String.valueOf((int) (Math.random() * 10000)); // Random number between 0 and 9999
-        return timestamp + "-" + randomString;
-    }
-
     // todo delete old image file
     Product updatePrimaryImage(Long id, MultipartFile file);
 
@@ -112,4 +93,6 @@ public interface ProductService {
     long getReviewsCount(Long id);
 
     long getShipping(Cart cart);
+
+    Optional<Product> getProductBySlug(String id);
 }

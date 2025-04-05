@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -76,4 +77,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
         @Query("SELECT p FROM Product p ORDER BY p.created, RAND() DESC")
         List<Product> getLastAddedProductsRandom(Pageable pageable);
+
+        Optional<Product> findBySlug(String id);
 }

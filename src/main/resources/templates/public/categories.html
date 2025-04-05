@@ -20,13 +20,13 @@
     </header>    
     <main class="content all-products">
         <div class="title">
-            <h1 th:text="${category.name}">جميع الاصناف</h1>
+            <h1>جميع الاصناف</h1>
         </div>
         <section class="flex-row">
             <div th:each="category : ${categories}" class="product-card">
                 <div class="product">
                     <div class="image">                        
-                        <img th:src="@{${category.image}" src="../../static/public/imgs/img12.jpg" class="product-img" alt="Product Image" th:alt="${category.name}">
+                        <img th:src="${category.imageUrl}" src="../../static/public/imgs/img12.jpg" class="product-img" alt="Product Image" th:alt="${category.name}">
                     </div>
                     <div class="product-details">
                         <h5 th:text="${category.name}" class="product-title">عنوان المنتج عنوان المنتج عنوان المنتج</h5>

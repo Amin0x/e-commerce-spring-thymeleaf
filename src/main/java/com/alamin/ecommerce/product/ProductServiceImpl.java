@@ -88,6 +88,7 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setStock(updatedProduct.getStock());
         existingProduct.setActive(updatedProduct.getActive());
         existingProduct.setEnabled(updatedProduct.getEnabled());
+        existingProduct.setSlug(createSlug(updatedProduct.getName()));
 
         // Save the updated product
         return productRepository.save(existingProduct);
@@ -222,7 +223,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = new Product();
         product.setActive(pf.active());
-        product.setSku(this.generateSku());
+        product.setSku(generateSku());
         product.setStock(pf.stock());
         product.setCategory(category);
         product.setEnabled(pf.enabled());
@@ -237,7 +238,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCreated(LocalDateTime.now());
         product.setDeleted(null);
         product.setImage(null);
-        product.setSlug(this.createSlug(product.getName()));
+        product.setSlug(createSlug(product.getName()));
 
         for (var img: pf.images()){
             String fn = fileUploadService.uploadFile(img);
@@ -255,7 +256,9 @@ public class ProductServiceImpl implements ProductService {
     // todo delete old image file
     @Override
     public Product updatePrimaryImage(Long id, MultipartFile file) {
-        Product product = productRepository.findById(id).orElseThrow();
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("product not with id:" + id));
+       
         String fn = fileUploadService.uploadFile(file);
         product.setImage(fn);
         return save(product);
@@ -387,6 +390,41 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public long getShipping(Cart cart) {
         return 0;
+    }
+
+    public static String createSlug(String name) {
+        String slug = name.replaceAll("[^\\p{L}\\p{N}\\s]", "") // Allow Unicode letters and numbers
+                          .replaceAll("\\s+", "-") // Replace spaces with hyphens
+                          .replaceAll(" ", "-") // Replace spaces with hyphens
+                          .replaceAll("[-]+", "-") // Replace multiple hyphens with a single hyphen
+                            .replaceAll("[-]+$", "") // Remove trailing hyphens
+                            .replaceAll("[-]+^", "") // Remove leading hyphens
+                            .replaceAll("[_]+$", "") // Remove trailing underscores
+                            .replaceAll("[_]+^", "") // Remove leading underscores
+                          .toLowerCase();
+        // Ensure the slug is unique by appending a random number if necessary
+        // You can implement a check against your database to ensure uniqueness
+        // For simplicity, this example just appends a random number
+        // In a real application, you would check against existing slugs in the database
+        String randomNumber = String.valueOf((int) (Math.random() * 10000)); // Random number between 0 and 9999
+        return slug + "-" + randomNumber;
+    }
+
+    public static String generateSku() {
+        // Generate a unique SKU using a combination of the current timestamp and a random string
+        // You can customize this logic to fit your requirements
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String randomString = String.valueOf((int) (Math.random() * 10000)); // Random number between 0 and 9999
+        return timestamp + "-" + randomString;
+    }
+
+    @Override
+    public Optional<Product> getProductBySlug(String id) {
+        if (id == null || id.isEmpty()) {
+            throw new ResourceNotFoundException("bad reguest param");
+        }
+
+        return productRepository.findBySlug(id);
     }
 
 }
