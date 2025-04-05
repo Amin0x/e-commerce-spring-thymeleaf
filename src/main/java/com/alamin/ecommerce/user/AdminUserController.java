@@ -13,8 +13,6 @@ import java.util.ArrayList;
 @RequestMapping("/admin/users")
 public class AdminUserController {
 
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;

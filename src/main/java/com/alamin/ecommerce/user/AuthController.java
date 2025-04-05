@@ -64,7 +64,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> processSignup(@Valid @RequestBody SignupForm signupForm, Model model, BindingResult bindResult) {
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupForm signupForm, Model model, BindingResult bindResult) {
         Map<String,Object> body = new HashMap<>();
         User user = new User();
         user.setEmail(signupForm.getEmail());
@@ -76,8 +76,7 @@ public class AuthController {
            //bindResult.addError(new ObjectError("error", "Error creating user"));
            
            body.put("status", "failed");
-           body.put("error", "Error creating user");
-           
+           body.put("error", "Error creating user");           
            return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
         }
         
