@@ -63,16 +63,24 @@ public class UserService {
     private String saveFileFromJson(byte[] bytes, String fileName) throws IOException {
         Path path = null;
         String strPath = "uploads/" + fileName;
+
+        // Check file size before saving
+        if (bytes.length > 5 * 1024 * 1024) { // 5MB
+            throw new IOException("File size exceeds the maximum limit of 5MB.");
+        }
+        
         try {
             // Save the file to a directory
             path = Paths.get(strPath);
             Files.write(path, bytes);
         } catch (IOException e) {
             log.error("Error saving file " + fileName, e);
-            throw e;
+            throw new IOException("Error saving file: " + fileName);
         }
+
         return strPath;
     }
+
 
 
 
