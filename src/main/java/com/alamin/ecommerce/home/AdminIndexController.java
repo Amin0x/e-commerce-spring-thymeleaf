@@ -2,7 +2,7 @@ package com.alamin.ecommerce.home;
 
 import com.alamin.ecommerce.order.OrderService;
 import com.alamin.ecommerce.user.User;
-import com.alamin.ecommerce.user.UserService;
+import com.alamin.ecommerce.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ public class AdminIndexController {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping
     public String index(@RequestParam(name = "dv", defaultValue = "m") String type, Model model){

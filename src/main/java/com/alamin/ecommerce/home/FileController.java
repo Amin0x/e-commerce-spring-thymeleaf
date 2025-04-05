@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.home;
 
+import com.alamin.ecommerce.config.FileUploadService;
 import com.alamin.ecommerce.product.Product;
 import com.alamin.ecommerce.product.ProductImage;
 import com.alamin.ecommerce.product.ProductService;
@@ -12,6 +13,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -19,14 +23,20 @@ import java.util.UUID;
 @RestController
 public class FileController {
 
-    private ProductService productService;
+    private final ProductService productService;
+    private final FileUploadService fileUploadService;
+
+    public FileController(ProductService productService, FileUploadService fileUploadService) {
+        this.productService = productService;
+        this.fileUploadService = fileUploadService;
+    }
 
     @PostMapping("/admin/upload")
     public Map<String, String> uploadFile(@RequestBody MultipartFile file){
         if(file.getSize() > 5000 * 1024)
             throw new RuntimeException("file size exceed allowed size");
 
-        String name = saveFile(file);
+        String name = fileUploadService.saveFile(file);
         System.out.println("file saved successful with name: " + name);
         Map<String, String> res = new HashMap<>();
         res.put("url",  name);
@@ -73,27 +83,5 @@ public class FileController {
         }
     }
 
-    public static String saveFile(MultipartFile file) {
-        if (file.isEmpty()) {
-            System.out.println("File is empty. Please upload a valid file.");
-            return null;
-        }
-        String fileName = file.getOriginalFilename();
-        String uploadDir = "C:\\uploads\\";
-        String fileExtension = "";
-        if (fileName != null && fileName.contains(".")) {
-            fileExtension = fileName.substring(fileName.lastIndexOf("."));
-        }
 
-        fileName = UUID.randomUUID().toString().replace("-", "") + fileExtension;
-        try {
-            File destinationFile = new File(uploadDir + fileName);
-            file.transferTo(destinationFile);
-            System.out.println("File saved successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Failed to save the file.");
-        }
-        return fileName;
-    }
 }

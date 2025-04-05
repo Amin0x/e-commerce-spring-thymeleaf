@@ -3,7 +3,7 @@ package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.product.Product;
 import com.alamin.ecommerce.user.User;
-import com.alamin.ecommerce.user.UserService;
+import com.alamin.ecommerce.user.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class CartServiceImpl implements CartService {
     private CartItemRepository cartItemRepository;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Override
     public Optional<Cart> getCartById(Long id) {
