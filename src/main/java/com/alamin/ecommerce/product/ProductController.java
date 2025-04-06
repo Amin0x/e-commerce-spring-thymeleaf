@@ -1,8 +1,10 @@
 package com.alamin.ecommerce.product;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +18,11 @@ import java.util.Optional;
 @Controller
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping("/products/{id}")
     public String showProductDetails(@PathVariable String id, Model model) {
@@ -75,22 +80,34 @@ public class ProductController {
    		return "public/products_bestselling";
 	}
 
-    // Get all products
+    // Get all products with sorting and pagination
     @GetMapping("/products")
-    public String getAllProducts(@RequestParam(required = false) String category,  Model model) {
+    public String getAllProducts(
+            @RequestParam(required = false) String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "orderDate") String sortBy,
+            @RequestParam(defaultValue = "true") boolean asc,
+            Model model) {
 
-        List<Product> products = null;
+        Page<Product> products;
+        PageRequest pageRequest = PageRequest.of(page, size, asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending());
 
-        if (category == null || category.isEmpty())
-            products = productService.getRandomProducts( 20);
+        if (page > 0 && size > 0) {
+            products = productService.getAllProducts(pageRequest);
+            
+        } else {
+            products = productService.getAllProducts(PageRequest.of(0, 10, Sort.by("orderDate").descending()));
+        }
 
-        model.addAttribute("products", products);
-	    model.addAttribute("pageDescription", "");
+        model.addAttribute("products", products.getContent());
+        model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
         return "public/products";
     }
+
 
     @GetMapping("/api/products/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable Long id) {

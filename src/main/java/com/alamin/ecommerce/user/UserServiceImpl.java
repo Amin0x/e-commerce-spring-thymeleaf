@@ -23,21 +23,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-
-        List<User> users = userRepository.findAll();
+        final List<User> users = userRepository.findAll();
         return users;
     }
 
     @Override
     public Page<User> getAllUsers(int page, int size) {
-        Page<User> users = userRepository.findAll(PageRequest.of(page, size));
+        final Page<User> users = userRepository.findAll(PageRequest.of(page, size));
         return users;
     }
 
     @Override
     public Optional<User> getUserById(Long id) {
         if (id == null)
-            return Optional.empty();
+            throw new IllegalArgumentException("User ID cannot be null");
 
         return userRepository.findById(id);
     }
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getUserByUUID(String id) {
         if (id == null)
-            return Optional.empty();
+            throw new IllegalArgumentException("User UUID cannot be null");
 
         return userRepository.getUserByUuid(id);
     }
@@ -66,6 +65,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getLastUsers(int size) {
+        if (size <= 0)
+            throw new IllegalArgumentException("Size must be greater than 0");
+        if (size > 100)
+            throw new IllegalArgumentException("Size must be less than or equal to 100");
+
         return userRepository.getLastCreatedUsers(Pageable.ofSize(size));
     }
 
@@ -76,11 +80,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> getUserByName(String name) {
+        if (name == null)
+            throw new IllegalArgumentException("User name cannot be null");
+        if (name.isEmpty())
+            throw new IllegalArgumentException("User name cannot be empty");
+
         return userRepository.getUserByUsername(name);
     }
 
     @Override
     public User createUser(User user) {
+        validateUser(user);
+
         User createdUser = new User();
         createdUser.setFirstName(user.getFirstName());
         createdUser.setLastName(user.getLastName());
@@ -94,9 +105,35 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(createdUser);
     }
 
+    private static void validateUser(User user) {
+        if (user == null)
+            throw new IllegalArgumentException("User cannot be null");
+        if (user.getFirstName() == null || user.getFirstName().isEmpty())
+            throw new IllegalArgumentException("User first name cannot be null or empty");
+        if (user.getLastName() == null || user.getLastName().isEmpty())
+            throw new IllegalArgumentException("User last name cannot be null or empty");
+        if (user.getUsername() == null || user.getUsername().isEmpty())
+            throw new IllegalArgumentException("User username cannot be null or empty");
+        if (user.getPassword() == null || user.getPassword().isEmpty())
+            throw new IllegalArgumentException("User password cannot be null or empty");
+        if (user.getEmail() == null || user.getEmail().isEmpty())
+            throw new IllegalArgumentException("User email cannot be null or empty");
+        if (user.getBirthDate() == null)
+            throw new IllegalArgumentException("User birth date cannot be null");
+        if (user.getBirthDate().isAfter(java.time.LocalDate.now()))
+            throw new IllegalArgumentException("User birth date cannot be in the future");
+        if (user.getBirthDate().isBefore(java.time.LocalDate.of(1900, 1, 1)))
+            throw new IllegalArgumentException("User birth date cannot be before 1900");
+        if (user.getBirthDate().isAfter(java.time.LocalDate.now().minusYears(18)))
+            throw new IllegalArgumentException("User must be at least 18 years old");
+        if (user.getBirthDate().isBefore(java.time.LocalDate.now().minusYears(100)))
+            throw new IllegalArgumentException("User birth date cannot be more than 100 years in the past");
+    }
+
     @Override
     public User updateUser(Long id, User user) {
-        User upatedUser = getUserById(id).orElseThrow();
+        User upatedUser = getUserById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        validateUser(user);
         upatedUser.setFirstName(user.getFirstName());
         upatedUser.setLastName(user.getLastName());
         upatedUser.setUsername(user.getUsername());

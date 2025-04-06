@@ -4,16 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/address")
 public class AddressController {
     @Autowired
-    private CityRepository cityRepository;
-    @Autowired
-    private CountryRepository countryRepository;
-    @Autowired
-    private StateRepository stateRepository;
+    private final CityRepository cityRepository;
+    private final CountryRepository countryRepository;
+    private final StateRepository stateRepository;
+
+    public AddressController(CityRepository cityRepository, CountryRepository countryRepository, StateRepository stateRepository) {
+        this.cityRepository = cityRepository;
+        this.countryRepository = countryRepository;
+        this.stateRepository = stateRepository;
+    }
 
     @GetMapping("/city/{id}")
     public City getCityById(@PathVariable int id) {
@@ -42,9 +47,13 @@ public class AddressController {
         return cityRepository.findAll();
     }
 
-    @GetMapping("/city/state/{state}")
-    public List<City> getCityByState(State state) {
-        return cityRepository.findByState(state);
+    @GetMapping("/city/state/{stateId}")
+    public List<City> getCityByState(@PathVariable Integer stateId) {
+        Optional<State> stateOptional = stateRepository.findById(stateId);
+        if (stateOptional.isEmpty()) {
+            throw new IllegalArgumentException("State not found with id: " + stateId);
+        }
+        return cityRepository.findByState(stateOptional.get());
     }
 
     @PostMapping("/city/delete/{id}")

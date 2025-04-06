@@ -22,32 +22,32 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class AdminProductController {
 
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private CategoryService categoryService;
+    private final ProductService productService;
+    private final CategoryService categoryService;
 
-    @Autowired
-    private ProductRepository productRepository;
+    public AdminProductController(ProductService productService, CategoryService categoryService) {
+        this.productService = productService;
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("/products/all")
     public String showAllProductPage(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "0") int sort,
-            @RequestParam(defaultValue = "0") int dir,
+            @RequestParam(defaultValue = "name") String sort,
+            @RequestParam(defaultValue = "true") boolean asc,
             Model model) {
 
         if (page < 1) page = 1;
         if (size < 1) size = 10;
-        Page<Product> allProducts = productService.getAllProducts(page, size);
+        Page<Product> allProducts = productService.getAllProducts(page, size, sort, asc);
         model.addAttribute("products", allProducts);
 
         model.addAttribute("totalPages", allProducts.getTotalPages());
         model.addAttribute("currentPage", page);
         model.addAttribute("size", size);
-        model.addAttribute("sortField", sort);
-        model.addAttribute("sortDirection", dir);
+        model.addAttribute("sort", sort);
+        model.addAttribute("asc", asc);
 
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
@@ -96,8 +96,8 @@ public class AdminProductController {
 
     // Get all products api
     @GetMapping("/api/products")
-	public ResponseEntity<Page<Product>> getAllProducts(int page, int size) {
-   		Page<Product> products = productService.findAll(page, size);
+	public ResponseEntity<Page<Product>> getAllProducts(int page, int size, String sort, boolean asc) {
+   		Page<Product> products = productService.getAllProducts(page, size, sort, asc);
    		return ResponseEntity.ok(products);
 	}
 

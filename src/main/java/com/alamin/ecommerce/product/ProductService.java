@@ -2,6 +2,7 @@ package com.alamin.ecommerce.product;
 
 import com.alamin.ecommerce.cart.Cart;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface ProductService {
 
     List<Product> getNewArrivalProducts();
 
-    Page<Product> getAllProducts(int page, int size);
+    Page<Product> getAllProducts(PageRequest pageable);
 
     // Get product by ID
     Optional<Product> getProductById(Long id);
@@ -27,7 +28,7 @@ public interface ProductService {
 
     Product save(Product product);
 
-    Page<Product> findAll(int page, int size);
+    Page<Product> getAllProducts(int page, int size, String sortBy, boolean asc);
 
     List<Product> findByCategory(String category);
 

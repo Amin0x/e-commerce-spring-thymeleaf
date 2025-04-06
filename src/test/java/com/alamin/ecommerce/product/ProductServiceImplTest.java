@@ -1,10 +1,7 @@
 package com.alamin.ecommerce.product;
 
-import com.alamin.ecommerce.cart.Cart;
-import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.category.CategoryService;
 import com.alamin.ecommerce.config.FileUploadService;
-import com.alamin.ecommerce.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -12,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
-import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,10 +71,13 @@ class ProductServiceImplTest {
     void testGetAllProducts() {
         int page = 1;
         int size = 10;
+        String sortBy = "name";
+        boolean ascending = true;
+
         Page<Product> mockPage = new PageImpl<>(List.of(new Product(), new Product()));
         when(productRepository.findAll(any(Pageable.class))).thenReturn(mockPage);
 
-        Page<Product> result = productService.getAllProducts(page, size);
+        Page<Product> result = productService.getAllProducts(page, size, sortBy, ascending);
 
         assertEquals(mockPage, result);
         verify(productRepository, times(1)).findAll(any(Pageable.class));
@@ -121,8 +121,8 @@ class ProductServiceImplTest {
 
         productService.deleteProduct(productId);
 
-        assertFalse(existingProduct.isActive());
-        assertFalse(existingProduct.isEnabled());
+        assertFalse(existingProduct.getActive());
+        assertFalse(existingProduct.getEnabled());
         assertNotNull(existingProduct.getDeleted());
         verify(productRepository, times(1)).findById(productId);
         verify(productRepository, times(1)).save(existingProduct);
@@ -139,7 +139,7 @@ class ProductServiceImplTest {
         List<ProductImage> result = productService.uploadImage(file, productId);
 
         assertEquals(1, result.size());
-        assertEquals("uploaded-file.jpg", result.get(0).getFileName());
+        assertEquals("uploaded-file.jpg", result.get(0).getImage());
         verify(productRepository, times(1)).findById(productId);
         verify(fileUploadService, times(1)).uploadFile(file);
     }

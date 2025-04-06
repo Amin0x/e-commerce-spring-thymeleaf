@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add City Form</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        *{
+            box-sizing: border-box;
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center;
+            color: #333;
+        }
+        label, input, select {
+            display: inline-block;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="text"]:focus, select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        #cityError, #stateError {
+            color: red;
+        }
+        .am-form-group{
+            margin-bottom: 15px;
+        }
+        .am-city-card {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .button-submit {
+            margin-top: 20px;
+        }
+
+        .button-submit button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-submit button:hover {
+            background-color: #45a049;
+        }
+        .button-30 {
+            width: 100px;
+        }
+        .popover {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="am-city-card">
+        <h1>Add a New City</h1>
+        <form id="cityForm" method="POST">
+            <div class="am-form-group">
+                <label for="city">City Name:</label>
+                <input type="text" id="city" name="city" required>
+                <div id="cityError"></div>
+            </div>
+            <div class="am-form-group">
+                <label for="state">Select State:</label>
+                <select id="state" name="state" required>
+                    <option value="" disabled selected>Select a State</option>
+                    <option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+                </select>
+                <div id="stateError"></div>
+            </div>
+            <div class="button-submit">
+                <button type="submit" class="button-30">Add City</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#cityForm').on('submit', function(e) {
+                e.preventDefault();
+
+                const formData = {
+                    city: $('#city').val(),
+                    state: $('#state').val()
+                };
+                $.ajax({
+                    url: '/submit-city',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        alert('City added successfully!');
+                        const popover = $('<div>')
+                            .addClass('popover')
+                            .text('City added successfully!');
+                        $('body').append(popover);
+                        setTimeout(() => popover.fadeOut(500, () => popover.remove()), 3000);
+                        $('#cityForm')[0].reset();
+                    },
+                    error: function(error) {
+                        alert('Error adding city!');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

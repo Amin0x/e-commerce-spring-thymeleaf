@@ -5,7 +5,7 @@ import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.category.CategoryService;
 import com.alamin.ecommerce.config.FileUploadService;
 import com.alamin.ecommerce.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,23 +19,23 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+    private final ProductImageRepository productImageRepository;
+    private final CategoryService categoryService;
+    private final FileUploadService fileUploadService;
+    private final ProductReviewRepository productReviewRepository;
+    private final ProductPriceRepository productPriceRepository;
 
-    @Autowired
-    private ProductImageRepository productImageRepository;
-
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
-    private FileUploadService fileUploadService;
-
-    @Autowired
-    private ProductReviewRepository productReviewRepository;
-
-    @Autowired
-    private ProductPriceRepository productPriceRepository;
+    public ProductServiceImpl(ProductRepository productRepository, ProductImageRepository productImageRepository,
+                              CategoryService categoryService, FileUploadService fileUploadService,
+                              ProductReviewRepository productReviewRepository, ProductPriceRepository productPriceRepository) {
+        this.productRepository = productRepository;
+        this.productImageRepository = productImageRepository;
+        this.categoryService = categoryService;
+        this.fileUploadService = fileUploadService;
+        this.productReviewRepository = productReviewRepository;
+        this.productPriceRepository = productPriceRepository;
+    }
 
     @Override
     public List<Product> getRandomProductsByCategory(Long category, int size) {
@@ -52,14 +52,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getAllProducts(int page, int size) {
-        if (page < 1)
-            page = 1;
-
-        if (size < 10)
-            size = 10;
-
-        Pageable pageable = PageRequest.of(page - 1, size);
+    public Page<Product> getAllProducts(PageRequest pageable) {
+        if (pageable == null) throw new ResourceNotFoundException("null pageable object");
         return productRepository.findAll(pageable);
     }
 
@@ -147,8 +141,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findAll(int page, int size) {
-        return getAllProducts(page, size);
+    public Page<Product> getAllProducts(int page, int size, String sortBy, boolean asc) {
+        if (page < 0 || size < 1) throw new IllegalArgumentException("page size :" + size + " is 0 or negative");
+        if (page == 0) return getAllProducts(PageRequest.of(0, size, Sort.by("orderDate").descending()));
+        return getAllProducts(PageRequest.of(page, size, Sort.by("orderDate").descending()));
     }
 
     @Override
