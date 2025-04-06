@@ -82,9 +82,33 @@
         <h1>Add a New City</h1>
         <form id="cityForm" method="POST">
             <div class="am-form-group">
-                <label for="city">City Name:</label>
-                <input type="text" id="city" name="city" required>
+                <label for="name">City Name:</label>
+                <input type="text" id="nmae" name="nmae" required>
                 <div id="cityError"></div>
+            </div>
+            <div class="am-form-group">
+                <label for="nameAr">City Name (Arabic):</label>
+                <input type="text" id="nameAr" name="nameAr" required>
+                <div id="cityArError"></div>
+            </div>
+            <div class="am-form-group">
+                <label for="estimatedDelivery">Estimated Delivery:</label>
+                <input type="text" id="estimatedDelivery" name="estimatedDelivery" required>
+                <div id="estimatedDeliveryError"></div>
+            </div>
+            <div class="am-form-group">
+                <label for="deliveryPrice">Delivery Price:</label>
+                <input type="text" id="deliveryPrice" name="deliveryPrice" required>
+                <div id="deliveryPriceError"></div>
+            </div>
+            <div class="am-form-group">
+                <label for="deliveryPriority">Delivery Priority:</label>
+                <select id="deliveryPriority" name="deliveryPriority" required>
+                    <option value="Normal" selected>Normal</option>
+                    <option value="High">High</option>
+                    <option value="Low">Low</option>
+                </select>
+                <div id="deliveryPriorityError"></div>
             </div>
             <div class="am-form-group">
                 <label for="state">Select State:</label>
@@ -110,8 +134,8 @@
                     state: $('#state').val()
                 };
                 $.ajax({
-                    url: '/submit-city',
-                    type: 'POST',
+                    url: '/admin/adress/city/create',
+                    method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
                     success: function(response) {

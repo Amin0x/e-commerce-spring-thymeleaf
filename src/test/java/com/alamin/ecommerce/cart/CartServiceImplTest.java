@@ -6,6 +6,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.alamin.ecommerce.product.Product;
 import com.alamin.ecommerce.user.User;
+import com.alamin.ecommerce.user.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,6 +22,9 @@ class CartServiceImplTest {
 
     @InjectMocks
     private CartServiceImpl cartService;
+
+    @Mock
+    private UserService userService;
 
     public CartServiceImplTest() {
         MockitoAnnotations.openMocks(this);

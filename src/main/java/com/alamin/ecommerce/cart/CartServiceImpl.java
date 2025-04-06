@@ -103,13 +103,22 @@ public class CartServiceImpl implements CartService {
         Cart cart = null;
 
         if (principal != null) {
-            user = userService.getUserByName(principal.getName()).orElseThrow();
-        }
+            user = userService.getUserByName(principal.getName())
+                .orElseThrow( () -> new RuntimeException("User not found"));
 
-        if (user == null)
+            cart = cartRepository.findByUserId(user.getUsername());
+            if (cart == null) {
+                cart = new Cart();
+                cart.setUserId(user.getUsername());
+                cart.setSessionId(session.getId());
+                cart = cartRepository.save(cart);
+            }
+        } else {
+            if (session == null) {
+                throw new RuntimeException("Session not found");
+            }
             cart = cartRepository.getCartBySession(session.getId());
-        else
-            cart = null;
+        }
 
 
         List<CartItem> cartItems = cart.getCartItems();

@@ -1,21 +1,18 @@
+package com.alamin.ecommerce.category;
 import com.alamin.ecommerce.config.FileUploadService;
-import com.alamin.ecommerce.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.multipart.MultipartFile;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-package com.alamin.ecommerce.category;
 
 
 
@@ -88,7 +85,7 @@ class CategoryServiceImplTest {
     @Test
     void testUpdateCategory() {
         Category existingCategory = new Category();
-        CategoryDto categoryDto = new CategoryDto("name", "description", "1", true);
+        CategoryDto categoryDto = new CategoryDto();
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(existingCategory));
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(new Category()));
         when(categoryRepository.save(any(Category.class))).thenAnswer(invocation -> invocation.getArgument(0));

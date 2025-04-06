@@ -1,22 +1,17 @@
+package com.alamin.ecommerce.order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
-package com.alamin.ecommerce.order;
-
-
-
 
 class OrderServiceImplTest {
 
@@ -27,7 +22,7 @@ class OrderServiceImplTest {
     void setUp() {
         orderRepository = Mockito.mock(OrderRepository.class);
         orderService = new OrderServiceImpl();
-        orderService.orderRepository = orderRepository;
+        
     }
 
     @Test
@@ -39,7 +34,21 @@ class OrderServiceImplTest {
 
     @Test
     void testCreateOrder() {
-        OrderDto orderDto = new OrderDto("John", "Doe");
+        OrderDto orderDto = new OrderDto(            
+            "Credit Card", // paymentMethod
+            "1234567890123456", // cardNumber
+            "123", // ccv
+            "12/25", // cardDate
+            "John Doe", // cardHolder
+            "FedEx", // carrier
+            "123 Main St", // street
+            "New York", // city
+            "NY", // state
+            "USA", // country
+            "10001", // postalCode
+            "John", // firstName
+            "Doe" // lastName
+        );
         Order savedOrder = new Order();
         when(orderRepository.save(any(Order.class))).thenReturn(savedOrder);
 
@@ -86,12 +95,12 @@ class OrderServiceImplTest {
     @Test
     void testUpdateOrder() {
         Order existingOrder = new Order();
-        existingOrder.setOrderDate(LocalDate.now());
+        existingOrder.setOrderDate(LocalDateTime.now());
         when(orderRepository.findById(1L)).thenReturn(Optional.of(existingOrder));
         when(orderRepository.save(any(Order.class))).thenReturn(existingOrder);
 
         Order updatedOrder = new Order();
-        updatedOrder.setOrderDate(LocalDate.now().plusDays(1));
+        updatedOrder.setOrderDate(LocalDateTime.now().plusDays(1));
         Order result = orderService.updateOrder(1L, updatedOrder);
 
         assertNotNull(result);

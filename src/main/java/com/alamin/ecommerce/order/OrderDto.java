@@ -1,7 +1,5 @@
 package com.alamin.ecommerce.order;
 
-import jakarta.validation.constraints.NotEmpty;
-
 public record OrderDto(
         String paymentMethod,
         String cardNumber,

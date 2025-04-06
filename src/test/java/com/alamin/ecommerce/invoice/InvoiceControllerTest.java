@@ -1,3 +1,4 @@
+package com.alamin.ecommerce.invoice;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -10,7 +11,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-package com.alamin.ecommerce.invoice;
 
 
 

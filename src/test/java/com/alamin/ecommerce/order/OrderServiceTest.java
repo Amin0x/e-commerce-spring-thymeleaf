@@ -1,9 +1,9 @@
+package com.alamin.ecommerce.order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +11,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-package com.alamin.ecommerce.order;
 
 
 
@@ -26,7 +25,21 @@ class OrderServiceTest {
     void setUp() {
         orderService = Mockito.mock(OrderService.class);
         mockOrder = new Order(); // Assuming Order is a concrete class
-        mockOrderDto = new OrderDto(); // Assuming OrderDto is a concrete class
+        mockOrderDto = new OrderDto(
+            "Credit Card",
+            "1234567890123456",
+            "123",
+            "12/25",
+            "John Doe",
+            "FedEx",
+            "123 Main St",
+            "Springfield",
+            "IL",
+            "USA",
+            "62704",
+            "John",
+            "Doe"
+        );
     }
 
     @Test
@@ -54,13 +67,13 @@ class OrderServiceTest {
     @Test
     void testGetAllOrders() {
         Page<Order> mockPage = new PageImpl<>(Arrays.asList(mockOrder));
-        when(orderService.getAllOrders(0, 10, 1, true)).thenReturn(mockPage);
+        when(orderService.getAllOrders(0, 10, 1, true, LocalDate.now(), LocalDate.now())).thenReturn(mockPage);
 
-        Page<Order> orders = orderService.getAllOrders(0, 10, 1, true);
+        Page<Order> orders = orderService.getAllOrders(0, 10, 1, true, LocalDate.now(), LocalDate.now());
 
         assertNotNull(orders);
         assertEquals(1, orders.getTotalElements());
-        verify(orderService, times(1)).getAllOrders(0, 10, 1, true);
+        verify(orderService, times(1)).getAllOrders(0, 10, 1, true, LocalDate.now(), LocalDate.now());
     }
 
     @Test

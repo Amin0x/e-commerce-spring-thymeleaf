@@ -1,4 +1,5 @@
 package com.alamin.ecommerce.home;
+import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.category.CategoryService;
 import com.alamin.ecommerce.product.Product;
 import com.alamin.ecommerce.product.ProductDto;
@@ -10,10 +11,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -42,7 +43,7 @@ class HomeControllerTest {
         List<Product> mockProducts = Collections.singletonList(new Product());
         List<ProductDto> mockProductDtos = Collections.singletonList(new ProductDto(mockProducts.get(0)));
         List<Product> mockNewProducts = Collections.singletonList(new Product());
-        List<String> mockCategories = Arrays.asList("Category1", "Category2");
+        List<Category> mockCategories = Arrays.asList(new Category(), new Category());
 
         when(productService.getRandomProducts(12)).thenReturn(mockProducts);
         when(productService.getLastAddedProductsRandom(12)).thenReturn(mockNewProducts);
