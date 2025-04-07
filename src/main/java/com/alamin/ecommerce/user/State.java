@@ -8,7 +8,7 @@ import java.util.List;
 public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
     private String nameAr;
 
@@ -22,17 +22,17 @@ public class State {
     public State() {
     }
 
-    public State(int id, String name, Country country) {
+    public State(Integer id, String name, Country country) {
         this.id = id;
         this.name = name;
         this.country = country;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

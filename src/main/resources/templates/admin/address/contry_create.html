@@ -81,19 +81,18 @@
     <div class="am-city-card">
         <h1>Add a New City</h1>
         <form id="cityForm" method="POST">
+            <input type="hidden" name="id" th:value="contry?.id">
             <div class="am-form-group">
-                <label for="city">City Name:</label>
-                <input type="text" id="city" name="city" required>
-                <div id="cityError"></div>
+                <label for="name">City Name:</label>
+                <input type="text" id="name" name="name" required>
+                <div id="nameError"></div>
             </div>
             <div class="am-form-group">
-                <label for="state">Select State:</label>
-                <select id="state" name="state" required>
-                    <option value="" disabled selected>Select a State</option>
-                    <option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
-                </select>
-                <div id="stateError"></div>
+                <label for="nameAr">City Name:</label>
+                <input type="text" id="nameAr" name="nameAr" required>
+                <div id="nameArError"></div>
             </div>
+            
             <div class="button-submit">
                 <button type="submit" class="button-30">Add City</button>
             </div>
@@ -105,13 +104,32 @@
             $('#cityForm').on('submit', function(e) {
                 e.preventDefault();
 
+                // Clear previous error messages
+                $('#nameError').text('');
+                $('#nameArError').text('');
+
+                // Validate name
+                const name = $('#name').val();
+                if (name === undefined || name.length < 3) {
+                    $('#nameError').text('City name must be at least 3 characters long.');
+                    return;
+                }
+                // Validate nameAr
+                const nameAr = $('#nameAr').val();
+                if (nameAr === undefined || nameAr.length < 3) {
+                    $('#nameArError').text('City name in Arabic is required and must be at least 3 characters long.');
+                    return;
+                }
+
                 const formData = {
-                    city: $('#city').val(),
-                    state: $('#state').val()
+                    name: name,
+                    nameAr: nameAr,
                 };
+
+                $('button[type=submit]').prop('disabled', true).text('Adding...');
                 $.ajax({
-                    url: '/submit-city',
-                    type: 'POST',
+                    url: '/admin/country/addContry',
+                    method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
                     success: function(response) {
@@ -122,9 +140,11 @@
                         $('body').append(popover);
                         setTimeout(() => popover.fadeOut(500, () => popover.remove()), 3000);
                         $('#cityForm')[0].reset();
+                        $('button[type=submit]').prop('disabled', false).text('Add City');
                     },
                     error: function(error) {
                         alert('Error adding city!');
+                        $('button[type=submit]').prop('disabled', false).text('Add City');
                     }
                 });
             });

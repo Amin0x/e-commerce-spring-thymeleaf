@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add City Form</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,6 +63,13 @@
         .button-submit button:hover {
             background-color: #45a049;
         }
+        .button-submit button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .button-submit button:disabled:hover {
+            background-color: #ccc;
+        }
         .button-30 {
             width: 100px;
         }
@@ -71,7 +79,7 @@
             right: 10px;
             background: #4CAF50;
             color: white;
-            padding: 10px;
+            padding: 20px 30px;
             border-radius: 5px;
             z-index: 1000;
         }
@@ -81,29 +89,30 @@
     <div class="am-city-card">
         <h1>Add a New City</h1>
         <form id="cityForm" method="POST">
+            <input type="hidden" name="id" id="cityid" th:value="${city?.id}">
             <div class="am-form-group">
                 <label for="name">City Name:</label>
-                <input type="text" id="nmae" name="nmae" required>
-                <div id="cityError"></div>
+                <input type="text" id="name" name="nmae">
+                <div id="nameError"></div>
             </div>
             <div class="am-form-group">
                 <label for="nameAr">City Name (Arabic):</label>
-                <input type="text" id="nameAr" name="nameAr" required>
-                <div id="cityArError"></div>
+                <input type="text" id="nameAr" name="nameAr">
+                <div id="nameArError"></div>
             </div>
             <div class="am-form-group">
                 <label for="estimatedDelivery">Estimated Delivery:</label>
-                <input type="text" id="estimatedDelivery" name="estimatedDelivery" required>
+                <input type="text" id="estimatedDelivery" name="estimatedDelivery">
                 <div id="estimatedDeliveryError"></div>
             </div>
             <div class="am-form-group">
                 <label for="deliveryPrice">Delivery Price:</label>
-                <input type="text" id="deliveryPrice" name="deliveryPrice" required>
+                <input type="text" id="deliveryPrice" name="deliveryPrice">
                 <div id="deliveryPriceError"></div>
             </div>
             <div class="am-form-group">
                 <label for="deliveryPriority">Delivery Priority:</label>
-                <select id="deliveryPriority" name="deliveryPriority" required>
+                <select id="deliveryPriority" name="deliveryPriority">
                     <option value="Normal" selected>Normal</option>
                     <option value="High">High</option>
                     <option value="Low">Low</option>
@@ -112,47 +121,140 @@
             </div>
             <div class="am-form-group">
                 <label for="state">Select State:</label>
-                <select id="state" name="state" required>
+                <select id="state" name="state">
                     <option value="" disabled selected>Select a State</option>
-                    <option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+                    <option th:each="state : ${states}" th:value="${state.id}" th:text="${state.name}"></option>
                 </select>
                 <div id="stateError"></div>
             </div>
             <div class="button-submit">
-                <button type="submit" class="button-30">Add City</button>
+                <button type="submit" class="button-30" id="SubmitForm">Add City</button>
             </div>
         </form>
     </div>
 
     <script>
-        $(document).ready(function() {
-            $('#cityForm').on('submit', function(e) {
+        
+        document.addEventListener('DOMContentLoaded', function() {
+
+            document.getElementById('cityForm').addEventListener('submit', function(e) {
                 e.preventDefault();
 
+                // Clear previous error messages
+                document.getElementById('nameError').textContent = '';
+                document.getElementById('nameArError').textContent = '';
+                document.getElementById('estimatedDeliveryError').textContent = '';
+                document.getElementById('deliveryPriceError').textContent = '';
+                document.getElementById('deliveryPriorityError').textContent = '';
+                document.getElementById('stateError').textContent = '';
+
+                let isValid = true;
+
+                // Validate city name
+                const cityName = document.getElementById('name').value;
+                if (cityName === undefined || cityName.trim().length === 0) {
+                    document.getElementById('nameError').textContent = 'City name is required.';
+                    isValid = false;
+                }
+                else if (cityName.length < 3) {
+                    document.getElementById('nameError').textContent = 'City name must be at least 3 characters long.';
+                    isValid = false;
+                }
+                // Validate city name in Arabic
+                const cityNameAr = document.getElementById('nameAr').value;
+                if (cityNameAr === undefined || cityNameAr.trim().length === 0) {
+                    document.getElementById('nameArError').textContent = 'City name (Arabic) is required.';
+                    isValid = false;
+                }
+                else if (cityNameAr.trim().length < 3) {
+                    document.getElementById('nameArError').textContent = 'City name (Arabic) must be at least 3 characters long.';
+                    isValid = false;
+                }
+                // Validate estimated delivery
+                const estimatedDelivery = document.getElementById('estimatedDelivery').value;
+                if (estimatedDelivery === undefined || estimatedDelivery.length === 0) {
+                    document.getElementById('estimatedDeliveryError').textContent = 'Estimated delivery is required.';
+                    isValid = false;
+                }
+                if (!/^\d+$/.test(estimatedDelivery)) {
+                    document.getElementById('estimatedDeliveryError').textContent = 'Estimated delivery must be a number.';
+                    isValid = false;
+                }
+                // Validate delivery price
+                const deliveryPrice = document.getElementById('deliveryPrice').value;
+                if (deliveryPrice === undefined || deliveryPrice.length === 0) {
+                    document.getElementById('deliveryPriceError').textContent = 'Delivery price is required.';
+                    isValid = false;
+                }
+                if (!/^\d+(?:\.\d{1,2})?$/.test(deliveryPrice)) {
+                    document.getElementById('deliveryPriceError').textContent = 'Delivery price must be a valid number.';
+                    isValid = false;
+                }
+                // Validate delivery priority
+                const deliveryPriority = document.getElementById('deliveryPriority').value;
+                if (deliveryPriority === undefined || deliveryPriority.length === 0) {
+                    document.getElementById('deliveryPriorityError').textContent = 'Delivery priority is required.';
+                    isValid = false;
+                }
+                // Validate state selection
+                const stateId = document.getElementById('state').value;
+                if (stateId === undefined || stateId.length === 0) {
+                    document.getElementById('stateError').textContent = 'Select a state.';
+                    isValid = false;
+                }
+
+                // If any validation fails, return early
+                if (!isValid) {
+                    return false;
+                }
+
+                console.log(document.getElementById('cityid').value)
                 const formData = {
-                    city: $('#city').val(),
-                    state: $('#state').val()
+                    id: document.getElementById('cityid').value === undefined ? null : document.getElementById('cityid').value,
+                    name: document.getElementById('name').value,
+                    nameAr: document.getElementById('nameAr').value,
+                    estimatedDelivery: document.getElementById('estimatedDelivery').value,
+                    deliveryPrice: document.getElementById('deliveryPrice').value,
+                    deliveryPriority: document.getElementById('deliveryPriority').value,
+                    stateId: document.getElementById('state').value
                 };
-                $.ajax({
-                    url: '/admin/adress/city/create',
+
+                document.querySelector('button[type=submit]').disabled = true;
+
+                fetch('/admin/address/city/add?state=' + stateId, {
                     method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
-                    success: function(response) {
-                        alert('City added successfully!');
-                        const popover = $('<div>')
-                            .addClass('popover')
-                            .text('City added successfully!');
-                        $('body').append(popover);
-                        setTimeout(() => popover.fadeOut(500, () => popover.remove()), 3000);
-                        $('#cityForm')[0].reset();
+                    headers: {
+                        'Content-Type': 'application/json'
                     },
-                    error: function(error) {
-                        alert('Error adding city!');
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error adding city!');
                     }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('City added successfully!');
+                    const popover = document.createElement('div');
+                    popover.className = 'popover';
+                    popover.textContent = 'City added successfully!';
+                    document.body.appendChild(popover);
+                    setTimeout(() => {
+                        popover.style.transition = 'opacity 0.5s';
+                        popover.style.opacity = '0';
+                        setTimeout(() => popover.remove(), 500);
+                    }, 3000);
+                    document.getElementById('cityForm').reset();
+                    document.querySelector('button[type=submit]').disabled = false;
+                })
+                .catch(error => {
+                    alert(error.message);
+                    document.querySelector('button[type=submit]').disabled = false;
                 });
             });
         });
+
     </script>
 </body>
 </html>

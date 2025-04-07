@@ -12,8 +12,8 @@ public class City {
     private String nameAr;
     private String estimatedDelivery;
     private String estimatedDeliveryUnit;
-    private int deliveryPriority;
-    private int deliveryPrice;
+    private String deliveryPriority;
+    private Double deliveryPrice;
     
     @ManyToOne(fetch = FetchType.LAZY)
     private State state;
@@ -76,19 +76,19 @@ public class City {
         this.estimatedDeliveryUnit = estimatedDeliveryUnit;
     }
 
-    public int getDeliveryPriority() {
+    public String getDeliveryPriority() {
         return deliveryPriority;
     }
 
-    public void setDeliveryPriority(int deliveryPriority) {
+    public void setDeliveryPriority(String deliveryPriority) {
         this.deliveryPriority = deliveryPriority;
     }
 
-    public int getDeliveryPrice() {
+    public Double getDeliveryPrice() {
         return deliveryPrice;
     }
 
-    public void setDeliveryPrice(int deliveryPrice) {
+    public void setDeliveryPrice(Double deliveryPrice) {
         this.deliveryPrice = deliveryPrice;
     }
 
@@ -108,8 +108,8 @@ public class City {
         result = prime * result + ((nameAr == null) ? 0 : nameAr.hashCode());
         result = prime * result + ((estimatedDelivery == null) ? 0 : estimatedDelivery.hashCode());
         result = prime * result + ((estimatedDeliveryUnit == null) ? 0 : estimatedDeliveryUnit.hashCode());
-        result = prime * result + deliveryPriority;
-        result = prime * result + deliveryPrice;
+        result = prime * result + ((deliveryPriority == null) ? 0 : deliveryPriority.hashCode());
+        result = prime * result + ((deliveryPrice == null) ? 0 : deliveryPrice.hashCode());
         result = prime * result + ((state == null) ? 0 : state.hashCode());
         return result;
     }

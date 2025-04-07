@@ -1,9 +1,11 @@
 package com.alamin.ecommerce.user;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Integer> {
-    List<Country> findByName(String countryName);
+    Optional<Country> findByName(String countryName);
+    Optional<Country> findByNameAr(String countryNameAr);
 }
