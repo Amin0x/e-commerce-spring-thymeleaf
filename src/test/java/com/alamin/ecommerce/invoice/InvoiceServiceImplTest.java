@@ -3,6 +3,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
 import java.io.IOException;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,7 +26,7 @@ class InvoiceServiceImplTest {
         String customerName = "John Doe";
         var productList = Arrays.asList("Product A", "Product B", "Product C");
         double totalAmount = 100.0;
-
+        when(invoiceService.generateInvoicePdf(orderId, customerName, productList, totalAmount)).thenReturn(new byte[20]);
         // Act
         byte[] pdfBytes = invoiceService.generateInvoicePdf(orderId, customerName, productList, totalAmount);
 

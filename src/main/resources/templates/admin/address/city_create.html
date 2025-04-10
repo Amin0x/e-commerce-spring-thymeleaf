@@ -92,38 +92,48 @@
             <input type="hidden" name="id" id="cityid" th:value="${city?.id}">
             <div class="am-form-group">
                 <label for="name">City Name:</label>
-                <input type="text" id="name" name="nmae">
+                <input type="text" id="name" name="nmae" th:value="${city?.name}">
                 <div id="nameError"></div>
             </div>
             <div class="am-form-group">
                 <label for="nameAr">City Name (Arabic):</label>
-                <input type="text" id="nameAr" name="nameAr">
+                <input type="text" id="nameAr" name="nameAr" th:value="${city?.nameAr}">
                 <div id="nameArError"></div>
             </div>
             <div class="am-form-group">
                 <label for="estimatedDelivery">Estimated Delivery:</label>
-                <input type="text" id="estimatedDelivery" name="estimatedDelivery">
+                <input type="text" id="estimatedDelivery" name="estimatedDelivery" th:value="${city?.estimatedDelivery}">
                 <div id="estimatedDeliveryError"></div>
             </div>
             <div class="am-form-group">
                 <label for="deliveryPrice">Delivery Price:</label>
-                <input type="text" id="deliveryPrice" name="deliveryPrice">
+                <input type="text" id="deliveryPrice" name="deliveryPrice" th:value="${city?.deliveryPrice}">
                 <div id="deliveryPriceError"></div>
             </div>
             <div class="am-form-group">
                 <label for="deliveryPriority">Delivery Priority:</label>
                 <select id="deliveryPriority" name="deliveryPriority">
-                    <option value="Normal" selected>Normal</option>
-                    <option value="High">High</option>
-                    <option value="Low">Low</option>
+                    <option value="Normal" th:attr="selected=(${city?.deliveryPriority} == 'Normal'? selected:null)">Normal</option>
+                    <option value="High" th:attr="selected=(${city?.deliveryPriority} == 'High'? selected:null)">High</option>
+                    <option value="Low" th:attr="selected=(${city?.deliveryPriority} == 'Low'? selected:null)">Low</option>
                 </select>
                 <div id="deliveryPriorityError"></div>
             </div>
             <div class="am-form-group">
-                <label for="state">Select State:</label>
+                <span class="am-label">Select Country:</span>
+                <select id="country" name="country">
+                    <option value="" disabled selected>Select a Country</option>
+                    <option th:each="country : ${countries}" th:value="${country?.id}" th:text="${country?.name}"
+                    th:attr="selected=(${country.id} == ${city?.country?.id}? selected:null)"></option>
+                </select>
+                <div id="stateError"></div>
+            </div>
+            <div class="am-form-group">
+                <span class="am-label">Select State:</span>
                 <select id="state" name="state">
                     <option value="" disabled selected>Select a State</option>
-                    <option th:each="state : ${states}" th:value="${state.id}" th:text="${state.name}"></option>
+                    <option th:each="state : ${states}" th:value="${state.id}" th:text="${state.name}"
+                    th:attr="selected=(${state?.id} == ${city?.state?.id}? selected:null)"></option>
                 </select>
                 <div id="stateError"></div>
             </div>
@@ -136,6 +146,35 @@
     <script>
         
         document.addEventListener('DOMContentLoaded', function() {
+            const state = document.getElementById('state');
+            const country = document.getElementById('country');
+            state.innerHTML = '';
+            state.disabled = true;
+
+            country.addEventListener('change', (e)=>{
+                if(country.value == null || country.value == '') return false;
+
+                fetch('/admin/address/state?cid='+country.value,{
+                    method: 'get',
+                })
+                .then(response => {
+                    if(!response.ok) throw new Error('');
+                    response.json();
+                })
+                .then(data =>{
+                    data.countries.forEach(element => {
+                        const option = document.createElement('option');
+                        option.value = element.id;
+                        option.textContent = element.name;
+                        state.appendChild(option);
+                        state.disabled = false;
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            });
+
 
             document.getElementById('cityForm').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -147,6 +186,7 @@
                 document.getElementById('deliveryPriceError').textContent = '';
                 document.getElementById('deliveryPriorityError').textContent = '';
                 document.getElementById('stateError').textContent = '';
+                
 
                 let isValid = true;
 

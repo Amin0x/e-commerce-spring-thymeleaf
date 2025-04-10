@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add City Form</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        *{
+            box-sizing: border-box;
+        }
+        h1 {
+            margin-top: 0;
+            text-align: center;
+            color: #333;
+        }
+        label, input, select {
+            display: inline-block;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="text"]:focus, select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        #cityError, #stateError {
+            color: red;
+        }
+        .am-form-group{
+            margin-bottom: 15px;
+        }
+        .am-city-card {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .button-submit {
+            margin-top: 20px;
+        }
+
+        .button-submit button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-submit button:hover {
+            background-color: #45a049;
+        }
+        .button-30 {
+            width: 100px;
+        }
+        .popover {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="am-city-card">
+        <h1 th:text="${formTitle}">Add a New Contery</h1>
+        <form id="cityForm" method="POST">
+            <input type="hidden" name="id" id="countryId" th:value="${country.id}">
+            <div class="am-form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" th:value="${country.name}">
+                <div id="nameError"></div>
+            </div>
+            <div class="am-form-group">
+                <label for="nameAr">Name (arabic):</label>
+                <input type="text" id="nameAr" name="nameAr" th:value="${country.nameAr}">
+                <div id="nameArError"></div>
+            </div>
+            <div class="am-form-group">
+                <label class="switch">
+                    <input type="checkbox" id="enabled" name="enabled" th:checked="${country.enabled}">
+                    <span class="slider round"></span>
+                </label>
+                <style>
+                    .switch {
+                        position: relative;
+                        display: inline-block;
+                        width: 34px;
+                        height: 20px;
+                    }
+
+                    .switch input {
+                        opacity: 0;
+                        width: 0;
+                        height: 0;
+                    }
+
+                    .slider {
+                        position: absolute;
+                        cursor: pointer;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background-color: #ccc;
+                        transition: .4s;
+                        border-radius: 20px;
+                    }
+
+                    .slider:before {
+                        position: absolute;
+                        content: "";
+                        height: 14px;
+                        width: 14px;
+                        left: 3px;
+                        bottom: 3px;
+                        background-color: white;
+                        transition: .4s;
+                        border-radius: 50%;
+                    }
+
+                    input:checked + .slider {
+                        background-color: #4CAF50;
+                    }
+
+                    input:checked + .slider:before {
+                        transform: translateX(14px);
+                    }
+                </style>
+            </div>
+            
+            <div class="button-submit">
+                <button type="submit" class="button-30">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cityForm = document.getElementById('cityForm');
+            const nameInput = document.getElementById('name');
+            const nameArInput = document.getElementById('nameAr');
+            const nameError = document.getElementById('nameError');
+            const nameArError = document.getElementById('nameArError');
+            const submitButton = cityForm.querySelector('button[type=submit]');
+            const countryId = document.getElementById('countryId').value;
+            let url = '/admin/address/country';
+
+            cityForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Clear previous error messages
+            nameError.textContent = '';
+            nameArError.textContent = '';
+
+            // Validate name
+            const name = nameInput.value;
+            if (!name || name.length < 3) {
+                nameError.textContent = 'City name must be at least 3 characters long.';
+                return;
+            }
+
+            // Validate nameAr
+            const nameAr = nameArInput.value;
+            if (!nameAr || nameAr.length < 3) {
+                nameArError.textContent = 'City name in Arabic is required and must be at least 3 characters long.';
+                return;
+            }
+
+            const formData = {
+                name: name,
+                nameAr: nameAr,
+                id: countryId,
+            };
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Saveing...';
+            
+            if (countryId !== '' || countryId !== null) {
+                url = '/admin/address/country?id='+countryId;
+            } 
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Error adding city!');
+                }
+                return response.json();
+            })
+            .then(data => {
+                nameInput.value = data.country.name;
+                nameArInput.value = data.country.nameAr;
+                document.getElementById('countryId').value = data.country.id;
+                // Show success message
+                const popover = document.createElement('div');
+                popover.className = 'popover';
+                popover.textContent = 'City added successfully!';
+                document.body.appendChild(popover);
+                setTimeout(() => {
+                popover.style.opacity = '0';
+                setTimeout(() => {popover.remove();}, 500);
+                }, 3000);
+                submitButton.disabled = false;
+                submitButton.textContent = 'Save';
+            })
+            .catch(error => {                
+                submitButton.disabled = false;
+                submitButton.textContent = 'Save';
+            });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -79,20 +79,26 @@
 </head>
 <body>
     <div class="am-city-card">
-        <h1>Add a New City</h1>
+        <h1 th:text="${formTitle}">Edit State</h1>
         <form id="cityForm" method="POST">
+            <input type="hidden" name="stateId" id="stateId" value="${stateId}">
             <div class="am-form-group">
-                <label for="city">City Name:</label>
-                <input type="text" id="city" name="city" required>
-                <div id="cityError"></div>
+                <label for="city">State Name:</label>
+                <input type="text" id="name" name="name" th:value="${stateName}">
+                <div id="nameError"></div>
             </div>
             <div class="am-form-group">
-                <label for="state">Select State:</label>
-                <select id="state" name="state" required>
-                    <option value="" disabled selected>Select a State</option>
-                    <option th:each="state : ${states}" th:value="${state}" th:text="${state}"></option>
+                <label for="city">State Name (Arabic):</label>
+                <input type="text" id="nameAr" name="nameAr" th:value="${stateNameAr}">
+                <div id="nameArError"></div>
+            </div>
+            <div class="am-form-group">
+                <label for="state">Country:</label>
+                <select id="country" name="country">
+                    <option value="" disabled selected>Select a Country</option>
+                    <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}" th:selected="${country.id} == ${countryId}"></option>
                 </select>
-                <div id="stateError"></div>
+                <div id="countryError"></div>
             </div>
             <div class="button-submit">
                 <button type="submit" class="button-30">Add City</button>
@@ -101,32 +107,47 @@
     </div>
 
     <script>
-        $(document).ready(function() {
-            $('#cityForm').on('submit', function(e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('#cityForm').addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 const formData = {
-                    city: $('#city').val(),
-                    state: $('#state').val()
+                    name: document.querySelector('#name').value,
+                    nameAr: document.querySelector('#nameAr').value,
+                    countryId: document.querySelector('#countryId').value,
+                    country: document.querySelector('#country').value,
+                    id: document.querySelector('#stateId').value
                 };
-                $.ajax({
-                    url: '/submit-city',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
-                    success: function(response) {
-                        alert('City added successfully!');
-                        const popover = $('<div>')
-                            .addClass('popover')
-                            .text('City added successfully!');
-                        $('body').append(popover);
-                        setTimeout(() => popover.fadeOut(500, () => popover.remove()), 3000);
-                        $('#cityForm')[0].reset();
+
+                fetch('/admin/address/state', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
                     },
-                    error: function(error) {
-                        alert('Error adding city!');
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
                     }
+                    return response.json();
+                })
+                .then(data => {
+                    const popover = document.createElement('div');
+                    popover.classList.add('popover');
+                    popover.textContent = 'City added successfully!';
+                    document.querySelector('body').append(popover);
+                    setTimeout(() => {
+                        popover.style.transition = 'opacity 0.5s';
+                        popover.style.opacity = '0';
+                        setTimeout(() => popover.remove(), 500);
+                    }, 3000);
+                    document.querySelector('#cityForm').reset();                
+                })
+                .catch(error => {
+                    alert('Error adding city!');
                 });
+                
             });
         });
     </script>

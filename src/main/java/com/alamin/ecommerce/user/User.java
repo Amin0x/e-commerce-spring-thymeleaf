@@ -35,39 +35,4 @@ public class User {
     private LocalDate birthDate;
     private LocalDateTime created;
     private LocalDateTime updated;
-
-    public User() {
-        this.role = "USER";
-        this.status = "active";
-        this.uuid = new UUID(System.currentTimeMillis(), System.currentTimeMillis()).toString();
-        this.created = LocalDateTime.now();
-        this.updated = LocalDateTime.now();
-    }
-
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = "USER";
-        this.status = "active";
-        this.uuid = new UUID(System.currentTimeMillis(), System.currentTimeMillis()).toString();
-        this.created = LocalDateTime.now();
-        this.updated = LocalDateTime.now();
-    }
-
-    public User(String username, String password, String email, String role, String avatar, String status, Boolean enabled, String firstName, String lastName, LocalDate birthDate) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-        this.avatar = avatar;
-        this.status = status;
-        this.enabled = enabled;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.uuid = new UUID(System.currentTimeMillis(), System.currentTimeMillis()).toString();
-        this.created = LocalDateTime.now();
-        this.updated = LocalDateTime.now();
-    }
 }
