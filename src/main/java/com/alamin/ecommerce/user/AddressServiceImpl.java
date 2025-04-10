@@ -166,7 +166,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<Country> getCountries() {
-        return List.of();
+        return countryRepository.findAll();
     }
 
     @Override

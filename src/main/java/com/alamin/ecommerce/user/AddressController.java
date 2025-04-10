@@ -55,13 +55,17 @@ public class AddressController {
 
     @GetMapping("/city/{id}/edit")
     public String showCityEditForm(@PathVariable int id, Model model) {
-        Optional<City> cityOptional = Optional.ofNullable(addressService.getCity(id));
-        if (cityOptional.isPresent()) {
-            model.addAttribute("city", cityOptional.get());
+        City cityOptional = addressService.getCity(id);
+        if (cityOptional != null) {
+            model.addAttribute("city", cityOptional);
         } else {
             throw new ResourceNotFoundException("City not found with id: " + id);
         }
-        model.addAttribute("states", addressService.getCountryStates(cityOptional.get().getCountry().getId()));
+
+        if (cityOptional.getCountry() != null) {
+            model.addAttribute("states", addressService.getCountryStates(cityOptional.getCountry().getId()));
+        }
+            
         model.addAttribute("countries", addressService.getCountries());
         
         return "admin/address/city_create";
