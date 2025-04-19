@@ -73,7 +73,7 @@ public class ProductController {
     @GetMapping("/products/bestselling")
 	public String getBestSellProducts(Model model) {
    		List<Product> products = productService.getBestSellingProducts(30);
-        products.stream().forEach(product -> {
+        products.forEach(product -> {
             product.setImage("/uploads/images/" + product.getImage());
         });
         model.addAttribute("products", products);
@@ -86,18 +86,18 @@ public class ProductController {
             @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "orderDate") String sortBy,
+            @RequestParam(defaultValue = "uuid") String srt,
             @RequestParam(defaultValue = "true") boolean asc,
             Model model) {
 
         Page<Product> products;
-        PageRequest pageRequest = PageRequest.of(page, size, asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending());
 
-        if (page > 0 && size > 0) {
+        if (page >= 0 && size > 0) {
+            Sort sort = asc ? Sort.by(srt).ascending() : Sort.by(srt).descending();
+            PageRequest pageRequest = PageRequest.of(page, size, sort);
             products = productService.getAllProducts(pageRequest);
-            
         } else {
-            products = productService.getAllProducts(PageRequest.of(0, 10, Sort.by("orderDate").descending()));
+            products = productService.getAllProducts(PageRequest.of(0, 10));
         }
 
         model.addAttribute("products", products.getContent());

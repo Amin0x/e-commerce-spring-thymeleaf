@@ -15,15 +15,19 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/admin")
-public class AdminIndexController {
+public class AdminHomeController {
 
     @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
     @Autowired
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
-    @GetMapping
+    public AdminHomeController(OrderService orderService, UserServiceImpl userService) {
+        this.orderService = orderService;
+        this.userService = userService;
+    }
+
+    @GetMapping("/admin")
     public String index(@RequestParam(name = "dv", defaultValue = "m") String type, Model model){
         var user = new User();
         var activities = new ArrayList<Map<String,String>>();
@@ -47,11 +51,11 @@ public class AdminIndexController {
         model.addAttribute("orderChartData", null);
         model.addAttribute("pageTitle", "Admin Dashboard - Index");
 
-        return "admin/admin_home";
+        return "admin/home/admin_home";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/admin/create")
     public String create(){
-        return "admin/create_links";
+        return "admin/home/create_links";
     }
 }

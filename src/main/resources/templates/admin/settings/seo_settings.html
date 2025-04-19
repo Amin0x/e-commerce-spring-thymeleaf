@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            margin: 20px 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+
+        nav a:hover {
+            background-color: #575757;
+        }
+
+        .settings-form {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+        .form-input:focus {
+            border-color: #007bff;
+        }
+
+        .form-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<main>
+        <header>
+            <h1>SEO Settings</h1>
+            <nav>
+                <a href="/admin/settings/general" style="margin-right: 20px;">General Settings</a>
+                <a href="/admin/settings/payment" style="margin-right: 20px;">Payment Settings</a>
+                <a href="/admin/settings/shipping" style="margin-right: 20px;">Shipping Settings</a>
+                <a href="/admin/settings/seo">SEO Settings</a>
+            </nav>
+        </header>
+        <form action="/admin/settings/seo" method="post" class="settings-form">
+            <div class="form-group">
+                <label for="metaTitle" class="form-label">Meta Title:</label>
+                <input type="text" id="metaTitle" name="metaTitle" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="metaDescription" class="form-label">Meta Description:</label>
+                <textarea id="metaDescription" name="metaDescription" required class="form-input" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="metaKeywords" class="form-label">Meta Keywords:</label>
+                <input type="text" id="metaKeywords" name="metaKeywords" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="robotsTxt" class="form-label">Robots.txt Content:</label>
+                <textarea id="robotsTxt" name="robotsTxt" class="form-input" rows="6"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="sitemapUrl" class="form-label">Sitemap URL:</label>
+                <input type="url" id="sitemapUrl" name="sitemapUrl" class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="canonicalUrl" class="form-label">Canonical URL:</label>
+                <input type="url" id="canonicalUrl" name="canonicalUrl" class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="ogTitle" class="form-label">Open Graph Title:</label>
+                <input type="text" id="ogTitle" name="ogTitle" class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="ogDescription" class="form-label">Open Graph Description:</label>
+                <textarea id="ogDescription" name="ogDescription" class="form-input" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="ogImage" class="form-label">Open Graph Image URL:</label>
+                <input type="url" id="ogImage" name="ogImage" class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="twitterCard" class="form-label">Twitter Card Type:</label>
+                <input type="text" id="twitterCard" name="twitterCard" class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="twitterTitle" class="form-label">Twitter Title:</label>
+                <input type="text" id="twitterTitle" name="twitterTitle" class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="twitterDescription" class="form-label">Twitter Description:</label>
+                <textarea id="twitterDescription" name="twitterDescription" class="form-input" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="form-button">Save SEO Settings</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

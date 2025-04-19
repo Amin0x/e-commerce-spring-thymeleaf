@@ -17,7 +17,7 @@ public interface AddressService {
     Country getCountry(Integer id);
     List<Country> getCountries();
     void deleteCountry(Integer countryId);
-    State createOrUpdateState(State state, Integer countryId);
+    State createOrUpdateState(StateDto state);
     State getState(Integer id);
     List<State> getStates();
     List<State> getCountryStates(Integer countryId);

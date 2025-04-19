@@ -2,6 +2,7 @@ package com.alamin.ecommerce.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alamin.ecommerce.config.FileUploadService;
@@ -56,7 +57,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(String name, String description, Long parentId, MultipartFile image) {
-        Category category = new Category(name, description, null);
+        String slug = generteSlug(name);
+        Category category = new Category(slug, description, null);
         if (parentId != null) {
             Optional<Category> parentOptional = getCategoryById(parentId);
             if (parentOptional.isPresent()) {
@@ -81,13 +83,17 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryDto == null) {
             throw new IllegalArgumentException("Updated category cannot be null");
         }
+        
+        if (StringUtils.hasText(categoryDto.getName()) || categoryDto.getName().length() < 3) {
+            throw new IllegalArgumentException("Category name length is must be 3 or more charctors");
+        }
 
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isPresent()) {
             Category existingCategory = categoryOptional.get();
             Category parent = categoryRepository.findById(Long.valueOf(categoryDto.getParent())).orElse(null);
             existingCategory.setParent(parent);
-            existingCategory.setName(categoryDto.getName());
+            existingCategory.setName(generteSlug(categoryDto.getName()));
             existingCategory.setDescription(categoryDto.getDescription());
             existingCategory.setActive(categoryDto.getActive());
             existingCategory.setUpdated(LocalDateTime.now());
@@ -125,6 +131,11 @@ public class CategoryServiceImpl implements CategoryService {
         // Return the list of categories (you can return the Page if you need pagination
         // info)
         return categoryPage.getContent();
+    }
+
+    @Override
+    public List<Category> getTopCategories() {
+        return categoryRepository.getTopCategories();
     }
 
     @Override
@@ -202,5 +213,9 @@ public class CategoryServiceImpl implements CategoryService {
         category.setImageUrl(fileName);
         
         return categoryRepository.save(category);
+    }
+
+    private String generteSlug(String name){
+        return "";
     }
 }

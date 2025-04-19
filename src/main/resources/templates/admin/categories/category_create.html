@@ -7,59 +7,46 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="../../../static/admin/main.css" th:href="@{/admin/main.css}" rel="stylesheet">
+    <style>
+
+    
+    </style>
 </head>
 <body>
 <div class="wrapper">
     <aside th:replace="~{admin/fragments/navigation::navigation}"></aside>
-    <div class="content">
+    <div class="content category-create-form">
         <header th:replace="~{admin/fragments/header :: header}"></header>
-        <div class="form-wrap" style="padding: 20px 30px; position: relative;">
-            <div id="formMessage" class="form-message" style="position: absolute; top: 20px; left: 20px;">
-                <div id="formMessageText"></div>
-            </div>
-            <form th:action="@{/admin/categories}" method="post" enctype="multipart/form-data" style="max-width: 900px;">
-                <h1 style="font-size: 1.5rem; font-weight: 500;">Create Category</h1>
-                <div class="form-group">
+        <div class="form-wrap">
+            <h1 class="title">Create Category</h1>
+            <form th:action="@{/admin/categories}" method="post" enctype="multipart/form-data">
+                <div id="formMessage" class="form-message">
+                    <div id="formMessageText"></div>
+                </div>                
+                <div class="input-container">
                     <label for="name">Name:</label>
-                    <input type="text" class="form-control" id="name" name="name">
+                    <input type="text" class="text-input" id="name" name="name">
                 </div>
-                <div class="form-group">
+                <div class="input-container">
                     <label for="description">Description:</label>
-                    <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+                    <textarea class="text-input" id="description" name="description" rows="4"></textarea>
                 </div>
-                <div class="form-group">
+                <div class="input-container">
                     <label for="parent">Parent Category:</label>
-                    <select class="form-control" id="parent" name="parentId">
+                    <select class="text-input" id="parent" name="parentId">
                         <option value="">None</option>
                         <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                     </select>
                 </div>
-                <div class="form-group image-input">
+                <div class="input-container image-input">
                     <label for="image">Upload Image:</label>
-                    <input type="file" name="image" id="image" class="form-control-file" accept="image/*" onchange="previewImage(event)">
-                    <div id="imagePreview" style="margin-top: 15px;">
-                        <img id="preview" src="#" alt="Image Preview" style="max-width: 100%; max-height: 300px; display: none; border: 1px solid #ddd; padding: 5px;">
-                    </div>
+                    <input type="file" name="image" id="image" class="file-input" accept="image/*" onchange="previewImage(event)">                    
                 </div>
-                <script>
-                    function previewImage(event) {
-                        const preview = document.getElementById('preview');
-                        const file = event.target.files[0];
-                        if (file) {
-                            const reader = new FileReader();
-                            reader.onload = function(e) {
-                                preview.src = e.target.result;
-                                preview.style.display = 'block';
-                            };
-                            reader.readAsDataURL(file);
-                        } else {
-                            preview.src = '#';
-                            preview.style.display = 'none';
-                        }
-                    }
-                </script>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div id="imagePreview" class="image-priview" style="">
+                    <img id="preview" class="image-priview__image" src="#" alt="Image Preview">
+                </div>
+                <div class="input-container">
+                    <button type="button" id="submitButton" class="button-37">Submit</button>
                 </div>
             </form>
         </div>
@@ -67,59 +54,10 @@
 </div>
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
 
+<script src="../../../static/admin/js/main.js" th:src="@{/admin/js/main.js}"></script>
 <script>
-    const form = document.querySelector('form');
-    const submitBtn = document.querySelector('button[type="submit"]');
-    const formMessage = document.getElementById('formMessage');
-    const formMessageText = document.getElementById('formMessageText');
-
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const formData = new FormData(form);
-
-        // Add your form validation logic here
-        if (formData.get('name') === '') {
-            formMessage.classList.add('error');
-            formMessageText.textContent = 'Name is required.';
-            return;
-        }
-
-        if (formData.get('description') === '') {
-            formMessage.classList.add('error');
-            formMessageText.textContent = 'Description is required.';
-            return;
-        }
-
-        if (formData.get('image') === null) {
-            formMessage.classList.add('error');
-            formMessageText.textContent = 'Image is required.';
-            return;
-        }
-
-        submitBtn.disabled = true;
-        formMessage.classList.remove('error');
-        formMessageText.textContent = '';
-
-        // Add your API call logic here
-        fetch('/admin/categories', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                formMessage.classList.remove('error');
-                formMessageText.textContent = 'Category created successfully.';
-                form.reset();
-                submitBtn.disabled = false;
-            } else {
-                throw new Error('Failed to create category.');
-            }
-        })
-        .catch(error => {
-            formMessage.classList.add('error');
-            formMessageText.textContent = error.message;
-            submitBtn.disabled = false;
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        categoriesCreateForm();
     });
 </script>
 

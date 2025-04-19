@@ -11,9 +11,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -132,8 +131,13 @@ class HomeControllerTest {
 
     @Test
     void testSubscribeToMailingList() {
-        ResponseEntity<String> response = homeController.subscribeToMailingList();
+        String email = "test_email@test.com";
+        String name = "test name";
+        ResponseEntity<Map<String, Object>> response = homeController.subscribeToMailingList(email, name);
 
-        assertEquals(ResponseEntity.ok("success"), response);
+        Map<String, Object> responseOk = new HashMap<>();
+        responseOk.put("status", "success");
+        responseOk.put("message", "success");
+        assertEquals(ResponseEntity.ok(responseOk), response);
     }
 }

@@ -17,7 +17,6 @@ import com.alamin.ecommerce.exception.CategoryNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping("/admin")
 @Slf4j
 public class AdminProductController {
 
@@ -29,7 +28,7 @@ public class AdminProductController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/products/all")
+    @GetMapping("/admin/products/all")
     public String showAllProductPage(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
@@ -58,7 +57,7 @@ public class AdminProductController {
     }
 
     // Create a new product
-    @PostMapping("/api/products")
+    @PostMapping("/admin/api/products")
 	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
    		Product savedProduct = productService.save(product);
    		return ResponseEntity
@@ -66,7 +65,7 @@ public class AdminProductController {
             .body(savedProduct);         // The saved product as the response body
 	}
 
-    @GetMapping("/products/create")
+    @GetMapping("/admin/products/create")
     public String showCreateProductForm(Model model) {
         model.addAttribute("product", new Product());
 	    model.addAttribute("pageDescription", "");
@@ -78,7 +77,7 @@ public class AdminProductController {
         return "admin/products/product_create_form";
     }
 
-    @GetMapping("/products/edit/{id}")
+    @GetMapping("/admin/products/edit/{id}")
     public String showEditProductForm(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id).orElseThrow();
         System.out.println("product : " + product);
@@ -94,14 +93,14 @@ public class AdminProductController {
     }
 
     // Get all products api
-    @GetMapping("/api/products")
+    @GetMapping("/admin/api/products")
 	public ResponseEntity<Page<Product>> getAllProducts(int page, int size, String sort, boolean asc) {
    		Page<Product> products = productService.getAllProducts(page, size, sort, asc);
    		return ResponseEntity.ok(products);
 	}
 
     // products home page
-    @GetMapping("/products")
+    @GetMapping("/admin/products")
     public String showProductsHomePage(@RequestParam(required = false) String category, Model model) {
     
         List<Product> products;
@@ -139,15 +138,14 @@ public class AdminProductController {
     }
 
     // Get a product by ID
-    @GetMapping("/api/products/{id}")
-    @ResponseBody
+    @GetMapping("/admin/api/products/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Optional<Product> product = productService.findById(id);
         return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Update an existing product
-    @PutMapping("/api/products/{id}")
+    @PutMapping("/admin/api/products/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductForm productForm) {
         System.out.println("id = " + id + "; product = " + productForm);
         if (!productService.existsById(id)) {
@@ -187,7 +185,7 @@ public class AdminProductController {
     }
 
     // Upload an image
-    @PostMapping("/products/images/upload")
+    @PostMapping("/admin/products/images/upload")
     public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("id") Long id) {
         try {
             List<ProductImage> productImages = productService.uploadImage(file, id);
@@ -206,7 +204,7 @@ public class AdminProductController {
     }
 
     // Delete a product by ID
-    @DeleteMapping("/api/products/{id}")
+    @DeleteMapping("/admin/api/products/{id}")
     @ResponseBody
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         if (!productService.existsById(id)) {
@@ -217,7 +215,7 @@ public class AdminProductController {
     }
 
     // Delete a product by ID
-    @DeleteMapping("/products/images/{id}")
+    @DeleteMapping("/admin/products/images/{id}")
     public ResponseEntity<Void> deleteProductImage(@PathVariable Long id, @RequestBody Map<String, String> imageId) {
         if (!productService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -230,7 +228,7 @@ public class AdminProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/products/createProduct")
+    @PostMapping("/admin/products/createProduct")
     public ResponseEntity<Object> create(@ModelAttribute ProductForm pf, BindingResult result) {
         log.info("{}", pf);
         Map<String, Object> response = new HashMap<>();
@@ -258,7 +256,7 @@ public class AdminProductController {
         }
     }
 
-    @PostMapping("/products/images/upload/primary")
+    @PostMapping("/admin/products/images/upload/primary")
     public ResponseEntity<Object> updatePrimaryImage(@RequestParam Long id,@RequestParam MultipartFile file){
         log.info("{}", file);
         Map<String, Object> response = new HashMap<>();
@@ -290,7 +288,7 @@ public class AdminProductController {
         
     }
 
-    @PostMapping("/products/price/{productId}")
+    @PostMapping("/admin/products/price/{productId}")
     public ResponseEntity<Object> addProductPrice(@RequestParam Long productId,@RequestParam ProductPrice price){
         log.info("{}", price);
         Map<String, Object> response = new HashMap<>();

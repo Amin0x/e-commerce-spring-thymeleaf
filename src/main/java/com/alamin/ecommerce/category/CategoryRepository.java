@@ -102,6 +102,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         @Query("UPDATE Category c SET c.parent = NULL WHERE c.parent.id = :id")
         void setAsRootCategory(Long id);
 
-        
+        @Query(value = """
+                        SELECT c
+                        FROM Category c
+                        WHERE c.parent IS NULL""")
+        List<Category> getTopCategories();       
 
 }

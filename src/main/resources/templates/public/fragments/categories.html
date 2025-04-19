@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section th:if="true" th:fragment="categories" class="categories" style="margin-top: 50px;">    
+    <div class="category-wrp" th:if="${#lists.isEmpty(categories) == false}">
+        <div class="category" th:each="category : ${categories}">
+            <div class="category-card">
+                <div class="category-card__box">
+                    <div class="category-img">
+                        <a th:href="${category.slug}" href="#" style="text-decoration: none;">
+                            <img th:src="@{category.image}" class="card-img" th:alt="${category.name}" src="../../static/public/imgs/p19109999.jpg">
+                        </a>
+                    </div>
+                    <div class="category-card__title">
+                        <a th:href="${category.slug}" href="#" style="text-decoration: none;">
+                            <p class="card-title" th:text="${category.name}">الخضروات والفواكه</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</section>
+</body>
+</html>

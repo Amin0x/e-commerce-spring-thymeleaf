@@ -40,6 +40,7 @@ public class ProductDto {
         this.viewCount = product.getViewCount();
         this.image = product.getImage();
         this.productImages = product.getProductImages();
+        this.slug = product.getSlug();
         if (product.getCategory() != null) {
             this.categoryId = product.getCategory().getId();
         }

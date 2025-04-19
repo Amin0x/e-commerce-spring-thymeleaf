@@ -18,40 +18,42 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/admin/categories")
 @Slf4j
 public class AdminCategoryController {
-    @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private CategoryService categoryService;
-    
 
-    @GetMapping("/create")
+    @Autowired
+    private final CategoryService categoryService;
+
+    public AdminCategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+
+    @GetMapping("/admin/categories/create")
     public String createCategoryPage(Model model) {
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("user", new User());
 
         return "admin/categories/category_create";
     }
 
-    @GetMapping()
+    @GetMapping("/admin/categories")
     public String indexPage(Model model) {
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("user", new User());
 
         return "admin/categories/category_home";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/categories/edit/{id}")
     public String updateCategoryPage(@PathVariable Long id, Model model) {
-        Optional<Category> category = categoryRepository.findById(id).or(() -> Optional.empty());
+        Optional<Category> category = categoryService.getCategoryById(id);
         if (category.isEmpty()) {
             return "error/404";
         }
         model.addAttribute("category", category.get());
         model.addAttribute("categoryId", id);
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = categoryService.findAll();
         categories.removeIf((item)->{return Objects.equals(item.getId(), id);});
         model.addAttribute("categories", categories);
         model.addAttribute("user", new User());
@@ -60,7 +62,7 @@ public class AdminCategoryController {
     }
 
     // Create a new category
-    @PostMapping()
+    @PostMapping("/admin/categories")
     public ResponseEntity<Object> createCategory(
             @RequestParam String name,
             @RequestParam String description,
@@ -89,11 +91,11 @@ public class AdminCategoryController {
     }
 
     // Get a category by ID
-    @GetMapping("/{id}")
+    @GetMapping("/admin/categories/{id}")
     public ResponseEntity<Object> getCategoryById(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Optional<Category> category = categoryRepository.findById(id);
+            Optional<Category> category = categoryService.getCategoryById(id);
             if (category.isPresent()) {
                 response.put("status", HttpStatus.OK);
                 response.put("category", category.get());
@@ -113,7 +115,7 @@ public class AdminCategoryController {
         
     }
 
-    @PostMapping("/{id}/image")
+    @PostMapping("/admin/categories/{id}/image")
     public ResponseEntity<Object> updateCategoryImage(@PathVariable Long id, @RequestParam MultipartFile image){
         Map<String, Object> response = new HashMap<>();
         try {
@@ -131,7 +133,7 @@ public class AdminCategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/search/{search}")
+    @GetMapping("/admin/categories/search/{search}")
     public ResponseEntity<Object> searchCategoryByName(@PathVariable String search) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -155,7 +157,7 @@ public class AdminCategoryController {
     }
 
     // Update an existing category
-    @PutMapping("/{id}")
+    @PutMapping("/admin/categories/{id}")
     public ResponseEntity<Object> updateCategory(@PathVariable Long id, @ModelAttribute CategoryDto category) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -173,7 +175,7 @@ public class AdminCategoryController {
     }
 
     // Delete a category by ID
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/categories/{id}")
     public ResponseEntity<Object> deleteCategory(@PathVariable Long id) {     
         
         try{

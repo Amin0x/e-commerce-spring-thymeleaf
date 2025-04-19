@@ -17,20 +17,36 @@
     padding-block: 12px;
     padding-inline: 6px;
   }
-  .sort-select{background-color: transparent; border: none; outline: none; line-height: 20px; font-size: 14px;}
-  .label{ margin-inline-end: 5px; line-height: 20px; font-size: 14px; color: #000; font-weight: 500;}
+  .sort-select{
+    background-color: transparent; 
+    border: none; 
+    outline: none; 
+    line-height: 20px; 
+    font-size: 14px;
+  }
+  .label{ 
+    margin-inline-end: 5px; 
+    line-height: 20px; 
+    font-size: 14px; 
+    color: #000; 
+    font-weight: 500;
+  }
+  .clink:hover .product-img{
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+  }
 </style>
 <body>
     <main class="wrapper">
         <nav th:replace="~{public/fragments/navbar :: navbar}" class="navbar-wrp"></nav>
       <div class="all-products">
         <div class="title">
-          <h1 class="marginy-20" th:text="جميع المنتجات">جميع المنتجات</h1>
+          <h1 class="margin-y-20">جميع المنتجات</h1>
         </div>
         <div class="sort-filter">
           <div class="sort">
               <span class="label">ترتيب حسب:</span>
-              <select id="sort" name="sort" class="sort-select" >
+              <select id="sort" name="sort" class="sort-select" aria-label="sort">
                   <option value="default">الترتيب الافتراضي</option>
                   <option value="price">السعرالاقل</option>
                   <option value="price">السعر الاعلي</option>
@@ -41,16 +57,20 @@
         <section class="flex-row">
           <div th:each="product : ${products}" class="product-card">
               <div class="product">
-                  <div class="image">
-                      <img th:src="|@{/uploads/images/}${product.image}|" src="../../static/public/imgs/img12.jpg" class="product-img" alt="Product Image" th:alt="${product.name}">
-                      <div th:if="true" class="product-new">جديد</div>
-                      <div th:if="true" class="product-popular">مرغوب</div>
-                      <div class="favorite"><i class="far fa-heart"></i></div>
-                  </div>
+                <div class="image">
+                  <a href="#" class="clink">
+                    <img th:src="|@{/uploads/images/{id}(id=${product.image})}|" src="../../static/public/imgs/img12.jpg" class="product-img" alt="Product Image" th:alt="${product.name}">
+                  </a>
+                        <span th:if="true" class="product-new">جديد</span>
+                        <span th:if="true" class="product-popular">مرغوب</span>
+                        <a href="#">
+                          <span class="favorite"><i class="far fa-heart"></i></span>
+                        </a>
+                    </div>
                   <div class="product-details">
                       <h5 th:text="${product.name}" class="product-title">عنوان المنتج عنوان المنتج عنوان المنتج</h5>
                       <p th:text="${product.price}" class="product-price"><strong>$49.99</strong></p>
-                      <p th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}" class="product-discount"><strong>$49.99</strong></p>
+                      <p th:if="(${product.price} < ${product.basePrice})" th:text="${product.basePrice}" class="product-discount"><strong>$49.99</strong></p>
                   </div>
                   <button th:data-add-to-cart="${product.id}" data-quantity="1" type="button" role="button" class="button-37 add-cart">اضافة الي السلة</button>
               </div>

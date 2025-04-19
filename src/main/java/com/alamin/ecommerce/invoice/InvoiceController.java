@@ -10,14 +10,17 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/invoices")
 public class InvoiceController {
 
     @Autowired
-    private InvoiceService invoiceService;
+    private final InvoiceService invoiceService;
+
+    public InvoiceController(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
 
     // Endpoint to generate and download invoice PDF
-    @GetMapping("/{orderId}")
+    @GetMapping("/api/invoices/{orderId}")
     public ResponseEntity<byte[]> generateInvoice(@PathVariable Long orderId) {
         try {
             // Dummy data for demo purposes

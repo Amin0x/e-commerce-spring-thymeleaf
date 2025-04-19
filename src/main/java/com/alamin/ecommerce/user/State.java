@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,7 +19,8 @@ public class State {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
     private List<City> cities;
     

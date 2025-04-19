@@ -2,9 +2,10 @@ package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.product.Product;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 public interface CartService {
@@ -21,7 +22,7 @@ public interface CartService {
     // Update the quantity of a product in the cart can be negative to remove the product
     Cart removeCartItem(Long id, HttpSession session, Principal principal);
 
-    List<Cart> findAll();
+    Page<Cart> findAll(Pageable pr);
 
     boolean existsById(Long id);
 

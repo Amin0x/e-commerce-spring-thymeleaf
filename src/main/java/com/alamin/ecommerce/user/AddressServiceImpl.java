@@ -54,48 +54,72 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public City createCity(CityFormDto cityFormDto) {
-        Optional<State> stateOptional;
-
+        State state = null;
+        Country country = null;
+        
         try {
-            stateOptional = stateRepository.findById(cityFormDto.getStateId());
+            state = getState(cityFormDto.getStateId());
+        } catch (Exception e) {
+            if (cityFormDto.getStateId() != null) {
+                throw new ResourceNotFoundException("State not found with id: " + cityFormDto.getStateId());
+            }
+        }
+
+        try {            
+            country = getCountry(cityFormDto.getCountryId());
         } catch (IllegalArgumentException e) {
-            throw new ResourceNotFoundException("Invalid state ID: " + cityFormDto.getStateId());
+            throw new ResourceNotFoundException("Invalid country ID: " + cityFormDto.getCountryId());
         } catch (Exception e) {
             throw new ResourceNotFoundException("");
         }
 
-        if (stateOptional.isEmpty()) {
-            throw new ResourceNotFoundException("State not found with id: " + cityFormDto.getStateId());
-        }
-
+        
         City city2 = new City();
+        if (state != null) {
+            city2.setState(state);
+        }
         city2.setName(cityFormDto.getName());
-        city2.setState(stateOptional.get());
         city2.setDeliveryPrice(cityFormDto.getDeliveryPrice());
         city2.setDeliveryPriority(cityFormDto.getDeliveryPriority());
         city2.setEstimatedDelivery(cityFormDto.getEstimatedDelivery());
         city2.setEstimatedDeliveryUnit(cityFormDto.getEstimatedDeliveryUnit());
+        city2.setCountry(country);
         return cityRepository.save(city2);
-
     }
 
     @Override
     public City updateCity(CityFormDto cityFormDto) {
-        Optional<State> stateOptional = stateRepository.findById(cityFormDto.getStateId());
-        Optional<Country> countryOptional = countryRepository.findById(cityFormDto.getCountryId());
-        if (stateOptional.isEmpty() || countryOptional.isEmpty()){
-            throw new ResourceNotFoundException("");
+        System.out.println(cityFormDto);
+        State state = null;
+        
+        try {
+            state = getState(cityFormDto.getStateId());
+        } catch (Exception e) {
+            //contune
+            System.out.println("getState() Exception: state id=" + cityFormDto.getStateId());
         }
 
         try {
             City existingCity = cityRepository.findById(cityFormDto.getId())
                     .orElseThrow(() -> new ResourceNotFoundException("City not found with id: " + cityFormDto.getId()));
-
+            Country country = getCountry(cityFormDto.getCountryId());
             existingCity.setName(cityFormDto.getName());
-            existingCity.setState(stateOptional.get());
+            existingCity.setNameAr(cityFormDto.getNameAr());
+            existingCity.setDeliveryPrice(cityFormDto.getDeliveryPrice());
+            existingCity.setDeliveryPriority(cityFormDto.getDeliveryPriority());
+            existingCity.setEstimatedDelivery(cityFormDto.getEstimatedDelivery());
+            existingCity.setEstimatedDeliveryUnit(cityFormDto.getEstimatedDeliveryUnit());
+            existingCity.setCountry(country);
+            if (state != null) {
+                existingCity.setState(state);
+            } else {
+                existingCity.setState(null);
+            }
+             
+            System.out.println(existingCity);
             return cityRepository.save(existingCity);
         } catch (Exception e) {
-            throw new ResourceNotFoundException("");
+            throw new ResourceNotFoundException("Something went wrong");
         }
     }
 
@@ -175,16 +199,16 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public State createOrUpdateState(State state, Integer countryId) {
+    public State createOrUpdateState(StateDto state) {
         Optional<Country> countryOptional;
         try {
-            countryOptional = countryRepository.findById(countryId);
+            countryOptional = countryRepository.findById(state.getCountryId());
         } catch (Exception e) {
             throw new ResourceNotFoundException("Country is empty");
         }
 
         if (countryOptional.isEmpty()) {
-            throw new ResourceNotFoundException("Country not found with id: " + countryId);
+            throw new ResourceNotFoundException("Country not found with id: " + state.getCountryId());
         }
 
         State existingState = null;

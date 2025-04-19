@@ -8,95 +8,26 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
   <style>
-    @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap');
 
-.wrapper {
-  font-size: 20px;
-  font-family: 'Roboto';
-  height: 100vh;
-  position: realtive;
-  background: linear-gradient(90deg, #ff9966, #ff5e62);
-}
-
-.fas.fa-envelope {
-  color: #fff;
-  font-size: 2rem;
-  background: #333;
-  padding: 1rem;
-  border-radius: 100%;
-  margin: 0 0 1rem 0;
-} 
-
-.card-content {
-  max-width: 30rem;
-  background-color: #fff;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  border-radius: 1rem;
-  padding: 4rem .5rem;
-  box-shadow: 1px 1px 2rem rgba(0,0,0,.3);
-  text-align: center;
-}
-
-.card-content h1 {
-  text-transform: uppercase;
-  margin: 0 0 1rem 0;
-}
-
-.card-content p {
-  font-size: .8rem;
-  margin: 0 0 2rem 0;
-}
-
-input {
-  padding: .8rem 1rem;
-  width: 40%;
-  border-radius: 5rem;
-  outline: none;
-  border: .1rem solid #d1d1d1;
-  font-size: .7rem;
-}
-
-::placeholder {
-  color: #d1d1d1;
-}
-
-
-.subscribe-btn {
-  padding: .8rem 2rem;
-  border-radius: 5rem;
-  background: linear-gradient(90deg, #ff9966, #ff5e62);
-  color: #fff;
-  font-size: .7rem;
-  border: none;
-  outline: none;
-  cursor: pointer;
-}
   </style>
 </head>
 <body>
 
 <!-- Define the subscription form as a fragment -->
-<div th:fragment="subscribeForm">
-    <div class="wrapper">
-        <form th:action="@{/subscribe}" method="post" class="card-content">
-            <div class="container">
-                <div class="image">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <h1>Subscribe</h1>
-                <p>Subscribe to our newsletter and stay updated.</p>
-            </div>
-            <div class="form-input">
-                <label for="email" th:text="#{email.label}">Email</label>
-                <input type="email" id="email" name="email" placeholder="Your Email" th:value="${email}">
-                <button class="subscribe-btn" type="submit">Subscribe</button>
-            </div>
-        </form>
-    </div>
-</div>
-
+<section class="subscribe" th:fragment="subscribeForm">
+  <div class="subscribe-content">
+      <div class="image"><i class="fas fa-envelope"></i></div>
+      <p class="subscription-title">الاشتراك</p>
+      <p class="subscription-desc">اشترك في القائمة البريدية لتلقي اخر الاخبار والعروض.</p>
+  </div>
+  <form id="subscribeForm">
+      <div class="subscription-form">
+        <input class="name text-field" type="text" id="name" name="name" placeholder="الاسم">
+        <input class="email text-field" type="text" id="email" name="email" placeholder="الايميل">
+        <div class="message" id="message"></div>
+        <button class="subscribe-btn" type="button" id="subscribeButton">اشتراك</button>
+      </div>
+  </form>
+</section>
 </body>
 </html>

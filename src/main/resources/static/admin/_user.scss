@@ -10,6 +10,9 @@
       flex: 1;
 
       .title{
+        display: flex;
+        align-items: center;
+        gap: 6px;
         font-size: 1.2rem;
         font-weight: 600;
         line-height: 1.5;
@@ -64,3 +67,46 @@
 
   }
 }
+
+
+/* start create user form page */
+.create-user-container {
+  flex: 1 0 600px;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  form {
+    .form-group {
+      margin-bottom: 15px;
+
+      .input-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none;
+      }
+
+      .input-message.is-invalid {
+        display: block !important;
+      }
+   }
+
+   .avatar-button {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #fff;
+      margin-top: 8px;
+    }
+  }
+}
+
+/* end create user form page */

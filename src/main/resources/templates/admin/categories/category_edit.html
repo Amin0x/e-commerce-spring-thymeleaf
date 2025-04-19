@@ -9,27 +9,7 @@
     <link th:href="@{/admin/main.css}" href="../../static/css/admin/main.css" rel="stylesheet">
 
     <style>
-        .edit-product-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-
-        .edit-product-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .edit-product-container form .form-group {
-            margin-bottom: 15px;
-        }
-
-        .edit-product-container form button {
-            width: 100%;
-        }
+        
     </style>
 </head>
 <body>
@@ -38,26 +18,26 @@
     <aside th:replace="~{admin/fragments/navigation :: navigation}"></aside>
     <main class="content">
         <header th:replace="~{admin/fragments/header :: header}"></header>
-    <div class="edit-product-container">
+    <div class="category-edit">
         <h2>Edit Category</h2>
         <form id="editForm" method="post">
             <input type="hidden" name="id" th:value="${category.id}">
-            <div class="form-group">
+            <div class="input-container">
                 <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" th:value="${category.name}">
+                <input type="text" class="text-input" id="name" name="name" th:value="${category.name}">
             </div>
-            <div class="form-group">
+            <div class="input-container">
                 <label for="description">Description:</label>
-                <textarea class="form-control" id="description" name="description" rows="3" th:text="${category.description}"></textarea>
+                <textarea class="text-input" id="description" name="description" rows="3" th:text="${category.description}"></textarea>
             </div>
-            <div class="form-group">
+            <div class="input-container">
                 <label for="active">Active:</label>
-                <input type="checkbox" class="form-control" id="active" name="active" th:checked="${category.active}">
+                <input type="checkbox" class="text-input" id="active" name="active" th:checked="${category.active}">
             </div>
 
-            <div class="form-group">
+            <div class="input-container">
                 <label for="category">Parent:</label>
-                <select class="form-control" id="category" name="parent">
+                <select class="text-input" id="category" name="parent">
                     <option th:each="category : ${categories}"
                             th:value="${category.id}"
                             th:text="${category.name}"
@@ -73,79 +53,7 @@
                     <img id="previewImage" src="#" alt="Preview" style="display: none; max-width: 100%; max-height: 100%; margin-top: 10px;">
                 </div>
                 <input type="file" name="image" id="image" style="display: none;" accept="image/*">
-            </div>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    const dropArea = document.getElementById("imageDropArea");
-                    const fileInput = document.getElementById("image");
-                    const previewImage = document.getElementById("previewImage");
-                    const imageView = document.getElementById("imageView");
-                    const id = document.getElementById("productId").value;
-
-                    dropArea.addEventListener("click", () => fileInput.click());
-
-                    dropArea.addEventListener("dragover", (event) => {
-                        event.preventDefault();
-                        dropArea.style.backgroundColor = "#d9e9ff";
-                    });
-
-                    dropArea.addEventListener("dragleave", () => {
-                        dropArea.style.backgroundColor = "rgb(226, 236, 254)";
-                    });
-
-                    dropArea.addEventListener("drop", (event) => {
-                        event.preventDefault();
-                        dropArea.style.backgroundColor = "rgb(226, 236, 254)";
-                        const file = event.dataTransfer.files[0];
-                        handleFile(file);
-                    });
-
-                    fileInput.addEventListener("change", () => {
-                        const file = fileInput.files[0];
-                        handleFile(file);
-                    });
-
-                    function handleFile(file) {
-                        if (file && file.type.startsWith("image/")) {
-                            const reader = new FileReader();
-                            reader.onload = (e) => {
-                                previewImage.src = e.target.result;
-                                previewImage.style.display = "block";
-                                imageView.style.flexDirection = "column";
-                                handleFileUpload(file); // Call the upload function here
-                            };
-                            reader.readAsDataURL(file);
-                        } else {
-                            alert("Please upload a valid image file.");
-                        }
-                    }
-                    async function handleFileUpload(file) {
-                        const formData = new FormData();
-                        formData.append("image", file);
-
-                        try {
-                            const response = await fetch("/admin/categories/"+id+"/image", {
-                                method: "POST",
-                                body: formData,
-                            });
-
-                            if (response.ok) {
-                                const result = await response.json();
-                                console.log("Uploaded file URL:", result.fileUrl);
-                                
-                            } else {
-                                console.error("Upload error:", await response.text());
-                            }
-                        } catch (error) {
-                            console.error("Error during file upload:", error);
-                        }
-                    }
-
-
-
-                });
-            </script>
+            </div>         
 
             <input type="hidden" id="productId" name="id" th:value="${category.id}">
             <button type="submit" class="btn btn-primary" id="buttonSubmit">Save Changes</button>
@@ -154,46 +62,11 @@
     </main>
 </div>
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
-<script th:inline="javascript">
+<script src="../../../static/admin/js/main.js"></script>
+<script>
     document.addEventListener("DOMContentLoaded", function() {
-        const buttonSubmit = document.getElementById("buttonSubmit");
-        const formEle = document.getElementById("editForm");
-        const id = document.getElementById("productId").value;
-        const url = '/admin/categories/' + id;
-        console.log(url);
-
-        formEle.addEventListener('submit', function(event){
-            event.preventDefault();
-            buttonSubmit.disabled = true; // Disable the button to prevent multiple submissions
-            buttonSubmit.textContent = "Saving..."; // Change button text
-
-            const formData = new FormData(formEle);
-            formData.delete("image"); // Remove the image field from FormData
-            formData.delete("id"); // Remove the id field from FormData
-            
-            if(document.getElementById("active").checked){
-                formData.set("active", "true");
-            } else {
-                formData.set("active", "false");
-            }
-
-            fetch(url, {
-                method: "PUT",
-                //body: JSON.stringify(Object.keys(formData),
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                buttonSubmit.disabled = false; // Re-enable the button
-                buttonSubmit.innerHTML = "Save Changes"; // Reset button text
-                console.log("Product updated successfully:", data);
-                // Redirect or update UI as needed
-                window.location = "/admin/categories/" + id;
-            })
-            .catch(error => {
-                console.error('Error updating product:', error);
-            });
-        });
+        categoriesUploadFile();
+        categoriesEditForm();
     });
 </script>
 </body>

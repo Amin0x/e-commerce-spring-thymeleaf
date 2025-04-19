@@ -206,19 +206,16 @@ class CategoryControllerTest {
         verifyNoInteractions(model);
     }
 
-    private List<Product> getProducts() {
-        return new ArrayList<>(); // Return an empty list or mock data as needed for the test
-    }
-
-    private List<Product> getNewArrivalProducts(int count) {
-        return new ArrayList<>(); // Return an empty list or mock data as needed for the test
-    }
-
     @Test
     void testGetHomePage_MultipleConcurrentRequests() {
         // Arrange
         int concurrentRequests = 10;
         List<CompletableFuture<String>> futures = new ArrayList<>();
+        List<Category> categories = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
+        List<Product> newArrivalProducts = new ArrayList<>();
+        when(productService.getBestSellingProducts(12)).thenReturn(products);
+        when(categoryService.getRandomCategories()).thenReturn(categories);
         Model mockModel = Mockito.mock(Model.class); // Define and initialize mockModel
 
         for (int i = 0; i < concurrentRequests; i++) {
@@ -232,8 +229,8 @@ class CategoryControllerTest {
         // Assert
         for (String response : responses) {
             assertEquals("public/home", response);
-            verify(mockModel, times(concurrentRequests)).addAttribute("products", getProducts());
-            verify(mockModel, times(concurrentRequests)).addAttribute("newProducts", getNewArrivalProducts(12));
+            verify(mockModel, times(concurrentRequests)).addAttribute("products", products);
+            verify(mockModel, times(concurrentRequests)).addAttribute("newProducts", newArrivalProducts);
             verify(mockModel, times(concurrentRequests)).addAttribute("mustSellingProducts",
                     productService.getBestSellingProducts(12));
             verify(mockModel, times(concurrentRequests)).addAttribute("categoryList",
@@ -252,14 +249,19 @@ class CategoryControllerTest {
     void testHome_NullOrEmptyNotificationMessage() {
         // Arrange
         Model model = Mockito.mock(Model.class);
+        List<Category> categories = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
+        List<Product> newArrivalProducts = new ArrayList<>();
+        when(productService.getBestSellingProducts(12)).thenReturn(products);
+        when(categoryService.getRandomCategories()).thenReturn(categories);
 
         // Act
         String viewName = homeController.home(model);
 
         // Assert
         assertEquals("public/home", viewName);
-        verify(model, times(1)).addAttribute("products", getProducts());
-        verify(model, times(1)).addAttribute("newProducts", getNewArrivalProducts(12));
+        verify(model, times(1)).addAttribute("products", products);
+        verify(model, times(1)).addAttribute("newProducts", newArrivalProducts);
         verify(model, times(1)).addAttribute("mustSellingProducts", productService.getBestSellingProducts(12));
         verify(model, times(1)).addAttribute("categoryList", categoryService.getRandomCategories());
         verify(model, times(1)).addAttribute("notification", null);

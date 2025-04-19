@@ -6,6 +6,9 @@ import com.alamin.ecommerce.user.User;
 import com.alamin.ecommerce.user.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -139,8 +142,8 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public List<Cart> findAll() {
-        return cartRepository.findAll();
+    public Page<Cart> findAll(Pageable pr) {
+        return cartRepository.findAll(Objects.requireNonNullElseGet(pr, () -> PageRequest.ofSize(20)));
     }
 
     @Override

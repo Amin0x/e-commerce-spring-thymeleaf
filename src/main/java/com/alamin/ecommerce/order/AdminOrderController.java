@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @Controller
-@RequestMapping("/admin/orders")
 public class AdminOrderController {
-    @Autowired
-    private OrderService orderService;
 
-    @GetMapping
+    private final OrderService orderService;
+
+    public AdminOrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    @GetMapping("/admin/orders")
     public String index( Model model  ){
 
         model.addAttribute("user", new User());
@@ -29,7 +32,7 @@ public class AdminOrderController {
         return "admin/orders/order_index";
     }
 
-    @GetMapping("/all")
+    @GetMapping("/admin/orders/all")
     public String allOrders(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int size,
@@ -46,7 +49,7 @@ public class AdminOrderController {
         return "admin/orders/order_list";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/orders/{id}")
     public String orderDetails(@PathVariable Long id, Model model){
         Order order = orderService.getOrderById(id).orElseThrow();
         Double total = 0.0;
@@ -60,7 +63,7 @@ public class AdminOrderController {
         return "admin/orders/order_details";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/orders/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
         return ResponseEntity.noContent().build();

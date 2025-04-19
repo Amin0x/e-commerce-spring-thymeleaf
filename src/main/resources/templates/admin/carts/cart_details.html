@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="../../../static/admin/main.css" th:href="@{/admin/main.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
 <body>
     <div class="wrapper">
         <header>
@@ -42,8 +41,8 @@
         </header>
         <div class="content_warp">
             <nav id="sidebar" th:replace="~{admin/fragments/navigation :: navigation}"></nav>
-            <main>
-                <h1>Cart Details</h1>
+            <main class="cart-details">
+                <h1 class="title">Cart Details</h1>
                 <nav style="text-align: right; margin: 20px 0;" class="no-print">
                     <a class="btn btn-primary" th:href="@{/admin/carts}" style="margin-right: 10px;">
                         <i class="fa fa-arrow-left"></i> Back

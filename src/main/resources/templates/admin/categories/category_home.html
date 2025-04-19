@@ -9,21 +9,7 @@
     <link href="../../../static/public/css/bootstrap.min.css" th:href="@{/public/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
     <style>
-        .btn-delete { color: rgb(227, 100, 46); }
-        .btn-edit { color: rgb(67, 137, 10); }
-        .btn-sub { color: rgb(47, 102, 172); }
-        .btn-menu { color: rgb(81, 92, 72); }
-        .pagination { margin-top: 20px; }
-        .pagination li { display: inline-block; }
-        .pagination li.active { background-color: #4CAF50; color: white; border: none; }
-        .pagination li.disabled { background-color: #f2f2f2; color: #d1d1d1; border: none; }
-        .pagination li a { color: black; float: left; padding: 8px 16px; text-decoration: none; }
-        .pagination li a:hover:not(.active) { background-color: #ddd; }
-        .pagination li.next { float: right; }
-        .pagination li.previous { float: left; }
-        .pagination li.disabled { pointer-events: none; }
-        .pagination li.next a { float: right; }
-        .pagination li.previous a { float: left; }
+        
     </style>
 </head>
 <body>
@@ -31,7 +17,7 @@
     <aside th:replace="~{admin/fragments/navigation :: navigation}"></aside>
     <div class="content">
         <header th:replace="~{admin/fragments/header :: header}"></header>
-        <div class="px-3">
+        <div class="categories-home">
             <div class="mt-5 mb-4">
                 <a href="/admin/categories/create" ><button type="button" class="button-37">Create</button></a>
             </div>
@@ -89,18 +75,18 @@
                 <div class="mb-2 font-lg">Create new category</div>
                 <form th:action="@{/admin/categories}" method="post" enctype="application/x-www-form-urlencoded"
                       id="createCategoryForm">
-                    <div class="form-group">
+                    <div class="input-container">
                         <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="text-input" id="name" name="name" required>
                     </div>
-                    <div class="form-group">
+                    <div class="input-container">
                         <label for="description">Description:</label>
-                        <textarea class="form-control" id="description" name="description" required></textarea>
+                        <textarea class="text-input" id="description" name="description" required></textarea>
                     </div>
 
-                    <div class="form-group">
+                    <div class="input-container">
                         <label for="parent">Parent Category:</label>
-                        <select class="form-control" id="parent" name="parentId">
+                        <select class="text-input" id="parent" name="parentId">
                             <option value="">None</option>
                             <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                         </select>
@@ -116,69 +102,7 @@
 </div>
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
 <script>
-    document.querySelector('button').addEventListener('click', function() {
-        let elm = document.getElementById('createCategoryModel');
-        if (elm.style.display === 'none') {
-            elm.style.display = 'block';
-        } else {
-            elm.style.display = 'none';
-        }
-    });
-
-    document.getElementById('CancelButton').addEventListener('click', function() {
-        document.getElementById('createCategoryModel').style.display = 'none';
-    });
-
-    document.querySelectorAll('.delete-button').forEach(function(elm) {
-        elm.addEventListener('click', function(e) {
-            e.preventDefault();
-            const id = elm.getAttribute('data-delete');
-            const fd = new FormData();
-            fd.append('id', id);
-            fetch('/admin/categories/'+id, {
-                method: 'delete',
-                body: fd,
-            })
-            .then(response => {
-                if(response.status === 200){
-                    return response.json();
-                }
-
-                throw new Error("cant delete category");
-            })
-            .then(data => {
-                console.log(data);
-                elm.closest('tr').remove();
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        });
-    });
-
-    document.getElementById('createCategoryForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        let fd = new FormData(this);
-        fetch(this.action, {
-            method: 'POST',
-            body: fd
-        }).then(function(response) {
-            return response.json();
-        }).then(function(data) {
-            console.log(data);
-        }).catch(function(err) {
-            console.error(err);
-        });
-    });
-
-    document.querySelectorAll('[data-menu]').forEach(function(elm) {
-        elm.addEventListener('click', function(e) {
-            e.preventDefault();
-            const id = e.target.getAttribute('data-menu');
-            console.log('Menu button clicked, id = ' + id);
-        });
-    });
-
+    categoriesHomePage();
 </script>
 </body>
 </html>

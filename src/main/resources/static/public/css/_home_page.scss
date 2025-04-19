@@ -9,7 +9,6 @@
 .category-wrp{
     display: flex;
     justify-content: center;
-    align-items: center;
     gap: 1rem;
 
     @media screen and (max-width: 768px){
@@ -18,6 +17,7 @@
     }
 
     .category{
+        width: 110px;
         .category-card{
             .category-card__box{
                 .category-img{

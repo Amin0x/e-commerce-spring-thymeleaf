@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,35 +10,46 @@
         body {
             font-family: Arial, sans-serif;
         }
-        *{
+
+        * {
             box-sizing: border-box;
         }
+
         h1 {
             margin-top: 0;
             text-align: center;
             color: #333;
         }
-        label, input, select {
+
+        label,
+        input,
+        select {
             display: inline-block;
         }
 
-        input[type="text"], select {
+        input[type="text"],
+        select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        input[type="text"]:focus, select:focus {
+
+        input[type="text"]:focus,
+        select:focus {
             border-color: #4CAF50;
             outline: none;
         }
 
-        #cityError, #stateError {
+        #cityError,
+        #stateError {
             color: red;
         }
-        .am-form-group{
+
+        .am-form-group {
             margin-bottom: 15px;
         }
+
         .am-city-card {
             width: 300px;
             margin: 0 auto;
@@ -59,12 +71,15 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .button-submit button:hover {
             background-color: #45a049;
         }
+
         .button-30 {
             width: 100px;
         }
+
         .popover {
             position: absolute;
             top: 10px;
@@ -75,11 +90,57 @@
             border-radius: 5px;
             z-index: 1000;
         }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(14px);
+        }
     </style>
 </head>
+
 <body>
     <div class="am-city-card">
-        <h1 th:text="${formTitle}">Add a New Contery</h1>
+        <h1 class="title" th:text="${formTitle}">Add a New Contery</h1>
         <form id="cityForm" method="POST">
             <input type="hidden" name="id" id="countryId" th:value="${country.id}">
             <div class="am-form-group">
@@ -98,53 +159,10 @@
                     <span class="slider round"></span>
                 </label>
                 <style>
-                    .switch {
-                        position: relative;
-                        display: inline-block;
-                        width: 34px;
-                        height: 20px;
-                    }
 
-                    .switch input {
-                        opacity: 0;
-                        width: 0;
-                        height: 0;
-                    }
-
-                    .slider {
-                        position: absolute;
-                        cursor: pointer;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background-color: #ccc;
-                        transition: .4s;
-                        border-radius: 20px;
-                    }
-
-                    .slider:before {
-                        position: absolute;
-                        content: "";
-                        height: 14px;
-                        width: 14px;
-                        left: 3px;
-                        bottom: 3px;
-                        background-color: white;
-                        transition: .4s;
-                        border-radius: 50%;
-                    }
-
-                    input:checked + .slider {
-                        background-color: #4CAF50;
-                    }
-
-                    input:checked + .slider:before {
-                        transform: translateX(14px);
-                    }
                 </style>
             </div>
-            
+
             <div class="button-submit">
                 <button type="submit" class="button-30">Save</button>
             </div>
@@ -152,7 +170,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const cityForm = document.getElementById('cityForm');
             const nameInput = document.getElementById('name');
             const nameArInput = document.getElementById('nameAr');
@@ -162,75 +180,76 @@
             const countryId = document.getElementById('countryId').value;
             let url = '/admin/address/country';
 
-            cityForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+            cityForm.addEventListener('submit', function (e) {
+                e.preventDefault();
 
-            // Clear previous error messages
-            nameError.textContent = '';
-            nameArError.textContent = '';
+                // Clear previous error messages
+                nameError.textContent = '';
+                nameArError.textContent = '';
 
-            // Validate name
-            const name = nameInput.value;
-            if (!name || name.length < 3) {
-                nameError.textContent = 'City name must be at least 3 characters long.';
-                return;
-            }
-
-            // Validate nameAr
-            const nameAr = nameArInput.value;
-            if (!nameAr || nameAr.length < 3) {
-                nameArError.textContent = 'City name in Arabic is required and must be at least 3 characters long.';
-                return;
-            }
-
-            const formData = {
-                name: name,
-                nameAr: nameAr,
-                id: countryId,
-            };
-
-            submitButton.disabled = true;
-            submitButton.textContent = 'Saveing...';
-            
-            if (countryId !== '' || countryId !== null) {
-                url = '/admin/address/country?id='+countryId;
-            } 
-            
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            })
-            .then(response => {
-                if (!response.ok) {
-                throw new Error('Error adding city!');
+                // Validate name
+                const name = nameInput.value;
+                if (!name || name.length < 3) {
+                    nameError.textContent = 'City name must be at least 3 characters long.';
+                    return;
                 }
-                return response.json();
-            })
-            .then(data => {
-                nameInput.value = data.country.name;
-                nameArInput.value = data.country.nameAr;
-                document.getElementById('countryId').value = data.country.id;
-                // Show success message
-                const popover = document.createElement('div');
-                popover.className = 'popover';
-                popover.textContent = 'City added successfully!';
-                document.body.appendChild(popover);
-                setTimeout(() => {
-                popover.style.opacity = '0';
-                setTimeout(() => {popover.remove();}, 500);
-                }, 3000);
-                submitButton.disabled = false;
-                submitButton.textContent = 'Save';
-            })
-            .catch(error => {                
-                submitButton.disabled = false;
-                submitButton.textContent = 'Save';
-            });
+
+                // Validate nameAr
+                const nameAr = nameArInput.value;
+                if (!nameAr || nameAr.length < 3) {
+                    nameArError.textContent = 'City name in Arabic is required and must be at least 3 characters long.';
+                    return;
+                }
+
+                const formData = {
+                    name: name,
+                    nameAr: nameAr,
+                    id: countryId,
+                };
+
+                submitButton.disabled = true;
+                submitButton.textContent = 'Saveing...';
+
+                if (countryId !== '' || countryId !== null) {
+                    url = '/admin/address/country?id=' + countryId;
+                }
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error adding city!');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        nameInput.value = data.country.name;
+                        nameArInput.value = data.country.nameAr;
+                        document.getElementById('countryId').value = data.country.id;
+                        // Show success message
+                        const popover = document.createElement('div');
+                        popover.className = 'popover';
+                        popover.textContent = 'City added successfully!';
+                        document.body.appendChild(popover);
+                        setTimeout(() => {
+                            popover.style.opacity = '0';
+                            setTimeout(() => { popover.remove(); }, 500);
+                        }, 3000);
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Save';
+                    })
+                    .catch(error => {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Save';
+                    });
             });
         });
     </script>
 </body>
+
 </html>

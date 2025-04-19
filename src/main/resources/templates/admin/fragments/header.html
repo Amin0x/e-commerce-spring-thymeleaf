@@ -8,7 +8,6 @@
 </head>
 <body>
     <header th:fragment="header">
-        <!-- Top Header -->
         <section class="top-header">
             <div class="header-left d-flex">
                 <div class="logo d-flex justify-content-center">
@@ -29,7 +28,9 @@
                 </div>
                 <div class="user-info">
                     <span th:text="${user.username}">amin</span>
-                    <img th:src="@{/public/imgs/user-avatar.png}" src="../../../static/public/imgs/user-avatar.png" alt="User Avatar" class="user-avatar">
+                    <a href="#">
+                        <img th:src="@{/public/imgs/user-avatar.png}" src="../../../static/public/imgs/user-avatar.png" alt="User Avatar" class="user-avatar">
+                    </a>
                 </div>
             </div>
         </section>

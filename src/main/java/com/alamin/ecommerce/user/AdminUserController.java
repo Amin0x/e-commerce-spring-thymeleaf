@@ -10,7 +10,7 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 
 @Controller
-@RequestMapping("/admin/users")
+@RequestMapping("")
 public class AdminUserController {
 
 
@@ -18,7 +18,7 @@ public class AdminUserController {
     private UserService userService;
     
 
-    @GetMapping
+    @GetMapping("/admin/users")
     public String index(Model model) {
 
         var newUsersList = userService.getLastUsers(10);
@@ -31,7 +31,7 @@ public class AdminUserController {
         model.addAttribute("totalUsers", userService.getUsersCount());
         model.addAttribute("activeUsers", userService.getActiveUsersCount());
         model.addAttribute("newUsers", userService.getUsersCountThisMonth());
-        model.addAttribute("unactiveUsers", userService.getInactiveUsersCount());
+        model.addAttribute("inactiveUsers", userService.getInactiveUsersCount());
         model.addAttribute("newUsersList", newUsersList);
         model.addAttribute("topDrivers", newUsersList);
         model.addAttribute("usersRegistrationLabels", usersRegistrationLabels);
@@ -41,7 +41,7 @@ public class AdminUserController {
         return "admin/users/users_index";
     }
 
-    @GetMapping("/all")
+    @GetMapping("/admin/users/all")
     public String allUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("pageNumber", 10);
@@ -51,7 +51,7 @@ public class AdminUserController {
         return "admin/users/users_list";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/users/{id}")
     public String viewUser(@PathVariable Long id, Model model) {
         User user = null;
         try {
@@ -64,7 +64,7 @@ public class AdminUserController {
         return "admin/users/user_details";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/users/edit/{id}")
     public String editUserForm(@PathVariable Long id, Model model) {
         User user = null;
         try {
@@ -77,7 +77,7 @@ public class AdminUserController {
         return "admin/users/user_edit_form";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/admin/users/create")
     public String createUserForm(Model model) {
         String[] months = new DateFormatSymbols().getMonths();
         model.addAttribute("monthNames", months);
@@ -86,7 +86,7 @@ public class AdminUserController {
         return "admin/users/user_create_form";
     }
 
-    @PostMapping
+    @PostMapping("/admin/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         if (user == null) {
             return ResponseEntity.badRequest().build();
@@ -96,7 +96,7 @@ public class AdminUserController {
         return ResponseEntity.ok(savedUser);
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/admin/users/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute User user, Model model) {
         if (user == null) {
             return "admin/users/user_edit_form";

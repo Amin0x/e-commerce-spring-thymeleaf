@@ -22,13 +22,23 @@
     .product-card{width: 100%; border: 1px solid #ccc; border-radius: 5px; display: flex; flex-direction: column;}
     .product-card__image{position: relative;}
     .product-card__image::before{ background-color: #0f1111; content: ''; height: 100%; opacity: .03; position: absolute; top: 0; width: 100%;}
-    .product-image{width: 100%; height: 200px; object-fit: cover; text-align: center;}
+    .product-image{display: block; width: 100%; height: 200px; object-fit: cover; text-align: center;}
     .product-card__body{display: flex; flex-direction: column; flex-grow: 1; padding: 1rem;}
     .product-title{font-size: 0.9rem; font-weight: 500; color: black; margin-bottom: 12px;}
     .product-price{font-size: 0.9rem; color: #cd1f1f; font-weight: 500;}
     .product-discount{font-size: 0.9rem; color: #767070; text-decoration: line-through; margin-bottom: 15px;}
     button.button-31{width: 100%; margin-top: auto;}
     .circle-container{position: absolute; top: 5px; left: 5px; cursor: pointer; font-size: 1.2rem;}
+    .badge-container{display: flex; align-items: center; position: absolute; top: 5px; right: 5px; cursor: pointer; font-size: 1.2rem;}
+    .badge-container .new{
+        background-color: #D32F2F;
+        color: #fff;
+        padding: 0px 2px;
+        font-size: 12px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        }
     @media screen and (min-width: 768px){
       .products{width: calc(50% - 8px); margin-inline: 4px;}
     }
@@ -53,19 +63,21 @@
         <div th:each="product : ${products}" class="products">
           <div class="product-card">
             <div class="product-card__image">
+              <a th:href="@{/products/{id}(id=${product.slug})}" href="#">
+                <img th:src="${product.image}" class="product-image" alt="Product Image" src="">
+              </a>
               <a class="circle-container" th:data-heart="${product.id}">
                 <i class="far fa-heart"></i>
               </a>
-              <a th:href="@{/products/{id}(id=${product.id})}" href="#">
-                <img th:src="${product.image}" class="product-image" alt="Product Image" src="">
-              </a>
-              <span th:if="product.new" class="badge bg-info new">جديد</span>
+              <span class="badge-container">
+                <span th:if="product.new" class="new">جديد</span>
+              </span>
             </div>
             <div class="product-card__body">
               <div th:text="${product.name}" class="product-title">Product Title</div>
               <div class="product-price"><span th:text="|${product.price} جنيه|">$49.99 ج.س</span></div>
-              <div th:if="(${product.price} &lt; ${product.initPrice})" class="product-discount">
-                <span th:text="|${product.initPrice} جنيه|">$49.99 ج.س</span>
+              <div th:if="(${product.price} &lt; ${product.basePrice})" class="product-discount">
+                <span th:text="|${product.basePrice} جنيه|">$49.99 ج.س</span>
               </div>
               <button type="button" class="button-31" th:data-add-cart="${product.id}">اضافة للعربة</button>
             </div>

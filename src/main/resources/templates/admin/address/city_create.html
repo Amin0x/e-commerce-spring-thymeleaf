@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add City Form</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="../../../static/public/css/bootstrap.min.css" th:href="@{/public/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/main.css}" href="../../static/css/admin/main.css" rel="stylesheet">
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        *{
-            box-sizing: border-box;
-        }
+        
         h1 {
             margin-top: 0;
             text-align: center;
@@ -22,23 +19,8 @@
             display: inline-block;
         }
 
-        input[type="text"], select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        input[type="text"]:focus, select:focus {
-            border-color: #4CAF50;
-            outline: none;
-        }
-
-        #cityError, #stateError {
-            color: red;
-        }
-        .am-form-group{
-            margin-bottom: 15px;
-        }
+        
+        
         .am-city-card {
             width: 300px;
             margin: 0 auto;
@@ -90,52 +72,52 @@
         <h1>Add a New City</h1>
         <form id="cityForm" method="POST">
             <input type="hidden" name="id" id="cityid" th:value="${city?.id}">
-            <div class="am-form-group">
+            <div class="input-container">
                 <label for="name">City Name:</label>
-                <input type="text" id="name" name="nmae" th:value="${city?.name}">
-                <div id="nameError"></div>
+                <input type="text" id="name" class="text-input" name="nmae" th:value="${city?.name}">
+                <div class="error-message" id="nameError"></div>
             </div>
-            <div class="am-form-group">
+            <div class="input-container">
                 <label for="nameAr">City Name (Arabic):</label>
-                <input type="text" id="nameAr" name="nameAr" th:value="${city?.nameAr}">
-                <div id="nameArError"></div>
+                <input type="text" id="nameAr" class="text-input" name="nameAr" th:value="${city?.nameAr}">
+                <div class="error-message" id="nameArError"></div>
             </div>
-            <div class="am-form-group">
+            <div class="input-container">
                 <label for="estimatedDelivery">Estimated Delivery:</label>
-                <input type="text" id="estimatedDelivery" name="estimatedDelivery" th:value="${city?.estimatedDelivery}">
-                <div id="estimatedDeliveryError"></div>
+                <input type="text" id="estimatedDelivery" class="text-input" name="estimatedDelivery" th:value="${city?.estimatedDelivery}">
+                <div class="error-message" id="estimatedDeliveryError"></div>
             </div>
-            <div class="am-form-group">
+            <div class="input-container">
                 <label for="deliveryPrice">Delivery Price:</label>
-                <input type="text" id="deliveryPrice" name="deliveryPrice" th:value="${city?.deliveryPrice}">
-                <div id="deliveryPriceError"></div>
+                <input type="text" id="deliveryPrice" class="text-input" name="deliveryPrice" th:value="${city?.deliveryPrice}">
+                <div class="error-message" id="deliveryPriceError"></div>
             </div>
-            <div class="am-form-group">
+            <div class="input-container">
                 <label for="deliveryPriority">Delivery Priority:</label>
-                <select id="deliveryPriority" name="deliveryPriority">
+                <select id="deliveryPriority" class="text-input" name="deliveryPriority">
                     <option value="Normal" th:attr="selected=(${city?.deliveryPriority} == 'Normal'? selected:null)">Normal</option>
                     <option value="High" th:attr="selected=(${city?.deliveryPriority} == 'High'? selected:null)">High</option>
                     <option value="Low" th:attr="selected=(${city?.deliveryPriority} == 'Low'? selected:null)">Low</option>
                 </select>
-                <div id="deliveryPriorityError"></div>
+                <div class="error-message" id="deliveryPriorityError"></div>
             </div>
-            <div class="am-form-group">
+            <div class="input-container">
                 <span class="am-label">Select Country:</span>
-                <select id="country" name="country">
+                <select class="text-input" id="country" name="country">
                     <option value="" disabled selected>Select a Country</option>
                     <option th:each="country : ${countries}" th:value="${country?.id}" th:text="${country?.name}"
                     th:attr="selected=(${country.id} == ${city?.country?.id}? selected:null)"></option>
                 </select>
-                <div id="stateError"></div>
+                <div class="error-message" id="countryError"></div>
             </div>
-            <div class="am-form-group">
+            <div class="input-container">
                 <span class="am-label">Select State:</span>
-                <select id="state" name="state">
+                <select class="text-input" id="state" name="state">
                     <option value="" disabled selected>Select a State</option>
                     <option th:each="state : ${states}" th:value="${state.id}" th:text="${state.name}"
                     th:attr="selected=(${state?.id} == ${city?.state?.id}? selected:null)"></option>
                 </select>
-                <div id="stateError"></div>
+                <div class="error-message" id="stateError"></div>
             </div>
             <div class="button-submit">
                 <button type="submit" class="button-30" id="SubmitForm">Add City</button>
@@ -146,153 +128,7 @@
     <script>
         
         document.addEventListener('DOMContentLoaded', function() {
-            const state = document.getElementById('state');
-            const country = document.getElementById('country');
-            state.innerHTML = '';
-            state.disabled = true;
-
-            country.addEventListener('change', (e)=>{
-                if(country.value == null || country.value == '') return false;
-
-                fetch('/admin/address/state?cid='+country.value,{
-                    method: 'get',
-                })
-                .then(response => {
-                    if(!response.ok) throw new Error('');
-                    response.json();
-                })
-                .then(data =>{
-                    data.countries.forEach(element => {
-                        const option = document.createElement('option');
-                        option.value = element.id;
-                        option.textContent = element.name;
-                        state.appendChild(option);
-                        state.disabled = false;
-                    });
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-            });
-
-
-            document.getElementById('cityForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                // Clear previous error messages
-                document.getElementById('nameError').textContent = '';
-                document.getElementById('nameArError').textContent = '';
-                document.getElementById('estimatedDeliveryError').textContent = '';
-                document.getElementById('deliveryPriceError').textContent = '';
-                document.getElementById('deliveryPriorityError').textContent = '';
-                document.getElementById('stateError').textContent = '';
-                
-
-                let isValid = true;
-
-                // Validate city name
-                const cityName = document.getElementById('name').value;
-                if (cityName === undefined || cityName.trim().length === 0) {
-                    document.getElementById('nameError').textContent = 'City name is required.';
-                    isValid = false;
-                }
-                else if (cityName.length < 3) {
-                    document.getElementById('nameError').textContent = 'City name must be at least 3 characters long.';
-                    isValid = false;
-                }
-                // Validate city name in Arabic
-                const cityNameAr = document.getElementById('nameAr').value;
-                if (cityNameAr === undefined || cityNameAr.trim().length === 0) {
-                    document.getElementById('nameArError').textContent = 'City name (Arabic) is required.';
-                    isValid = false;
-                }
-                else if (cityNameAr.trim().length < 3) {
-                    document.getElementById('nameArError').textContent = 'City name (Arabic) must be at least 3 characters long.';
-                    isValid = false;
-                }
-                // Validate estimated delivery
-                const estimatedDelivery = document.getElementById('estimatedDelivery').value;
-                if (estimatedDelivery === undefined || estimatedDelivery.length === 0) {
-                    document.getElementById('estimatedDeliveryError').textContent = 'Estimated delivery is required.';
-                    isValid = false;
-                }
-                if (!/^\d+$/.test(estimatedDelivery)) {
-                    document.getElementById('estimatedDeliveryError').textContent = 'Estimated delivery must be a number.';
-                    isValid = false;
-                }
-                // Validate delivery price
-                const deliveryPrice = document.getElementById('deliveryPrice').value;
-                if (deliveryPrice === undefined || deliveryPrice.length === 0) {
-                    document.getElementById('deliveryPriceError').textContent = 'Delivery price is required.';
-                    isValid = false;
-                }
-                if (!/^\d+(?:\.\d{1,2})?$/.test(deliveryPrice)) {
-                    document.getElementById('deliveryPriceError').textContent = 'Delivery price must be a valid number.';
-                    isValid = false;
-                }
-                // Validate delivery priority
-                const deliveryPriority = document.getElementById('deliveryPriority').value;
-                if (deliveryPriority === undefined || deliveryPriority.length === 0) {
-                    document.getElementById('deliveryPriorityError').textContent = 'Delivery priority is required.';
-                    isValid = false;
-                }
-                // Validate state selection
-                const stateId = document.getElementById('state').value;
-                if (stateId === undefined || stateId.length === 0) {
-                    document.getElementById('stateError').textContent = 'Select a state.';
-                    isValid = false;
-                }
-
-                // If any validation fails, return early
-                if (!isValid) {
-                    return false;
-                }
-
-                console.log(document.getElementById('cityid').value)
-                const formData = {
-                    id: document.getElementById('cityid').value === undefined ? null : document.getElementById('cityid').value,
-                    name: document.getElementById('name').value,
-                    nameAr: document.getElementById('nameAr').value,
-                    estimatedDelivery: document.getElementById('estimatedDelivery').value,
-                    deliveryPrice: document.getElementById('deliveryPrice').value,
-                    deliveryPriority: document.getElementById('deliveryPriority').value,
-                    stateId: document.getElementById('state').value
-                };
-
-                document.querySelector('button[type=submit]').disabled = true;
-
-                fetch('/admin/address/city/add?state=' + stateId, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error adding city!');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    alert('City added successfully!');
-                    const popover = document.createElement('div');
-                    popover.className = 'popover';
-                    popover.textContent = 'City added successfully!';
-                    document.body.appendChild(popover);
-                    setTimeout(() => {
-                        popover.style.transition = 'opacity 0.5s';
-                        popover.style.opacity = '0';
-                        setTimeout(() => popover.remove(), 500);
-                    }, 3000);
-                    document.getElementById('cityForm').reset();
-                    document.querySelector('button[type=submit]').disabled = false;
-                })
-                .catch(error => {
-                    alert(error.message);
-                    document.querySelector('button[type=submit]').disabled = false;
-                });
-            });
+            cityCreatePage();
         });
 
     </script>

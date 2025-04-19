@@ -40,4 +40,6 @@ public interface CategoryService {
     List<Category> getCategoryPathToRoot(Long categoryId);
 
     Optional<Category> findByCategorySlug(String id);
+
+    List<Category> getTopCategories();
 }

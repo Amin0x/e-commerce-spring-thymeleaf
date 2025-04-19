@@ -22,10 +22,16 @@ function handleSignupFormSubmit(e) {
         return false;
     }
 
-    fetch("/signup", {
+    const data = { 
+        email: email.value, 
+        password: email.value, 
+        confirmPassword: confirmPassword.value 
+    };
+    const url = '/signup';
+    fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.value, password: email.value, confirmPassword: confirmPassword.value }),
+        body: JSON.stringify(data),
     }).then(response => {
         if (response.status == 200) {
             return response.json()
@@ -44,20 +50,21 @@ function handleSignupFormSubmit(e) {
 function handleLoginSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
+    const url = '/login';
 
-    fetch("/login", {
+    fetch(url, {
         method: "POST",
         body: formData,
     })
-        .then(res => {
-            return (res.status == 200 ? re.json() : Promise.reject(res.statusText))
-        })
-        .then(data => {
-            if (data.status === "success") { return data }
-        })
-        .catch(
-            error => console.error("Error:", error)
-        );
+    .then(res => {
+        return (res.status == 200 ? re.json() : Promise.reject(res.statusText))
+    })
+    .then(data => {
+        if (data.status === "success") { return data }
+    })
+    .catch(
+        error => console.error("Error:", error)
+    );
 }
 
 function handleAddToCartClick(e) {
@@ -77,7 +84,7 @@ function addToCart(productId) {
     }).then(response => response.json()).then(data => {
         if (data !== undefined) {
             console.log('added to cart successfully : ' + productId);
-            document.querySelector('#cartItemsCount').textContent(data.totalItems);
+            document.querySelector('#cartItemsCount').textContent = data.totalItems;
         } else {
             console.log('failed to add to cart : ' + productId);
         }
