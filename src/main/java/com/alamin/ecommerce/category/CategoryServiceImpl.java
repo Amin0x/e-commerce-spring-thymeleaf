@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.List;
 
 @Service
@@ -58,7 +59,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category createCategory(String name, String description, Long parentId, MultipartFile image) {
         String slug = generteSlug(name);
-        Category category = new Category(slug, description, null);
+        Category category = new Category(name, description, null);
+        category.setSlug(slug);
+        category.setActive(false);
+        category.setEnabled(false);
+        category.setCreated(LocalDateTime.now());
+        category.setUpdated(LocalDateTime.now());
+        category.setImageUrl(null);
+        category.setParent(null);
+        category.setUuid(UUID.randomUUID().toString().replace("-", ""));
+
         if (parentId != null) {
             Optional<Category> parentOptional = getCategoryById(parentId);
             if (parentOptional.isPresent()) {
@@ -90,17 +100,19 @@ public class CategoryServiceImpl implements CategoryService {
 
         Optional<Category> categoryOptional = categoryRepository.findById(id);
         if (categoryOptional.isPresent()) {
-            Category existingCategory = categoryOptional.get();
+            Category category = categoryOptional.get();
             Category parent = categoryRepository.findById(Long.valueOf(categoryDto.getParent())).orElse(null);
-            existingCategory.setParent(parent);
-            existingCategory.setName(generteSlug(categoryDto.getName()));
-            existingCategory.setDescription(categoryDto.getDescription());
-            existingCategory.setActive(categoryDto.getActive());
-            existingCategory.setUpdated(LocalDateTime.now());
-            return categoryRepository.save(existingCategory);
+            category.setParent(parent);
+            category.setName(categoryDto.getName());
+            category.setSlug(generteSlug(categoryDto.getName()));
+            //existingCategory.setEnabled(false);
+            category.setActive(categoryDto.getActive());
+            category.setDescription(categoryDto.getDescription());
+            category.setUpdated(LocalDateTime.now());
+            return categoryRepository.save(category);
         }
 
-        throw new IllegalArgumentException("Category not found with id: " + id);
+        throw new ResourceNotFoundException("Category not found with id: " + id);
     }
 
     // Get all categories with pagination and sorting
@@ -216,6 +228,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private String generteSlug(String name){
-        return "";
+        
+        String slug = name.replaceAll("[^\\p{L}\\p{N}\\s]", "") // Allow Unicode letters and numbers
+                          .replaceAll("\\s+", "-") // Replace spaces with hyphens
+                          .replaceAll(" ", "-") // Replace spaces with hyphens
+                          .replaceAll("[-]+", "-") // Replace multiple hyphens with a single hyphen
+                            .replaceAll("[-]+$", "") // Remove trailing hyphens
+                            .replaceAll("[-]+^", "") // Remove leading hyphens
+                            .replaceAll("[_]+$", "") // Remove trailing underscores
+                            .replaceAll("[_]+^", "") // Remove leading underscores
+                          .toLowerCase();
+        // Ensure the slug is unique by appending a random number if necessary
+        // You can implement a check against your database to ensure uniqueness
+        // For simplicity, this example just appends a random number
+        // In a real application, you would check against existing slugs in the database
+        //String randomNumber = String.valueOf((int) (Math.random() * 10000)); // Random number between 0 and 9999
+        return slug;
     }
 }
