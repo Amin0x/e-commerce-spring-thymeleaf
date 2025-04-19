@@ -82,7 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
             String fileName = fileUploadService.uploadFile(image);
             category.setImageUrl("/uploads/" + fileName);
         } else {
-            category.setImageUrl(null);
+            category.setImageUrl("/public/imgs/default.png");
         }
         return categoryRepository.save(category);
     }
