@@ -82,7 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
             String fileName = fileUploadService.uploadFile(image);
             category.setImageUrl("/uploads/" + fileName);
         } else {
-            category.setImageUrl("/public/imgs/default.png");
+            category.setImageUrl("/public/imgs/default-image.png");
         }
         return categoryRepository.save(category);
     }
@@ -109,6 +109,24 @@ public class CategoryServiceImpl implements CategoryService {
             category.setActive(categoryDto.getActive());
             category.setDescription(categoryDto.getDescription());
             category.setUpdated(LocalDateTime.now());
+
+            return categoryRepository.save(category);
+        }
+
+        throw new ResourceNotFoundException("Category not found with id: " + id);
+    }
+
+    @Override
+    public Category updateCategoryImage(Long id, MultipartFile image) {
+        if (image == null) {
+            throw new IllegalArgumentException("Image cannot be null");
+        }
+
+        Optional<Category> categoryOptional = categoryRepository.findById(id);
+        if (categoryOptional.isPresent()) {
+            Category category = categoryOptional.get();
+            String fileName = fileUploadService.uploadFile(image);
+            category.setImageUrl("/uploads/" + fileName);
             return categoryRepository.save(category);
         }
 
@@ -216,15 +234,6 @@ public class CategoryServiceImpl implements CategoryService {
             throw new IllegalArgumentException("null not allowed");
         }
         return categoryRepository.findBySlug(id);
-    }
-
-    @Override
-    public Category updateCategoryImage(Long id, MultipartFile image) {
-        String fileName = fileUploadService.uploadFile(image);
-        Category category = getCategoryById(id).orElseThrow(() -> new ResourceNotFoundException("cant find category with id:" + id));
-        category.setImageUrl(fileName);
-        
-        return categoryRepository.save(category);
     }
 
     private String generteSlug(String name){

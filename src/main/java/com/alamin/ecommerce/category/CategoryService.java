@@ -6,18 +6,23 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryService {
+    // Get random categories
+    // This method is used to fetch a random set of categories from the database.
     List<Category> getRandomCategories();
 
+    // Get category by ID
     Optional<Category> getCategoryById(Long id);
 
     // Delete category by ID
     void deleteCategory(Long id);
 
+    // Create category
     Category createCategory(String name, String description, Long parentId, MultipartFile image);
 
     // Update category
     Category updateCategory(Long id, CategoryDto categoryDto);
 
+    // Update category image
     Category updateCategoryImage(Long id, MultipartFile image);
 
     // Get all categories with pagination and sorting
@@ -25,8 +30,10 @@ public interface CategoryService {
 
     boolean existsById(long id);
 
+    // Get all categories with pagination and sorting
     List<Category> searchCategoryByName(String search);
 
+    // Get all categories with pagination and sorting
     List<Category> findAll();
 
     List<Category> getCategoriesByParentIdAndActive(Long id);
