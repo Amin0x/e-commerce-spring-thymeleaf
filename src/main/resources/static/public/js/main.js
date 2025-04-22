@@ -67,28 +67,105 @@ function handleLoginSubmit(e) {
     );
 }
 
-function handleAddToCartClick(e) {
-    e.preventDefault();
-    const el = e.target;
-    addToCart(el.getAttribute('data-add-cart'));
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-add-cart]').forEach((element) => {
+        element.addEventListener('click', (event) => {
+            event.preventDefault();
+            const productId = element.getAttribute('data-add-cart');
+            const quantity = 1;
+            addToCart(productId, quantity);
+        });
+    });
+});
+
+function addToCart(productId, quantity) {
+    const url = '/carts/addToCart';
+    const data = {
+        productId: productId,
+        quantity: quantity,
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log('Cart update response:', data);
+        if(data.status == 200) {
+            const cartItemsCount = document.getElementById('cartItemsCount');
+            if (cartItemsCount && data.totalItems) {
+                cartItemsCount.textContent = data.totalItems;
+            }
+        }
+    })
+    .catch((error) => console.error('Error:', error));
 }
 
-function addToCart(productId) {
-    const fd = new FormData();
-    fd.append('productId', productId);
-    fd.append('quantity', 1);
-
-    fetch('/carts/addToCart', {
-        method: 'POST',
-        body: fd,
-    }).then(response => response.json()).then(data => {
-        if (data !== undefined) {
-            console.log('added to cart successfully : ' + productId);
-            document.querySelector('#cartItemsCount').textContent = data.totalItems;
-        } else {
-            console.log('failed to add to cart : ' + productId);
-        }
-    }).catch(error => {
-        console.error('Error:', error);
+function initializeSubscription() {
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("subscribeButton").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            subscribe(); // Call the subscribe function
+        });
     });
+
+    function subscribe() {
+        var email = document.getElementById("email").value;
+        var name = document.getElementById("name").value;
+        var url = "/subscription/subscribe";
+        let formData = new FormData();
+        formData.append("email", email);
+        formData.append("name", name);
+        const message = document.getElementById("message");
+        message.innerHTML = ""; // Clear previous messages
+        // Validate inputs
+        if (!validateInputs()) {
+            return; // Stop if validation fails
+        }
+        fetch(url, {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 200) {
+                console.log("Subscription successful!");
+                message.innerHTML = "Subscription successful! Check your email for confirmation.";
+            } else {
+                console.log("Subscription failed. Please try again.");
+                message.innerHTML = data.message || "Subscription failed. Please try again.";
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    }
+
+    function validateInputs() {
+        const email = document.getElementById("email").value;
+        const name = document.getElementById("name").value;
+        const message = document.getElementById("message");
+        message.innerHTML = ""; // Clear previous messages
+
+        if (!email || !name) {
+            message.innerHTML = "Please fill in all fields.";
+            return false;
+        }
+
+        if (!validateEmail(email)) {
+            message.innerHTML = "Please enter a valid email address.";
+            return false;
+        }
+
+        return true;
+    }
+    // Validate email format
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
 }

@@ -1,39 +1,26 @@
 package com.alamin.ecommerce.home;
 
 import com.alamin.ecommerce.product.*;
-import com.alamin.ecommerce.subscribe.SubscribeService;
-import io.netty.util.internal.StringUtil;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.alamin.ecommerce.category.Category;
 import com.alamin.ecommerce.category.CategoryService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
 public class HomeController {
 
     private final CategoryService categoryService;
-
     private final ProductService productService;
 
-    private final SubscribeService subscribeService;
-
-    public HomeController(CategoryService categoryService, ProductService productService, SubscribeService subscribeService) {
+    public HomeController(CategoryService categoryService, ProductService productService) {
         this.categoryService = categoryService;
         this.productService = productService;
-        this.subscribeService = subscribeService;
     }
 
     @GetMapping("/") // Handles requests to the root URL ("/")
