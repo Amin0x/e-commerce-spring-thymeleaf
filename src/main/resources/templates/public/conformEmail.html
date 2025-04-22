@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Home page description for your website.">
+    <meta name="author" content="Your Name or Company Name">
+
+    <title>Signup Successful</title>
+
+    <link rel="icon" th:href="@{/public/imgs/favicon.png}" href="../../static/public/imgs/favicon.png" type="image/png">
+
+<style>
+    .conform-email-success{
+    text-align: center;}
+        padding: 20px;
+        margin: 0 auto;
+        max-width: 600px;
+</style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <div class="conform-email-success">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green" width="48px" height="48px" alt="Success Icon">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.2 18L4.8 12l1.6-1.6 4.4 4.4 8-8L20 8.8l-9.2 9.2z"/>
+                </svg>
+            </div>
+            <h1>تم التسجيل بنجاح</h1>
+            <p>تم إنشاء حسابك بنجاح. يرجى التحقق من بريدك الإلكتروني لتأكيد حسابك.</p>
+            <p>إذا لم تتلق البريد الإلكتروني، يرجى التحقق من مجلد الرسائل غير المرغوب فيها أو إعادة إرسال تأكيد البريد
+                الإلكتروني.</p>
+            <p>إذا كان لديك أي استفسارات، فلا تتردد في الاتصال بنا.</p>
+            <p>شكرًا لك على التسجيل!</p>
+            <a href="/auth/send-confirmation-email">إعادة إرسال تأكيد البريد الإلكتروني</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

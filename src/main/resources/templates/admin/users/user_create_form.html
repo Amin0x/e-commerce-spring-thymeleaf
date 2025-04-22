@@ -15,70 +15,76 @@
     <div class="create-user-container">
         <h2>Create New User</h2>
         <form id="createUserForm">
-            <div class="form-group">
+            <div class="input-container">
                 <label for="firstName">First Name:</label>
-                <input type="text" class="form-control" th:value="${firstName}" id="firstName">
-                <div class="input-message">first name is required</div>
+                <input type="text" class="text-input invalid" th:value="${firstName}" name="firstName" id="firstName">
+                <div class="error-message show" id="firstNameError">first name is required</div>
             </div>
-            <div class="form-group">
+            <div class="input-container">
                 <label for="lastName">Last Name:</label>
-                <input type="text" class="form-control" th:value="${lastName}" id="lastName">
-                <div class="input-message">first name is required</div>
+                <input type="text" class="text-input" name="lastName" th:value="${lastName}" id="lastName">
+                <div class="error-message" id="lastNameError">last name is required</div>
             </div>
-            <div class="form-group">
+            <div class="input-container">
                 <div role="lable">Birth Date:</div>
                 <div class="d-flex gap-2">
                     <div class="flex-grow-1">
-                        <select class="form-control mr-2"  id="birthdayDay">
+                        <select class="text-input mr-2" name="birthdayDay"  id="birthdayDay">
                             <option value="" disabled selected>Day</option>
                             <option th:each="day : ${#numbers.sequence(1, 31)}" th:value="${day}" th:text="${day}"></option>
                         </select>
-                        <div class="input-message">first name is required</div>
+                        <div class="error-message" id="birthdayDayError">first name is required</div>
                     </div>
                    <div class="flex-grow-1">
-                    <select class="form-control mr-2" id="birthdayMonth">
+                    <select class="text-input mr-2" id="birthdayMonth">
                         <option value="" disabled selected>Month</option>
                         <option th:each="month, iter : ${monthNames}" th:value="${iter.index + 1}" th:text="${month}"></option>
                     </select>
-                    <div class="input-message">first name is required</div>
+                    <div class="error-message" id="birthdayMonthError">first name is required</div>
                    </div>
                     <div class="flex-grow-1">
-                        <select class="form-control" id="birthdayYear">
+                        <select class="text-input" id="birthdayYear">
                             <option value="" disabled selected>Year</option>
                             <option th:each="year : ${#numbers.sequence(1900, 2023)}" th:value="${year}" th:text="${year}"></option>
                         </select>
-                        <div class="input-message">first name is required</div>
+                        <div class="error-message" id="birthdayYearError">first name is required</div>
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="input-container">
                 <label for="role">Role:</label>
-                <select class="form-control" th:value="${role}" id="role">
+                <select class="text-input" th:value="${role}" name="role" id="role">
                     <option value="" disabled selected>Select Role</option>
                     <option value="USER">USER</option>
                     <option value="ADMIN">ADMIN</option>
                     <option value="MODERATOR">MODERATOR</option>
                 </select>
+                <div class="error-message" id="roleError">first name is required</div>
             </div>
-            <div class="form-group">
+            <div class="input-container">
                 <div class="avatar-lable">Avatar:</div>
-                <input type="file" class="form-control" th:value="${avatar}" id="avatar" accept="image/*" style="display:none;">
+                <input type="file" class="text-input" th:value="${avatar}" id="avatar" accept="image/*" style="display:none;">
                 <button type="button" id="avatarButton" class="avatar-button">select image</button>
             </div>
-            <div class="form-group">
+            <div class="input-container">
                 <label for="email">Email:</label>
-                <input type="email" class="form-control" th:value="${email}" id="email">
+                <input type="email" class="text-input" th:value="${email}" name="email" id="email">
+                <div class="error-message" id="emailError">first name is required</div>
             </div>
-            <div class="form-group">
+            <div class="input-container">
                 <label for="password">Password:</label>
-                <input type="password" class="form-control" th:value="${password}" id="password">
+                <input type="password" class="text-input" th:value="${password}" name="password" id="password">
+                <div class="error-message" id="passwordError">first name is required</div>
             </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" th:value="${enabled}" id="enabled">
-                <label for="enabled" class="form-check-label">Enabled</label>
+            <div class="input-container">
+                <label for="enabled" class="form-check-label">Status:</label>
+                <select class="text-input" id="enabled" th:value="${enabled}" name="enabled">
+                    <option value="false" selected>Disabled</option>
+                    <option value="true">Enabled</option>
+                </select>
             </div>
 
-            <button type="submit" id="submitButton" class="btn btn-primary mt-3"><i class="fab fa-plus"></i> Create User</button>
+            <button type="button" id="submitButton" class="btn btn-primary mt-3"><i class="fab fa-plus"></i> Create User</button>
         </form>
     </div>
 </div>
@@ -87,149 +93,11 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js'}" src="../../../static/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/admin/js/main.js}" src="../../../static/admin/js/main.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
-
-        let image = '';
-
-    function formValidation(){
-        const name = document.getElementById('firstName').value;
-        const lastname = document.getElementById('lastName').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        //const confirmPassword = document.getElementById('confirmPassword').value;
-        //const date = document.getElementById('date').value;
-
-        if(name === ''){
-            document.getElementById('firstName').classList.add('is-invalid');
-            document.getElementById('firstName').closest('div div').classList.add('is-invalid');
-            return false;
-        }
-
-        if(lastname === ''){
-            document.getElementById('lastName').classList.add('is-invalid');
-            document.getElementById('lastName').closest('div div').classList.add('is-invalid');
-            return false;
-        }
-
-        if(email === ''){
-            document.getElementById('email').classList.add('is-invalid');
-            document.getElementById('email').closest('div div').classList.add('is-invalid');
-            return false;
-        }
-
-        // if(date === ''){
-        //     document.getElementById('date').closest('div div').classList.add('is-invalid');
-        //     document.getElementById('date').classList.add('is-invalid');
-        //     return false;
-        // }
-
-        if(password === '' || password.length < 8){
-            document.getElementById('password').classList.add('is-invalid');
-            return false;
-        }
-
-    
-
-        if(!validateEmail(email)){
-            alert('Please enter a valid email address');
-            return false;
-        }
-
-        return true;
-    }
-
-    function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-
-    document.getElementById('avatar').addEventListener('change', async function() {
-        const file = this.files[0];
-        
-        if (!file) {
-            return;
-        }
-
-        const fileReader = new FileReader();
-        fileReader.onload = function(event) {
-            image = event.target.result;
-            document.getElementById('avatarButton').textContent = '';
-            document.getElementById('avatarButton').style.display = 'block';
-            document.getElementById('avatarButton').style.backgroundImage = `url('${image}')`;
-            document.getElementById('avatarButton').style.backgroundSize = '100px';//'cover';
-            document.getElementById('avatarButton').style.backgroundPosition = 'center';
-            document.getElementById('avatarButton').style.backgroundRepeat = 'no-repeat';
-            document.getElementById('avatarButton').style.border = '2px solid #000';
-        };
-
-        fileReader.readAsDataURL(file);
-    });
-
-    document.getElementById('avatarButton').addEventListener('click', function() {
-        document.getElementById('avatar').click();
-    });
-
-    document.getElementById('createUserForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        // if(formValidation() == false) {
-        //     return;
-        // }
-
-        const form = document.getElementById('createUserForm');
-        const submit = document.getElementById('submitButton');
-
-        submit.disabled = true;
-
-        const day = document.getElementById('birthdayDay').value;
-        const month = document.getElementById('birthdayMonth').value;
-        const year = document.getElementById('birthdayYear').value;
-
-        if (!day || !month || !year) {
-            alert('Please select a valid date.');
-            return;
-        }
-
-        const date = new Date(year, month - 1, day);
-
-        const data = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            role: document.getElementById('role').value,
-            enabled: document.getElementById('enabled').checked,
-            birthDate: date.getTime(),
-            avatar: document.getElementById('avatar').files[0],
-        };
-
-        const formData = new FormData();
-        Object.keys(data).forEach(key => {
-            if(data[key] !== undefined) {
-                formData.append(key, data[key]);
-            }
-        });
-
-        fetch('/admin/users', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.ok ? response.json(): Promise.reject(response.status))
-        .then(data => {
-            console.log('Success:', data);
-            submit.disabled = false;
-            
-            
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            submit.disabled = false;
-            // Handle error
-        });
-    });
-
-});
-    
+        userCreateForm().init();
+    });    
 </script>
 </body>
 </html>

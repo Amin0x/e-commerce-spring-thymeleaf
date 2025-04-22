@@ -114,33 +114,6 @@ public class HomeController {
         return "public/return_policy"; // Resolves to about.html in templates
     }
 
-    @PostMapping("/subscribe")
-    public ResponseEntity<Map<String, Object>> subscribeToMailingList(@RequestParam String email, @RequestParam String name) {
-        Map<String, Object> response = new HashMap<>();
-        if (StringUtil.isNullOrEmpty(name) || StringUtil.isNullOrEmpty(email)){
-            response.put("status", "");
-            response.put("message", "name and email is required");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
-
-
-        try {
-            subscribeService.subscribe(email, name);
-        } catch (DataIntegrityViolationException e) {
-            response.put("status", "");
-            response.put("message", "email already exist");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        } catch (Exception e){
-            response.put("status", "");
-            response.put("message", "some thing went wrong");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-
-        response.put("status", "success");
-        response.put("message", "success");
-        return ResponseEntity.ok(response);
-    }
-
     private List<Product> getNewArrivalProducts(int i){
 
         return productService.getLastAddedProductsRandom(i);

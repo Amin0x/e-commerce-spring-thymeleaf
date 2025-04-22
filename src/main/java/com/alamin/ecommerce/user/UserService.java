@@ -14,9 +14,9 @@ public interface UserService {
 
     Optional<User> getUserByUUID(String id);
 
-    int getUsersCountThisMonth();
+    int getCreatedUsersCountThisMonth();
 
-    List<User> getLastUsers(int size);
+    List<User> getLastRegisteredUsers(int size);
 
     long getUsersCount();
 
@@ -26,9 +26,9 @@ public interface UserService {
 
     User updateUser(Long id, User user);
 
-    int getActiveUsersCount();
+    int getEnabledUsersCount();
 
-    int getInactiveUsersCount();
+    int getDisabledUsersCount();
 
     List<Integer> getUsersRegistrationMonth();
 

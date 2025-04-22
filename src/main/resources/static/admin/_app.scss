@@ -478,7 +478,6 @@ body {
   }
   
   .text-input.invalid, .text-input:invalid{
-    background-color: #b57b7b;
     border-color: #da1313;
   }
   
@@ -497,16 +496,28 @@ body {
 
 .form-message{
   display: none;
-  background-color: #FF7043;
-  color: #fff;
+  background-color: #fad5d5;
+  color: #191111;
   padding: 10px 10px;
   border: 1px solid #792d16;
   border-radius: 5px;
 
   &.success{
-    background-color: #0d5313;
+    background-color: #c5e8c8;
     border-color: #18c551;
+    color: #000;
   }
+
+  &.show{
+    display: block;
+  }
+}
+
+.error-message{
+  display: none;
+  color: #721c24;
+  font-size: 0.8rem;
+
 
   &.show{
     display: block;

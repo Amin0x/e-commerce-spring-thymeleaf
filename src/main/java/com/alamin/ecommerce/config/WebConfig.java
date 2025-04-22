@@ -2,12 +2,18 @@ package com.alamin.ecommerce.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import org.springframework.lang.NonNull;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
+        WebMvcConfigurer.super.addInterceptors(registry);
+    }
 
     @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {

@@ -3,6 +3,7 @@ package com.alamin.ecommerce.user;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,38 +23,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        final List<User> users = userRepository.findAll();
-        return users;
+        return userRepository.findAll();
     }
 
     @Override
     public Page<User> getAllUsers(int page, int size) {
-        final Page<User> users = userRepository.findAll(PageRequest.of(page, size));
-        return users;
+        if (page < 0 || size <= 0)
+            throw new IllegalArgumentException("");
+
+        return userRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override
     public Optional<User> getUserById(Long id) {
-        if (id == null)
-            throw new IllegalArgumentException("User ID cannot be null");
-
         return userRepository.findById(id);
     }
 
     @Override
-    public Optional<User> getUserByUUID(String id) {
-        if (id == null)
+    public Optional<User> getUserByUUID(String uuid) {
+        if (uuid == null)
             throw new IllegalArgumentException("User UUID cannot be null");
 
-        return userRepository.getUserByUuid(id);
+        return userRepository.getUserByUuid(uuid);
     }
 
     @Override
-    public int getUsersCountThisMonth() {
+    public int getCreatedUsersCountThisMonth() {
         int usersThisMonth = 0;
 
         try {
-            usersThisMonth = userRepository.getCreatedUsersThisMonthCount();
+            usersThisMonth = userRepository.getCreatedUsersCountThisMonth();
 
         } catch (Exception e) {
             //throw new RuntimeException(e);
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getLastUsers(int size) {
+    public List<User> getLastRegisteredUsers(int size) {
         if (size <= 0)
             throw new IllegalArgumentException("Size must be greater than 0");
         if (size > 100)
@@ -89,7 +88,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        validateUser(user);
 
         User createdUser = new User();
         createdUser.setFirstName(user.getFirstName());
@@ -101,7 +99,11 @@ public class UserServiceImpl implements UserService {
         createdUser.setEnabled(true);
         createdUser.setBirthDate(user.getBirthDate());
         createdUser.setUuid(this.createUuid());
-        return userRepository.save(createdUser);
+        User save = userRepository.save(createdUser);
+        //todo: send email to user
+
+
+        return save;
     }
 
     private static void validateUser(User user) {
@@ -144,20 +146,35 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(upatedUser);
     }
 
+    public void sendConformationEmail(User user){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("");
+        message.setTo("");
+        message.setSubject("User Registration Confirmation");
+        message.setText("""
+                Dear ${user.getFirstName()}
+                
+                Thank you for registering on our website. Your account has been created successfully.
+                Please click the link below to confirm your email address and activate your account:
+                http://localhost:8080/auth/users/confirm?token=${user.getUuid()}&email=${user.getEmail()}
+                Best regards,
+                The Team""");
+        //emailSender.send(message);
+    }
+
     //
     private String createUuid(){
         return UUID.randomUUID().toString().replace("-", "");
     }
 
     @Override
-    public int getActiveUsersCount() {
-       
+    public int getEnabledUsersCount() {
         return userRepository.getEnabledUsersCount();
     }
 
     // This method is used to get the inactive users count
     @Override
-    public int getInactiveUsersCount(){
+    public int getDisabledUsersCount(){
         return userRepository.getDisabledUsersCount();
     }
 

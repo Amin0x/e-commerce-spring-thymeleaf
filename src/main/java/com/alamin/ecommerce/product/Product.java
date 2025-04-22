@@ -21,8 +21,9 @@ public class Product {
     private String slug;
     @Column(unique = true, nullable = false)
     private String barcode;
-    @Column(nullable = false)
-    private String brand;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Brand brand;
     private String model;
     private String color;
     private String size;
@@ -68,6 +69,11 @@ public class Product {
 
     // Constructor for convenience
     public Product(
+            String uuid,
+            String slug,
+            String barcode,
+            String brand,
+            String model,
             String name,
             String description,
             Integer price,

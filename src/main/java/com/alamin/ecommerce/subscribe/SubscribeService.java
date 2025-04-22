@@ -5,10 +5,17 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class SubscribeService {
+    public static final String STATUS_SUBSCRIBED = "SUBSCRIBED";
+    public static final String STATUS_UNSUBSCRIBED = "UNSUBSCRIBED";
+    public static final String STATUS_PENDING = "PENDING";
+    public static final String STATUS_DELETED = "DELETED";
+
     private final SubscribeRepository subscribeRepository;
     private final JavaMailSender mailSender;
 
@@ -18,23 +25,46 @@ public class SubscribeService {
     }
 
     public Subscribe subscribe(String email, String name){
-        Subscribe subscribe = new Subscribe();
-        subscribe.setEmail(email);
-        subscribe.setName(name);
-        subscribe.setStatus("pending");
-        subscribe.setLastEmailDate(LocalDateTime.now());
-        String uuid = UUID.randomUUID().toString();
-        uuid = uuid.replace("-","");
-        subscribe.setId(uuid);
-        String emailVerificationToken = generateEmailVerificationToken();
-        subscribe.setEmailVerificationToken(emailVerificationToken);
-        subscribe.setEmailVerificationTokenExpiration(LocalDateTime.now().plusDays(15));
+        Optional<Subscribe> subscribeOptional = subscribeRepository.findByEmail(email);
+        String token = createEmailVerificationToken();
+        LocalDateTime now = LocalDateTime.now();
+
+        if (subscribeOptional.isPresent()){
+            Subscribe subscribe = subscribeOptional.get();
+            if (subscribe.getStatus().equals(STATUS_SUBSCRIBED)){
+                throw new RuntimeException("you are already subscribed");
+            }
+            if (subscribe.getStatus().equals(STATUS_PENDING)){
+                subscribe.setVerificationToken(token);
+                subscribe.setTokenExpiration(now.plusDays(15));
+                return subscribeRepository.save(subscribe);
+            }
+            subscribe.setStatus(STATUS_PENDING);
+            subscribe.setVerificationToken(token);
+            subscribe.setTokenExpiration(now.plusDays(15));
+            return subscribeRepository.save(subscribe);
+        }
+
+        Subscribe subscribe = new Subscribe(email, name, STATUS_PENDING, token, now.plusDays(15), now, now);
         Subscribe save = subscribeRepository.save(subscribe);
-        //todo:add send welcome email
+
         sendWelcomeEmail(email, name);
-        //todo add verification email
-        sendVerificationEmail(email, emailVerificationToken);
+        sendVerificationEmail(email, token);
+
         return save;
+    }
+
+    public void unsubscribe(String email){
+        Subscribe subscribe = subscribeRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("you are not subscribed"));
+        if (subscribe.getStatus().equals(STATUS_UNSUBSCRIBED)){
+            throw new RuntimeException("you are already unsubscribed");
+        }
+        if (subscribe.getStatus().equals(STATUS_DELETED)){
+            throw new RuntimeException("you are already deleted");
+        }
+        subscribe.setStatus(STATUS_UNSUBSCRIBED);
+        subscribeRepository.save(subscribe);
     }
 
     private void sendVerificationEmail(String email, String uuid) {
@@ -43,8 +73,9 @@ public class SubscribeService {
             var helper = new MimeMessageHelper(message, true);
             helper.setTo(email);
             helper.setSubject("Email Verification");
+            String verificationLink = createEmailVerificationLink(uuid, email);
             helper.setText("Please verify your email by clicking the link: " +
-                    generateEmailVerificationLink(uuid));
+                    verificationLink);
             mailSender.send(message);
         } catch (Exception e) {
             e.printStackTrace(); // Log the exception or handle it appropriately
@@ -64,22 +95,30 @@ public class SubscribeService {
         }
     }
 
-    private String generateEmailVerificationToken(){
+    private String createEmailVerificationToken(){
         String token = UUID.randomUUID().toString();
         token = token.replace("-", "");
         return token;
     }
 
-    private String generateEmailVerificationLink(String token){
-        return "http://localhost:8080/verify?token=" + token;
+    private String createEmailVerificationLink(String token, String email){
+        return "http://localhost:8080/verify?token=" + token +"&email=" + email;
     }
 
-    public Subscribe verifyEmail(String token) {
-        Subscribe subscribe = subscribeRepository.findById(token).orElse(null);
-        if (subscribe != null) {
-            subscribe.setStatus("verified");
-            return subscribeRepository.save(subscribe);
+    public Subscribe verifyEmail(String email, String token) {
+        Subscribe subscribe = subscribeRepository.findByEmail(email).orElse(null);
+        if (subscribe == null) {
+            throw new RuntimeException("Email not found");
         }
-        return null;
+
+        if(!Objects.equals(token, subscribe.getVerificationToken())){
+            throw new RuntimeException("invalid token");
+        }
+
+        if (LocalDateTime.now().isAfter(subscribe.getTokenExpiration())){
+            throw new RuntimeException("invalid token");
+        }
+        subscribe.setStatus(STATUS_SUBSCRIBED);
+        return subscribeRepository.save(subscribe);
     }
 }

@@ -39,12 +39,12 @@ function handleSignupFormSubmit(e) {
 
         return Promise.reject(response.statusText)
     })
-        .then(data => {
-            console.log(data);
-            if (data.status === "success") {
-                window.location.href = "http://localhost/";
-            }
-        })
+    .then(data => {
+        console.log(data);
+        if (data.status === "success") {
+            window.location.href = data.url;
+        }
+    })
 }
 
 function handleLoginSubmit(e) {

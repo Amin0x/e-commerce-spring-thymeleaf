@@ -4,45 +4,63 @@
 <head>
     <title>Footer Fragment</title>
     <link rel="stylesheet" href="/static/public/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../static/public/css/style.css">
+    <link rel="stylesheet" href="../../../static/public/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body dir="rtl">
     <footer th:fragment="footer" class="footer">
         <div class="footer-wrp">
-            <section class="footer-top" id="footer">
+            <div class="footer-top" id="footer">
                 <div class="flex-row">
                     <article class="footer-col about-company">
-                        <h5 class="footer-header">عن الشركة</h5>
-                        <p class="footer-text">الرياض.</p>
-                        <p class="footer-text">المملكة العربية السعودية</p>
-                        <p class="footer-text"><a class="footer-link" href="/privacy">سياسة الخصوصية</a></p>
-                        <p class="footer-text"><a class="footer-link" href="/faq">الاسئلة الاكثر شيوعا</a></p>
-                        <p class="footer-text"><a class="footer-link" href="/return-policy">سياسة الاسترجاع</a></p>
-                        <p class="footer-text"><a class="footer-link" href="/about">عن الشركة</a></p>
-                        <p class="footer-text"><a class="footer-link" href="/help">المساعدة</a></p>
+                        <h5 class="footer-header"><span>عن الشركة</span></h5>
+                        <p class="footer-text"><span>الرياض.</span></p>
+                        <p class="footer-text"><span>المملكة العربية السعودية</span></p>
+                        <p class="footer-text"><a class="footer-link" href="/privacy"><span>سياسة الخصوصية</span></a></p>
+                        <p class="footer-text"><a class="footer-link" href="/faq"><span>الاسئلة الاكثر شيوعا</span></a></p>
+                        <p class="footer-text"><a class="footer-link" href="/return-policy"><span>سياسة الاسترجاع</span></a></p>
+                        <p class="footer-text"><a class="footer-link" href="/about"><span>عن الشركة</span></a></p>
+                        <p class="footer-text"><a class="footer-link" href="/help"><span>المساعدة</span></a></p>
                     </article>
                     <article class="footer-col contact-us">
-                        <h5 class="footer-header">تواصل معنا</h5>
+                        <h5 class="footer-header"><span>تواصل معنا</span></h5>
                         <p class="footer-text"><bdi>+966-123456789</bdi></p>
-                        <p class="footer-text">am@am.com</p>
+                        <p class="footer-text"><span>am@am.com</span></p>
                     </article>
                     <article class="footer-col flow-us">
-                        <h5 class="footer-header">تابعنا</h5>
-                        <ul class="social-media">
-                            <li><a class="footer-link" href="#">فيسبوك</a></li>
-                            <li><a class="footer-link" href="#">تويتر</a></li>
-                            <li><a class="footer-link" href="#">انستغرام</a></li>
-                        </ul>
+                        <h5 class="footer-header"><span>تابعنا</span></h5>
+                        <div class="social-media">
+                            <div class="social-media-item">
+                                <a class="footer-link" href="https://facebook.com" aria-label="فيسبوك">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                                        <path d="M8.051 8.634H6.615V16H4.077V8.634H2.5V6.5h1.577V5.077c0-1.26.614-3.077 3.077-3.077h2.308v2.308H8.615c-.307 0-.615.154-.615.615V6.5h2.308l-.308 2.134H8.051z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="social-media-item">
+                                <a class="footer-link" href="https://x.com" aria-label="تويتر">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
+                                        <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.009-.423A6.68 6.68 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.084.797A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.381A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045 9.344 9.344 0 0 0 5.026 1.465z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="social-media-item">
+                                <a class="footer-link" href="https://instagram.com" aria-label="انستغرام">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+                                        <path d="M8 0C5.053 0 4.5.02 3.053.072 1.616.123.927.308.427.808.308.927.123 1.616.072 3.053.02 4.5 0 5.053 0 8s.02 3.5.072 4.947c.051 1.437.236 2.126.735 2.626.5.5 1.189.684 2.626.735C4.5 15.98 5.053 16 8 16s3.5-.02 4.947-.072c1.437-.051 2.126-.236 2.626-.735.5-.5.684-1.189.735-2.626C15.98 11.5 16 10.947 16 8s-.02-3.5-.072-4.947c-.051-1.437-.236-2.126-.735-2.626-.5-.5-1.189-.684-2.626-.735C11.5.02 10.947 0 8 0zm0 1.5c2.937 0 3.458.011 4.677.067 1.065.05 1.637.22 2.015.598.378.378.548.95.598 2.015.056 1.219.067 1.74.067 4.677s-.011 3.458-.067 4.677c-.05 1.065-.22 1.637-.598 2.015-.378.378-.95.548-2.015.598-1.219.056-1.74.067-4.677.067s-3.458-.011-4.677-.067c-1.065-.05-1.637-.22-2.015-.598-.378-.378-.548-.95-.598-2.015C1.511 11.458 1.5 10.937 1.5 8s.011-3.458.067-4.677c.05-1.065.22-1.637.598-2.015.378-.378.95-.548 2.015-.598C4.542 1.511 5.063 1.5 8 1.5zm0 2.1a4.4 4.4 0 1 0 0 8.8 4.4 4.4 0 0 0 0-8.8zm0 1.5a2.9 2.9 0 1 1 0 5.8 2.9 2.9 0 0 1 0-5.8zm5.5-.9a1.05 1.05 0 1 1-2.1 0 1.05 1.05 0 0 1 2.1 0z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
                     </article>
                 </div>
-            </section>
-            <section class="copy-right footer-bottom">
+            </div>
+            <div class="copy-right footer-bottom">
                 <div class="footer-bottom-content"><bdi style="text-transform: uppercase;">Copyright &copy Amin 2025 All Right reserved</bdi></div>
-            </section>
+            </div>
         </div>
     </footer>
 </body>
 
-</html>
+</html></svg>ddidivddidiv

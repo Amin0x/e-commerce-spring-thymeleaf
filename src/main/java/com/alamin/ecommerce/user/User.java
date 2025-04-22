@@ -14,18 +14,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String uuid;
-    @Column(length = 20)
+    @Column(nullable = false, length = 20)
     private String role;
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
     private String avatar;
+    @Column(nullable = false)
     private Boolean enabled;
-    @Column(length = 20)
+    @Column(nullable = false, length = 20)
     private String status;
     @Column(length = 50)
     private String firstName;
@@ -33,6 +35,7 @@ public class User {
     private String lastName;
     private LocalDateTime lastActive;
     private LocalDate birthDate;
+    @Column(nullable = false)
     private LocalDateTime created;
     private LocalDateTime updated;
 }

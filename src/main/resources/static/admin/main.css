@@ -462,7 +462,6 @@ body {
   border-color: #7b7b7b;
 }
 .input-container .text-input.invalid, .input-container .text-input:invalid {
-  background-color: #b57b7b;
   border-color: #da1313;
 }
 .input-container .text-input:-internal-autofill-selected {
@@ -470,17 +469,27 @@ body {
 }
 .form-message {
   display: none;
-  background-color: #FF7043;
-  color: #fff;
+  background-color: #fad5d5;
+  color: #191111;
   padding: 10px 10px;
   border: 1px solid #792d16;
   border-radius: 5px;
 }
 .form-message.success {
-  background-color: #0d5313;
+  background-color: #c5e8c8;
   border-color: #18c551;
+  color: #000;
 }
 .form-message.show {
+  display: block;
+}
+
+.error-message {
+  display: none;
+  color: #721c24;
+  font-size: 0.8rem;
+}
+.error-message.show {
   display: block;
 }
 
@@ -1009,7 +1018,6 @@ body {
   position: relative;
   bottom: 0;
 }
-
 .footer p {
   font-size: 14px;
 }

@@ -32,7 +32,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Optional<Category> getCategoryById(Long id) {
-
+        if (id == null) {
+            throw new IllegalArgumentException("null not allowed");
+        }
+        if (id < 0) {
+            throw new IllegalArgumentException("negative not allowed");
+        }
         return categoryRepository.findById(id);
     }
 
@@ -43,7 +48,6 @@ public class CategoryServiceImpl implements CategoryService {
         if (cat.isPresent()) {
             Category curCat = cat.get();
             if (curCat.getParent() != null) {
-                curCat.getParent().removeChild(curCat);
                 curCat.setParent(null);
                 categoryRepository.save(curCat);
             }
@@ -59,26 +63,23 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category createCategory(String name, String description, Long parentId, MultipartFile image) {
         String slug = generteSlug(name);
-        Category category = new Category(name, description, null);
-        category.setSlug(slug);
-        category.setActive(false);
-        category.setEnabled(false);
-        category.setCreated(LocalDateTime.now());
-        category.setUpdated(LocalDateTime.now());
-        category.setImageUrl(null);
-        category.setParent(null);
+        if (categoryRepository.existsBySlug(slug)) {
+            throw new IllegalArgumentException("Category slug already exists: " + slug);
+        }
+        Category category = new Category(name, description, null, null, slug);
         category.setUuid(UUID.randomUUID().toString().replace("-", ""));
 
         if (parentId != null) {
             Optional<Category> parentOptional = getCategoryById(parentId);
             if (parentOptional.isPresent()) {
-                Category parent = parentOptional.get();
-                category.setParent(parent);
-                parent.addChild(category);
+                category.setParent(parentOptional.get());
             }
         }
 
-        if (image != null) {
+        if (image != null && image.getSize() > 0 && !image.isEmpty()) {
+            if (image.getSize() > 1024 * 1024 * 5) { // 5MB limit
+                throw new IllegalArgumentException("Image size exceeds the limit of 5MB");
+            }
             String fileName = fileUploadService.uploadFile(image);
             category.setImageUrl("/uploads/" + fileName);
         } else {

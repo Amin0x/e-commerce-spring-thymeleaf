@@ -6,20 +6,21 @@
     }
 }
 
-.category-wrp{
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
+.categories{
+    margin-top: 50px;
+    .category-wrp{
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
 
-    @media screen and (max-width: 768px){
-        flex-wrap: wrap;
-        justify-content: space-around;        
-    }
+        @media screen and (max-width: 768px){
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
 
-    .category{
-        width: 110px;
-        .category-card{
-            .category-card__box{
+        .category{
+            width: 110px;
+            .category-card{
                 .category-img{
                     display: flex;
                     justify-content: center;

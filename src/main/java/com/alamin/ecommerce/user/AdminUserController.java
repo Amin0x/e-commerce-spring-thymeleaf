@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class AdminUserController {
     @GetMapping("/admin/users")
     public String index(Model model) {
 
-        var newUsersList = userService.getLastUsers(10);
+        var newUsersList = userService.getLastRegisteredUsers(10);
         var usersRegistrationLabels = userService.getUsersRegistrationLabelsMonth();
         var usersRegistrationData = userService.getUsersRegistrationMonth();
         var visitorLabels = new ArrayList<>();
@@ -29,9 +30,9 @@ public class AdminUserController {
 
         model.addAttribute("user", new User());
         model.addAttribute("totalUsers", userService.getUsersCount());
-        model.addAttribute("activeUsers", userService.getActiveUsersCount());
-        model.addAttribute("newUsers", userService.getUsersCountThisMonth());
-        model.addAttribute("inactiveUsers", userService.getInactiveUsersCount());
+        model.addAttribute("activeUsers", userService.getEnabledUsersCount());
+        model.addAttribute("newUsers", userService.getCreatedUsersCountThisMonth());
+        model.addAttribute("inactiveUsers", userService.getDisabledUsersCount());
         model.addAttribute("newUsersList", newUsersList);
         model.addAttribute("topDrivers", newUsersList);
         model.addAttribute("usersRegistrationLabels", usersRegistrationLabels);
@@ -87,7 +88,10 @@ public class AdminUserController {
     }
 
     @PostMapping("/admin/users")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(
+            @ModelAttribute User user,
+            @RequestParam(required = false) MultipartFile avatar) {
+
         if (user == null) {
             return ResponseEntity.badRequest().build();
         }

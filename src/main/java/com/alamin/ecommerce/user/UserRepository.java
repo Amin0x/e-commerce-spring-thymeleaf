@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     int getUsersCount();
 
     @Query("SELECT COUNT(u) FROM User u WHERE FUNCTION('MONTH', u.created) = FUNCTION('MONTH', NOW())")
-    int getCreatedUsersThisMonthCount();
+    int getCreatedUsersCountThisMonth();
 
     @Query("SELECT COUNT(u) FROM User u WHERE u.enabled = TRUE")
     int getEnabledUsersCount();

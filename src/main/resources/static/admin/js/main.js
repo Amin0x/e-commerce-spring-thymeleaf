@@ -1,20 +1,26 @@
+document.addEventListener("DOMContentLoaded", function(event) {
+});
+
 function categoriesCreateForm() {
 
     const form = document.querySelector('form');
     const submitBtn = document.querySelector('#submitButton');
     const formMessage = document.getElementById('formMessage');
     const formMessageText = document.getElementById('formMessageText');
-    
-    submitBtn.addEventListener('click', function(event) {
+
+    function handleSubmitButtonClick(event) {
         event.preventDefault();
+        const submitBtn = event.target;
+        const form = submitBtn.closest('form');        
         const formData = new FormData(form);
 
-        let isValid = validateFormInput(formData);
-
-        if(!isValid) return false;
+        if(!validateFormInput(formData)){
+            formMessage.classList.add('show', 'error');
+            return false;
+        } 
 
         submitBtn.disabled = true;
-        formMessage.classList.remove('error');
+        formMessage.classList.remove('show', 'success', 'error');
         formMessageText.textContent = '';
 
         const url = '/admin/categories';
@@ -26,10 +32,10 @@ function categoriesCreateForm() {
             if (response.ok) {
                 const imagePreview = document.getElementById('imagePreview');
                 if(imagePreview){
-                    imagePreview.innerHTML = '';
+                    imagePreview.src = '';
                 }
                 formMessage.classList.remove('error');
-                formMessage.classList.add('show');
+                formMessage.classList.add('show', 'success');
                 formMessageText.innerHTML = '<p>Category created successfully.<p>';
                 form.reset();
                 submitBtn.disabled = false;
@@ -42,26 +48,30 @@ function categoriesCreateForm() {
             formMessageText.innerHTML = `<p>${error.message}<p>`;
             submitBtn.disabled = false;
         });
+    }
+    
+    submitBtn.addEventListener('click', function(event) {
+        handleSubmitButtonClick(event);
     });
 
     function validateFormInput(formData) {
         let isValid = true;
 
         if (formData.get('name') === '') {
-            formMessage.classList.add('error');
+            formMessage.classList.add('show');
             formMessageText.innerHTML += '<p>Name is required.<p>';
             isValid = false;
         }
 
         if (formData.get('description') === '') {
-            formMessage.classList.add('error');
-            formMessageText.textContent = 'Description is required.';
+            formMessage.classList.add('show');
+            formMessageText.innerHTML += 'Description is required.';
             isValid = false;
         }
 
         if (formData.get('image') === null) {
-            formMessage.classList.add('error');
-            formMessageText.textContent = 'Image is required.';
+            formMessage.classList.add('show');
+            formMessageText.innerHTML += 'Image is required.';
             isValid = false;
         }
         return isValid;
@@ -91,7 +101,7 @@ function categoriesEditForm() {
     const url = '/admin/categories/' + id;
     console.log(url);
 
-    formEle.addEventListener('submit', function(event){
+    function handleSubmit(e) {
         event.preventDefault();
         buttonSubmit.disabled = true; // Disable the button to prevent multiple submissions
         buttonSubmit.textContent = "Saving..."; // Change button text
@@ -122,6 +132,10 @@ function categoriesEditForm() {
         .catch(error => {
             console.error('Error updating product:', error);
         });
+    }
+
+    formEle.addEventListener('submit', function(event){
+        handleSubmit(event);
     });
 }
 
@@ -433,4 +447,160 @@ function cityCreatePage(){
         document.getElementById('deliveryPriorityError').textContent = '';
         document.getElementById('stateError').textContent = '';
     }
+}
+
+
+function userCreateForm(){
+    let image = null;
+
+    function init() {
+        document.getElementById('avatar').addEventListener('change', async function() {
+            handleAvatarChange(this.files[0]);
+        });
+
+        document.getElementById('avatarButton').addEventListener('click', function() {
+            document.getElementById('avatar').click();
+        });
+        
+        document.getElementById('submitButton').addEventListener('click', function(event) {
+            event.preventDefault();
+            // if(formValidation() == false) {
+            //     return;
+            // }
+            handleFormSubmit();            
+        });
+    }
+
+    function formValidation(){
+        const name = document.getElementById('firstName').value;
+        const lastname = document.getElementById('lastName').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        //const confirmPassword = document.getElementById('confirmPassword').value;
+        //const date = document.getElementById('date').value;
+
+        if(name === ''){
+            document.getElementById('firstName').classList.add('is-invalid');
+            document.getElementById('firstName').closest('div div').classList.add('is-invalid');
+            return false;
+        }
+
+        if(lastname === ''){
+            document.getElementById('lastName').classList.add('is-invalid');
+            document.getElementById('lastName').closest('div div').classList.add('is-invalid');
+            return false;
+        }
+
+        if(email === ''){
+            document.getElementById('email').classList.add('is-invalid');
+            document.getElementById('email').closest('div div').classList.add('is-invalid');
+            return false;
+        }
+
+        if(password === '' || password.length < 8){
+            document.getElementById('password').classList.add('is-invalid');
+            return false;
+        }
+
+    
+
+        if(!validateEmail(email)){
+            alert('Please enter a valid email address');
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+   
+    
+    function handleFormSubmit() {
+        const form = document.getElementById('createUserForm');
+        const submit = document.getElementById('submitButton');
+
+        submit.disabled = true;
+
+        const day = document.getElementById('birthdayDay').value;
+        const month = document.getElementById('birthdayMonth').value;
+        const year = document.getElementById('birthdayYear').value;
+
+        if (!day || !month || !year) {
+            alert('Please select a valid date.');
+            return;
+        }
+
+        const date = new Date(year, month - 1, day);
+
+        const data = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            role: document.getElementById('role').value,
+            enabled: document.getElementById('enabled').value,
+            birthDate: new Intl.DateTimeFormat("en-US", { dateStyle: "short", }).format(date),
+            avatar: document.getElementById('avatar').files[0],
+        };
+
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            if(data[key] !== undefined) {
+                formData.append(key, data[key]);
+            }
+        });
+
+        fetch('/admin/users', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (response.ok || response.status != 500) {
+                return response.json();
+            }
+            
+            throw new Error('');
+        })
+        .then(data => {
+            console.log('Success:', data);
+            submit.disabled = false;
+            if (data.status == 'succes') {
+                document.getElementById('createUserForm').reset();
+            }
+                        
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            submit.disabled = false;
+        });
+    }
+
+    function handleAvatarChange(file) {                
+        if (!file) {
+            return;
+        }
+
+        const fileReader = new FileReader();
+        fileReader.onload = function(event) {
+            image = event.target.result;
+            const avatarButton = document.getElementById('avatarButton');
+            if (avatarButton && image) {
+                avatarButton.textContent = '';
+                avatarButton.style.display = 'block';
+                avatarButton.style.backgroundImage = `url('${image}')`;
+                avatarButton.style.backgroundSize = '100px';//'cover';
+                avatarButton.style.backgroundPosition = 'center';
+                avatarButton.style.backgroundRepeat = 'no-repeat';
+                avatarButton.style.border = '2px solid #000';                
+            }
+        };
+
+        fileReader.readAsDataURL(file);
+    }
+
+    return {init, formValidation, handleFormSubmit, handleAvatarChange};
 }

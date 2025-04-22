@@ -18,7 +18,24 @@ public class Subscribe {
     private String name;
     @Column(nullable = false, length = 20)
     private String status;
-    private String emailVerificationToken;
-    private LocalDateTime emailVerificationTokenExpiration;
-    private LocalDateTime lastEmailDate;
+    @Column(nullable = false)
+    private String verificationToken;
+    @Column(nullable = false)
+    private LocalDateTime tokenExpiration;
+    private LocalDateTime EmailDate;
+    private LocalDateTime createdAt;
+
+    public Subscribe() {
+    }
+
+    public Subscribe(String email, String name, String status, String verificationToken,
+                     LocalDateTime tokenExpiration, LocalDateTime EmailDate, LocalDateTime createdAt) {
+        this.email = email;
+        this.name = name;
+        this.status = status;
+        this.verificationToken = verificationToken;
+        this.tokenExpiration = tokenExpiration;
+        this.EmailDate = EmailDate;
+        this.createdAt = createdAt;
+    }
 }

@@ -64,25 +64,35 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupForm signupForm, Model model, BindingResult bindResult) {
+    public ResponseEntity<Object> registerUser(@Valid @RequestBody SignupForm signupForm, BindingResult bindResult) {
         Map<String,Object> body = new HashMap<>();
         User user = new User();
         user.setEmail(signupForm.getEmail());
         user.setPassword(signupForm.getPassword());
-        //user.setFirstName();
+        user.setUsername(signupForm.getEmail());
+
+        if (bindResult.hasErrors()) {
+            //bindResult.addError(new ObjectError("error", "Invalid input"));
+
+            body.put("status", "failed");
+            body.put("message", "Invalid input");
+            body.put("errors", bindResult.getAllErrors());
+            return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
+        }
+
         try {
             userService.createUser(user);
         } catch (Exception e) {
-           //bindResult.addError(new ObjectError("error", "Error creating user"));
-           
+
            body.put("status", "failed");
-           body.put("error", "Error creating user");           
+           body.put("message", "Error creating user");
            return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
         }
         
         
         body.put("status", "success");
-                
+        body.put("message", "User created successfully");
+        body.put("url", "/login");
         return new ResponseEntity<Object>(body, HttpStatus.OK);
     }
 } 

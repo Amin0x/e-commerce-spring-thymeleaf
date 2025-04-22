@@ -106,6 +106,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
                         SELECT c
                         FROM Category c
                         WHERE c.parent IS NULL""")
-        List<Category> getTopCategories();       
+        List<Category> getTopCategories();
+
+        boolean existsBySlug(String slug);       
 
 }

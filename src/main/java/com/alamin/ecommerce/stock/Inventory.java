@@ -22,4 +22,17 @@ public class Inventory {
     @OneToOne
     @JoinColumn(name ="product_id")
     private Product product;
+
+    public Inventory() {
+        this.createDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public Inventory(int quantity, int price, Product product) {
+        this.quantity = quantity;
+        this.price = price;
+        this.product = product;
+        this.createDate = LocalDateTime.now();
+        this.updateDate = null;
+    }
 }
