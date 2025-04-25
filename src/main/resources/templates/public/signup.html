@@ -7,6 +7,8 @@
     <meta name="description" content="Home page description for your website.">
     <meta name="author" content="Your Name or Company Name">
     <meta name="keywords" content="home, page, example, bootstrap, website">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Signup</title>
     <link rel="stylesheet" th:href="@{/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css}"
         href="../../static/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css">
@@ -17,21 +19,20 @@
     <div class="wrapper">
         <div class="signup-container">
             <h2 class="title">التسجيل</h2>
-            <form th:action="@{/signup}" th:object="${signupForm}" method="post" id="signupForm">
+            <form th:action="@{/signup}" method="post" id="signupForm">
                 <div class="email">
                     <label for="email" class="input-label">الايميل:</label>
-                    <input type="email" name="email" class="input" th:field="*{email}" id="email">
+                    <input type="email" name="email" class="input" id="email">
                     <div class="error"></div>
                 </div>
                 <div class="password">
                     <label for="password" class="input-label">كلمة المرور:</label>
-                    <input type="password" name="password" class="input" th:field="*{password}" id="password">
+                    <input type="password" name="password" class="input" id="password">
                     <div class="error"></div>
                 </div>
                 <div class="confirm-password">
                     <label for="confirmPassword" class="input-label">تاكيد كلمة المرور:</label>
-                    <input type="password" class="input" name="confirmPassword" th:field="*{confirmPassword}"
-                        id="confirmPassword">
+                    <input type="password" class="input" name="confirmPassword" id="confirmPassword">
                     <div class="error"></div>
                 </div>
                 <button type="submit" class="button-send">ارسال</button>
@@ -45,9 +46,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", function (e) {           
 
-            document.getElementById('signupForm').addEventListener('submit', function (event) {
-                handleSignupFormSubmit(event);
-            });
 
             document.getElementById('email').addEventListener('change', function (e) {
                 this.classList.remove('error');
@@ -61,6 +59,8 @@
                 this.classList.remove('error');
             });
         })
+
+        SignupForm.init();
 
     </script>
 </body>

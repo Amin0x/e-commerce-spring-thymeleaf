@@ -31,7 +31,7 @@
         <header class="header">
             <nav th:replace="~{public/fragments/navbar :: navbar}" class="navbar-wrp"></nav>
         </header>
-        <main class="content">
+        <main class="content home-page-container">
             <section th:if="false" class="banner-container">
                 <div class="wrapper">
                     <div class="banner-image"></div>
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="add-to-cart">
-                            <button type="button" class="button-31" th:data-add-cart="${product.productId}">اضافة للعربة</button>
+                            <button type="button" class="button-31" th:data-add-cart="${product.uuid}">اضافة للعربة</button>
                         </div>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                             </div>
                         </div>
                         <div class="add-to-cart">
-                            <button type="button" class="button-31" th:data-add-cart="${product.productId}">اضافة للعربة</button>
+                            <button type="button" class="button-31" th:data-add-cart="${product.uuid}">اضافة للعربة</button>
                         </div>
                     </div>
                 </div>
@@ -134,22 +134,22 @@
                             </div>
                         </div>
                         <div class="add-to-cart">
-                            <button type="button" class="button-31" th:data-add-cart="${product.productId}">اضافة للعربة</button>
+                            <button type="button" class="button-31" th:data-add-cart="${product.uuid}">اضافة للعربة</button>
                         </div>
                     </div>
                 </div>
-            </section>
-            <section th:replace="public/fragments/subscription::subscribeForm">
-                
             </section>
         </main>
+        <section th:replace="public/fragments/subscription::subscribeForm"></section>
         <footer th:replace="~{public/fragments/footer :: footer}" class="mt-3"></footer>
     </div>
     <script th:src="@{'/public/js/jquery-3.7.1.min.js'}" src="../../static/public/js/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    <script src="../../static/public/js/subscrib.js" th:src="@{/public/js/subscrib.js}"></script>
-    <script src="../../static/public/js/home.js" th:src="@{/public/js/home.js}"></script>
+    <script src="../../static/public/js/main.js" th:src="@{/public/js/main.js}"></script>
+<script>
+    initSubscriptionForm();
+</script>
 </body>
 
 </html>

@@ -109,39 +109,6 @@
             </div>
         </div>
         <div class="serarch-bar"></div>
-        <script>
-            document.addEventListener('DOMContentLoaded', async function(){
-                const res = await fetch('/carts/getCart', {
-                    method: 'GET',
-                });
-
-                if(res != undefined && res.status == 200){
-                    const data = await res.json();
-                    document.getElementById("cartItemsCount").textContent = data.totalItems;
-                }
-            });
-            document.getElementById("dropdownCartButton").addEventListener("click", function() {
-                document.getElementById("dropdownCart").classList.toggle("active");
-            });
-
-            document.getElementById("dropdownMenuButton").addEventListener("click", function() {
-                document.getElementById("dropdownMenu").classList.toggle("active");
-            });
-
-            document.getElementById("categoryMenu").closest('li').addEventListener('click', function(e){
-                document.getElementById("categoryMenu").classList.toggle('active');
-            })
-
-            window.onclick = function(event) {
-                if (!event.target.matches('.dropdown')) {
-                    var dropdowns = document.getElementsByClassName("profile-menu");                    
-                    if (dropdowns.classList.contains('active')) {
-                        dropdowns.classList.remove('active');
-                    }                    
-                }
-            }
-
-        </script>
     </nav>
 
 </body>

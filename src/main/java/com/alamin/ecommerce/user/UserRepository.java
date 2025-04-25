@@ -24,8 +24,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u ORDER BY u.created DESC")
     List<User> getLastCreatedUsers(Pageable pageable);
 
-    @Query("SELECT u FROM User u WHERE u.username = :name")
-    Optional<User> getUserByUsername(@Param("name") String name);
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    Optional<User> getUserByUsername(@Param("username") String username);
 
     @Query("SELECT u FROM User u WHERE u.uuid = :uuid")
     Optional<User> getUserByUuid(@Param("uuid") String uuid);

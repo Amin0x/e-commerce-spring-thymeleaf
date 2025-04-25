@@ -63,6 +63,11 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id);
     }
 
+    @Override
+    public Optional<Product> getProductByUuid(String productId) {
+        return productRepository.findByUuid(productId);
+    }
+
     // Update product
     @Override
     public Product updateProduct(Long id, Product updatedProduct) {

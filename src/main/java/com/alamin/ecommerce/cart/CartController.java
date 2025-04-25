@@ -39,9 +39,17 @@ public class CartController {
     public ResponseEntity<Object> getCart(HttpSession session) {
         Map<String, Object> data = new HashMap<>();
         if (session == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("session not found");
         }
-        Cart cart = cartService.getCartBySession(session);
+        Cart cart = null;
+        try {
+            cart = cartService.getCartBySession(session);
+        } catch (Exception e) {
+            data.put("error", e.getMessage());
+            data.put("status", HttpStatus.BAD_REQUEST);
+            data.put("message", "something went wrong");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(data);
+        }
         if (cart == null) {
             data.put("cart", null);
             data.put("totalItems", 0);
@@ -49,7 +57,7 @@ public class CartController {
             data.put("shipping", 0);
             data.put("status", HttpStatus.BAD_REQUEST);
             data.put("message", "cart not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(data);            
+            return ResponseEntity.status(HttpStatus.OK).body(data);
         }
 
         CartDto cartDto = new CartDto(cart);
@@ -64,17 +72,21 @@ public class CartController {
     }
 
     @PostMapping("/carts/addToCart")
-    public ResponseEntity<Object> addItemToCart(@RequestParam Long productId,
+    public ResponseEntity<Map<String, Object>> addItemToCart(@RequestParam String productId,
                                               @RequestParam(defaultValue = "1") int quantity,
                                               HttpSession session, Principal principal) {
         Map<String, Object> data = new HashMap<>();
         try {
-            Product product = productService.getProductById(productId).orElseThrow();
+            Product product = productService.getProductByUuid(productId).orElseThrow();
             Cart updatedCart = cartService.addCartItem(product, session, principal);
             CartDto updatedCartDto = new CartDto(updatedCart);
-            
+
+            data.put("status", HttpStatus.OK);
             data.put("cart", updatedCartDto);
             data.put("totalItems", updatedCartDto.getCartItems().stream().mapToInt(CartItemDto::getQuantity).sum());
+
+            return ResponseEntity.ok(data);
+
         } catch (Exception e) {
             data.put("error", e.getMessage());
             data.put("status", HttpStatus.BAD_REQUEST);
@@ -83,7 +95,7 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(data);
         }
         
-        return ResponseEntity.ok(data);
+
     }
 
     @PostMapping("/carts/delete")

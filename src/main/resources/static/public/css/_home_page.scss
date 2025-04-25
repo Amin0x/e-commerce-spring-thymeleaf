@@ -6,8 +6,34 @@
     }
 }
 
+.home-page-container{
+    padding-inline: 1rem;
+}
+
 .categories{
     margin-top: 50px;
+    .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        .header__title{
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        .header__link{
+            font-size: 1rem;
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            &:hover{
+                color: #ba3b3b;
+                text-decoration: underline;
+            }
+        }
+    }
     .category-wrp{
         display: flex;
         justify-content: center;
@@ -21,6 +47,10 @@
         .category{
             width: 110px;
             .category-card{
+                &:hover {
+                    transform: scale(1.05);
+                    transition: transform 0.3s ease-in-out;
+                }
                 .category-img{
                     display: flex;
                     justify-content: center;
@@ -34,7 +64,15 @@
 
                 .category-card__title{
                     text-align: center;
-                    font-size: 1.1rem;
+                    font-size: 0.9rem;
+                    a{
+                        color: #000;
+                        text-decoration: none;
+                        font-weight: 500;
+                        &:hover{
+                            color: #093114;
+                        }
+                    }
                 }
             }
         }

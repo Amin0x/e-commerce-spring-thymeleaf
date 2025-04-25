@@ -1,10 +1,27 @@
 package com.alamin.ecommerce.user;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class SignupForm {
-    private String email;
+    @NotBlank(message = "Username is required")
+    private String username;
+    @NotBlank(message = "Password is required")
     private String password;
+    @NotBlank(message = "Confirm password is required")
     private String confirmPassword;
+
+    public SignupForm() {
+    }
+
+    public SignupForm(String username, String password, String confirmPassword) {
+        this.username = username;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+    }
 }

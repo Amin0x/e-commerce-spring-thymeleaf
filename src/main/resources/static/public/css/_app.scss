@@ -297,6 +297,30 @@ body {
   flex-direction: column;
 }
 
+.input-container{
+  margin-bottom: 8px;
+
+  label{
+    margin-bottom: 5px;
+  }
+}
+
+.text-input{
+  width: 100%;
+  display: block;
+  padding: 10px 15px;
+  line-height: 20px;
+  color: #000000;
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  &:focus{
+    border-color: #13aa52;
+  }
+}
+
 
 .products {
   display: flex;

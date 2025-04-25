@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
+
     List<User> getAllUsers();
 
     Page<User> getAllUsers(int page, int size);
@@ -24,6 +25,8 @@ public interface UserService {
 
     User createUser(User user);
 
+    User createUser(SignupForm signupForm);
+
     User updateUser(Long id, User user);
 
     int getEnabledUsersCount();
@@ -33,4 +36,8 @@ public interface UserService {
     List<Integer> getUsersRegistrationMonth();
 
     List<Integer> getUsersRegistrationLabelsMonth();
+
+    Optional<User> getUserByUsername(String username);
+
+    //void authenticateUser(String username, String password);
 }

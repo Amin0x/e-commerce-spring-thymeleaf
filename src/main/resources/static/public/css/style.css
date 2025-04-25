@@ -302,6 +302,28 @@ body {
   flex-direction: column;
 }
 
+.input-container {
+  margin-bottom: 8px;
+}
+.input-container label {
+  margin-bottom: 5px;
+}
+
+.text-input {
+  width: 100%;
+  display: block;
+  padding: 10px 15px;
+  line-height: 20px;
+  color: #000000;
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.text-input:focus {
+  border-color: #13aa52;
+}
+
 .products {
   display: flex;
   flex-wrap: wrap;
@@ -897,9 +919,6 @@ body {
   display: block !important;
 }
 
-.footer {
-  margin-top: 60px;
-}
 .footer .footer-top {
   background-color: #2f2f27;
   color: #cacaca;
@@ -966,34 +985,75 @@ body {
   left: 5px;
 }
 
-.category-wrp {
+.home-page-container {
+  padding-inline: 1rem;
+}
+
+.categories {
+  margin-top: 50px;
+}
+.categories .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.categories .header .header__title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+.categories .header .header__link {
+  font-size: 1rem;
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+.categories .header .header__link:hover {
+  color: #ba3b3b;
+  text-decoration: underline;
+}
+.categories .category-wrp {
   display: flex;
   justify-content: center;
   gap: 1rem;
 }
 @media screen and (max-width: 768px) {
-  .category-wrp {
+  .categories .category-wrp {
     flex-wrap: wrap;
     justify-content: space-around;
   }
 }
-.category-wrp .category {
+.categories .category-wrp .category {
   width: 110px;
 }
-.category-wrp .category .category-card .category-card__box .category-img {
+.categories .category-wrp .category .category-card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+.categories .category-wrp .category .category-card .category-img {
   display: flex;
   justify-content: center;
 }
-.category-wrp .category .category-card .category-card__box .category-img img {
+.categories .category-wrp .category .category-card .category-img img {
   width: 80px;
   height: 80px;
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 50%;
 }
-.category-wrp .category .category-card .category-card__box .category-card__title {
+.categories .category-wrp .category .category-card .category-card__title {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
+}
+.categories .category-wrp .category .category-card .category-card__title a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+}
+.categories .category-wrp .category .category-card .category-card__title a:hover {
+  color: #093114;
 }
 
 .section-title {
@@ -1166,7 +1226,9 @@ body {
 }
 
 .cart-container {
-  padding: 0 0.125rem;
+  padding-inline: 1.5rem;
+  margin-top: 50px;
+  margin-bottom: 60px;
 }
 .cart-container .cart-item {
   background-color: #fafafa;
@@ -1204,8 +1266,9 @@ body {
   fill: #9E9E9E;
 }
 .cart-container .title {
-  font-size: 0.9rem;
-  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 .cart-container .item-details .product-name {
   font-size: 1.2rem;
@@ -1566,11 +1629,12 @@ body {
 
 .signup-container {
   padding: 1.5rem;
-  background: linear-gradient(210deg, #e7e7e7, #fff);
-  background-color: #B3E5FC;
-  border-radius: 5px;
-  max-width: 800px;
-  margin: 50px auto 0 auto;
+  background: linear-gradient(0deg, #e7e7e7, #fff);
+  /* background-color: #f2fff6; */
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  max-width: 500px;
+  margin: 60px auto 0 auto;
 }
 .signup-container .title {
   font-size: 1.5rem;
@@ -1583,7 +1647,7 @@ body {
   margin-bottom: 4px;
 }
 .signup-container .email, .signup-container .password, .signup-container .confirm-password {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 .signup-container .input {
   display: block;
@@ -1611,11 +1675,12 @@ body {
   border-color: red;
 }
 .signup-container button {
+  width: 100%;
   display: inline-block;
   padding: 8px 25px;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 20px;
   color: #ffffff;
   text-align: center;
   text-decoration: none;
@@ -1632,18 +1697,40 @@ body {
 .signup-container button:hover {
   background-color: #939393;
 }
+.signup-container button {
+  margin-top: 12px;
+}
 
 .login {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #ffffff;
   max-width: 443px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 20px;
+  margin-top: 60px;
 }
-.login .email, .login .password {
-  margin-bottom: 8px;
+.login .login-container .login__form-footer {
+  margin-top: 8px;
+}
+.login .login-container .login__form-footer .forgot-password, .login .login-container .login__form-footer .signup {
+  color: #212121;
+  font-size: 14px;
+  margin-bottom: 0;
+  line-height: 15px;
+}
+.login .login-container .login__form-footer .forgot-password .forgot-password-link, .login .login-container .login__form-footer .forgot-password .signup-link, .login .login-container .login__form-footer .signup .forgot-password-link, .login .login-container .login__form-footer .signup .signup-link {
+  text-decoration: none;
+}
+.login .login-container .login__form-footer .forgot-password .forgot-password-link:hover, .login .login-container .login__form-footer .forgot-password .signup-link:hover, .login .login-container .login__form-footer .signup .forgot-password-link:hover, .login .login-container .login__form-footer .signup .signup-link:hover {
+  color: #151515;
 }
 .login .login__form-icon {
   text-align: center;
+}
+.login .button-31 {
+  background-color: #1b613a;
 }
 .login .google-button, .login .facebook-button {
   margin-bottom: 12px;
@@ -1663,8 +1750,7 @@ body {
 
 .subscribe {
   margin-top: 80px;
-  margin-bottom: -60px;
-  padding: 60px 0;
+  padding: 60px 15px;
   background-color: #F5F5F5;
 }
 .subscribe .subscribe-content {
@@ -1675,7 +1761,7 @@ body {
   font-size: 60px;
 }
 .subscribe .subscribe-content .subscription-title {
-  font-size: 1.75rem;
+  font-size: 2.75rem;
   font-weight: 500;
   line-height: 1.3;
 }
@@ -1684,7 +1770,7 @@ body {
   font-size: 0.9rem;
 }
 .subscribe .subscription-form {
-  width: 478px;
+  max-width: 478px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

@@ -79,4 +79,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         List<Product> getLastAddedProductsRandom(Pageable pageable);
 
         Optional<Product> findBySlug(String id);
+
+        Optional<Product> findByUuid(String productId);
 }

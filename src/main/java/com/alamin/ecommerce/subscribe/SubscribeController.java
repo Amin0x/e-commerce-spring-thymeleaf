@@ -18,7 +18,7 @@ public class SubscribeController {
     }
 
     @GetMapping("/subscription/subscribe")
-    public ResponseEntity<Object> subscribe(@RequestParam String name, @RequestParam String email){
+    public ResponseEntity<Map<String, Object>> subscribe(@RequestParam String name, @RequestParam String email){
         subscribeService.subscribe(email, name);
         Map<String, Object> response = new HashMap<>();
         try {

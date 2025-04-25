@@ -1,0 +1,31 @@
+package com.alamin.ecommerce.config;
+
+import java.util.Optional;
+
+import com.alamin.ecommerce.user.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.alamin.ecommerce.user.User;
+
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+    private final UserRepository userService;
+    public CustomUserDetailsService(UserRepository userService) {
+        this.userService = userService;
+    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> userByUsername = userService.getUserByUsername(username);
+        if (userByUsername.isEmpty()) {
+            throw new UsernameNotFoundException("");
+        }
+        
+        return userByUsername.get();
+
+    }
+
+}

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Login Page</title>
     <link rel="icon" th:href="@{/public/imgs/favicon.png}" href="../../static/public/imgs/favicon.png" type="image/png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -19,16 +21,20 @@
                 <p class="login__form-icon"><i class="fas fa-lock"></i></p>
                 <h2 class="login-title">مرحبا بعودتك</h2>
                 <form th:action="@{/login}" th:object="${loginForm}" method="post" id="loginForm">
-                    <div class="email">
+                    <div class="input-container">
                         <label for="username">اسم المتستخدم:</label>
-                        <input type="text" name="username" class="form-control" th:field="*{username}" id="username" placeholder="">
+                        <input type="text" name="username" class="text-input" th:field="*{username}" id="username" placeholder="">
                     </div>
-                    <div class="password">
+                    <div class="input-container">
                         <label for="password">كلمة المرور:</label>
-                        <input type="password" name="password" class="form-control" th:field="*{password}" id="password" placeholder="">
+                        <input type="password" name="password" class="text-input" th:field="*{password}" id="password" placeholder="">
                     </div>
                     <button type="submit" class="button-31 w-100" id="submitButton">دخول</button>
                 </form>
+                <div class="login__form-footer">
+                    <p class="forgot-password"><a href="#" class="forgot-password-link">نسيت كلمة المرور؟</a></p>
+                    <p class="signup">ليس لديك حساب؟ <a href="/auth/register" class="signup-link">تسجيل جديد</a></p>
+                </div>
             </div>
             <div class="divider">
                 
@@ -46,41 +52,96 @@
     <script th:src="@{/public/js/bootstrap.min.js}"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function(e) {
-            document.getElementById("loginForm").addEventListener("submit", function(e){
-                e.preventDefault();
-                const formData = new FormData(e.target);
+        const FormLogin = (function(){
+            function init(){
+                document.addEventListener("DOMContentLoaded", function(e) {
+                    const loginForm = document.getElementById("loginForm");
+                    if (loginForm) {
+                        loginForm.addEventListener("submit", function(e){
+                            e.preventDefault();
+                            const formData = new FormData(e.target);
+    
+                            fetch( "/auth/login", {
+                                method: "POST",
+                                body: formData,
+                            })
+                            .then(res => {(res.status == 200? res.json():Promise.reject(res.statusText))})
+                            .then(data => { 
+                                console.log(data);
+                                if (data.status === "success"){
+                                    window.location.href = data.redirectUrl;
+                                }else{
+                                    console.log(data.message);
+                                }
+                            })
+                            .catch((error)=>{ 
+                                console.log(error); 
+                                
+                            });
+                        });//end submit
+                    }
 
-                fetch( "/login", {
-                    method: "POST",
-                    body: formData,
-                })
-                .then(res => {return (res.status == 200? re.json():Promise.reject(res.statusText))})
-                .then(data => { if (data.status === "success"){return data}})
-                .catch(function(){ console.log(data) });
-            });//end submit
+                    const google = document.querySelector("google-button");
+                    if (google) {
+                        google.addEventListener("click", function(event){
+                            fetch( "auth/google/login", {
+                                method: "POST",
+                                body: formData,
+                            })
+                            .then(res => {
+                                if(res.status == 200){ 
+                                    return res.json();
+                                }
+                                Promise.reject(res.statusText);
+                            })
+                            .then(data => { 
+                                console.log(data);
+                                if (data.status === "success"){
+                                }
+                            })
+                            .catch((error)=>{ cosole.log(error) });
+                        });//click
+                    }
 
-            document.querySelector("google-button").addEventListener("click", function(event){
-                fetch( "/login", {
-                    method: "POST",
-                    body: formData,
-                })
-                .then(res => {return (res.status == 200? re.json():Promise.reject(res.statusText))})
-                .then(data => { if (data.status === "success"){return data}})
-                .catch(function(){ console.log(JSON.stringify(data)) });
-            });//click
+                    const facebook = document.querySelector("facebook-button");
+                    if (facebook) {
+                        facebook.addEventListener("click", function(event){
+                            fetch( "/auth//facebook/login", {
+                                method: "POST",
+                                body: formData,
+                            })
+                            .then(res => {
+                                 if(res.ok){
+                                    return res.json();
+                                 } 
+                                 
+                                 Promise.reject(res.statusText)
+                            })
+                            .then(data => { 
+                                console.log(data);
+                                if (data.status === "success"){
 
-            document.querySelector("facebook-button").addEventListener("click", function(event){
-                fetch( "/login", {
-                    method: "POST",
-                    body: formData,
-                })
-                .then(res => {return (res.status == 200? re.json():Promise.reject(res.statusText))})
-                .then(data => { if (data.status === "success"){return data}})
-                .catch(function(){ console.log(JSON.stringify(data)) });
-            });//click
+                                }
+                            })
+                            .catch((error) =>{ console.log(error) });
+                        });//click
+                    }
 
-        });//end loading
+                });//end loading
+            }
+
+            const loginForm = document.getElementById('loginForm');
+            if(loginForm){
+                init();
+            }
+
+            return {
+                init,
+            }
+        })();
+
+        //FormLogin.init();
+        
     </script>
 </body>
 

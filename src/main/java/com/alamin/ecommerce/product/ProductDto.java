@@ -6,6 +6,7 @@ import java.util.List;
 public class ProductDto {
 
     private Long productId;
+    private String uuid;
     private String name;
     private String description;
     private Integer price;
@@ -29,6 +30,7 @@ public class ProductDto {
 
     public ProductDto(Product product){
         this.productId = product.getId();
+        this.uuid = product.getUuid();
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = product.getPrice();
@@ -44,10 +46,12 @@ public class ProductDto {
         if (product.getCategory() != null) {
             this.categoryId = product.getCategory().getId();
         }
+
     }
 
     public ProductDto(String name,
                       Long productId,
+                      String uuid,
                       String description,
                       Integer price,
                       Integer basePrice,
@@ -65,6 +69,7 @@ public class ProductDto {
                       float percent) {
         this.name = name;
         this.productId = productId;
+        this.uuid = uuid;
         this.description = description;
         this.price = price;
         this.basePrice = basePrice;
@@ -224,5 +229,13 @@ public class ProductDto {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

@@ -49,7 +49,7 @@
                             </p>
                         </div>
                         <div class="add-to-cart">
-                            <button th:onclick="|addToCart(${product.id})|" class="button-31" id="addToCartButton">اضافة للعربة</button>
+                            <button th:data-add-cart="${product.uuid}" class="button-31 add-to-cart">اضافة للعربة</button>
                         </div>
                     </div>
                 </div>
@@ -151,29 +151,7 @@
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        const addToCart = (id) => {
-            const formData = new FormData();
-            formData.append('productId', id);
-            fetch('/carts/addToCart', {
-                method: 'POST',
-                body:formData,
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('خطأ في الاتصال');
-                }                
-            })
-            .then(data => {
-                if (data != null) {                    
-                    document.querySelector('#cartItemsCount').textContent = data.totalItems;
-                }
-            })
-        }
-        
-    </script>
+    <script src="../../static/public/js/main.js" th:src="@{/public/js/main.js}"></script>
 </body>
 
 </html>

@@ -4,9 +4,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,8 +21,10 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
@@ -90,20 +97,44 @@ public class UserServiceImpl implements UserService {
     public User createUser(User user) {
 
         User createdUser = new User();
+        if(List.of("USER", "ADMIN", "MODERATOR").contains(user.getRole())){
+            createdUser.setRole(user.getRole());
+        } else {
+            log.warn("Invalid role provided, defaulting to USER");
+            createdUser.setRole("USER");
+        }
         createdUser.setFirstName(user.getFirstName());
         createdUser.setLastName(user.getLastName());
         createdUser.setUsername(user.getUsername());
-        createdUser.setPassword(user.getPassword());
+        createdUser.setPassword(passwordEncoder.encode(user.getPassword()));
+
         createdUser.setEmail(user.getEmail());
         createdUser.setStatus("ACTIVE");
         createdUser.setEnabled(true);
         createdUser.setBirthDate(user.getBirthDate());
         createdUser.setUuid(this.createUuid());
-        User save = userRepository.save(createdUser);
-        //todo: send email to user
 
+        return userRepository.save(createdUser);
+    }
 
-        return save;
+    @Override
+    public User createUser(SignupForm signupForm) {
+
+        User user = new User();
+        user.setUsername(signupForm.getUsername());
+        user.setPassword(passwordEncoder.encode(signupForm.getPassword()));
+        user.setRole("USER");
+        user.setEnabled(true);
+        user.setStatus("active");
+        user.setEmail(null);
+        user.setAvatar(null);
+        user.setFirstName(null);
+        user.setLastName(null);
+        user.setBirthDate(null);
+        user.setCreated(LocalDateTime.now());
+        user.setUpdated(null);
+        user.setUuid(createUuid());
+        return userRepository.save(user);
     }
 
     private static void validateUser(User user) {
@@ -133,17 +164,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long id, User user) {
-        User upatedUser = getUserById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User updatedUser = getUserById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
         validateUser(user);
-        upatedUser.setFirstName(user.getFirstName());
-        upatedUser.setLastName(user.getLastName());
-        upatedUser.setUsername(user.getUsername());
-        upatedUser.setPassword(user.getPassword());
-        upatedUser.setEmail(user.getEmail());
-        upatedUser.setStatus("ACTIVE");
-        upatedUser.setEnabled(true);
-        upatedUser.setBirthDate(user.getBirthDate());
-        return userRepository.save(upatedUser);
+        updatedUser.setFirstName(user.getFirstName());
+        updatedUser.setLastName(user.getLastName());
+        //updatedUser.setUsername(user.getUsername());
+        updatedUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        updatedUser.setEmail(user.getEmail());
+        updatedUser.setStatus(user.getStatus());
+        updatedUser.setEnabled(user.getEnabled());
+        updatedUser.setBirthDate(user.getBirthDate());
+        updatedUser.setRole(user.getRole());
+        //updatedUser.setLastActive();
+        updatedUser.setUpdated(LocalDateTime.now());
+        return userRepository.save(updatedUser);
     }
 
     public void sendConformationEmail(User user){
@@ -201,4 +235,11 @@ public class UserServiceImpl implements UserService {
         }
         return usersRegisrationLabelsMonth;
     }
+
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.getUserByUsername(username);
+    }
+
+    
 }

@@ -96,4 +96,6 @@ public interface ProductService {
     long getShipping(Cart cart);
 
     Optional<Product> getProductBySlug(String id);
+
+    Optional<Product> getProductByUuid(String productId);
 }

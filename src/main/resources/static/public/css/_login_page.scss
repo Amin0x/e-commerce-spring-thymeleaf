@@ -1,14 +1,37 @@
 .login{
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ffffff;    
     max-width: 443px;
     margin-left: auto;
-    margin-right: auto;margin-top: 20px;
+    margin-right: auto;
+    margin-top: 60px;
 
-    .email, .password{
-        margin-bottom: 8px;
+    .login-container{
+        .login__form-footer{
+            margin-top: 8px;
+            .forgot-password, .signup{
+                color: #212121;
+                font-size: 14px;
+                margin-bottom: 0;
+                line-height: 15px;
+                .forgot-password-link, .signup-link{
+                    text-decoration: none;
+                    &:hover{
+                        color: #151515;
+                    }
+                }
+            }
+        }
     }
-
+    
     .login__form-icon{
         text-align: center;
+    }
+
+    .button-31{
+        background-color: #1b613a;
     }
 
     .google-button, .facebook-button{

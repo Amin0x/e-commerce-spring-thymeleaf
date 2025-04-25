@@ -1,7 +1,6 @@
 .subscribe {
     margin-top: 80px;
-    margin-bottom: -60px;
-    padding: 60px 0;
+    padding: 60px 15px;
     background-color: #F5F5F5;
 
     .subscribe-content {
@@ -14,7 +13,7 @@
         }
 
         .subscription-title {
-            font-size: 1.75rem;
+            font-size: 2.75rem;
             font-weight: 500;
             line-height: 1.3;
         }
@@ -27,7 +26,7 @@
     }
 
     .subscription-form {
-        width: 478px;
+        max-width: 478px;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
