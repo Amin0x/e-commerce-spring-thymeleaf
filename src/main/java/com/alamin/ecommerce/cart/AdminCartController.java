@@ -37,7 +37,13 @@ public class AdminCartController{
         model.addAttribute("cartState5", 284985);
         model.addAttribute("totalCarts", 1000);
         model.addAttribute("totalPrice", 1000);
-        model.addAttribute("pageTitle", "Admin Dashboard - Carts Index");
+        model.addAttribute("pageTitle", "Admin Dashboard | Carts Index");
+        model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
 
         return "admin/carts/cart_index";
     }
@@ -53,6 +59,15 @@ public class AdminCartController{
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "");
+
+        model.addAttribute("pageTitle", "Admin Dashboard | Carts Index");
+        model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
+
         return "admin/carts/cart_details";
     }
 

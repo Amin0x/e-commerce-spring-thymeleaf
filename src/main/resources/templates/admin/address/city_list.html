@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"></html>
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City List</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" th:content="${pageAuthor}" />
+    <meta name="description" th:content="${pageDescription}" />
+    <title th:text="${pageTitle}">City List</title>
     <style>
         button[type="submit"]:hover {
             background-color: darkgreen;            

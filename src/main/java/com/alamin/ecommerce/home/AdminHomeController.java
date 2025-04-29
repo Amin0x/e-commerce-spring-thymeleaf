@@ -51,11 +51,28 @@ public class AdminHomeController {
         model.addAttribute("orderChartData", null);
         model.addAttribute("pageTitle", "Admin Dashboard - Index");
 
+        model.addAttribute("pageTitle", "Admin Dashboard | Index");
+        model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
+
         return "admin/home/admin_home";
     }
 
     @GetMapping("/admin/create")
-    public String create(){
+    public String create(Model model){
+
+        model.addAttribute("pageTitle", "Admin Dashboard | Create");
+        model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
+
         return "admin/home/create_links";
     }
 }

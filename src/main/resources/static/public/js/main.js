@@ -1,13 +1,12 @@
 //navbar
 document.addEventListener('DOMContentLoaded', async function(){
-    const res = await fetch('/carts/getCart', {
-        method: 'GET',
-    });
-
-    if(res != undefined && res.status == 200){
-        const data = await res.json();
-        const cartItemsCount = document.getElementById("cartItemsCount");
-        if (cartItemsCount) {
+    const cartItemsCount = document.getElementById("cartItemsCount");
+    if (cartItemsCount) {
+        const res = await fetch('/carts/getCart', {
+            method: 'GET',
+        });
+        if(res != undefined && res.status == 200){
+            const data = await res.json();
             cartItemsCount.textContent = data.totalItems;
         }
     }
@@ -52,6 +51,11 @@ document.addEventListener('DOMContentLoaded', async function(){
         })
     }
 
+    const loginForm = document.getElementById('loginForm');
+        if(loginForm){
+            //init();
+        }
+
 });
 
 
@@ -74,25 +78,41 @@ const SignupForm = (function(){
         const email = document.getElementById('email');
         const password = document.getElementById('password');
         const confirmPassword = document.getElementById('confirmPassword');
+
+        let isValid = true;
     
-        if (password.value.length < 8 || password.value === '') {
+        if (password.value.length < 3 || password.value === '') {
             password.classList.add('error');
-            return false;
+            document.getElementById('passwordErr').innerText = "Password must be at least 8 characters long";
+            isValid = false;
         }
     
         if (password.value !== confirmPassword.value || confirmPassword.value == '') {
             confirmPassword.classList.add('error');
-            return false;
+            document.getElementById('confirmPasswordErr').innerText = "Passwords do not match";
+            isValid = false;
         }
     
         if (email.value == '') {
             email.classList.add('error');
-            return false;
+            document.getElementById('emailErr').innerText = "Email is required";
+
+            isValid = false;
+        }
+
+        if (!email.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+            email.classList.add('error');
+            document.getElementById('emailErr').innerText = "Invalid email format";
+            isValid = false;
+        }
+
+        if(isValid == false){
+            return;
         }
     
         const data = { 
             username: email.value, 
-            password: email.value, 
+            password: password.value,
             confirmPassword: confirmPassword.value 
         };
 
@@ -125,31 +145,97 @@ const SignupForm = (function(){
     }
 })();
 
-const LoginForm = (function(){
-    function handleLoginSubmit(e) {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const url = '/auth/login';
-    
-        fetch(url, {
-            method: "POST",
-            body: formData,
-        })
-        .then(res => {
-            return (res.status == 200 ? re.json() : Promise.reject(res.statusText))
-        })
-        .then(data => {
-            if (data.status === "success") { return data }
-        })
-        .catch(
-            error => console.error("Error:", error)
-        );
+const FormLogin = (function(){
+    function init(){
+        document.addEventListener("DOMContentLoaded", function(e) {
+            const loginForm = document.getElementById("loginForm");
+            if (loginForm) {
+                loginForm.addEventListener("submit", function(e){
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+
+                    fetch( "/auth/login", {
+                        method: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content") ,
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                        body: formData,
+                    })
+                    .then(res => {(res.status == 200? res.json():Promise.reject(res.statusText))})
+                    .then(data => {
+                        console.log(data);
+                        if (data.status === "success"){
+                            window.location.href = data.redirectUrl;
+                        }else{
+                            console.log(data.message);
+                        }
+                    })
+                    .catch((error)=>{
+                        console.log(error);
+
+                    });
+                });//end submit
+            }
+
+            const google = document.querySelector("google-button");
+            if (google) {
+                google.addEventListener("click", function(event){
+                    fetch( "auth/google/login", {
+                        method: "POST",
+                        body: formData,
+                    })
+                    .then(res => {
+                        if(res.status == 200){
+                            return res.json();
+                        }
+                        Promise.reject(res.statusText);
+                    })
+                    .then(data => {
+                        console.log(data);
+                        if (data.status === "success"){
+                        }
+                    })
+                    .catch((error)=>{ cosole.log(error) });
+                });//click
+            }
+
+            const facebook = document.querySelector("facebook-button");
+            if (facebook) {
+                facebook.addEventListener("click", function(event){
+                    fetch( "/auth//facebook/login", {
+                        method: "POST",
+                        body: formData,
+                    })
+                    .then(res => {
+                         if(res.ok){
+                            return res.json();
+                         }
+
+                         Promise.reject(res.statusText)
+                    })
+                    .then(data => {
+                        console.log(data);
+                        if (data.status === "success"){
+
+                        }
+                    })
+                    .catch((error) =>{ console.log(error) });
+                });//click
+            }
+
+        });//end loading
     }
 
+
+
     return {
-        handleLoginSubmit,
+        init,
     }
 })();
+
+//FormLogin.init();
+
 
 
 
@@ -335,7 +421,7 @@ const cartItems = (function(){
         document.querySelector('#total').textContent = cartTotal + ' جنيه';
     }
 
-    const updateCartTotalitemCount = (c)=>{
+    const updateCartTotalItemCount = (c)=>{
         document.getElementById("cartItemsCount").textContent = c;
     }
 
@@ -383,7 +469,7 @@ const cartItems = (function(){
         });
     }
 
-    const cartItemIncerment = (id) => {
+    const cartItemIncrement = (id) => {
         $.ajax({
             url: '/carts/increment',
             method: 'post',
@@ -404,7 +490,7 @@ const cartItems = (function(){
         });
     }
 
-    function cartItemDecerment(id){
+    function cartItemDecrement(id){
         $.ajax({
             url: '/carts/decrement',
             method: 'post',
@@ -425,12 +511,12 @@ const cartItems = (function(){
     }
 
     return {
-        cartItemDecerment,
-        cartItemIncerment,
+        cartItemDecrement,
+        cartItemIncrement,
         buttonDeleteItemClicked,
         getCart,
         updateTotal,
-        updateCartTotalitemCount,
+        updateCartTotalItemCount,
         updateCart,
         cartRender,
     }

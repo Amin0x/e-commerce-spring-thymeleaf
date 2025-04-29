@@ -3,17 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex,nofollow">
-    <title>Order Details</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" th:content="${pageAuthor}" />
+    <meta name="description" th:content="${pageDescription}" />
+    <title th:text="${pageTitle}">Order Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .content-page-container {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .shortcut-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .shortcut {
+            text-decoration: none;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+        .shortcut:hover {
+            background-color: #0056b3;
+        }
+        .order-summary, .order-status, .customer-information, .payment-information, .shipping-details {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
+    <div class="page-wrapper">
     <div class="wrapper">
-        <main class="order-details" style="max-width: 1200px; margin: 0 auto; padding: 0 18px; background-color: #f5f5f5;">
-            <div class="btn-group mt-5" role="group" aria-label="Order Actions">
-                <a href="#" th:href="@{/admin/orders/delete{id}(id=${order.orderId})}" class="btn btn-secondary">Delete Order</a>
-                <a href="#" th:href="@{/admin/orders/print}" class="btn btn-secondary">Print</a>
+        <main class="content-page-container order-details" style="max-width: 1200px; margin: 0 auto; padding: 0 18px; background-color: #f5f5f5;">
+            <div class="shortcut-container">
+                <a href="orders.html" class="shortcut shortcut-link">View All Orders</a>
+                <a href="new-order.html" class="shortcut shortcut-link">Create New Order</a>
+                <a href="pending-orders.html" class="shortcut shortcut-link">Pending Orders</a>
+                <a href="completed-orders.html" class="shortcut shortcut-link">Completed Orders</a>
+                <a href="order-reports.html" class="shortcut shortcut-link">Order Reports</a>
             </div>
             <h1 class="mt-3">Order Details</h1>
             <div class="hline-sm"></div>
@@ -68,5 +101,6 @@
             </div>
         </main>
     </div>
+</div>
 </body>
 </html>

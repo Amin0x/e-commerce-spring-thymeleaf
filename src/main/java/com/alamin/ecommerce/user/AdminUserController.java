@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.validation.Valid;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -39,16 +42,35 @@ public class AdminUserController {
         model.addAttribute("usersRegistrationData", usersRegistrationData);
         model.addAttribute("visitorLabels", visitorLabels);
         model.addAttribute("visitorData", visitorData);
+
+        model.addAttribute("pageTitle", "Admin Dashboard | Users Home Page");
+        model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
+
         return "admin/users/users_index";
     }
 
     @GetMapping("/admin/users/all")
     public String allUsers(Model model) {
+
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("pageNumber", 10);
         model.addAttribute("totalPages", 10);
         model.addAttribute("i", 10);
         model.addAttribute("user", new User());
+
+        model.addAttribute("pageTitle", "Admin Dashboard | View All Users");
+        model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
+
         return "admin/users/users_list";
     }
 
@@ -101,11 +123,16 @@ public class AdminUserController {
     }
 
     @PostMapping("/admin/users/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute User user, Model model) {
+    public String updateUser(@PathVariable Long id,@Valid @ModelAttribute User user,BindingResult bindingResult, Model model) {
         if (user == null) {
             return "admin/users/user_edit_form";
         }
 
+        if(bindingResult.hasErrors()){
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "admin/users/user_edit_form";
+        }
+        
         User savedUser = userService.updateUser(id, user);
         model.addAttribute("user", savedUser);
 

@@ -4,13 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -109,8 +105,8 @@ public class UserServiceImpl implements UserService {
         createdUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
         createdUser.setEmail(user.getEmail());
-        createdUser.setStatus("ACTIVE");
-        createdUser.setEnabled(true);
+        createdUser.setStatus(user.getStatus());
+        createdUser.setEnabled(user.getEnabled());
         createdUser.setBirthDate(user.getBirthDate());
         createdUser.setUuid(this.createUuid());
 
@@ -119,13 +115,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(SignupForm signupForm) {
-
+        log.info("signupForm: {}", signupForm);
         User user = new User();
         user.setUsername(signupForm.getUsername());
         user.setPassword(passwordEncoder.encode(signupForm.getPassword()));
-        user.setRole("USER");
+        user.setRole("USER"); //defuel user role
         user.setEnabled(true);
-        user.setStatus("active");
+        user.setStatus("NOT_VERIFIED");
         user.setEmail(null);
         user.setAvatar(null);
         user.setFirstName(null);

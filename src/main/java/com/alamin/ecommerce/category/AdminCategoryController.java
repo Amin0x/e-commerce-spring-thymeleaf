@@ -28,11 +28,18 @@ public class AdminCategoryController {
         this.categoryService = categoryService;
     }
 
-
     @GetMapping("/admin/categories/create")
     public String createCategoryPage(Model model) {
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("user", new User());
+
+        model.addAttribute("pageTitle", "Admin Dashboard | Create New Category");
+        model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
 
         return "admin/categories/category_create";
     }
@@ -41,6 +48,14 @@ public class AdminCategoryController {
     public String indexPage(Model model) {
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("user", new User());
+
+        model.addAttribute("pageTitle", "Admin Dashboard | Categoies Index");
+        model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
 
         return "admin/categories/category_home";
     }
@@ -51,12 +66,21 @@ public class AdminCategoryController {
         if (category.isEmpty()) {
             return "error/404";
         }
-        model.addAttribute("category", category.get());
-        model.addAttribute("categoryId", id);
         List<Category> categories = categoryService.findAll();
         categories.removeIf((item)->{return Objects.equals(item.getId(), id);});
+
+        model.addAttribute("category", category.get());
+        model.addAttribute("categoryId", id);
         model.addAttribute("categories", categories);
         model.addAttribute("user", new User());
+
+        model.addAttribute("pageTitle", "Admin Dashboard | Edit Category: " + category.get().getName());
+        model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
 
         return "admin/categories/category_edit";
     }

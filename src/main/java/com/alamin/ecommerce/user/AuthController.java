@@ -2,35 +2,32 @@ package com.alamin.ecommerce.user;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @Slf4j
 public class AuthController {
 
-    private UserService userService;
-    private AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
-
-
-    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
+    public AuthController(UserService userService , AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
     }
@@ -49,19 +46,23 @@ public class AuthController {
     @PostMapping("/auth/login")
     public String processLogin(@RequestParam(required = false) String url, @Valid LoginForm loginForm,
                                BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-
-        System.out.println(loginForm);
-        boolean authenticationFailed = false;
+        System.out.println("processLogin: " + loginForm);
+        System.out.println("----------------------------------------");
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("errorMessage", "Invalid username or password");
+            model.addAttribute("errors", bindingResult.getAllErrors());
             return "public/login";
         }
 
         try {
             authenticateUser(loginForm.getUsername(), loginForm.getPassword());
-            return "redirect:" + (url != null ? url : "/");
+            if (StringUtils.hasText(url)) {
+                return "redirect:" + url;
+            } else {
+                return "redirect:/";
+            }
         } catch (Exception e) {
-            authenticationFailed = true;
             model.addAttribute("errorMessage", "Invalid username or password");
             return "public/login";
         }
@@ -76,7 +77,7 @@ public class AuthController {
 
     @PostMapping("/auth/register")
     public ResponseEntity<Map<String,Object>> registerUser(@Valid @RequestBody SignupForm signupForm, BindingResult bindResult) {
-        log.info("------------------------------------registerUser: {}", signupForm);
+        log.info("registerUser: {}", signupForm);
         Map<String,Object> body = new HashMap<>();
        
         if (bindResult.hasErrors()) {
@@ -115,13 +116,9 @@ public class AuthController {
     }
 
     public void authenticateUser(String username, String password) {
-        Optional<User> user = userService.getUserByUsername(username);
-        if (user.isPresent()) {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            log.info("User authenticated successfully: {}", username);
-        } else {
-            log.error("User not found: {}", username);
-            throw new RuntimeException("User not found: " + username);
-        }
+        UsernamePasswordAuthenticationToken unauthenticated = UsernamePasswordAuthenticationToken.unauthenticated(username, password);
+        Authentication authenticate = authenticationManager.authenticate(unauthenticated);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        log.info("User authenticated successfully: {}", username);
     }
 } 

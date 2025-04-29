@@ -3,9 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noindex,nofollow">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" th:content="${pageAuthor}" />
+    <meta name="description" th:content="${pageDescription}" />
+    <title th:text="${pageTitle}">Document</title>
     <link rel="stylesheet" href="../../../static/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css" 
     th:href="@{/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" href="../../../static/admin/main.css" th:href="@{/admin/main.css}">

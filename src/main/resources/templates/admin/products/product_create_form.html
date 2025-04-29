@@ -4,109 +4,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex,nofollow">
-    <title>Create Product</title>
-    <link th:if="false" th:href="@{'/public/css/bootstrap.min.css'}" href="../../../static/public/css/bootstrap.min.css"
-          rel="stylesheet">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" th:content="${pageAuthor}" />
+    <meta name="description" th:content="${pageDescription}" />
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preload" href="../../../static/public/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="../../../static/admin/main.css" as="style">
+    <link rel="preload" href="../../../static/public/js/jquery-3.7.1.min.js" as="script">
+    <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" as="script">
+    <title th:text="${pageTitle}">Create Product</title>
+    <link th:if="false" th:href="@{'/public/css/bootstrap.min.css'}" href="../../../static/public/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
 </head>
 
 <body>
-<div>
+<div class="page-wrapper">
     <div class="wrapper">
         <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-        <div class="create-product-container">
-            <h2>Create New Product</h2>
-            <div class="box-round p-3">
-                <div class="form-box">
-                    <form th:action="@{/admin/products}" id="createProduct">
-                        <div class="product-info">
-                            <div class="name input-section">
-                                <label for="name">Name:</label>
-                                <input type="text" class="name-input" name="name" th:value="${name}" id="name">
-                                <div class="error-message" id="nameError"></div>
-                            </div>
-                            <div class="description input-section">
-                                <label for="description">Description:</label>
-                                <textarea class="description-input" th:value="${description}" name="description"
-                                          id="description" rows="3"></textarea>
-                                <div class="error-message" id="descriptionError"></div>
-                            </div>
-                            <div class="product-row input-section">
-                                <div class="price">
-                                    <label for="price">Price:</label>
-                                    <input type="number" name="price" class="price-input" th:value="${price}"
-                                           id="price">
-                                    <div class="error-message" id="priceError"></div>
+        <main class="content">
+            <header th:replace="~{admin/fragments/header :: header}"></header>
+            <div class="content-page-container create-product-container">
+                <h2>Create New Product</h2>
+                <div class="box-round p-3">
+                    <div class="form-box">
+                        <form th:action="@{/admin/products}" id="createProduct">
+                            <div class="product-info">
+                                <div class="name input-section">
+                                    <label for="name">Name:</label>
+                                    <input type="text" class="name-input" name="name" th:value="${name}" id="name">
+                                    <div class="error-message" id="nameError"></div>
                                 </div>
-                                <div class="stock">
-                                    <label for="stock">Stock:</label>
-                                    <input type="number" name="stock" class="stock-input" th:vlaue="${stock}" id="stock"
-                                           value="0">
-                                    <div class="error-message" id="stockError"></div>
+                                <div class="description input-section">
+                                    <label for="description">Description:</label>
+                                    <textarea class="description-input" th:value="${description}" name="description"
+                                              id="description" rows="3"></textarea>
+                                    <div class="error-message" id="descriptionError"></div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="product-category">
-                            <div class="category">
-                                <label for="categoryInput">Category:</label>
-                                <input type="text" name="categoryInput" class="control-input" id="categoryInput"
-                                       autocomplete="off">
-                                <div class="error-message" id="categoryError"></div>
-                                <div id="category" class="category-dropdown">
-                                    <p data-value="">Root</p>
-                                    <p th:each="category : ${categories}" th:data-value="${category.id}"
-                                       th:text="${category.name}">Category</p>
+                                <div class="product-row input-section">
+                                    <div class="price">
+                                        <label for="price">Price:</label>
+                                        <input type="number" name="price" class="price-input" th:value="${price}"
+                                               id="price">
+                                        <div class="error-message" id="priceError"></div>
+                                    </div>
+                                    <div class="stock">
+                                        <label for="stock">Stock:</label>
+                                        <input type="number" name="stock" class="stock-input" th:vlaue="${stock}" id="stock"
+                                               value="0">
+                                        <div class="error-message" id="stockError"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="product-brand input-section">
-                            <label for="brand">Brand:</label>
-                            <input type="text" name="brand" class="input-brand" th:vlaue="${brand}" id="brand">
-                            <div class="error-message" id="brandError"></div>
-                        </div>
-                        <div class="product-enabled input-section">
-                            <div class="active-checkbox">
-                                <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}">
-                                <label for="enabled">Enabled</label>
+                            <div class="product-category">
+                                <div class="category">
+                                    <label for="categoryInput">Category:</label>
+                                    <input type="text" name="categoryInput" class="control-input" id="categoryInput"
+                                           autocomplete="off">
+                                    <div class="error-message" id="categoryError"></div>
+                                    <div id="category" class="category-dropdown">
+                                        <p data-value="">Root</p>
+                                        <p th:each="category : ${categories}" th:data-value="${category.id}"
+                                           th:text="${category.name}">Category</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="enabled-checkbox">
-                                <input type="checkbox" id="active" name="active" th:value="${active}">
-                                <label for="active">Active</label>
+                            <div class="product-brand input-section">
+                                <label for="brand">Brand:</label>
+                                <input type="text" name="brand" class="input-brand" th:vlaue="${brand}" id="brand">
+                                <div class="error-message" id="brandError"></div>
                             </div>
-                        </div>
-                        <div class="product-primary-img input-section">
-                            <div class="">
-                                <div class="title">Primary Image:</div>
-                                <div id="primaryImagePreview" class="d-flex flex-wrap primary-image-preview"></div>
-                                <input type="file" id="filePrimeryImage" name="filePrimeryImage"
-                                       class="file-primery-image">
-                                <div class="error-message" id="filePrimeryImageError"></div>
-                                <button type="button" class="button-37" id="addMainImage">Add Primary Image</button>
+                            <div class="product-enabled input-section">
+                                <div class="active-checkbox">
+                                    <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}">
+                                    <label for="enabled">Enabled</label>
+                                </div>
+                                <div class="enabled-checkbox">
+                                    <input type="checkbox" id="active" name="active" th:value="${active}">
+                                    <label for="active">Active</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="product-images input-section">
-                            <div>
-                                <div>Add Product Images:</div>
-                                <div id="imagesPreview" class="d-flex flex-wrap"></div>
-                                <input type="file" id="fileImages" name="fileImages" style="display: none;" multiple>
-                                <div class="error-message" id="fileImagesError"></div>
-                                <button type="button" class="button-37" id="uploadImage">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                         fill="currentColor">
-                                        <path d="M12 0C5.372 0 0 5.372 0 12c0 6.628 5.372 12 12 12s12-5.372 12-12c0-6.628-5.372-12-12-12zm0 21.8c-5.423 0-9.8-4.377-9.8-9.8 0-5.423 4.377-9.8 9.8-9.8 5.423 0 9.8 4.377 9.8 9.8 0 5.423-4.377 9.8-9.8 9.8zM11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z"/>
-                                    </svg>
-                                </button>
-
+                            <div class="product-primary-img input-section">
+                                <div class="">
+                                    <div class="title">Primary Image:</div>
+                                    <div id="primaryImagePreview" class="d-flex flex-wrap primary-image-preview"></div>
+                                    <input type="file" id="filePrimeryImage" name="filePrimeryImage"
+                                           class="file-primery-image">
+                                    <div class="error-message" id="filePrimeryImageError"></div>
+                                    <button type="button" class="button-37" id="addMainImage">Add Primary Image</button>
+                                </div>
                             </div>
-                        </div>
-                        <button type="submit" class="button-37 submit-button" id="submitButton">Create Product</button>
-                    </form>
+                            <div class="product-images input-section">
+                                <div>
+                                    <div>Add Product Images:</div>
+                                    <div id="imagesPreview" class="d-flex flex-wrap"></div>
+                                    <input type="file" id="fileImages" name="fileImages" style="display: none;" multiple>
+                                    <div class="error-message" id="fileImagesError"></div>
+                                    <button type="button" class="button-37" id="uploadImage">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                             fill="currentColor">
+                                            <path d="M12 0C5.372 0 0 5.372 0 12c0 6.628 5.372 12 12 12s12-5.372 12-12c0-6.628-5.372-12-12-12zm0 21.8c-5.423 0-9.8-4.377-9.8-9.8 0-5.423 4.377-9.8 9.8-9.8 5.423 0 9.8 4.377 9.8 9.8 0 5.423-4.377 9.8-9.8 9.8zM11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z"/>
+                                        </svg>
+                                    </button>    
+                                </div>
+                            </div>
+                            <button type="submit" class="button-37 submit-button" id="submitButton">Create Product</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
-    <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+    <footer th:replace="~{admin/fragments/footer::footer}"></footer>    
 </div>
 
 <script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../../static/public/js/jquery-3.7.1.min.js"></script>
@@ -252,7 +260,7 @@
                 });
 
         });
-
+    });
 
 </script>
 </body>

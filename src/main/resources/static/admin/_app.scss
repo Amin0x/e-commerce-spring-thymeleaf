@@ -64,7 +64,6 @@ body {
 
 .box-round {
   padding: 1rem;
-  margin-bottom: 0.9rem;
   background-color: #ffffff;
   border: 1px solid #ededed;
   border-radius: 8px;
@@ -524,7 +523,22 @@ body {
   }
 }
 
-
+.content{
+  .shortcut-container{
+    display: flex;
+    gap: 8px;
+  
+    .shortcut{
+      text-decoration: none;
+      padding: 4px 8px;
+      background-color: transparent;
+      color: #5b5b5b;
+      &:hover{
+        background-color: #eaeaea;
+      }
+    }
+  }
+}
 
 .hline-sm{
   height: 1px;

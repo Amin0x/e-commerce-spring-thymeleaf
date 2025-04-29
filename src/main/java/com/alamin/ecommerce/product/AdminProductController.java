@@ -39,19 +39,24 @@ public class AdminProductController {
         if (page < 1) page = 1;
         if (size < 1) size = 10;
         Page<Product> allProducts = productService.getAllProducts(page, size, sort, asc);
-        model.addAttribute("products", allProducts);
+        User user = new User();
 
+
+        model.addAttribute("products", allProducts);
         model.addAttribute("totalPages", allProducts.getTotalPages());
         model.addAttribute("currentPage", page);
         model.addAttribute("size", size);
         model.addAttribute("sort", sort);
         model.addAttribute("asc", asc);
 
-        model.addAttribute("pageDescription", "");
-        model.addAttribute("pageAuthor", "");
-        model.addAttribute("pageKeywords", "");
-        model.addAttribute("pageTitle", "");
-        model.addAttribute("user", new User());
+        model.addAttribute("pageTitle", "Admin Dashboard | View Products List");
+        model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order,report,products");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
+        model.addAttribute("user", user);
 
         return "admin/products/product_list";
     }
@@ -67,6 +72,9 @@ public class AdminProductController {
 
     @GetMapping("/admin/products/create")
     public String showCreateProductForm(Model model) {
+
+        User user = new User();
+
         model.addAttribute("product", new Product());
 	    model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
@@ -74,13 +82,24 @@ public class AdminProductController {
         model.addAttribute("pageTitle", "");
         model.addAttribute("categories", categoryService.getAllCategories(0, 100, 1, true));
 
+        model.addAttribute("pageTitle", "Admin Dashboard | Create New Product");
+        model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order,report,products");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
+        model.addAttribute("user", user);
+
         return "admin/products/product_create_form";
     }
 
     @GetMapping("/admin/products/edit/{id}")
     public String showEditProductForm(@PathVariable Long id, Model model) {
+
         Product product = productService.getProductById(id).orElseThrow();
         System.out.println("product : " + product);
+
         model.addAttribute("product", product);
 	    model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
@@ -88,6 +107,14 @@ public class AdminProductController {
         model.addAttribute("pageTitle", "");
         model.addAttribute("categories", categoryService.getAllCategories(0, 100, 1, true));
         model.addAttribute("user", new User());
+
+        model.addAttribute("pageTitle", "Admin Dashboard | Product Edit " + product.getName());
+        model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order,report,products");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
 
         return "admin/products/product_edit_form";
     }
@@ -129,10 +156,13 @@ public class AdminProductController {
         model.addAttribute("topSoldProducts", productService.getBestSellingProducts(10));
         model.addAttribute("topUnsoldProducts", productService.getTopUnsoldProducts());
 
-	    model.addAttribute("pageDescription", "");
-        model.addAttribute("pageAuthor", "");
-        model.addAttribute("pageKeywords", "");
-        model.addAttribute("pageTitle", "");
+        model.addAttribute("pageTitle", "Admin Dashboard | View All Products");
+        model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
+        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageTags", "orders,order,report,products");
+        model.addAttribute("pageLink", "");
+        model.addAttribute("pageAltLink", "");
+        model.addAttribute("page", "");
 
         return "admin/products/product_home";
     }

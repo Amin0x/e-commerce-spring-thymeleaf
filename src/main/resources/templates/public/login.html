@@ -20,14 +20,14 @@
             <div class="login-container">
                 <p class="login__form-icon"><i class="fas fa-lock"></i></p>
                 <h2 class="login-title">مرحبا بعودتك</h2>
-                <form th:action="@{/login}" th:object="${loginForm}" method="post" id="loginForm">
+                <form id="loginForm" th:action="@{/auth/login}" method="post">
                     <div class="input-container">
                         <label for="username">اسم المتستخدم:</label>
-                        <input type="text" name="username" class="text-input" th:field="*{username}" id="username" placeholder="">
+                        <input type="text" name="username" class="text-input" id="username" placeholder="">
                     </div>
                     <div class="input-container">
                         <label for="password">كلمة المرور:</label>
-                        <input type="password" name="password" class="text-input" th:field="*{password}" id="password" placeholder="">
+                        <input type="password" name="password" class="text-input" id="password" placeholder="">
                     </div>
                     <button type="submit" class="button-31 w-100" id="submitButton">دخول</button>
                 </form>
@@ -50,99 +50,8 @@
 
     <script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
     <script th:src="@{/public/js/bootstrap.min.js}"></script>
+    <script src="../../static/public/js/main.js" th:src="@{/public/js/main.js}"></script>
 
-    <script>
-        const FormLogin = (function(){
-            function init(){
-                document.addEventListener("DOMContentLoaded", function(e) {
-                    const loginForm = document.getElementById("loginForm");
-                    if (loginForm) {
-                        loginForm.addEventListener("submit", function(e){
-                            e.preventDefault();
-                            const formData = new FormData(e.target);
-    
-                            fetch( "/auth/login", {
-                                method: "POST",
-                                body: formData,
-                            })
-                            .then(res => {(res.status == 200? res.json():Promise.reject(res.statusText))})
-                            .then(data => { 
-                                console.log(data);
-                                if (data.status === "success"){
-                                    window.location.href = data.redirectUrl;
-                                }else{
-                                    console.log(data.message);
-                                }
-                            })
-                            .catch((error)=>{ 
-                                console.log(error); 
-                                
-                            });
-                        });//end submit
-                    }
-
-                    const google = document.querySelector("google-button");
-                    if (google) {
-                        google.addEventListener("click", function(event){
-                            fetch( "auth/google/login", {
-                                method: "POST",
-                                body: formData,
-                            })
-                            .then(res => {
-                                if(res.status == 200){ 
-                                    return res.json();
-                                }
-                                Promise.reject(res.statusText);
-                            })
-                            .then(data => { 
-                                console.log(data);
-                                if (data.status === "success"){
-                                }
-                            })
-                            .catch((error)=>{ cosole.log(error) });
-                        });//click
-                    }
-
-                    const facebook = document.querySelector("facebook-button");
-                    if (facebook) {
-                        facebook.addEventListener("click", function(event){
-                            fetch( "/auth//facebook/login", {
-                                method: "POST",
-                                body: formData,
-                            })
-                            .then(res => {
-                                 if(res.ok){
-                                    return res.json();
-                                 } 
-                                 
-                                 Promise.reject(res.statusText)
-                            })
-                            .then(data => { 
-                                console.log(data);
-                                if (data.status === "success"){
-
-                                }
-                            })
-                            .catch((error) =>{ console.log(error) });
-                        });//click
-                    }
-
-                });//end loading
-            }
-
-            const loginForm = document.getElementById('loginForm');
-            if(loginForm){
-                init();
-            }
-
-            return {
-                init,
-            }
-        })();
-
-        //FormLogin.init();
-        
-    </script>
 </body>
 
 </html>

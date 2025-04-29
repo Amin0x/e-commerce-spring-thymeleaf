@@ -87,16 +87,15 @@
 }
 
 .charts-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2.5rem;
-
-  .revenue {
-    width: calc(50% - 1rem);
-  }
+      display: flex;
+      gap: 20px;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
 }
 
-
+.revenue {
+    flex: 1;
+}
 
 
 /* end admin home page */

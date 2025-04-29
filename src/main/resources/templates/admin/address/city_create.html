@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add City Form</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" th:content="${pageAuthor}" />
+    <meta name="description" th:content="${pageDescription}" />
+    <title th:text="${pageTitle}">Add City Form</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="../../../static/public/css/bootstrap.min.css" th:href="@{/public/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../static/css/admin/main.css" rel="stylesheet">
@@ -19,8 +22,6 @@
             display: inline-block;
         }
 
-        
-        
         .am-city-card {
             width: 300px;
             margin: 0 auto;

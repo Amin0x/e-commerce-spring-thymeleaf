@@ -3,62 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex,nofollow">
-    <title>Document</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" th:content="${pageAuthor}" />
+    <meta name="description" th:content="${pageDescription}" />
+    <title th:text="${pageTitle}">Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link th:href="@{/css/admin/main.css}" href="../../static/css/admin/main.css" rel="stylesheet">
+    <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
+<style>
+    .content-page-container {
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
 
+    .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+.table th, .table td {
+    padding: 10px;
+}
+
+.table-bordered {
+    border: 1px solid #ddd;
+}
+
+.table-bordered th, .table-bordered td {
+    border: 1px solid #ddd;
+}
+
+.table tr:hover {
+    background-color: #f5f5f5; /* Optional hover effect */
+}
+
+.table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+</style>
 </head>
 <body>
-    <div class="wrapper">
-        <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-        <div class="content">
-            <h2>Orders List</h2>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Customer Name</th>
-                        <th>Order Date</th>
-                        <th>Status</th>
-                        <th>Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="order : ${orders}">
-                        <td th:text="${order.orderId}"></td>
-                        <td><a href="@{/admin/customers/}+${order.customer?.customerId}"  th:text="${'order.customer?.name'}"></a></td>
-                        <td th:text="${order.orderDate}"></td>
-                        <td th:text="${order.status}"></td>
-                        <td th:text="${order.totalAmount}"></td>
-                        <td>
-                            <a th:href="@{/admin/orders/{id}(id=${order.orderId})}" class="btn btn-danger btn-sm">Details</a>
-                            <a th:href="@{/admin/orders/delete/{id}(id=${order.orderId})}" class="btn btn-danger btn-sm">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-center">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li class="page-item" th:classappend="${pageNumber == 1} ? 'disabled'">
-                            <a class="page-link" th:href="@{/admin/orders/list(page=${pageNumber - 1})}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == pageNumber} ? 'active'">
-                            <a class="page-link" th:href="@{/admin/orders/list(page=${i})}" th:text="${i}">1</a>
-                        </li>
-                        <li class="page-item" th:classappend="${pageNumber == totalPages} ? 'disabled'">
-                            <a class="page-link" th:href="@{/admin/orders/list(page=${pageNumber + 1})}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+    <div class="page-wrapper">
+        <div class="wrapper">
+            <aside th:replace="~{admin/fragments/navigation :: navigation}"></aside>
+            <main class="content">
+                <div class="content-page-container order-list-page">
+                    <h2 class="title page-title">Orders List</h2>
+                    <div class="shortcut-container">
+                        <a th:href="@{/admin/orders/list}" class="shortcut">View All Orders</a>
+                        <a th:href="@{/admin/orders/new}" class="shortcut">Create New Order</a>
+                        <a th:href="@{/admin/orders/pending}" class="shortcut">Pending Orders</a>
+                        <a th:href="@{/admin/orders/completed}" class="shortcut">Completed Orders</a>
+                        <a th:href="@{/admin/orders/reports}" class="shortcut">Order Reports</a>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer Name</th>
+                                <th>Order Date</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="order : ${orders}">
+                                <td th:text="${order.id}"></td>
+                                <td>
+                                    <a th:href="@{/admin/customers/{id}(id=${order.customer?.id})}" th:text="|${order.customer?.firstName} ${order.customer?.lastName}|"></a>
+                                </td>
+                                <td th:text="${order.orderDate}"></td>
+                                <td th:text="${order.status}"></td>
+                                <td th:text="${order.totalAmount}"></td>
+                                <td>
+                                    <a th:href="@{/admin/orders/{id}(id=${order.id})}" class="btn btn-danger btn-sm">Details</a>
+                                    <a th:href="@{/admin/orders/delete/{id}(id=${order.id})}" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-center">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item" th:classappend="${pageNumber == 1} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/orders/list(page=${pageNumber - 1})}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == pageNumber} ? 'active'">
+                                    <a class="page-link" th:href="@{/admin/orders/list(page=${i})}" th:text="${i}">1</a>
+                                </li>
+                                <li class="page-item" th:classappend="${pageNumber == totalPages} ? 'disabled'">
+                                    <a class="page-link" th:href="@{/admin/orders/list(page=${pageNumber + 1})}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 </body>

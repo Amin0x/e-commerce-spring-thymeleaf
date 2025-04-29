@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../../../static/admin/main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .search-input{
+            
+        }
+        .search-button{
+           
+        }
+    </style>
 </head>
 <body>
     <header th:fragment="header">
@@ -15,22 +24,45 @@
                 </div>
                 <div class="menu d-flex">
                     <div class="menu-item" style="position: relative;"><a href="/admin" style="display: inline-block; padding: 8px 12px;">Home</a></div>
-                
                 </div>
             </div>
-            <div class="search">
-
+            <div class="search-container">
+                <form action="/admin/search" method="get">
+                    <div class="search">
+                        <i class="bi bi-search" style="position: absolute; left: 10px; color: #999;"></i>
+                        <input type="text" name="search" placeholder="Search..." class="search-input">
+                        <button type="submit" class="search-button"><i class="bi bi-search"></i>a</button>
+                    </div>
+                </form>
             </div>
             <div class="notification-wrap">
                 <div class="notification">
-                    <img th:src="@{/public/imgs/notification.png}" src="../../../static/public/imgs/notification.png" alt="Notification" class="notification-img">
-                    <span>5</span>
+                    <a href="#">
+                        <div class="notification-image">
+                            <img th:src="@{/public/imgs/notification.png}" src="../../../static/public/imgs/notification.png" alt="Notification" class="notification-img">
+                            <span>5</span>
+                        </div>
+                    </a>
+                    <div class="notification-dropdown">
+                        <div class="notification-body">
+                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 1</div>
+                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 2</div>
+                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 3</div>
+                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 4</div>
+                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 5</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="user-info">
-                    <span th:text="${user.username}">amin</span>
-                    <a href="#">
-                        <img th:src="@{/public/imgs/user-avatar.png}" src="../../../static/public/imgs/user-avatar.png" alt="User Avatar" class="user-avatar">
-                    </a>
+                    <div th:if="${user}" class="user-dropdown">
+                        <span th:text="${user?.firstName}">amin</span>
+                        <a href="#" class="user-avatar">
+                            <img th:src="@{/public/imgs/user-avatar.png}" src="../../../static/public/imgs/user-avatar.png" alt="User Avatar" class="user-avatar">
+                        </a>
+                        <div class="user-dropdown-menu">
+                            <a href="/logout" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

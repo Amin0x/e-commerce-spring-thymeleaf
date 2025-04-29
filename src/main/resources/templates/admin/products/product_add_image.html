@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex,nofollow">
-    <title>Product Image Upload</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" th:content="${pageAuthor}" />
+    <meta name="description" th:content="${pageDescription}" />
+    <title th:text="${pageTitle}">Product Image Upload</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,22 +22,26 @@
 </head>
 
 <body>
-    <div class="wrapper">
+    <div class="page-wrapper">        
         <div class="wrapper">
-            <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-            <main class="content">
-                <div class="product-upload-img">
-                    <h2>Upload Product Image</h2>
-                    <form id="uploadForm" enctype="multipart/form-data">
-                        <div id="dropZone">Drag and drop your image here</div>
-                        <input type="file" id="fileInput" name="file" style="display: none;" required>
-                        <button type="submit" style="margin-top: 20px;">Upload</button>
-                    </form>
-                    <div id="response"></div>
-                </div>
-            </main>
+            <div class="wrapper">
+                <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
+                <main class="content">
+                    <header th:replace="~{admin/fragments/header :: header}"></header>
+                    <div class="content-page-container product-upload-img">
+                        <h2>Upload Product Image</h2>
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <div id="dropZone">Drag and drop your image here</div>
+                            <input type="file" id="fileInput" name="file" style="display: none;" required>
+                            <button type="submit" style="margin-top: 20px;">Upload</button>
+                        </form>
+                        <div id="response"></div>
+                    </div>
+                    <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+                </main>
+            </div>
+        
         </div>
-        <footer th:replace="~{admin/fragments/footer::footer}"></footer>
     </div>
     <script>
         var dropZone = document.getElementById('dropZone');

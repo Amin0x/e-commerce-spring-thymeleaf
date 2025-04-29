@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex,nofollow">
-    <title>Card Layout</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" th:content="${pageAuthor}" />
+    <meta name="description" th:content="${pageDescription}" />
+    <title th:text="${pageTitle}">Card Layout</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
           rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -48,10 +50,11 @@
     </style>
 </head>
 <body>
+<div class="page-wrapper">
 <div class="wrapper">
     <aside th:replace="~{admin/fragments/navigation :: navigation}"></aside>
     <main class="content">
-        <div class="px-3 my-4 h-100">
+        <div class="content-page-container px-3 my-4 h-100">
             <div class="card-box-group">
                 <div class="card-box"><a href="/admin/users/create"><i class="bi bi-person"></i> Create User</a></div>
                 <div class="card-box"><a href="/admin/products/create"><i class="bi bi-box-seam"></i> Create Product</a>
@@ -73,6 +76,7 @@
             </div>
         </div>
     </main>
+</div>
 </div>
 <footer></footer>
 </body>

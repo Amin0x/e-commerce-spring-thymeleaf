@@ -3,67 +3,58 @@ package com.alamin.ecommerce.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     
-    // Security configuration goes here
-    // This is a placeholder for the actual security configuration code.
-    // You can use Spring Security to configure authentication and authorization.
-    
-    // Example: configuring HTTP security, authentication manager, etc.
+    public SecurityConfig() {
 
-    private final CustomUserDetailsService userDetailsService;
-    
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
     }
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> {
-            auth
-                .requestMatchers("/api/public/**").permitAll()
+        http.csrf(Customizer.withDefaults())
+            .rememberMe(Customizer.withDefaults())
+            .authorizeHttpRequests(auth -> {
+                auth.requestMatchers("/api/public/**").permitAll()
                 .requestMatchers("/api/private/**").authenticated()
-                .requestMatchers("/admin/**","/api/admin").hasAuthority("ADMIN")
+                .requestMatchers("/**").permitAll()
+                .requestMatchers("/admin/**","/api/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/user/**").hasAuthority("USER")
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/**").permitAll()
                 .anyRequest().authenticated();
-        })
-        .csrf(Customizer.withDefaults())
-        .formLogin((form)-> {
-             form.loginPage("/auth/login").permitAll()
-             /* .loginProcessingUrl("/auth/login") */
-             /*.usernameParameter("username")
-             .passwordParameter("password")*/;
-        });
+            })
+        .formLogin(Customizer.withDefaults());
+
         
         return http.build();
     }
     
-
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Replace with your preferred password encoder
+    protected PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     // defining a custom authentication manager
     @Bean
-    public AuthenticationManager authenticationManager() {
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
 
         ProviderManager providerManager = new ProviderManager(authenticationProvider);
         providerManager.setEraseCredentialsAfterAuthentication(false);
@@ -71,28 +62,15 @@ public class SecurityConfig {
         return providerManager;
     }
 
-
-
-    // Example: defining a custom authentication provider
-    // @Bean
-    // public AuthenticationProvider authenticationProvider() {
-    //     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    //     provider.setUserDetailsService(userDetailsService());
-    //     provider.setPasswordEncoder(new BCryptPasswordEncoder());
-    //     return provider;
-    // }
     // Example: defining a custom user details service
 
     // Example: defining a custom authentication filter
-    // @Bean
-    // public AuthenticationFilter authenticationFilter() {
-    //     return new CustomAuthenticationFilter(); // Replace with your custom implementation
-    // }
-    // Example: defining a custom authentication entry point
-    // @Bean
-    // public AuthenticationEntryPoint authenticationEntryPoint() {
-    //     return new CustomAuthenticationEntryPoint(); // Replace with your custom implementation
-    // }
+//     @Bean
+//     public AuthenticationFilter authenticationFilter() {
+//         return new  // Replace with your custom implementation
+//     }
+
+
     // Example: defining a custom access denied handler
     // @Bean
     // public AccessDeniedHandler accessDeniedHandler() {
@@ -155,7 +133,6 @@ public class SecurityConfig {
     // public SecurityContextRepository securityContextRepository() {
     //     return new CustomSecurityContextRepository(); // Replace with your custom implementation
     // }
-
 
 
 }

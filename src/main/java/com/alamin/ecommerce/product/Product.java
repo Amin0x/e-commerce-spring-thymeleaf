@@ -15,42 +15,67 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true, nullable = false)
     private String uuid;
+
     @Column(unique = true, nullable = false)
     private String slug;
+
     @Column(unique = true, nullable = false)
     private String barcode;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Brand brand;
+
     private String model;
+
     private String color;
+
     private String size;
+
     private String material;
+
     private String style;
+
     @Column(nullable = false)
     private String name;
+
+    private String tags;
+
     @Column(nullable = false)
     private String description;
+
     @Column(nullable = false)
     private Integer price;
+
     private Integer basePrice;
+
     private Integer priceUSD;
+
     @Column(nullable = false)
     private String sku;
+
     private Integer stock;
+
     @Column(nullable = false)
     private Integer totalSold;
+
     @Column(nullable = false)
     private Integer viewCount;
+
     private Boolean active;
+
     private Boolean enabled;
+
     private String image;
+
     @Column(nullable = false)
     private LocalDateTime created;
+
     @Column(nullable = false)
     private LocalDateTime updated;
+
     private LocalDateTime deleted;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${pageTitle}">Title</title>
     <style>
             body {
                 font-family: Arial, sans-serif;
@@ -56,47 +56,51 @@
         </style>
 </head>
 <body>
-    <main>
-        <header>
-            <h1>Payment Settings</h1>
-            <nav>
-                <a href="/admin/settings/general" style="color: white; margin-right: 20px;">General Settings</a>
-                <a href="/admin/settings/payment" style="color: white;">Payment Settings</a>
-            </nav>
-        </header>
-        <form action="/admin/settings/payment" method="post" class="settings-form">
-            <div class="form-group">
-                <label for="paymentGateway" class="form-label">Payment Gateway:</label>
-                <select id="paymentGateway" name="paymentGateway" required class="form-input">
-                    <option value="paypal">PayPal</option>
-                    <option value="stripe">Stripe</option>
-                    <option value="square">Square</option>
-                    <!-- Add more gateways as needed -->
-                </select>
+    <div class="wrapper">
+        <main class="content">
+            <div class="content-page-container payment-settings-container">
+                <header>
+                    <h1>Payment Settings</h1>
+                    <nav>
+                        <a href="/admin/settings/general" style="color: white; margin-right: 20px;">General Settings</a>
+                        <a href="/admin/settings/payment" style="color: white;">Payment Settings</a>
+                    </nav>
+                </header>
+                <form action="/admin/settings/payment" method="post" class="settings-form">
+                    <div class="form-group">
+                        <label for="paymentGateway" class="form-label">Payment Gateway:</label>
+                        <select id="paymentGateway" name="paymentGateway" required class="form-input">
+                            <option value="paypal">PayPal</option>
+                            <option value="stripe">Stripe</option>
+                            <option value="square">Square</option>
+                            <!-- Add more gateways as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="apiKey" class="form-label">API Key:</label>
+                        <input type="text" id="apiKey" name="apiKey" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="apiSecret" class="form-label">API Secret:</label>
+                        <input type="text" id="apiSecret" name="apiSecret" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="currency" class="form-label">Currency:</label>
+                        <input type="text" id="currency" name="currency" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="testMode" class="form-label">Test Mode:</label>
+                        <select id="testMode" name="testMode" required class="form-input">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="form-button">Save Payment Settings</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="apiKey" class="form-label">API Key:</label>
-                <input type="text" id="apiKey" name="apiKey" required class="form-input">
-            </div>
-            <div class="form-group">
-                <label for="apiSecret" class="form-label">API Secret:</label>
-                <input type="text" id="apiSecret" name="apiSecret" required class="form-input">
-            </div>
-            <div class="form-group">
-                <label for="currency" class="form-label">Currency:</label>
-                <input type="text" id="currency" name="currency" required class="form-input">
-            </div>
-            <div class="form-group">
-                <label for="testMode" class="form-label">Test Mode:</label>
-                <select id="testMode" name="testMode" required class="form-input">
-                    <option value="true">Enabled</option>
-                    <option value="false">Disabled</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="form-button">Save Payment Settings</button>
-            </div>
-        </form>
-    </main>
+        </main>
+    </div>
 </body>
 </html>

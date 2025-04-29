@@ -110,3 +110,15 @@
 }
 
 /* end create user form page */
+.edit-form{
+  max-width: 500px;
+  margin-top: 59px;
+  margin-inline: auto;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  .title{
+    font-size: 1.5rem;
+  }
+}

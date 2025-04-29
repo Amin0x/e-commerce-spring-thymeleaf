@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex,nofollow">
-    <title>Admin - Products</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" th:content="${pageAuthor}" />
+    <meta name="description" th:content="${pageDescription}" />
+    <title th:text="${pageTitle}">Admin - Products</title>
     <link th:href="@{/public/css/bootstrap-5.3.3/dist/css/bootstrap.css}" href="../../../static/public/css/bootstrap-5.3.3/dist/css/bootstrap.css" rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -16,11 +18,11 @@
     <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
     <main class="content">
         <header th:replace="~{admin/fragments/header :: header}"></header>
-        <div class="product-home px-3">
+        <div class="content-page-container product-home px-3">
             <h1 class="page-title my-4">Dashboard - Products</h1>
             <div class="links">
-                <a class="" href="products_list.html" th:href="@{/admin/products/all}">All products</a>
-                <a class="" href="products_create_form.html" th:href="@{/admin/products/create}">Create product</a>
+                <a class="" href="#" th:href="@{/admin/products/all}">All products</a>
+                <a class="" href="#" th:href="@{/admin/products/create}">Create product</a>
             </div>
             <div class="counter-container">
                 <article class="counter">
@@ -40,7 +42,6 @@
                     <p th:text="${totalRevenue}">0</p>
                 </article>
             </div>
-
             <div class="charts-wrp box-round">                
                 <div class="market-chart">
                     <header class="box-header with-small-txt">

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${pageTitle}">Title</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -81,42 +81,48 @@
     </style>
 </head>
 <body>
-<main>
-    <header>
-        <h1>Social Settings</h1>
-        <nav>
-            <a href="/admin/settings/general" style="margin-right: 20px;">General Settings</a>
-            <a href="/admin/settings/payment" style="margin-right: 20px;">Payment Settings</a>
-            <a href="/admin/settings/shipping" style="margin-right: 20px;">Shipping Settings</a>
-            <a href="/admin/settings/seo" style="margin-right: 20px;">SEO Settings</a>
-            <a href="/admin/settings/social">Social Settings</a>
-        </nav>
-    </header>
-    <form action="/admin/settings/social" method="post" class="settings-form">
-        <div class="form-group">
-            <label for="facebookUrl" class="form-label">Facebook URL:</label>
-            <input type="url" id="facebookUrl" name="facebookUrl" class="form-input">
-        </div>
-        <div class="form-group">
-            <label for="twitterUrl" class="form-label">Twitter URL:</label>
-            <input type="url" id="twitterUrl" name="twitterUrl" class="form-input">
-        </div>
-        <div class="form-group">
-            <label for="instagramUrl" class="form-label">Instagram URL:</label>
-            <input type="url" id="instagramUrl" name="instagramUrl" class="form-input">
-        </div>
-        <div class="form-group">
-            <label for="linkedinUrl" class="form-label">LinkedIn URL:</label>
-            <input type="url" id="linkedinUrl" name="linkedinUrl" class="form-input">
-        </div>
-        <div class="form-group">
-            <label for="youtubeUrl" class="form-label">YouTube URL:</label>
-            <input type="url" id="youtubeUrl" name="youtubeUrl" class="form-input">
-        </div>
-        <div class="form-group">
-            <button type="submit" class="form-button">Save Social Settings</button>
-        </div>
-    </form>
-</main>
+<div class="page-wrapper">
+    <div class="wrapper">
+        <main class="content">
+            <div class="content-page-container">
+                <header>
+                    <h1>Social Settings</h1>
+                    <nav>
+                        <a href="/admin/settings/general" style="margin-right: 20px;">General Settings</a>
+                        <a href="/admin/settings/payment" style="margin-right: 20px;">Payment Settings</a>
+                        <a href="/admin/settings/shipping" style="margin-right: 20px;">Shipping Settings</a>
+                        <a href="/admin/settings/seo" style="margin-right: 20px;">SEO Settings</a>
+                        <a href="/admin/settings/social">Social Settings</a>
+                    </nav>
+                </header>
+                <form action="/admin/settings/social" method="post" class="settings-form">
+                    <div class="form-group">
+                        <label for="facebookUrl" class="form-label">Facebook URL:</label>
+                        <input type="url" id="facebookUrl" name="facebookUrl" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="twitterUrl" class="form-label">Twitter URL:</label>
+                        <input type="url" id="twitterUrl" name="twitterUrl" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="instagramUrl" class="form-label">Instagram URL:</label>
+                        <input type="url" id="instagramUrl" name="instagramUrl" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="linkedinUrl" class="form-label">LinkedIn URL:</label>
+                        <input type="url" id="linkedinUrl" name="linkedinUrl" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="youtubeUrl" class="form-label">YouTube URL:</label>
+                        <input type="url" id="youtubeUrl" name="youtubeUrl" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="form-button">Save Social Settings</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
 </body>
 </html>
