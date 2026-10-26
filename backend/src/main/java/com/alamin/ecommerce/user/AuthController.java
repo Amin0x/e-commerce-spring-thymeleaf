@@ -1,124 +1,128 @@
 package com.alamin.ecommerce.user;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.http.HttpStatus;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
 
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-@Controller
+/**
+ * Stateless REST authentication controller for the backend API.
+ *
+ * Endpoints:
+ *   POST /api/auth/login     - authenticate credentials, issue a JWT
+ *   POST /api/auth/register  - create a new USER account
+ *   POST /api/auth/logout    - stateless no-op (client drops the token)
+ *   GET  /api/auth/me        - return the currently authenticated user
+ *
+ * Identity always comes from the verified JWT via the security context
+ * (populated by {@link com.alamin.ecommerce.config.JwtAuthenticationFilter}),
+ * never from a caller-supplied string — closing the IDOR vector flagged for
+ * {@code CartServiceImpl}.
+ */
+@RestController
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
 @Slf4j
 public class AuthController {
 
-    private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserService userService , AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-        this.userService = userService;
+    /** Authenticate username/password and issue a JWT. */
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        var userOpt = userService.getUserByName(request.getUsername());
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        var user = userOpt.get();
+        String token = jwtService.generateToken(user);
+
+        AuthResponse response = new AuthResponse(
+                token,
+                user.getUsername(),
+                user.getRole(),
+                user.getUuid(),
+                "Login successful");
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/auth/login")
-    public String showLoginForm(@RequestParam(required = false) String url, Model model) {
-
-        model.addAttribute("loginForm", new LoginForm());
-        model.addAttribute("pageDescription", "");
-        model.addAttribute("pageAuthor", "");
-        model.addAttribute("pageKeywords", "");
-        model.addAttribute("pageTitle", "تسجيل الدخول");
-        return "public/login";
-    }
-
-    @PostMapping("/auth/login")
-    public String processLogin(@RequestParam(required = false) String url, @Valid LoginForm loginForm,
-                               BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-        System.out.println("processLogin: " + loginForm);
-        System.out.println("----------------------------------------");
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errorMessage", "Invalid username or password");
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "public/login";
+    /** Register a new user (defaults to USER role). */
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
+        if (userRepository.getUserByUsername(request.getUsername()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Username already taken: " + request.getUsername());
+        }
+        if (request.getEmail() != null && userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Email already taken: " + request.getEmail());
         }
 
-        try {
-            authenticateUser(loginForm.getUsername(), loginForm.getPassword());
-            if (StringUtils.hasText(url)) {
-                return "redirect:" + url;
-            } else {
-                return "redirect:/";
-            }
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", "Invalid username or password");
-            return "public/login";
+        String role = request.getRole() == null || request.getRole().isBlank() ? "USER" : request.getRole();
+
+        var user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(role);
+        user.setEmail(request.getEmail());
+        user.setEnabled(true);
+        user.setStatus("NOT_VERIFIED");
+        user.setUuid(java.util.UUID.randomUUID().toString().replace("-", ""));
+        user.setCreated(LocalDateTime.now());
+        user.setUpdated(LocalDateTime.now());
+
+        userService.createUser(user);
+
+        String token = jwtService.generateToken(user);
+        AuthResponse response = new AuthResponse(
+                token,
+                user.getUsername(),
+                user.getRole(),
+                user.getUuid(),
+                "Registration successful");
+        return ResponseEntity.ok(response);
+    }
+
+    /** Stateless logout: the client simply discards the JWT. Returned for API symmetry. */
+    @PostMapping("/logout")
+    public ResponseEntity<AuthResponse> logout() {
+        SecurityContextHolder.clearContext();
+        AuthResponse response = new AuthResponse(null, null, null, null, "Logged out");
+        return ResponseEntity.ok(response);
+    }
+
+    /** Return the currently authenticated user's profile. */
+    @GetMapping("/me")
+    public ResponseEntity<AuthResponse> me() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).build();
         }
-        
-    }
-
-    @GetMapping("/auth/register")
-    public String showSignupForm(Model model) {
-        model.addAttribute("signupForm", new SignupForm());
-        return "public/signup";
-    }
-
-    @PostMapping("/auth/register")
-    public ResponseEntity<Map<String,Object>> registerUser(@Valid @RequestBody SignupForm signupForm, BindingResult bindResult) {
-        log.info("registerUser: {}", signupForm);
-        Map<String,Object> body = new HashMap<>();
-       
-        if (bindResult.hasErrors()) {
-            //bindResult.addError(new ObjectError("error", "Invalid input"));
-
-            body.put("status", "failed");
-            body.put("message", "Invalid input");
-            body.put("errors", bindResult.getAllErrors());
-            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        var userOpt = userService.getUserByName(authentication.getName());
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.NOT_FOUND).build();
         }
-
-        try {
-            userService.createUser(signupForm);
-            body.put("status", "success");
-            body.put("message", "User created successfully");
-            body.put("url", "/auth/confirmation");
-            return new ResponseEntity<>(body, HttpStatus.OK);
-        } catch (Exception e) {
-
-           body.put("status", "failed");
-           body.put("message", "Error creating user");
-           return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-        }
-        
+        var user = userOpt.get();
+        AuthResponse response = new AuthResponse(
+                null,
+                user.getUsername(),
+                user.getRole(),
+                user.getUuid(),
+                "Authenticated");
+        return ResponseEntity.ok(response);
     }
-
-    @GetMapping("/auth/confirmation")
-    public String showConfirmationPage(Model model) {
-
-        model.addAttribute("pageDescription", "");
-        model.addAttribute("pageAuthor", "");
-        model.addAttribute("pageKeywords", "");
-        model.addAttribute("pageTitle", "تأكيد الحساب");
-
-        return "public/confirmEmail";
-    }
-
-    public void authenticateUser(String username, String password) {
-        UsernamePasswordAuthenticationToken unauthenticated = UsernamePasswordAuthenticationToken.unauthenticated(username, password);
-        Authentication authenticate = authenticationManager.authenticate(unauthenticated);
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-        log.info("User authenticated successfully: {}", username);
-    }
-} 
+}
