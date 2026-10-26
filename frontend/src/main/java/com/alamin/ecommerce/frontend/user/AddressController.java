@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.user;
+package com.alamin.ecommerce.frontend.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

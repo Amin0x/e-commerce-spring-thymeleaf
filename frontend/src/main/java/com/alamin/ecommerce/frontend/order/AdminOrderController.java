@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.order;
+package com.alamin.ecommerce.frontend.order;
 
 import com.alamin.ecommerce.user.User;
 import org.springframework.data.domain.Page;

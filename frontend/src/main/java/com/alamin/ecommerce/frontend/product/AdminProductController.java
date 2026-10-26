@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.product;
+package com.alamin.ecommerce.frontend.product;
 
 import com.alamin.ecommerce.category.CategoryService;
 import com.alamin.ecommerce.user.User;

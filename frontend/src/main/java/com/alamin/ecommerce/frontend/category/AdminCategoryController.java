@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.category;
+package com.alamin.ecommerce.frontend.category;
 
 import com.alamin.ecommerce.exception.ResourceAlreadyExistsException;
 import com.alamin.ecommerce.user.User;

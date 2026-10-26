@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.settings;
+package com.alamin.ecommerce.frontend.settings;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

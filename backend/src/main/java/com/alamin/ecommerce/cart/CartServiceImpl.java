@@ -10,6 +10,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Stateless cart service. Identities are resolved at the REST-controller boundary
+ * (Tasks 16-22): {@code username} is derived from the authenticated JWT principal
+ * ({@code Authentication.getName()} / {@code sub} claim) and {@code cartKey} is an
+ * opaque server-issued key — never trusted raw caller input, which would be an
+ * IDOR / identity-spoofing vector. The service performs no trust boundary itself;
+ * controllers must validate ownership before delegating.
+ */
 @Service
 public class CartServiceImpl implements CartService {
 

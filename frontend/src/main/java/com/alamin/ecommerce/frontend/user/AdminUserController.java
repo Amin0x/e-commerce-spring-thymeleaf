@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.user;
+package com.alamin.ecommerce.frontend.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

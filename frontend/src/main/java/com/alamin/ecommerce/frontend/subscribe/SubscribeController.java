@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.subscribe;
+package com.alamin.ecommerce.frontend.subscribe;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.checkout;
+package com.alamin.ecommerce.frontend.checkout;
 
 import com.alamin.ecommerce.order.*;
 import org.springframework.beans.factory.annotation.Autowired;

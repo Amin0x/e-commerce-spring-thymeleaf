@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.home;
+package com.alamin.ecommerce.frontend.home;
 
 import com.alamin.ecommerce.product.*;
 import org.springframework.stereotype.Controller;

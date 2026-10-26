@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.home;
+package com.alamin.ecommerce.frontend.home;
 
 import com.alamin.ecommerce.order.OrderService;
 import com.alamin.ecommerce.user.User;

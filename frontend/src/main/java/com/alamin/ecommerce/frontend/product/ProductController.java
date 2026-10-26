@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.product;
+package com.alamin.ecommerce.frontend.product;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;

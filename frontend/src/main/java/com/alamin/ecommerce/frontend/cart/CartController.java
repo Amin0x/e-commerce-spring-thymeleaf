@@ -1,4 +1,4 @@
-package com.alamin.ecommerce.cart;
+package com.alamin.ecommerce.frontend.cart;
 
 import com.alamin.ecommerce.product.Product;
 import com.alamin.ecommerce.product.ProductService;
