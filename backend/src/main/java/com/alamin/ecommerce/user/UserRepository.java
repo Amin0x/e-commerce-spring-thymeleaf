@@ -30,6 +30,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.uuid = :uuid")
     Optional<User> getUserByUuid(@Param("uuid") String uuid);
 
+    Optional<User> findByEmail(String email);
+
     @Query(value = "SELECT YEAR(created) FROM tbl_users GROUP BY YEAR(created) ORDER BY YEAR(created) DESC Limit 10", nativeQuery = true)
     List<Integer> getUsersRegistrationLabelsYear();
 

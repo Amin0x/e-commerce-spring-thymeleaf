@@ -11,6 +11,8 @@ public interface CartService {
 
     Cart getCartBySession(String cartKey);
 
+    Cart resolveOrCreateCart(String cartKey, String username);
+
     Cart saveCart(Cart cart);
 
     void deleteCart(Long id);

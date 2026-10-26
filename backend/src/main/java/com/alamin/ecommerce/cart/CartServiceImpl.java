@@ -168,7 +168,8 @@ public class CartServiceImpl implements CartService {
         return saveCart(cart);
     }
 
-    private Cart resolveOrCreateCart(String cartKey, String username) {
+    @Override
+    public Cart resolveOrCreateCart(String cartKey, String username) {
         Cart cart;
         if (username != null && !username.isEmpty()) {
             cart = cartRepository.findByUserId(username);
