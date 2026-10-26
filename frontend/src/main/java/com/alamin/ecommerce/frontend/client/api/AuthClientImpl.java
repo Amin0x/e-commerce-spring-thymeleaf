@@ -39,7 +39,7 @@ public class AuthClientImpl implements AuthClient {
                 backendBaseUrl + "/api/auth/login", body, AuthResponse.class);
         AuthResponse authResponse = response.getBody();
         if (authResponse != null && authResponse.getToken() != null) {
-            storeTokenInSession(authResponse.getToken());
+            storeAuthInSession(authResponse.getToken(), authResponse.getRole(), authResponse.getUsername());
         }
         return authResponse;
     }
@@ -51,7 +51,7 @@ public class AuthClientImpl implements AuthClient {
                 backendBaseUrl + "/api/auth/register", body, AuthResponse.class);
         AuthResponse authResponse = response.getBody();
         if (authResponse != null && authResponse.getToken() != null) {
-            storeTokenInSession(authResponse.getToken());
+            storeAuthInSession(authResponse.getToken(), authResponse.getRole(), authResponse.getUsername());
         }
         return authResponse;
     }
@@ -63,21 +63,25 @@ public class AuthClientImpl implements AuthClient {
 
     @Override
     public void logout() {
-        clearTokenFromSession();
+        clearAuthFromSession();
         restTemplate.postForObject(backendBaseUrl + "/api/auth/logout", null, AuthResponse.class);
     }
 
-    private void storeTokenInSession(String token) {
+    void storeAuthInSession(String token, String role, String username) {
         HttpSession session = currentSession(true);
         if (session != null) {
             session.setAttribute("jwtToken", token);
+            session.setAttribute("authRole", role);
+            session.setAttribute("authUsername", username);
         }
     }
 
-    private void clearTokenFromSession() {
+    private void clearAuthFromSession() {
         HttpSession session = currentSession(false);
         if (session != null) {
             session.removeAttribute("jwtToken");
+            session.removeAttribute("authRole");
+            session.removeAttribute("authUsername");
         }
     }
 

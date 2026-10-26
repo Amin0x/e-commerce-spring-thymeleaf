@@ -1,5 +1,8 @@
 package com.alamin.ecommerce.user;
 
+import com.alamin.ecommerce.config.JwtService;
+import com.alamin.ecommerce.exception.ResourceAlreadyExistsException;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,6 +78,9 @@ public class AuthController {
         // Self-registration is always USER. Role assignment for others is an
         // admin-only operation (handled by AdminUserController), never a
         // client-controlled field here — prevents privilege escalation.
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole("USER");
         user.setEmail(request.getEmail());
         user.setEnabled(true);

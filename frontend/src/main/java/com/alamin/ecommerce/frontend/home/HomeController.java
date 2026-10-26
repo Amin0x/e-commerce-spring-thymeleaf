@@ -1,46 +1,50 @@
 package com.alamin.ecommerce.frontend.home;
 
-import com.alamin.ecommerce.product.*;
+import com.alamin.ecommerce.frontend.client.api.CategoryClient;
+import com.alamin.ecommerce.frontend.client.api.ProductClient;
+import com.alamin.ecommerce.frontend.dto.CategoryDto;
+import com.alamin.ecommerce.frontend.dto.ProductDto;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import com.alamin.ecommerce.category.Category;
-import com.alamin.ecommerce.category.CategoryService;
-
-
+/**
+ * Public home page. All data now comes from the backend REST API through the
+ * client layer instead of backend services directly.
+ */
 @Controller
 public class HomeController {
 
-    private final CategoryService categoryService;
-    private final ProductService productService;
+    private final ProductClient productClient;
+    private final CategoryClient categoryClient;
 
-    public HomeController(CategoryService categoryService, ProductService productService) {
-        this.categoryService = categoryService;
-        this.productService = productService;
+    public HomeController(ProductClient productClient, CategoryClient categoryClient) {
+        this.productClient = productClient;
+        this.categoryClient = categoryClient;
     }
 
     @GetMapping("/") // Handles requests to the root URL ("/")
     public String home(Model model) {
-        // Fetch the top categories from the database
-        // If no top categories are found, fetch all active categories
-        List<Category> topCategories = categoryService.getTopCategories();
-        if (topCategories.isEmpty() || topCategories.size() < 12) {
-            topCategories = categoryService.getCategoriesByActive(true);
-        } 
+        // Top categories: fall back to all active when fewer than 12.
+        List<CategoryDto> topCategories = categoryClient.top();
+        if (topCategories == null || topCategories.isEmpty() || topCategories.size() < 12) {
+            topCategories = categoryClient.active(true);
+        }
+        if (topCategories != null && topCategories.size() > 12) {
+            topCategories = topCategories.subList(0, 12);
+        }
 
-        if (topCategories.size() > 12) {
-            topCategories = topCategories.subList(0, 12); // Limit to 12 categories
-        } 
-        
+        List<ProductDto> products = productClient.random(12);
+        List<ProductDto> newProducts = productClient.newArrivals(12);
+        List<ProductDto> mustSellingProducts = productClient.bestSelling(12);
+
         model.addAttribute("categories", topCategories);
-        model.addAttribute("products", getProducts());
-        model.addAttribute("newProducts", getNewArrivalProducts(12));
-        model.addAttribute("mustSellingProducts", productService.getBestSellingProducts(12));
-        model.addAttribute("categoryList", categoryService.getRandomCategories());
+        model.addAttribute("products", products);
+        model.addAttribute("newProducts", newProducts != null ? newProducts : List.of());
+        model.addAttribute("mustSellingProducts", mustSellingProducts != null ? mustSellingProducts : List.of());
+        model.addAttribute("categoryList", topCategories);
         model.addAttribute("notification", "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, natus. Nesciunt tempore nobis id hic. Nobis quaerat qui quibusdam repellendus!");
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
@@ -50,7 +54,6 @@ public class HomeController {
         return "public/home";
     }
 
-    
     @GetMapping("/offers")
     public String offersPage(Model model){
         model.addAttribute("notification", "");
@@ -78,7 +81,7 @@ public class HomeController {
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "الاسئلة الشائعة");
-        return "public/faq"; // Resolves to about.html in templates
+        return "public/faq";
     }
 
     @GetMapping("/privacy")
@@ -88,7 +91,7 @@ public class HomeController {
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "الاسئلة الشائعة");
-        return "public/privacy"; // Resolves to about.html in templates
+        return "public/privacy";
     }
 
     @GetMapping("/return-policy")
@@ -98,31 +101,6 @@ public class HomeController {
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "ألأسئلة الشائعة");
-        return "public/return_policy"; // Resolves to about.html in templates
+        return "public/return_policy";
     }
-
-    private List<Product> getNewArrivalProducts(int i){
-
-        return productService.getLastAddedProductsRandom(i);
-    }
-
-    private List<ProductDto> getProducts(){
-
-        List<Product> products = productService.getRandomProducts(12);
-        List<ProductDto> result;
-
-        result = products.stream().map(product -> {
-            ProductDto productDto = new ProductDto(product);
-            productDto.setNew(product.getCreated().isAfter(LocalDateTime.now().minusMonths(2)));
-            if (product.getBasePrice() == 0) {
-                productDto.setPercent(0.0f);
-            } else {
-                productDto.setPercent( (float) product.getPrice() / product.getBasePrice());
-            }
-            return productDto;
-        }).toList();
-
-        return result;
-    }
-
 }

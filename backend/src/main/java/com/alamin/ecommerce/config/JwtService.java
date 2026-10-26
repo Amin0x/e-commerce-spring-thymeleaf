@@ -136,11 +136,19 @@ public class JwtService {
     }
 
     public String extractRole(String token) {
-        return parseClaims(token).getStringClaim("role");
+        try {
+            return parseClaims(token).getStringClaim("role");
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Unable to extract role claim", e);
+        }
     }
 
     public String extractUid(String token) {
-        return parseClaims(token).getStringClaim("uid");
+        try {
+            return parseClaims(token).getStringClaim("uid");
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Unable to extract uid claim", e);
+        }
     }
 
     public Optional<User> findUserByUsername(String username) {

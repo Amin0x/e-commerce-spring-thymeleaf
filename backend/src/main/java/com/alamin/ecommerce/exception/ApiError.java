@@ -1,7 +1,5 @@
 package com.alamin.ecommerce.exception;
 
-import java.time.Instant;
-
 /**
  * Standard JSON error body returned by the backend's
  * {@link GlobalExceptionHandler @RestControllerAdvice}. Backend is a pure REST
@@ -9,7 +7,7 @@ import java.time.Instant;
  */
 public class ApiError {
 
-    private final Instant timestamp = Instant.now();
+    private final String timestamp = java.time.Instant.now().toString();
 
     private final int status;
 
@@ -26,7 +24,7 @@ public class ApiError {
         this.path = path;
     }
 
-    public Instant getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 

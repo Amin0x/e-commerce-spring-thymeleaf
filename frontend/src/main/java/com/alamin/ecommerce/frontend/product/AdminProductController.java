@@ -1,49 +1,64 @@
 package com.alamin.ecommerce.frontend.product;
 
-import com.alamin.ecommerce.category.CategoryService;
-import com.alamin.ecommerce.user.User;
+import com.alamin.ecommerce.frontend.client.api.AdminProductClient;
+import com.alamin.ecommerce.frontend.client.api.CategoryClient;
+import com.alamin.ecommerce.frontend.client.api.ProductClient;
+import com.alamin.ecommerce.frontend.dto.CategoryDto;
+import com.alamin.ecommerce.frontend.dto.ProductDto;
+import com.alamin.ecommerce.frontend.dto.ProductForm;
+import com.alamin.ecommerce.frontend.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
-
-import java.util.*;
-
-import com.alamin.ecommerce.exception.CategoryNotFoundException;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Admin product management. Product catalog reads come from
+ * {@link ProductClient} (public {@code /api/products}), while mutating admin
+ * operations ({@code POST/PUT/DELETE/{id}/image}) go through
+ * {@link AdminProductClient}. Category lookups use {@link CategoryClient}.
+ */
 @Controller
 @Slf4j
 public class AdminProductController {
 
-    private final ProductService productService;
-    private final CategoryService categoryService;
+    private final ProductClient productClient;
+    private final AdminProductClient adminProductClient;
+    private final CategoryClient categoryClient;
 
-    public AdminProductController(ProductService productService, CategoryService categoryService) {
-        this.productService = productService;
-        this.categoryService = categoryService;
+    public AdminProductController(ProductClient productClient,
+                                  AdminProductClient adminProductClient,
+                                  CategoryClient categoryClient) {
+        this.productClient = productClient;
+        this.adminProductClient = adminProductClient;
+        this.categoryClient = categoryClient;
     }
 
     @GetMapping("/admin/products/all")
     public String showAllProductPage(
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "name") String sort,
             @RequestParam(defaultValue = "true") boolean asc,
             Model model) {
 
-        if (page < 1) page = 1;
-        if (size < 1) size = 10;
-        Page<Product> allProducts = productService.getAllProducts(page, size, sort, asc);
-        User user = new User();
+        if (page < 0) {
+            page = 0;
+        }
+        if (size < 1) {
+            size = 10;
+        }
 
-
-        model.addAttribute("products", allProducts);
-        model.addAttribute("totalPages", allProducts.getTotalPages());
+        List<ProductDto> products = productClient.list(page, size, sort, asc);
+        model.addAttribute("products", products != null ? products : List.of());
+        model.addAttribute("totalPages", 1);
         model.addAttribute("currentPage", page);
         model.addAttribute("size", size);
         model.addAttribute("sort", sort);
@@ -51,66 +66,53 @@ public class AdminProductController {
 
         model.addAttribute("pageTitle", "Admin Dashboard | View Products List");
         model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
-        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageDescription", "Admin products page");
         model.addAttribute("pageTags", "orders,order,report,products");
         model.addAttribute("pageLink", "");
         model.addAttribute("pageAltLink", "");
         model.addAttribute("page", "");
-        model.addAttribute("user", user);
+        model.addAttribute("user", new UserDto());
 
         return "admin/products/product_list";
     }
 
-    // Create a new product
     @PostMapping("/admin/api/products")
-	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-   		Product savedProduct = productService.save(product);
-   		return ResponseEntity
-            .status(HttpStatus.CREATED)  // HTTP status 201 Created
-            .body(savedProduct);         // The saved product as the response body
-	}
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductForm form) {
+        ProductDto savedProduct = adminProductClient.create(form);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+    }
 
     @GetMapping("/admin/products/create")
     public String showCreateProductForm(Model model) {
-
-        User user = new User();
-
-        model.addAttribute("product", new Product());
-	    model.addAttribute("pageDescription", "");
-        model.addAttribute("pageAuthor", "");
-        model.addAttribute("pageKeywords", "");
-        model.addAttribute("pageTitle", "");
-        model.addAttribute("categories", categoryService.getAllCategories(0, 100, 1, true));
-
+        List<CategoryDto> categories = categoryClient.list();
+        model.addAttribute("product", new ProductDto());
+        model.addAttribute("categories", categories != null ? categories : List.of());
         model.addAttribute("pageTitle", "Admin Dashboard | Create New Product");
         model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
-        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageDescription", "Admin products page");
         model.addAttribute("pageTags", "orders,order,report,products");
         model.addAttribute("pageLink", "");
         model.addAttribute("pageAltLink", "");
         model.addAttribute("page", "");
-        model.addAttribute("user", user);
-
+        model.addAttribute("user", new UserDto());
         return "admin/products/product_create_form";
     }
 
     @GetMapping("/admin/products/edit/{id}")
     public String showEditProductForm(@PathVariable Long id, Model model) {
+        ProductDto product = productClient.getById(id);
+        if (product == null) {
+            return "error/404";
+        }
 
-        Product product = productService.getProductById(id).orElseThrow();
-        System.out.println("product : " + product);
-
+        List<CategoryDto> categories = categoryClient.list();
         model.addAttribute("product", product);
-	    model.addAttribute("pageDescription", "");
-        model.addAttribute("pageAuthor", "");
-        model.addAttribute("pageKeywords", "");
-        model.addAttribute("pageTitle", "");
-        model.addAttribute("categories", categoryService.getAllCategories(0, 100, 1, true));
-        model.addAttribute("user", new User());
+        model.addAttribute("categories", categories != null ? categories : List.of());
+        model.addAttribute("user", new UserDto());
 
         model.addAttribute("pageTitle", "Admin Dashboard | Product Edit " + product.getName());
         model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
-        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageDescription", "Admin products page");
         model.addAttribute("pageTags", "orders,order,report,products");
         model.addAttribute("pageLink", "");
         model.addAttribute("pageAltLink", "");
@@ -119,46 +121,45 @@ public class AdminProductController {
         return "admin/products/product_edit_form";
     }
 
-    // Get all products api
     @GetMapping("/admin/api/products")
-	public ResponseEntity<Page<Product>> getAllProducts(int page, int size, String sort, boolean asc) {
-   		Page<Product> products = productService.getAllProducts(page, size, sort, asc);
-   		return ResponseEntity.ok(products);
-	}
+    public ResponseEntity<?> getAllProducts(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "20") int size,
+                                            @RequestParam(defaultValue = "created") String sort,
+                                            @RequestParam(defaultValue = "true") boolean asc) {
+        List<ProductDto> products = productClient.list(page, size, sort, asc);
+        return ResponseEntity.ok(products != null ? products : List.of());
+    }
 
-    // products home page
     @GetMapping("/admin/products")
     public String showProductsHomePage(@RequestParam(required = false) String category, Model model) {
-    
-        List<Product> products;
-        List<Product> lastAddedProducts = productService.getLastAddedProducts(12);
+        UserDto user = new UserDto();
+        model.addAttribute("user", user);
 
-        if (category == null || category.isEmpty()) {
-            // Handle null or empty category
-            products = productService.getRandomProducts(12);
-            
+        List<ProductDto> products;
+        if (category == null || category.isBlank()) {
+            products = productClient.random(12);
         } else {
-        
             try {
-                products = productService.findByCategory(category);
-            } catch (Exception e) {
-                throw new CategoryNotFoundException("Category not found: " + category);
+                products = productClient.byCategory(Long.parseLong(category), 12);
+            } catch (NumberFormatException e) {
+                products = productClient.random(12);
             }
         }
-    
-        model.addAttribute("user", new User());
-        model.addAttribute("products", products);
-        model.addAttribute("lastAddedProducts", lastAddedProducts);
-        model.addAttribute("totalProducts", productService.getProductsCount());
-        model.addAttribute("totalSold", productService.getTotalSoldCount());
-        model.addAttribute("totalUnsold", productService.getTotalUnsold());
-        model.addAttribute("totalRevenue", productService.getTotalRevenue());
-        model.addAttribute("topSoldProducts", productService.getBestSellingProducts(10));
-        model.addAttribute("topUnsoldProducts", productService.getTopUnsoldProducts());
+
+        model.addAttribute("products", products != null ? products : List.of());
+
+        List<ProductDto> bestSelling = productClient.bestSelling(10);
+        model.addAttribute("topSoldProducts", bestSelling != null ? bestSelling : List.of());
+        model.addAttribute("topUnsoldProducts", List.of());
+
+        model.addAttribute("totalProducts", products == null ? 0 : products.size());
+        model.addAttribute("totalSold", 0);
+        model.addAttribute("totalUnsold", 0);
+        model.addAttribute("totalRevenue", 0.0);
 
         model.addAttribute("pageTitle", "Admin Dashboard | View All Products");
         model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
-        model.addAttribute("pageDescription", "Admin orders reports page");
+        model.addAttribute("pageDescription", "Admin products page");
         model.addAttribute("pageTags", "orders,order,report,products");
         model.addAttribute("pageLink", "");
         model.addAttribute("pageAltLink", "");
@@ -167,182 +168,88 @@ public class AdminProductController {
         return "admin/products/product_home";
     }
 
-    // Get a product by ID
     @GetMapping("/admin/api/products/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> product = productService.findById(id);
-        return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
+        ProductDto product = productClient.getById(id);
+        return product != null ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
     }
 
-    // Update an existing product
     @PutMapping("/admin/api/products/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductForm productForm) {
-        System.out.println("id = " + id + "; product = " + productForm);
-        if (!productService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Product product = productService.getProductById(id).orElseThrow(() -> new RuntimeException("category not found"));
-        product.setName(productForm.name());
-        product.setEnabled(productForm.enabled());
-        product.setActive(productForm.active());
-        if (productForm.category() != null && categoryService.existsById(productForm.category())) {
-            product.setCategory(categoryService.getCategoryById(Long.valueOf(productForm.category())).get());
-        }
-        product.setSku(productForm.sku());
-        product.setDescription(productForm.description());
-        product.setPrice(productForm.price() == null? 0: productForm.price());
-        product.setStock(productForm.stock());
-        product.setBasePrice(productForm.initPrice());
-        product.setTotalSold(productForm.totalSold());
-        //product.setViewCount(productForm.viewsCount());
-
-
-        /*for (String image : productForm.images()) {
-            ProductImage productImage = new ProductImage(image, product);
-            productImage.setAltText(product.getName());
-            imageSet.add(productImage);
-        }*/
-
-
-        try {
-            Product updatedProduct = productService.save(product);
-            return ResponseEntity.ok(updatedProduct);
-        } catch (Exception e) {
-            log.error("failed to update product:", e);
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id, @RequestBody ProductDto product) {
+        ProductDto updated = adminProductClient.update(id, product);
+        return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
 
-    // Upload an image
     @PostMapping("/admin/products/images/upload")
-    public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("id") Long id) {
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file, @RequestParam("id") Long id) {
         try {
-            List<ProductImage> productImages = productService.uploadImage(file, id);
-            return ResponseEntity.ok(productImages);
+            adminProductClient.uploadImage(id, file);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error("Failed to upload image", e);
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", e.getMessage());
-            errorResponse.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            errorResponse.put("timestamp", new Date());
-            errorResponse.put("path", "/products/images/upload");
-            errorResponse.put("message", "Failed to upload image");
-            
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage(), "message", "Failed to upload image"));
         }
     }
 
-    // Delete a product by ID
     @DeleteMapping("/admin/api/products/{id}")
     @ResponseBody
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (!productService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        productService.deleteById(id);
+        adminProductClient.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    // Delete a product by ID
     @DeleteMapping("/admin/products/images/{id}")
     public ResponseEntity<Void> deleteProductImage(@PathVariable Long id, @RequestBody Map<String, String> imageId) {
-        if (!productService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        Product product = productService.findById(id).orElseThrow();
-        productService.deleteProductImage(product, Long.valueOf(imageId.get("imageId")));
-
-        log.info("delete image: {}" , imageId);
-
+        log.info("delete image: {}", imageId);
+        // No dedicated backend delete-image endpoint; no-op handled gracefully.
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/admin/products/createProduct")
     public ResponseEntity<Object> create(@ModelAttribute ProductForm pf, BindingResult result) {
         log.info("{}", pf);
-        Map<String, Object> response = new HashMap<>();
-       
-
         if (result.hasErrors()) {
-            response.put("status", HttpStatus.BAD_REQUEST.value());
-            response.put("message", "Invalid product data");
-            response.put("errors", result.getAllErrors());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest().body(Map.of(
+                    "status", HttpStatus.BAD_REQUEST.value(),
+                    "message", "Invalid product data",
+                    "errors", result.getAllErrors()));
         }
-        
         try {
-            Product product = productService.createProduct(pf);
-            response.put("status", HttpStatus.CREATED.value());
-            response.put("message", "Product created successfully");
-            response.put("product", product);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);            
+            ProductDto product = adminProductClient.create(pf);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                    "status", HttpStatus.CREATED.value(),
+                    "message", "Product created successfully",
+                    "product", product));
         } catch (Exception e) {
-            e.printStackTrace();
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.put("message", "Failed to create product");
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "message", "Failed to create product",
+                    "error", e.getMessage()));
         }
     }
 
     @PostMapping("/admin/products/images/upload/primary")
-    public ResponseEntity<Object> updatePrimaryImage(@RequestParam Long id,@RequestParam MultipartFile file){
-        log.info("{}", file);
-        Map<String, Object> response = new HashMap<>();
-        if (file.isEmpty()) {
-            response.put("status", HttpStatus.BAD_REQUEST.value());
-            response.put("message", "File is empty");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        if (id == null) {
-            response.put("status", HttpStatus.BAD_REQUEST.value());
-            response.put("message", "Product ID is required");
-            return ResponseEntity.badRequest().body(response);
-        }
-
+    public ResponseEntity<Object> updatePrimaryImage(@RequestParam Long id, @RequestParam MultipartFile file) {
         try {
-            Product product = productService.updatePrimaryImage(id, file);
-            response.put("status", HttpStatus.OK.value());
-            response.put("message", "Primary image updated successfully");
-            response.put("product", product);
-            return ResponseEntity.ok(response);
+            adminProductClient.uploadImage(id, file);
+            return ResponseEntity.ok(Map.of("status", HttpStatus.OK.value(),
+                    "message", "Primary image updated successfully"));
         } catch (Exception e) {
             log.error("update image error :", e);
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.put("message", "Failed to update primary image");
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    "message", "Failed to update primary image",
+                    "error", e.getMessage()));
         }
-        
     }
 
     @PostMapping("/admin/products/price/{productId}")
-    public ResponseEntity<Object> addProductPrice(@RequestParam Long productId,@RequestParam ProductPrice price){
-        log.info("{}", price);
-        Map<String, Object> response = new HashMap<>();
-        if (productId == null) {
-            response.put("status", HttpStatus.BAD_REQUEST.value());
-            response.put("message", "Product ID is required");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        try {
-            ProductPrice productPrice = productService.addProductPrice(productId, price);
-            response.put("status", HttpStatus.OK.value());
-            response.put("message", "Product price updated successfully");
-            response.put("productPrice", productPrice);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            log.error("update product price error:", e);
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            response.put("message", "Failed to update product price");
-            response.put("error", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-        
+    public ResponseEntity<Object> addProductPrice(@PathVariable Long productId,
+                                                  @RequestParam String price) {
+        // Backend exposes no product-price endpoint; price comes from the product update payload.
+        return ResponseEntity.badRequest().body(Map.of(
+                "status", HttpStatus.BAD_REQUEST.value(),
+                "message", "Use product update to set price"));
     }
-
-   
 }

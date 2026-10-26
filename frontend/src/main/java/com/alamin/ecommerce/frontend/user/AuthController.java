@@ -1,41 +1,38 @@
 package com.alamin.ecommerce.frontend.user;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.alamin.ecommerce.frontend.client.api.AuthClient;
+import com.alamin.ecommerce.frontend.dto.AuthResponse;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Public authentication. Delegates to the backend JWT API through
+ * {@link AuthClient}; on successful login/register the JWT is stored in the
+ * session by {@link
+ * com.alamin.ecommerce.frontend.client.api.AuthClientImpl} so that
+ * {@link com.alamin.ecommerce.frontend.client.interceptor.ClientAuthInterceptor}
+ * can attach it as {@code Authorization: Bearer} on subsequent calls.
+ */
 @Controller
 @Slf4j
 public class AuthController {
 
-    private final UserService userService;
-    private final AuthenticationManager authenticationManager;
+    private final AuthClient authClient;
 
-    public AuthController(UserService userService , AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-        this.userService = userService;
+    public AuthController(AuthClient authClient) {
+        this.authClient = authClient;
     }
 
     @GetMapping("/auth/login")
     public String showLoginForm(@RequestParam(required = false) String url, Model model) {
-
         model.addAttribute("loginForm", new LoginForm());
+        model.addAttribute("redirectUrl", url);
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
@@ -44,80 +41,89 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public String processLogin(@RequestParam(required = false) String url, @Valid LoginForm loginForm,
-                               BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-
+    public String processLogin(@RequestParam(required = false) String url,
+                               @Valid LoginForm loginForm, BindingResult bindingResult,
+                               Model model, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errorMessage", "Invalid username or password");
             model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("redirectUrl", url);
             return "public/login";
         }
 
         try {
-            authenticateUser(loginForm.getUsername(), loginForm.getPassword());
-            if (isSafeRedirectUrl(url)) {
-                return "redirect:" + url;
-            } else {
+            AuthResponse response = authClient.login(loginForm.getUsername(), loginForm.getPassword());
+            if (response != null && response.getToken() != null) {
+                if (isSafeRedirectUrl(url)) {
+                    return "redirect:" + url;
+                }
                 return "redirect:/";
             }
-        } catch (Exception e) {
             model.addAttribute("errorMessage", "Invalid username or password");
+            model.addAttribute("redirectUrl", url);
+            return "public/login";
+        } catch (Exception e) {
+            log.warn("Login failed for {}", loginForm.getUsername(), e);
+            model.addAttribute("errorMessage", "Invalid username or password");
+            model.addAttribute("redirectUrl", url);
             return "public/login";
         }
-
     }
 
     @GetMapping("/auth/register")
     public String showSignupForm(Model model) {
         model.addAttribute("signupForm", new SignupForm());
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "إنشاء حساب جديد");
         return "public/signup";
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<Map<String,Object>> registerUser(@Valid @RequestBody SignupForm signupForm, BindingResult bindResult) {
+    public String registerUser(@Valid @ModelAttribute SignupForm signupForm, BindingResult bindResult,
+                               Model model, RedirectAttributes redirectAttributes) {
         log.info("registerUser: {}", signupForm.getUsername());
-        Map<String,Object> body = new HashMap<>();
-       
-        if (bindResult.hasErrors()) {
-            //bindResult.addError(new ObjectError("error", "Invalid input"));
 
-            body.put("status", "failed");
-            body.put("message", "Invalid input");
-            body.put("errors", bindResult.getAllErrors());
-            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        if (bindResult.hasErrors()) {
+            model.addAttribute("errorMessage", "Invalid input");
+            model.addAttribute("errors", bindResult.getAllErrors());
+            return "public/signup";
         }
 
         try {
-            userService.createUser(signupForm);
-            body.put("status", "success");
-            body.put("message", "User created successfully");
-            body.put("url", "/auth/confirmation");
-            return new ResponseEntity<>(body, HttpStatus.OK);
+            AuthResponse response = authClient.register(
+                    signupForm.getUsername(), signupForm.getPassword(), signupForm.getEmail());
+            if (response != null && response.getToken() != null) {
+                redirectAttributes.addFlashAttribute("message", "Account created successfully");
+                return "redirect:/auth/confirmation";
+            }
+            model.addAttribute("errorMessage", "Error creating user");
+            return "public/signup";
         } catch (Exception e) {
-
-           body.put("status", "failed");
-           body.put("message", "Error creating user");
-           return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+            log.warn("Registration failed for {}", signupForm.getUsername(), e);
+            model.addAttribute("errorMessage", "Error creating user");
+            return "public/signup";
         }
-        
     }
 
     @GetMapping("/auth/confirmation")
     public String showConfirmationPage(Model model) {
-
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
         model.addAttribute("pageTitle", "تأكيد الحساب");
-
         return "public/confirmEmail";
     }
 
-    public void authenticateUser(String username, String password) {
-        UsernamePasswordAuthenticationToken unauthenticated = UsernamePasswordAuthenticationToken.unauthenticated(username, password);
-        Authentication authenticate = authenticationManager.authenticate(unauthenticated);
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-        log.info("User authenticated successfully: {}", username);
+    @GetMapping("/auth/logout")
+    public String logout() {
+        try {
+            authClient.logout();
+        } catch (Exception e) {
+            log.warn("Logout call failed", e);
+        }
+        return "redirect:/";
     }
 
     /**

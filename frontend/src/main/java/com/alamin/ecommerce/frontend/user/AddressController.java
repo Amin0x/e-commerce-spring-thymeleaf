@@ -1,44 +1,46 @@
 package com.alamin.ecommerce.frontend.user;
 
+import com.alamin.ecommerce.frontend.client.api.AddressClient;
+import com.alamin.ecommerce.frontend.dto.City;
+import com.alamin.ecommerce.frontend.dto.Country;
+import com.alamin.ecommerce.frontend.dto.State;
+import com.alamin.ecommerce.frontend.dto.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.alamin.ecommerce.exception.ResourceNotFoundException;
-
-import jakarta.validation.Valid;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
+/**
+ * Address / lookup pages. All data now comes from the backend REST API through
+ * {@link AddressClient} instead of backend services directly.
+ */
 @Controller
 public class AddressController {
 
-    private final AddressService addressService;
+    private final AddressClient addressClient;
 
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
+    public AddressController(AddressClient addressClient) {
+        this.addressClient = addressClient;
     }
 
     @GetMapping("/admin/address/city/list")
-    public String showCityList(@RequestParam(required = false) Integer country, 
-                @RequestParam(required = false) Integer state, Model model) {
-        
-        if (country != null && state != null) {
-            model.addAttribute("cities", addressService.findByStateAndCountry(state, country));
-        } else if (country != null) {
-            model.addAttribute("cities", addressService.getCountryCities(country));
-        } else if (state != null) {
+    public String showCityList(@RequestParam(required = false) Integer country,
+                               @RequestParam(required = false) Integer state, Model model) {
 
-            model.addAttribute("cities", addressService.getCityByState(state));
+        List<City> cities;
+        if (state != null) {
+            cities = addressClient.citiesByState(state);
+        } else if (country != null) {
+            cities = addressClient.citiesByCountry(country);
         } else {
-            model.addAttribute("cities", addressService.getCities());
+            cities = addressClient.cities();
         }
 
-        model.addAttribute("countries", addressService.getCountries());
+        model.addAttribute("cities", cities == null ? List.of() : cities);
+        model.addAttribute("countries", addressClient.countries() == null ? List.of() : addressClient.countries());
         model.addAttribute("currentCountryId", country);
 
         return "admin/address/city_list";
@@ -46,147 +48,131 @@ public class AddressController {
 
     @GetMapping("/admin/address/city/add")
     public String showCityCreateForm(Model model) {
-        model.addAttribute("countries", addressService.getCountries());
-        model.addAttribute("states", addressService.getStates());
-        model.addAttribute("cities", addressService.getCities());
+        model.addAttribute("countries", addressClient.countries() == null ? List.of() : addressClient.countries());
+        model.addAttribute("states", addressClient.states() == null ? List.of() : addressClient.states());
+        model.addAttribute("cities", addressClient.cities() == null ? List.of() : addressClient.cities());
+        model.addAttribute("user", new UserDto());
         return "admin/address/city_create";
     }
 
     @GetMapping("/admin/address/city/{id}/edit")
-    public String showCityEditForm(@PathVariable int id, Model model) {
-        City cityOptional = addressService.getCity(id);
-        if (cityOptional != null) {
-            model.addAttribute("city", cityOptional);
-        } else {
-            throw new ResourceNotFoundException("City not found with id: " + id);
+    public String showCityEditForm(@PathVariable Integer id, Model model) {
+        List<City> cities = addressClient.cities() == null ? List.of() : addressClient.cities();
+        City city = cities.stream().filter(c -> c.getId() != null && c.getId().equals(id)).findFirst().orElse(null);
+        if (city == null) {
+            return "error/404";
         }
 
-        if (cityOptional.getCountry() != null) {
-            model.addAttribute("states", addressService.getCountryStates(cityOptional.getCountry().getId()));
-        }
-            
-        model.addAttribute("countries", addressService.getCountries());
-        
+        List<Country> countries = addressClient.countries() == null ? List.of() : addressClient.countries();
+        model.addAttribute("city", city);
+        model.addAttribute("countries", countries);
+
+        // The City DTO carries no country relation; no state list for edit.
+        model.addAttribute("countryId", null);
+        model.addAttribute("states", List.of());
+        model.addAttribute("user", new UserDto());
         return "admin/address/city_create";
     }
 
     @GetMapping("/admin/address/state/add")
     public String showStateAddForm(Model model) {
-        model.addAttribute("countries", addressService.getCountries());
+        model.addAttribute("countries", addressClient.countries() == null ? List.of() : addressClient.countries());
         model.addAttribute("stateId", null);
         model.addAttribute("stateName", null);
+        model.addAttribute("user", new UserDto());
         return "admin/address/state_create";
     }
 
     @GetMapping("/admin/address/state/edit")
-    public String showStateEditForm(@RequestParam int sid, Model model) {
-        model.addAttribute("countries", addressService.getCountries());
+    public String showStateEditForm(@RequestParam Integer sid, Model model) {
+        List<State> states = addressClient.states() == null ? List.of() : addressClient.states();
+        State found = states.stream().filter(s -> s.getId() != null && s.getId().equals(sid)).findFirst().orElse(null);
+        model.addAttribute("countries", addressClient.countries() == null ? List.of() : addressClient.countries());
+        model.addAttribute("state", found);
+        model.addAttribute("stateId", found == null ? null : found.getId());
+        model.addAttribute("stateName", found == null ? null : found.getName());
+        model.addAttribute("user", new UserDto());
         return "admin/address/state_create";
     }
 
     @GetMapping("/admin/address/country/list")
-    public String getCountryListPage(Model model){
-        model.addAttribute("countries", addressService.getCountries());
+    public String getCountryListPage(Model model) {
+        model.addAttribute("countries", addressClient.countries() == null ? List.of() : addressClient.countries());
+        model.addAttribute("user", new UserDto());
         return "admin/address/country_list";
     }
 
     @GetMapping("/admin/address/country/edit")
-    public String showCountryEditForm(@RequestParam Integer id, Model model){
-        Country country = addressService.getCountry(id);
-        if (country == null)
-            throw new ResourceNotFoundException("not found");
+    public String showCountryEditForm(@RequestParam Integer id, Model model) {
+        List<Country> countries = addressClient.countries() == null ? List.of() : addressClient.countries();
+        Country country = countries.stream().filter(c -> c.getId() != null && c.getId().equals(id)).findFirst().orElse(null);
+        if (country == null) {
+            return "error/404";
+        }
 
         model.addAttribute("country", country);
         model.addAttribute("formTitle", "Edit Country");
+        model.addAttribute("user", new UserDto());
         return "admin/address/country_create";
     }
 
     @GetMapping("/admin/address/city")
-    public ResponseEntity<Object> getCity(@RequestParam(required = false) Integer id, 
-                            @RequestParam(required = false) String name) {
+    public ResponseEntity<Object> getCity(@RequestParam(required = false) Integer id,
+                                          @RequestParam(required = false) String name) {
+        List<City> cities = addressClient.cities() == null ? List.of() : addressClient.cities();
         if (id != null) {
-            try {
-                City city1 = addressService.getCity(id);
-                return ResponseEntity.ok(city1);
-            } catch (ResourceNotFoundException e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
-            } catch (Exception e) {
-                return ResponseEntity.internalServerError().build();
-            } 
+            for (City c : cities) {
+                if (c.getId() != null && c.getId().equals(id)) {
+                    return ResponseEntity.ok(c);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("City not found");
         }
-        return ResponseEntity.ok(addressService.getCities());
+        return ResponseEntity.ok(cities);
     }
 
     @PostMapping("/admin/address/city")
-    public ResponseEntity<Object> createCity(@RequestBody CityFormDto cityFormDto) {
-        System.out.println("City: " + cityFormDto);
+    public ResponseEntity<Object> createCity(@RequestBody City city) {
         try {
-            return ResponseEntity.ok(addressService.createCity(cityFormDto));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok(addressClient.createCity(city));
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @PostMapping("/admin/address/city/update")
-    public ResponseEntity<Object> updateCity(@RequestBody CityFormDto cityFormDto) {
+    public ResponseEntity<Object> updateCity(@RequestBody City city) {
         try {
-            return ResponseEntity.ok(addressService.updateCity(cityFormDto));
-        } catch (ResourceNotFoundException e) { 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok(addressClient.createCity(city));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
     }
 
-    
     @GetMapping("/admin/address/city/state/{stateId}")
     public ResponseEntity<Object> getCityByState(@PathVariable Integer stateId) {
-        
         try {
-            List<City> byState = addressService.getCityByState(stateId);
+            List<City> byState = addressClient.citiesByState(stateId);
             return ResponseEntity.ok(byState);
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @PostMapping("/admin/address/city/{id}/delete")
-    public ResponseEntity<Object> deleteCity(int id) {
+    public ResponseEntity<Object> deleteCity(@PathVariable Integer id) {
         try {
-            addressService.deleteCity(id);
+            addressClient.deleteCity(id);
             return ResponseEntity.ok("City deleted successfully");
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @PostMapping("/admin/address/country")
-    public ResponseEntity<Object> createOrUpdateCountry(@Valid @RequestBody Country country, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()){
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<Object> createOrUpdateCountry(@RequestBody Country country) {
         try {
-            return ResponseEntity.ok(addressService.createOrUpdateCountry(country));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.ok(addressClient.createCountry(country));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -194,97 +180,70 @@ public class AddressController {
 
     @GetMapping("/admin/address/country")
     public ResponseEntity<Object> getCountry(@RequestParam(required = false) String name,
-            @RequestParam(required = false) String nar, @RequestParam(required = false) Integer id) {
+                                             @RequestParam(required = false) String nar,
+                                             @RequestParam(required = false) Integer id) {
+        List<Country> countries = addressClient.countries() == null ? List.of() : addressClient.countries();
         if (name != null) {
-            try {
-                Country country = addressService.getCountry(name, false);
-                return ResponseEntity.ok(country);
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body("something went wrong");
+            for (Country c : countries) {
+                if (name.equals(c.getName())) {
+                    return ResponseEntity.ok(c);
+                }
             }
+            return ResponseEntity.badRequest().body("something went wrong");
         } else if (nar != null) {
-            try {
-                Country country = addressService.getCountry(name, true);
-                return ResponseEntity.ok(country);
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body(null);
+            for (Country c : countries) {
+                if (nar.equals(c.getNameAr())) {
+                    return ResponseEntity.ok(c);
+                }
             }
+            return ResponseEntity.badRequest().body(null);
         } else if (id != null) {
-            try {
-                Country country = addressService.getCountry(id);
-                return ResponseEntity.ok(country);
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body(null);
+            for (Country c : countries) {
+                if (c.getId() != null && c.getId().equals(id)) {
+                    return ResponseEntity.ok(c);
+                }
             }
+            return ResponseEntity.badRequest().body(null);
         }
-        return ResponseEntity.ok(addressService.getCountries());
+        return ResponseEntity.ok(countries);
     }
 
     @PostMapping("/admin/address/state")
-    public ResponseEntity<Map<String, Object>> createOrUpdateState(@RequestBody StateDto state) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Object> createOrUpdateState(@RequestBody State state) {
         try {
-            State stateSave = addressService.createOrUpdateState(state);
-            response.put("status", HttpStatus.OK);
-            response.put("state", stateSave);
-            return ResponseEntity.ok(response);
-        } catch (ResourceNotFoundException e) {
-            response.put("status", HttpStatus.NOT_FOUND);
-            response.put("message", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } catch (IllegalArgumentException e) {
-            response.put("status", HttpStatus.BAD_REQUEST);
-            response.put("message", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.ok(addressClient.createState(state));
         } catch (Exception e) {
-            response.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            response.put("message", "Something went wrong");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
     }
 
-
     @GetMapping("/admin/address/state/{id}")
     public ResponseEntity<Object> getState(@PathVariable Integer id) {
-
-        try {
-            State list = addressService.getState(id);
-            return ResponseEntity.ok(list);
-        } catch(ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
-        } 
+        List<State> states = addressClient.states() == null ? List.of() : addressClient.states();
+        for (State s : states) {
+            if (s.getId() != null && s.getId().equals(id)) {
+                return ResponseEntity.ok(s);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("State not found");
     }
-    
-    @GetMapping("/admin/address/state/country/{id}")
-    public ResponseEntity<Object> getStateByCounrtyId(@PathVariable Integer id) {
 
+    @GetMapping("/admin/address/state/country/{id}")
+    public ResponseEntity<Object> getStateByCountryId(@PathVariable Integer id) {
         try {
-            List<State> list = addressService.getCountryStates(id);
+            List<State> list = addressClient.statesByCountry(id);
             return ResponseEntity.ok(list);
-        } catch(ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
     }
 
     @GetMapping("/admin/address/state")
-    public ResponseEntity<Object> getAllStates(){        
+    public ResponseEntity<Object> getAllStates() {
         try {
-            return ResponseEntity.ok(addressService.getStates());
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.ok(addressClient.states());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
     }
-
 }

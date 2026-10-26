@@ -59,4 +59,20 @@ public class AddressClient {
         return restTemplate.exchange(backendBaseUrl + "/api/addresses/cities/state/{stateId}",
                 org.springframework.http.HttpMethod.GET, null, CITY_LIST, stateId).getBody();
     }
+
+    public Country createCountry(Country country) {
+        return restTemplate.postForObject(backendBaseUrl + "/api/addresses/countries", country, Country.class);
+    }
+
+    public State createState(State state) {
+        return restTemplate.postForObject(backendBaseUrl + "/api/addresses/states", state, State.class);
+    }
+
+    public City createCity(City city) {
+        return restTemplate.postForObject(backendBaseUrl + "/api/addresses/cities", city, City.class);
+    }
+
+    public void deleteCity(Integer id) {
+        restTemplate.delete(backendBaseUrl + "/api/addresses/cities/{id}", id);
+    }
 }

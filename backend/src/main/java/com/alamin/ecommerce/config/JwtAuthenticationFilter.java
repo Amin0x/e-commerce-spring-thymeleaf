@@ -82,8 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     return;
                 }
                 UserDetailsAdapter userDetails = new UserDetailsAdapter(user);
-                List<org.springframework.security.core.GrantedAuthority> authorities =
-                        jwtService.extractAuthorities(jwt);
+                var authorities = jwtService.extractAuthorities(jwt);
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, authorities);

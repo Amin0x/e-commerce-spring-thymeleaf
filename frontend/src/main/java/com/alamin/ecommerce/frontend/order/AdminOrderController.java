@@ -1,7 +1,9 @@
 package com.alamin.ecommerce.frontend.order;
 
-import com.alamin.ecommerce.user.User;
-import org.springframework.data.domain.Page;
+import com.alamin.ecommerce.frontend.client.api.AdminOrderClient;
+import com.alamin.ecommerce.frontend.dto.OrderDto;
+import com.alamin.ecommerce.frontend.dto.PageDto;
+import com.alamin.ecommerce.frontend.dto.UserDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,33 +11,35 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
+/**
+ * Admin order management. Delegates to {@link AdminOrderClient} which calls the
+ * backend {@code /api/admin/orders} REST endpoints.
+ */
 @Controller
 public class AdminOrderController {
 
-    public static final int DEFAULT_TOTAL_ORDERS = 10;
-    public static final int DEFAULT_PAGE_SIZE = 10;
-    public static final int DEFAULT_PAGE_ORDER = 1;
-    public static final int DEFAULT_PAGE_SORT = 1;
-    public static final int DEFAULT_PAGE_INDEX = 1;
+    private static final int DEFAULT_TOTAL_ORDERS = 10;
+    private static final int DEFAULT_PAGE_SIZE = 10;
 
-    private final OrderService orderService;
+    private final AdminOrderClient adminOrderClient;
 
-    public AdminOrderController(OrderService orderService) {
-        this.orderService = orderService;
+    public AdminOrderController(AdminOrderClient adminOrderClient) {
+        this.adminOrderClient = adminOrderClient;
     }
 
     @GetMapping("/admin/orders")
-    public String index( Model model  ){
+    public String index(Model model) {
 
-        Page<Order> allOrders = orderService.getAllOrders(DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, DEFAULT_PAGE_ORDER, DEFAULT_PAGE_SORT);
+        PageDto<OrderDto> allOrders = adminOrderClient.list(0, DEFAULT_PAGE_SIZE, 0, 0);
 
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserDto());
         model.addAttribute("totalOrder", DEFAULT_TOTAL_ORDERS);
         model.addAttribute("totalSale", 10);
         model.addAttribute("orderCompleted", 10);
         model.addAttribute("orderUncompleted", 10);
-        model.addAttribute("lastOrders", allOrders);
+        model.addAttribute("lastOrders", allOrders == null ? List.of() : allOrders.getContent());
 
         model.addAttribute("pageTitle", "Admin Dashboard | Orders Index");
         model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
@@ -58,12 +62,12 @@ public class AdminOrderController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             Model model
     ){
-        Page<Order> orders = orderService.getAllOrders(page, size, order, asc, startDate, endDate);
+        PageDto<OrderDto> orders = adminOrderClient.list(page, size, order, asc ? 0 : 1);
 
-        model.addAttribute("orders", orders.getContent());
+        model.addAttribute("orders", orders == null ? List.of() : orders.getContent());
         model.addAttribute("pageNumber", page);
-        model.addAttribute("pageSize", orders.getSize());
-        model.addAttribute("totalPages", orders.getTotalPages());
+        model.addAttribute("pageSize", orders == null ? size : orders.getSize());
+        model.addAttribute("totalPages", orders == null ? 1 : orders.getTotalPages());
         model.addAttribute("sortAsc", asc);
         model.addAttribute("pageTitle", "Admin Dashboard | View All Orders");
         model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
@@ -84,9 +88,10 @@ public class AdminOrderController {
                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                                   Model model){
-        model.addAttribute("orders", orderService.getAllOrders(page, size, order, asc, startDate, endDate));
+        PageDto<OrderDto> orders = adminOrderClient.list(page, size, order, asc ? 0 : 1);
+        model.addAttribute("orders", orders == null ? List.of() : orders.getContent());
         model.addAttribute("pageNumber", page);
-        model.addAttribute("totalPages", 10);
+        model.addAttribute("totalPages", orders == null ? 10 : orders.getTotalPages());
         model.addAttribute("i", 10);
         model.addAttribute("pageTitle", "Admin Dashboard | Completed Orders");
         model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
@@ -107,9 +112,10 @@ public class AdminOrderController {
                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
                                   Model model){
-        model.addAttribute("orders", orderService.getAllOrders(page, size, order, asc, startDate, endDate));
+        PageDto<OrderDto> orders = adminOrderClient.list(page, size, order, asc ? 0 : 1);
+        model.addAttribute("orders", orders == null ? List.of() : orders.getContent());
         model.addAttribute("pageNumber", page);
-        model.addAttribute("totalPages", 10);
+        model.addAttribute("totalPages", orders == null ? 10 : orders.getTotalPages());
         model.addAttribute("i", 10);
         model.addAttribute("pageTitle", "Admin Dashboard | Pending Orders");
         model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
@@ -124,7 +130,10 @@ public class AdminOrderController {
 
     @GetMapping("/admin/orders/{id}")
     public String orderDetails(@PathVariable Long id, Model model){
-        Order order = orderService.getOrderById(id).orElseThrow();
+        OrderDto order = adminOrderClient.get(id);
+        if (order == null) {
+            return "error/404";
+        }
         Double total = 0.0;
         String estimatedDelivery = "";
         String customerAddress = "";
@@ -160,7 +169,7 @@ public class AdminOrderController {
 
     @DeleteMapping("/admin/orders/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-        orderService.deleteOrder(id);
+        adminOrderClient.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

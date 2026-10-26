@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.thymeleaf.messageresolver.AbstractMessageResolver;
 
 
 @Configuration(proxyBeanMethods = false)

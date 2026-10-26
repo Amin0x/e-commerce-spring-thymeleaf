@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.frontend.client.api;
 
 import com.alamin.ecommerce.frontend.dto.ProductDto;
+import com.alamin.ecommerce.frontend.dto.ReviewDto;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface ProductClient {
     List<ProductDto> newArrivals(int size);
 
     List<ProductDto> byCategory(Long categoryId, int size);
+
+    List<ReviewDto> getReviews(Long productId);
 }

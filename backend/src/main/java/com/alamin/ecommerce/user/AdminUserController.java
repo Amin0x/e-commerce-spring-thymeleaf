@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.alamin.ecommerce.exception.ResourceAlreadyExistsException;
 
 /**
  * Admin REST user management. {@code @PreAuthorize("hasAuthority('ADMIN')")}

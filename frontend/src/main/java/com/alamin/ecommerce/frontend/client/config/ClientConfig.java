@@ -36,4 +36,10 @@ public class ClientConfig {
     public String backendBaseUrl() {
         return backendBaseUrl;
     }
+
+    /** Registers the auth/cart-key interceptor as a Spring bean. */
+    @Bean
+    public ClientAuthInterceptor clientAuthInterceptor() {
+        return new ClientAuthInterceptor();
+    }
 }

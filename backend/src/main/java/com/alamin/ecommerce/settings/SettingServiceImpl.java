@@ -1,5 +1,13 @@
 package com.alamin.ecommerce.settings;
 
+import org.springframework.stereotype.Service;
+
+/**
+ * Stub implementation of {@link SettingService}; mutating endpoints surface a
+ * 500 until backed by real storage (see the pre-existing defects list in the
+ * split design doc).
+ */
+@Service
 public class SettingServiceImpl implements SettingService{
 
     @Override

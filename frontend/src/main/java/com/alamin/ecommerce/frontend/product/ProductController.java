@@ -1,106 +1,111 @@
 package com.alamin.ecommerce.frontend.product;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
+import com.alamin.ecommerce.frontend.client.api.ProductClient;
+import com.alamin.ecommerce.frontend.dto.ProductDto;
+import com.alamin.ecommerce.frontend.dto.ReviewDto;
 import org.springframework.stereotype.Controller;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+/**
+ * Public product catalog. All data now comes from the backend REST API through
+ * the client layer instead of backend services directly.
+ */
 @Controller
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductClient productClient;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductClient productClient) {
+        this.productClient = productClient;
     }
 
     @GetMapping("/products/{id}")
     public String showProductDetails(@PathVariable String id, Model model) {
 
-        if (id == null)
-            throw new IllegalArgumentException("null argument");
+        if (id == null || id.isBlank()) {
+            return "error/404";
+        }
 
-        Product product = productService.getProductBySlug(id).orElseThrow(()-> new IllegalArgumentException("not fund"));
-        List<Product> similarProducts = productService.getSimilarProducts(product);
-        double percent = Math.ceil((double) product.getPrice() / product.getBasePrice());
+        // NOTE: the backend exposes product lookup by id and by uuid, but not by
+        // slug. Links render ${product.slug} into /products/{id}, so the path
+        // value is treated as a uuid here. Add a /api/products/slug/{slug}
+        // backend endpoint to resolve slugs exactly.
+        ProductDto product = productClient.getByUuid(id);
+        if (product == null) {
+            return "error/404";
+        }
 
-        List<ProductReview> productReviews;
-        productReviews = productService.getProductReviews(product.getId());
+        List<ProductDto> similarProducts = productClient.random(8);
+        List<ReviewDto> reviews = productClient.getReviews(product.getId());
+        long totalReviews = reviews == null ? 0 : reviews.size();
 
-        List<Product> peopleSeeProducts = Collections.emptyList();
+        long product5StarReviewsCount = reviews == null ? 0 : reviews.stream().filter(r -> r.getStar() == 5).count();
+        long product4StarReviewsCount = reviews == null ? 0 : reviews.stream().filter(r -> r.getStar() == 4).count();
+        long product3StarReviewsCount = reviews == null ? 0 : reviews.stream().filter(r -> r.getStar() == 3).count();
+        long product2StarReviewsCount = reviews == null ? 0 : reviews.stream().filter(r -> r.getStar() == 2).count();
+        long product1StarReviewsCount = reviews == null ? 0 : reviews.stream().filter(r -> r.getStar() == 1).count();
 
-        long product5StarReviewsCount = productService.getProduct5StarReviewsCount(product.getId());
-        long product4StarReviewsCount = productService.getProduct4StarReviewsCount(product.getId());
-        long product3StarReviewsCount = productService.getProduct3StarReviewsCount(product.getId());
-        long product2StarReviewsCount = productService.getProduct2StarReviewsCount(product.getId());
-        long product1StarReviewsCount = productService.getProduct1StarReviewsCount(product.getId());
+        double reviewAvg = 0.0;
+        if (totalReviews > 0 && reviews != null) {
+            reviewAvg = reviews.stream().mapToInt(ReviewDto::getStar).average().orElse(0.0);
+        }
 
-        double reviewAvg = productService.getProductReviewAvg(product.getId());
-        long reviewsCount = productService.getReviewsCount(product.getId());
+        double basePrice = product.getBasePrice() == null || product.getBasePrice() == 0
+                ? 0 : product.getBasePrice();
+        double percent = basePrice == 0 ? 0.0 : Math.ceil((double) product.getPrice() / basePrice * 100) / 100;
+
+        List<ProductDto> peopleSeeProducts = Collections.emptyList();
 
         model.addAttribute("product", product);
         model.addAttribute("percent", percent);
-        model.addAttribute("similarProducts", similarProducts);
+        model.addAttribute("similarProducts", similarProducts != null ? similarProducts : List.of());
         model.addAttribute("peopleSeeProducts", peopleSeeProducts);
-        model.addAttribute("productReviews", productReviews);
+        model.addAttribute("productReviews", reviews != null ? reviews : List.of());
         model.addAttribute("product5StarReviewsCount", product5StarReviewsCount);
         model.addAttribute("product4StarReviewsCount", product4StarReviewsCount);
         model.addAttribute("product3StarReviewsCount", product3StarReviewsCount);
         model.addAttribute("product2StarReviewsCount", product2StarReviewsCount);
         model.addAttribute("product1StarReviewsCount", product1StarReviewsCount);
         model.addAttribute("reviewAvg", reviewAvg);
-        model.addAttribute("reviewsCount", reviewsCount);
+        model.addAttribute("reviewsCount", totalReviews);
 
-	    model.addAttribute("pageDescription", "");
+        model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
-        model.addAttribute("pageTitle", "");
+        model.addAttribute("pageTitle", product.getName());
 
         return "public/product_details";
     }
 
-    // Get all products
     @GetMapping("/products/bestselling")
-	public String getBestSellProducts(Model model) {
-   		List<Product> products = productService.getBestSellingProducts(30);
-        products.forEach(product -> {
-            product.setImage("/uploads/images/" + product.getImage());
-        });
-        model.addAttribute("products", products);
-   		return "public/products_bestselling";
-	}
+    public String getBestSellProducts(Model model) {
+        List<ProductDto> products = productClient.bestSelling(30);
+        prefixImageUrls(products);
+        model.addAttribute("products", products != null ? products : List.of());
+        return "public/products_bestselling";
+    }
 
-    // Get all products with sorting and pagination
     @GetMapping("/products")
     public String getAllProducts(
             @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "uuid") String srt,
+            @RequestParam(defaultValue = "uuid") String sort,
             @RequestParam(defaultValue = "true") boolean asc,
             Model model) {
 
-        Page<Product> products;
+        List<ProductDto> products = productClient.list(page, size, sort, asc);
+        prefixImageUrls(products);
 
-        if (page >= 0 && size > 0) {
-            Sort sort = asc ? Sort.by(srt).ascending() : Sort.by(srt).descending();
-            PageRequest pageRequest = PageRequest.of(page, size, sort);
-            products = productService.getAllProducts(pageRequest);
-        } else {
-            products = productService.getAllProducts(PageRequest.of(0, 10));
-        }
-
-        model.addAttribute("products", products.getContent());
+        model.addAttribute("products", products != null ? products : List.of());
         model.addAttribute("pageDescription", "");
         model.addAttribute("pageAuthor", "");
         model.addAttribute("pageKeywords", "");
@@ -108,75 +113,16 @@ public class ProductController {
         return "public/products";
     }
 
-
-    @GetMapping("/api/products/{id}")
-    public ResponseEntity<Object> getProductById(@PathVariable Long id) {
-        Map<String, Object> response = new HashMap<>();
-        try{
-            Optional<Product> product = productService.findById(id);
-            if(product.isEmpty()){
-                response.put("status", "error");
-                response.put("message", "Product not found");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    /** Prepend the backend image base URL to relative product image paths. */
+    private void prefixImageUrls(List<ProductDto> products) {
+        if (products == null) {
+            return;
+        }
+        for (ProductDto p : products) {
+            String image = p.getImage();
+            if (image != null && !image.isBlank() && !image.startsWith("http")) {
+                p.setImage("/uploads/images/" + image);
             }
-            response.put("status", "success");
-            response.put("message", "Product fetched successfully");
-            response.put("product", product.get());
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", "Error fetching product: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
-    @PostMapping("/products/review/{id}")
-    public ResponseEntity<Object> createProductReview(@RequestBody ProductReview productReview){
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            ProductReview productReview1 = productService.createProductReview(productReview);
-            return new ResponseEntity<>(productReview1, HttpStatus.CREATED);
-        } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", "Error creating product review: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-    }
-
-    @PostMapping("/products/review/update/{id}")
-    public ResponseEntity<Object> updateProductReview(@PathVariable Long id,@RequestBody ProductReview productReview){
-        Map<String, Object> response = new HashMap<>();
-        if (id == null){
-            response.put("status", "error");
-            response.put("message", "id is null");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
-
-        try {
-            ProductReview productReview1 = productService.updateProductReview(id, productReview);
-            return new ResponseEntity<>(productReview1, HttpStatus.OK);
-        } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", "Error updating product review: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        }
-        
-    }
-
-    @PostMapping("/products/review/delete/{id}")
-    public ResponseEntity<Object> deleteProductReview(@PathVariable Long id){
-        Map<String, Object> response = new HashMap<>();
-        if (id == null){
-            response.put("status", "error");
-            response.put("message", "id is null");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
-        
-        productService.deleteProductReview(id);
-        response.put("status", "success");
-        response.put("message", "Product review deleted successfully");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
 }

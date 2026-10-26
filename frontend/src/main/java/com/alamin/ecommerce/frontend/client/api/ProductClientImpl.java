@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.frontend.client.api;
 
 import com.alamin.ecommerce.frontend.dto.ProductDto;
+import com.alamin.ecommerce.frontend.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -74,5 +75,16 @@ public class ProductClientImpl implements ProductClient {
                 backendBaseUrl + "/api/products/category/{categoryId}?size={size}",
                 org.springframework.http.HttpMethod.GET, null, PRODUCT_LIST, categoryId, size)
                 .getBody();
+    }
+
+    private static final ParameterizedTypeReference<List<ReviewDto>> REVIEW_LIST =
+            new ParameterizedTypeReference<>() {
+            };
+
+    @Override
+    public List<ReviewDto> getReviews(Long productId) {
+        return restTemplate.exchange(
+                backendBaseUrl + "/api/products/{productId}/reviews",
+                org.springframework.http.HttpMethod.GET, null, REVIEW_LIST, productId).getBody();
     }
 }

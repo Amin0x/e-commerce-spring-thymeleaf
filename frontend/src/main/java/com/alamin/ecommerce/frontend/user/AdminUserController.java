@@ -1,52 +1,51 @@
 package com.alamin.ecommerce.frontend.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.alamin.ecommerce.frontend.client.api.AdminUserClient;
+import com.alamin.ecommerce.frontend.dto.PageDto;
+import com.alamin.ecommerce.frontend.dto.UserDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.Valid;
+import java.util.List;
 
-import java.text.DateFormatSymbols;
-import java.util.ArrayList;
-
+/**
+ * Admin user management. Delegates to {@link AdminUserClient} which calls the
+ * backend {@code /api/admin/users} REST endpoints.
+ */
 @Controller
 @RequestMapping("")
 public class AdminUserController {
 
+    private final AdminUserClient adminUserClient;
 
-    @Autowired
-    private UserService userService;
-    
+    public AdminUserController(AdminUserClient adminUserClient) {
+        this.adminUserClient = adminUserClient;
+    }
 
     @GetMapping("/admin/users")
     public String index(Model model) {
+        PageDto<UserDto> page = adminUserClient.list(0, 10);
+        List<UserDto> users = page == null ? List.of() : page.getContent();
 
-        var newUsersList = userService.getLastRegisteredUsers(10);
-        var usersRegistrationLabels = userService.getUsersRegistrationLabelsMonth();
-        var usersRegistrationData = userService.getUsersRegistrationMonth();
-        var visitorLabels = new ArrayList<>();
-        var visitorData = new ArrayList<>();
+        model.addAttribute("newUsersList", users);
+        model.addAttribute("topDrivers", users);
+        model.addAttribute("totalUsers", page == null ? 0 : page.getTotalElements());
+        model.addAttribute("activeUsers", page == null ? 0 : page.getTotalElements());
+        model.addAttribute("newUsers", users.size());
+        model.addAttribute("inactiveUsers", 0);
+        model.addAttribute("usersRegistrationLabels", List.of());
+        model.addAttribute("usersRegistrationData", List.of());
+        model.addAttribute("visitorLabels", List.of());
+        model.addAttribute("visitorData", List.of());
 
-        model.addAttribute("user", new User());
-        model.addAttribute("totalUsers", userService.getUsersCount());
-        model.addAttribute("activeUsers", userService.getEnabledUsersCount());
-        model.addAttribute("newUsers", userService.getCreatedUsersCountThisMonth());
-        model.addAttribute("inactiveUsers", userService.getDisabledUsersCount());
-        model.addAttribute("newUsersList", newUsersList);
-        model.addAttribute("topDrivers", newUsersList);
-        model.addAttribute("usersRegistrationLabels", usersRegistrationLabels);
-        model.addAttribute("usersRegistrationData", usersRegistrationData);
-        model.addAttribute("visitorLabels", visitorLabels);
-        model.addAttribute("visitorData", visitorData);
-
+        model.addAttribute("user", new UserDto());
         model.addAttribute("pageTitle", "Admin Dashboard | Users Home Page");
         model.addAttribute("pageAuthor", "Alamin Omer | Amin0x | garogigi@gmail.com");
-        model.addAttribute("pageDescription", "Admin orders reports page");
-        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageDescription", "Admin users page");
+        model.addAttribute("pageTags", "orders,order,report");
         model.addAttribute("pageLink", "");
         model.addAttribute("pageAltLink", "");
         model.addAttribute("page", "");
@@ -56,17 +55,17 @@ public class AdminUserController {
 
     @GetMapping("/admin/users/all")
     public String allUsers(Model model) {
-
-        model.addAttribute("users", userService.getAllUsers());
+        PageDto<UserDto> page = adminUserClient.list(0, 100);
+        model.addAttribute("users", page == null ? List.of() : page.getContent());
         model.addAttribute("pageNumber", 10);
-        model.addAttribute("totalPages", 10);
+        model.addAttribute("totalPages", page == null ? 10 : page.getTotalPages());
         model.addAttribute("i", 10);
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserDto());
 
         model.addAttribute("pageTitle", "Admin Dashboard | View All Users");
         model.addAttribute("pageAuthor", "ALAMIN OMER | Amin0x | garogigi@gmail.com");
-        model.addAttribute("pageDescription", "Admin orders reports page");
-        model.addAttribute("pageTags", "orders,order, report");
+        model.addAttribute("pageDescription", "Admin users page");
+        model.addAttribute("pageTags", "orders,order,report");
         model.addAttribute("pageLink", "");
         model.addAttribute("pageAltLink", "");
         model.addAttribute("page", "");
@@ -76,12 +75,9 @@ public class AdminUserController {
 
     @GetMapping("/admin/users/{id}")
     public String viewUser(@PathVariable Long id, Model model) {
-        User user = null;
-        try {
-            user = userService.getUserById(id).orElseThrow();
-        } catch (Exception e) {
+        UserDto user = adminUserClient.get(id);
+        if (user == null) {
             return "error/404";
-            //throw new RuntimeException(e);
         }
         model.addAttribute("user", user);
         return "admin/users/user_details";
@@ -89,12 +85,9 @@ public class AdminUserController {
 
     @GetMapping("/admin/users/edit/{id}")
     public String editUserForm(@PathVariable Long id, Model model) {
-        User user = null;
-        try {
-            user = userService.getUserById(id).orElseThrow();
-        } catch (Exception e) {
+        UserDto user = adminUserClient.get(id);
+        if (user == null) {
             return "error/404";
-            //throw new RuntimeException(e);
         }
         model.addAttribute("user", user);
         return "admin/users/user_edit_form";
@@ -102,40 +95,33 @@ public class AdminUserController {
 
     @GetMapping("/admin/users/create")
     public String createUserForm(Model model) {
-        String[] months = new DateFormatSymbols().getMonths();
-        model.addAttribute("monthNames", months);
-        model.addAttribute("user", new User());
-        
+        model.addAttribute("user", new UserDto());
         return "admin/users/user_create_form";
     }
 
     @PostMapping("/admin/users")
-    public ResponseEntity<User> createUser(
-            @ModelAttribute User user,
+    public org.springframework.http.ResponseEntity<UserDto> createUser(
+            @ModelAttribute UserDto user,
             @RequestParam(required = false) MultipartFile avatar) {
 
         if (user == null) {
-            return ResponseEntity.badRequest().build();
+            return org.springframework.http.ResponseEntity.badRequest().build();
         }
-
-        User savedUser = userService.createUser(user);
-        return ResponseEntity.ok(savedUser);
+        UserDto savedUser = adminUserClient.create(user);
+        return org.springframework.http.ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/admin/users/{id}")
-    public String updateUser(@PathVariable Long id,@Valid @ModelAttribute User user,BindingResult bindingResult, Model model) {
-        if (user == null) {
+    public String updateUser(@PathVariable Long id,
+                             @ModelAttribute UserDto user,
+                             BindingResult bindingResult, Model model) {
+        if (user == null || bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult == null ? List.of() : bindingResult.getAllErrors());
             return "admin/users/user_edit_form";
         }
 
-        if(bindingResult.hasErrors()){
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            return "admin/users/user_edit_form";
-        }
-        
-        User savedUser = userService.updateUser(id, user);
+        UserDto savedUser = adminUserClient.update(id, user);
         model.addAttribute("user", savedUser);
-
         return "redirect:/admin/users/" + savedUser.getId();
     }
 }
