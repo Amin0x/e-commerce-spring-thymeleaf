@@ -46,8 +46,6 @@ public class AuthController {
     @PostMapping("/auth/login")
     public String processLogin(@RequestParam(required = false) String url, @Valid LoginForm loginForm,
                                BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-        System.out.println("processLogin: " + loginForm);
-        System.out.println("----------------------------------------");
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("errorMessage", "Invalid username or password");
@@ -57,7 +55,7 @@ public class AuthController {
 
         try {
             authenticateUser(loginForm.getUsername(), loginForm.getPassword());
-            if (StringUtils.hasText(url)) {
+            if (isSafeRedirectUrl(url)) {
                 return "redirect:" + url;
             } else {
                 return "redirect:/";
@@ -66,7 +64,7 @@ public class AuthController {
             model.addAttribute("errorMessage", "Invalid username or password");
             return "public/login";
         }
-        
+
     }
 
     @GetMapping("/auth/register")
@@ -77,7 +75,7 @@ public class AuthController {
 
     @PostMapping("/auth/register")
     public ResponseEntity<Map<String,Object>> registerUser(@Valid @RequestBody SignupForm signupForm, BindingResult bindResult) {
-        log.info("registerUser: {}", signupForm);
+        log.info("registerUser: {}", signupForm.getUsername());
         Map<String,Object> body = new HashMap<>();
        
         if (bindResult.hasErrors()) {
@@ -121,4 +119,21 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         log.info("User authenticated successfully: {}", username);
     }
-} 
+
+    /**
+     * Validate that a post-login redirect target is a safe local relative
+     * path, preventing open redirects to external hosts.
+     */
+    private boolean isSafeRedirectUrl(String url) {
+        if (url == null || url.isBlank()) {
+            return false;
+        }
+        if (!url.startsWith("/")) {
+            return false;
+        }
+        if (url.startsWith("//")) {
+            return false;
+        }
+        return !url.contains("://");
+    }
+}

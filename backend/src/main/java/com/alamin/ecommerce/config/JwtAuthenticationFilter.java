@@ -62,7 +62,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             boolean valid = jwtService.isTokenValid(jwt);
             if (valid) {
                 var userOpt = jwtService.findUserByUsername(username);
-                UserDetailsAdapter userDetails = userOpt.map(UserDetailsAdapter::new).orElse(null);
+                if (userOpt.isEmpty()) {
+                    // User no longer exists -> treat as unauthenticated.
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+                User user = userOpt.get();
+                // Do not trust the JWT role claim blindly: reject tokens whose
+                // role no longer matches the persisted user (counters stale /
+                // forged role claims after a role change).
+                String jwtRole = jwtService.extractRole(jwt);
+                if (jwtRole == null || !jwtRole.equals(user.getRole())) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+                if (!Boolean.TRUE.equals(user.getEnabled())) {
+                    // Disabled users cannot authenticate.
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+                UserDetailsAdapter userDetails = new UserDetailsAdapter(user);
                 List<org.springframework.security.core.GrantedAuthority> authorities =
                         jwtService.extractAuthorities(jwt);
                 UsernamePasswordAuthenticationToken authToken =
