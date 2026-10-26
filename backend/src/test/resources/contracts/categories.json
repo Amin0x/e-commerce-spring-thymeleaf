@@ -1,0 +1,28 @@
+[
+  {
+    "id": 5,
+    "uuid": "cat-5-uuid",
+    "slug": "electronics",
+    "name": "Electronics",
+    "description": "Electronic devices",
+    "imageUrl": null,
+    "active": true,
+    "enabled": true,
+    "created": "2026-01-01T00:00:00",
+    "updated": "2026-01-01T00:00:00",
+    "parent": null
+  },
+  {
+    "id": 7,
+    "uuid": "cat-7-uuid",
+    "slug": "clothing",
+    "name": "Clothing",
+    "description": "Apparel",
+    "imageUrl": null,
+    "active": true,
+    "enabled": true,
+    "created": "2026-01-01T00:00:00",
+    "updated": "2026-01-01T00:00:00",
+    "parent": null
+  }
+]
