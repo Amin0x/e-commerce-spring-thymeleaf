@@ -1,96 +1,105 @@
 package com.alamin.ecommerce.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.reactive.resource.NoResourceFoundException;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-@ControllerAdvice
+import java.util.stream.Collectors;
+
+/**
+ * Central REST error handling for the backend module. Replaces the Thymeleaf
+ * view-name based handlers (and the deleted {@code MyCustomErrorController}),
+ * returning a JSON {@link ApiError} body for every exception.
+ */
+@RestControllerAdvice
 public class GlobalExceptionHandler {
-    // Handle specific exceptions and return appropriate views
-    @ExceptionHandler(CategoryAlreadyExistsException.class)
-    public String handleCategoryAlreadyExistsException(CategoryAlreadyExistsException ex) {
-        return "error/404"; // Return a view name for the error page
+
+    /** 404 - custom resource not found */
+    @ExceptionHandler({CategoryNotFoundException.class, ProductNotFoundException.class, ResourceNotFoundException.class})
+    public ResponseEntity<ApiError> handleNotFound(RuntimeException ex, HttpServletRequest request) {
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), "Not Found", ex.getMessage(), requestPath(request));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    @ExceptionHandler(ProductNotFoundException.class)
-    public String handleProductNotFoundException(ProductNotFoundException ex) {
-        return "error/404"; // Return a view name for the error page
+    /** 409 - custom resource already exists */
+    @ExceptionHandler({CategoryAlreadyExistsException.class, ProductAlreadyExistsException.class, ResourceAlreadyExistsException.class})
+    public ResponseEntity<ApiError> handleConflict(RuntimeException ex, HttpServletRequest request) {
+        ApiError error = new ApiError(HttpStatus.CONFLICT.value(), "Conflict", ex.getMessage(), requestPath(request));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
-    @ExceptionHandler(ProductAlreadyExistsException.class)
-    public String handleProductAlreadyExistsException(ProductAlreadyExistsException ex) {
-        return "error/404"; // Return a view name for the error page
-    }
-
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public String handleCategoryNotFoundException(CategoryNotFoundException ex) {
-        return "error/404"; // Return a view name for the error page
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class) 
-    public String handleResourceNotFoundException(ResourceNotFoundException ex) {
-        return "error/404"; // Return a view name for the error page
-    }
-
-    @ExceptionHandler(ResourceAlreadyExistsException.class)
-    public String handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
-        return "error/404"; // Return a view name for the error page
-    }
-    @ExceptionHandler(NoResourceFoundException.class)
-    public String handleNoResourceFoundException(NoResourceFoundException ex) {
-        return "error/404"; // Return a view name for the 404 error page
-    }
-
-    @ExceptionHandler(NullPointerException.class)
-    public String handleNullPointerException(NullPointerException ex) {
-        return "error/500"; // Return a view name for internal server errors
-    }
-
-    @ExceptionHandler(NumberFormatException.class)
-    public String handleNumberFormatException(NumberFormatException ex) {
-        return "error/400"; // Return a view name for bad request errors
-    }
-
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public String handleNoHandlerFoundException(NoHandlerFoundException ex) {
-        return "error/404"; // Return a view name for the 404 error page
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String handleIllegalArgumentException(IllegalArgumentException ex) {
-        return "error/400"; // Return a view name for bad request errors
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public String handleIllegalStateException(IllegalStateException ex) {
-        return "error/400"; // Return a view name for internal server errors
-    }
-
+    /** 400 - validation failures (@Valid) */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public String handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        return "error/400"; // Return a view name for validation errors
+    public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        String details = ex.getBindingResult().getFieldErrors().stream()
+                .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
+                .collect(Collectors.joining("; "));
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation Failed", details, requestPath(request));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    /** 405 - unsupported HTTP method */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public String handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
-        return "error/405"; // Return a view name for method not allowed errors
+    public ResponseEntity<ApiError> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex,
+                                                             HttpServletRequest request) {
+        ApiError error = new ApiError(HttpStatus.METHOD_NOT_ALLOWED.value(), "Method Not Allowed",
+                ex.getMessage(), requestPath(request));
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(error);
     }
 
+    /** 415 - unsupported media type */
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public String handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException ex) {
-        return "error/415"; // Return a view name for unsupported media type errors
+    public ResponseEntity<ApiError> handleMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
+                                                                HttpServletRequest request) {
+        ApiError error = new ApiError(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), "Unsupported Media Type",
+                ex.getMessage(), requestPath(request));
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(error);
     }
 
-    // General exception handler (optional)
+    /** 404 - no handler mapped for the request path */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ApiError> handleNoHandlerFound(NoHandlerFoundException ex, HttpServletRequest request) {
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND.value(), "Not Found", ex.getMessage(), requestPath(request));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    /** 400 - illegal arguments */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiError> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest request) {
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Bad Request", ex.getMessage(), requestPath(request));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    /** 400 - illegal state */
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ApiError> handleIllegalState(IllegalStateException ex, HttpServletRequest request) {
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), "Bad Request", ex.getMessage(), requestPath(request));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    /** 500 - null pointer */
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ApiError> handleNullPointer(NullPointerException ex, HttpServletRequest request) {
+        ApiError error = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", ex.getMessage(),
+                requestPath(request));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+    /** 500 - any other unexpected exception */
     @ExceptionHandler(Exception.class)
-    public String handleGenericException(Exception ex) {
-        return "error/400"; // Return a view name for the error page
+    public ResponseEntity<ApiError> handleGeneric(Exception ex, HttpServletRequest request) {
+        ApiError error = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", ex.getMessage(),
+                requestPath(request));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
+    private static String requestPath(HttpServletRequest request) {
+        return request == null ? "" : request.getRequestURI();
+    }
 }
