@@ -40,6 +40,7 @@ public class SecurityConfig {
                         "/subscription/**",
                         "/checkout",
                         "/css/**", "/js/**", "/images/**", "/uploads/**",
+                        "/public/**",
                         "/favicon.ico", "/error/**"
                 ).permitAll()
                 .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
