@@ -1,17 +1,11 @@
-
 package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.product.Product;
-import com.alamin.ecommerce.user.User;
-import com.alamin.ecommerce.user.UserServiceImpl;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,14 +13,14 @@ import java.util.Optional;
 @Service
 public class CartServiceImpl implements CartService {
 
-    @Autowired
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
 
-    @Autowired
-    private CartItemRepository cartItemRepository;
+    private final CartItemRepository cartItemRepository;
 
-    @Autowired
-    private UserServiceImpl userService;
+    public CartServiceImpl(CartRepository cartRepository, CartItemRepository cartItemRepository) {
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
+    }
 
     @Override
     public Optional<Cart> getCartById(Long id) {
@@ -34,11 +28,11 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart getCartBySession(HttpSession session) {
-        if (session == null)
-            throw new IllegalArgumentException("no user found");
-
-        return cartRepository.getCartBySession(session.getId());
+    public Cart getCartBySession(String cartKey) {
+        if (cartKey == null || cartKey.isEmpty()) {
+            throw new IllegalArgumentException("cart key is required");
+        }
+        return cartRepository.getCartBySession(cartKey);
     }
 
     @Override
@@ -52,21 +46,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart addCartItem(Product item, HttpSession session, Principal principal) {
-        Cart cart = null;
-        if (principal != null && !principal.getName().isEmpty()) {
-            cart = cartRepository.findByUserId(principal.getName());
-        } else {
-            cart = cartRepository.getCartBySession(session.getId());
-        }
-
-        if (cart == null) {
-            cart = new Cart();
-            cart.setUserId(principal == null ? null : principal.getName());
-            cart.setSessionId(session.getId());
-            cart = cartRepository.save(cart);
-        }
-
+    public Cart addCartItem(Product item, String cartKey, String username) {
+        Cart cart = resolveOrCreateCart(cartKey, username);
 
         boolean found = false;
         for (var ci : cart.getCartItems()) {
@@ -89,40 +70,17 @@ public class CartServiceImpl implements CartService {
             cart.getCartItems().add(cartItem);
         }
 
-        //update total
         int total = 0;
-        for (var it:cart.getCartItems()){
+        for (var it : cart.getCartItems()) {
             total += it.getQuantity() * it.getPrice();
         }
         cart.setTotal(total);
-        Cart savedCart = saveCart(cart);
-        return savedCart;
+        return saveCart(cart);
     }
 
-    // Update the quantity of a product in the cart can be negitive to remove the product
     @Override
-    public Cart removeCartItem(Long id, HttpSession session, Principal principal) {
-        User user = null;
-        Cart cart = null;
-
-        if (principal != null) {
-            user = userService.getUserByName(principal.getName())
-                .orElseThrow( () -> new RuntimeException("User not found"));
-
-            cart = cartRepository.findByUserId(user.getUsername());
-            if (cart == null) {
-                cart = new Cart();
-                cart.setUserId(user.getUsername());
-                cart.setSessionId(session.getId());
-                cart = cartRepository.save(cart);
-            }
-        } else {
-            if (session == null) {
-                throw new RuntimeException("Session not found");
-            }
-            cart = cartRepository.getCartBySession(session.getId());
-        }
-
+    public Cart removeCartItem(Long id, String cartKey, String username) {
+        Cart cart = resolveOrCreateCart(cartKey, username);
 
         List<CartItem> cartItems = cart.getCartItems();
         boolean found = false;
@@ -140,7 +98,6 @@ public class CartServiceImpl implements CartService {
         return saveCart(cart);
     }
 
-
     @Override
     public Page<Cart> findAll(Pageable pr) {
         return cartRepository.findAll(Objects.requireNonNullElseGet(pr, () -> PageRequest.ofSize(20)));
@@ -156,8 +113,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart incrementCartItem(Long id, HttpSession session, Principal principal) {
-        Cart cart = getCartBySession(session);
+    public Cart incrementCartItem(Long id, String cartKey, String username) {
+        Cart cart = resolveOrCreateCart(cartKey, username);
         if (cart == null) {
             throw new RuntimeException("Cart not found");
         }
@@ -169,9 +126,8 @@ public class CartServiceImpl implements CartService {
             }
         }
 
-        //update total
         int total = 0;
-        for (var it:cart.getCartItems()){
+        for (var it : cart.getCartItems()) {
             total += it.getQuantity() * it.getPrice();
         }
         cart.setTotal(total);
@@ -179,8 +135,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart decrementCartItem(Long id, HttpSession session, Principal principal) {
-        Cart cart = getCartBySession(session);
+    public Cart decrementCartItem(Long id, String cartKey, String username) {
+        Cart cart = resolveOrCreateCart(cartKey, username);
         if (cart == null) {
             throw new RuntimeException("Cart not found");
         }
@@ -196,12 +152,32 @@ public class CartServiceImpl implements CartService {
             }
         }
 
-        //update total
         int total = 0;
-        for (var it:cart.getCartItems()){
+        for (var it : cart.getCartItems()) {
             total += it.getQuantity() * it.getPrice();
         }
         cart.setTotal(total);
         return saveCart(cart);
+    }
+
+    private Cart resolveOrCreateCart(String cartKey, String username) {
+        Cart cart;
+        if (username != null && !username.isEmpty()) {
+            cart = cartRepository.findByUserId(username);
+            if (cart == null) {
+                cart = new Cart();
+                cart.setUserId(username);
+                cart.setSessionId(cartKey);
+                cart = cartRepository.save(cart);
+            }
+        } else {
+            cart = cartRepository.getCartBySession(cartKey);
+            if (cart == null) {
+                cart = new Cart();
+                cart.setSessionId(cartKey);
+                cart = cartRepository.save(cart);
+            }
+        }
+        return cart;
     }
 }
