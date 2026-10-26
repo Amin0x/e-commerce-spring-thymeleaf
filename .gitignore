@@ -1,1 +1,7 @@
 /target/
+backend/target/
+frontend/target/
+*.iml
+.idea/
+*.iws
+.DS_Store
