@@ -1,138 +1,107 @@
 package com.alamin.ecommerce.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BcryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
+/**
+ * Stateless JWT security for the REST backend.
+ *
+ * <ul>
+ *   <li>CSRF disabled (stateless token auth).</li>
+ *   <li>No sessions: {@link SessionCreationPolicy#STATELESS}.</li>
+ *   <li>{@link JwtAuthenticationFilter} validates Bearer JWTs and pops the
+ *       {@code Authentication} into the security context ahead of the
+ *       username/password filter.</li>
+ *   <li>401/403 are rendered as JSON via {@link RestAuthenticationEntryPoint} /
+ *       {@link RestAccessDeniedHandler} (no login-page redirects).</li>
+ *   <li>CORS restricted to the frontend origin ({@code app.cors.allowed-origins}).</li>
+ * </ul>
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    
-    public SecurityConfig() {
 
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
+    private final RestAccessDeniedHandler accessDeniedHandler;
+
+    @Value("${app.cors.allowed-origins:http://localhost:8080}")
+    private String allowedOrigins;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                          RestAuthenticationEntryPoint authenticationEntryPoint,
+                          RestAccessDeniedHandler accessDeniedHandler) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.csrf(Customizer.withDefaults())
-            .rememberMe(Customizer.withDefaults())
-            .authorizeHttpRequests(auth -> {
-                auth.requestMatchers("/api/public/**").permitAll()
-                .requestMatchers("/api/private/**").authenticated()
-                .requestMatchers("/**").permitAll()
-                .requestMatchers("/admin/**","/api/admin/**").hasAuthority("ADMIN")
-                .requestMatchers("/user/**").hasAuthority("USER")
-                .requestMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated();
-            })
-        .formLogin(Customizer.withDefaults());
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .exceptionHandling(eh -> eh
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers("/error").permitAll()
+                .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                .anyRequest().authenticated())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        
         return http.build();
     }
-    
+
     @Bean
-    protected PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(allowedOrigins.split("\\s*,\\s*")));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
-    // defining a custom authentication manager
     @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder);
-
-        ProviderManager providerManager = new ProviderManager(authenticationProvider);
-        providerManager.setEraseCredentialsAfterAuthentication(false);
-
-        return providerManager;
+    public PasswordEncoder passwordEncoder() {
+        return new BcryptPasswordEncoder();
     }
 
-    // Example: defining a custom user details service
-
-    // Example: defining a custom authentication filter
-//     @Bean
-//     public AuthenticationFilter authenticationFilter() {
-//         return new  // Replace with your custom implementation
-//     }
-
-
-    // Example: defining a custom access denied handler
-    // @Bean
-    // public AccessDeniedHandler accessDeniedHandler() {
-    //     return new CustomAccessDeniedHandler(); // Replace with your custom implementation
-    // }
-    // Example: defining a custom session management strategy
-    // @Bean
-    // public SessionManagementFilter sessionManagementFilter() {
-    //     return new CustomSessionManagementFilter(); // Replace with your custom implementation
-    // }
-    // Example: defining a custom CORS configuration
-    // @Bean
-    // public WebMvcConfigurer corsConfigurer() {
-    //     return new WebMvcConfigurer() {
-    //         @Override
-    //         public void addCorsMappings(CorsRegistry registry) {
-    //             registry.addMapping("/api/**")
-    //                 .allowedOrigins("http://localhost:3000")
-    //                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-    //                 .allowedHeaders("*")
-    //                 .allowCredentials(true);
-    //         }
-    //     };
-    // }
-    // Example: defining a custom filter chain for API requests
-    // @Bean
-    // public FilterChainProxy filterChainProxy() {
-    //     List<SecurityFilterChain> filterChains = new ArrayList<>();
-    //     filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/api/**"), new ApiAuthenticationFilter()));
-    //     filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/admin/**"), new AdminAuthenticationFilter()));
-    //     return new FilterChainProxy(filterChains);
-    // }
-    // Example: defining a custom authentication success handler
-    // @Bean
-    // public AuthenticationSuccessHandler authenticationSuccessHandler() {
-    //     return new CustomAuthenticationSuccessHandler(); // Replace with your custom implementation
-    // }
-    // Example: defining a custom authentication failure handler
-    // @Bean
-    // public AuthenticationFailureHandler authenticationFailureHandler() {
-    //     return new CustomAuthenticationFailureHandler(); // Replace with your custom implementation
-    // }
-    // Example: defining a custom remember-me services
-    // @Bean
-    // public RememberMeServices rememberMeServices() {
-    //     return new CustomRememberMeServices(); // Replace with your custom implementation
-    // }
-    // Example: defining a custom session registry
-    // @Bean
-    // public SessionRegistry sessionRegistry() {
-    //     return new CustomSessionRegistry(); // Replace with your custom implementation
-    // }
-    // Example: defining a custom session management filter
-    // @Bean
-    // public SessionManagementFilter sessionManagementFilter() {
-    //     return new CustomSessionManagementFilter(); // Replace with your custom implementation
-    // }
-    // Example: defining a custom security context repository
-    // @Bean
-    // public SecurityContextRepository securityContextRepository() {
-    //     return new CustomSecurityContextRepository(); // Replace with your custom implementation
-    // }
-
-
+    /**
+     * Authentication manager used only by {@code AuthController} login to verify
+     * credentials against {@link CustomUserDetailsService} before issuing a JWT.
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
+                                                       PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(provider);
+    }
 }
