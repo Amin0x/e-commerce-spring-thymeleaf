@@ -57,14 +57,13 @@
                 <div class="products">
                     <div th:each="product : ${products}" class="product-card-b">
                         <div class="product-image">
-                            <a class="circle-container" th:data-heart="${product.productId}">
+                            <a class="circle-container" th:data-heart="${product.id}">
                                 <i class="far fa-heart"></i>
                             </a>
                             <a th:href="@{/products/{id}(id=${product.slug})}" href="#">
                                 <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
                                     class="product-img" alt="Product Image" src="">
                             </a>
-                            <div th:if="product.new" class="product-new">جديد</div>
                         </div>
                         <div class="product-details">
                             <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
@@ -86,14 +85,13 @@
                 <div class="products">
                     <div th:each="product : ${products}" class="product-card-b">
                         <div class="product-image">
-                            <a class="circle-container" th:data-heart="${product.productId}">
+                            <a class="circle-container" th:data-heart="${product.id}">
                                 <i class="far fa-heart"></i>
                             </a>
                             <a th:href="@{/products/{id}(id=${product.slug})}" href="#">
                                 <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
                                     class="product-img" alt="Product Image" src="">
                             </a>
-                            <div th:if="product.new" class="product-new">جديد</div>
                         </div>
                         <div class="product-details">
                             <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
@@ -115,14 +113,13 @@
                 <div class="products">
                     <div th:each="product : ${products}" class="product-card-b">
                         <div class="product-image">
-                            <a class="circle-container" th:data-heart="${product.productId}">
+                            <a class="circle-container" th:data-heart="${product.id}">
                                 <i class="far fa-heart"></i>
                             </a>
                             <a th:href="@{/products/{id}(id=${product.slug})}" href="#">
                                 <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
                                     class="product-img" alt="Product Image" src="">
                             </a>
-                            <div th:if="product.new" class="product-new">جديد</div>
                         </div>
                         <div class="product-details">
                             <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
