@@ -72,12 +72,10 @@ public class AuthController {
             throw new ResourceAlreadyExistsException("Email already taken: " + request.getEmail());
         }
 
-        String role = request.getRole() == null || request.getRole().isBlank() ? "USER" : request.getRole();
-
-        var user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(role);
+        // Self-registration is always USER. Role assignment for others is an
+        // admin-only operation (handled by AdminUserController), never a
+        // client-controlled field here — prevents privilege escalation.
+        user.setRole("USER");
         user.setEmail(request.getEmail());
         user.setEnabled(true);
         user.setStatus("NOT_VERIFIED");
