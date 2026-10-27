@@ -13,6 +13,11 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>ecommerce</name>
     <description>e-commerce project for Spring</description>
+    <packaging>pom</packaging>
+    <modules>
+        <module>backend</module>
+        <module>frontend</module>
+    </modules>
     <url/>
     <licenses>
         <license>
@@ -34,7 +39,7 @@
         <url/>
     </scm>
     <properties>
-        <java.version>21</java.version>
+        <java.version>26</java.version>
     </properties>
     <dependencies>
         <dependency>
