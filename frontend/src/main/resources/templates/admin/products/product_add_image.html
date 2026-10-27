@@ -8,126 +8,123 @@
     <meta name="author" th:content="${pageAuthor}" />
     <meta name="description" th:content="${pageDescription}" />
     <title th:text="${pageTitle}">Product Image Upload</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/admin/main.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.9.2/bootstrap-notify.min.js"></script>
 </head>
 
 <body>
-    <div class="page-wrapper">        
+<div class="page-wrapper">
+    <div class="wrapper p-6">
         <div class="wrapper">
-            <div class="wrapper">
-                <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-                <main class="content">
-                    <header th:replace="~{admin/fragments/header :: header}"></header>
-                    <div class="content-page-container product-upload-img">
-                        <h2>Upload Product Image</h2>
-                        <form id="uploadForm" enctype="multipart/form-data">
-                            <div id="dropZone">Drag and drop your image here</div>
-                            <input type="file" id="fileInput" name="file" style="display: none;" required>
-                            <button type="submit" style="margin-top: 20px;">Upload</button>
-                        </form>
-                        <div id="response"></div>
-                    </div>
-                    <footer th:replace="~{admin/fragments/footer::footer}"></footer>
-                </main>
-            </div>
-        
+            <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
+            <main class="content">
+                <header th:replace="~{admin/fragments/header :: header}"></header>
+                <div class="content-page-container product-upload-img max-w-lg mx-auto">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6">Upload Product Image</h2>
+                    <form id="uploadForm" enctype="multipart/form-data" class="space-y-4">
+                        <div id="dropZone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 hover:bg-gray-50 transition-colors cursor-pointer">
+                            Drag and drop your image here
+                        </div>
+                        <input type="file" id="fileInput" name="file" class="hidden" required>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">Upload</button>
+                    </form>
+                    <div id="response" class="mt-4"></div>
+                </div>
+                <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+            </main>
         </div>
     </div>
-    <script>
-        var dropZone = document.getElementById('dropZone');
-        var fileInput = document.getElementById('fileInput');
+</div>
+<script>
+    var dropZone = document.getElementById('dropZone');
+    var fileInput = document.getElementById('fileInput');
 
-        var index = 0;
+    var index = 0;
 
-        function showProgressBars(index) {
-            var responseDiv = document.getElementById('response');
-            //responseDiv.innerHTML = '';
-            var progressDiv = document.createElement('div');
-            progressDiv.className = 'progress';
-            var progressBar = document.createElement('div');
-            progressBar.className = 'progress-bar';
-            progressBar.id = 'progress-bar-' + index;
-            progressDiv.appendChild(progressBar);
-            responseDiv.appendChild(progressDiv);
+    function showProgressBars(index) {
+        var responseDiv = document.getElementById('response');
+        var progressDiv = document.createElement('div');
+        progressDiv.className = 'progress mb-2';
+        var progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar bg-blue-600 h-2 rounded overflow-hidden';
+        progressBar.id = 'progress-bar-' + index;
+        progressBar.style.width = '0%';
+        progressDiv.appendChild(progressBar);
+        responseDiv.appendChild(progressDiv);
+    }
+
+    function updateProgressBars(percent, index) {
+        var progressBar = document.getElementById('progress-bar-' + index);
+        if (progressBar) {
+            progressBar.style.width = percent + '%';
+            progressBar.textContent = percent.toFixed(2) + '%';
         }
+    }
 
-        function updateProgressBars(percent, index) {
-            var progressBars = document.getElementsById('progress-bar-' + index);
-            progressBars.style.width = percent + '%';
-            progressBars.innerHTML = percent.toFixed(2) + '%';
-        }
-
-        function resetProgressBars(status, index) {
-            var progressBars = document.getElementsByClassName('progress-bar-' + index);
+    function resetProgressBars(status, index) {
+        var progressBar = document.getElementById('progress-bar-' + index);
+        if (progressBar) {
             var color = status === 'success' ? '#4caf50' : '#f44336';
-            progressBars[i].style.backgroundColor = color;
+            progressBar.style.backgroundColor = color;
+            progressBar.className = 'progress-bar h-2 rounded overflow-hidden';
         }
+    }
 
-        fileInput.addEventListener('change', function (event) {
-            document.getElementById('uploadForm').submit();
+    fileInput.addEventListener('change', function (event) {
+        document.getElementById('uploadForm').submit();
+    });
+
+    dropZone.addEventListener('click', function (event) {
+        event.preventDefault();
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('dragover', function (event) {
+        event.preventDefault();
+        dropZone.style.borderColor = 'green';
+    });
+
+    dropZone.addEventListener('dragleave', function () {
+        dropZone.style.borderColor = '#ccc';
+    });
+
+    dropZone.addEventListener('drop', function (event) {
+        event.preventDefault();
+        dropZone.style.borderColor = '#ccc';
+
+        var files = event.dataTransfer.files;
+        fileInput.files = files;
+        document.getElementById('uploadForm').submit();
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/admin/upload', true);
+
+        xhr.upload.addEventListener('progress', function (event) {
+            var percent = (event.loaded / event.total) * 100;
+            updateProgressBars(percent);
         });
 
-        dropZone.addEventListener('click', function (event) {
-            event.preventDefault();
-            fileInput.click();
-        });
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                document.getElementById('response').innerHTML = '<p class="text-green-600">Upload successful!</p>';
+                resetProgressBars('success');
+            } else {
+                document.getElementById('response').innerHTML = '<p class="text-red-600">Upload failed. Please try again.</p>';
+                resetProgressBars('failed');
+            }
+        };
+        showProgressBars(++index);
+        xhr.send(formData);
+    });
 
-        dropZone.addEventListener('dragover', function (event) {
-            event.preventDefault();
-            dropZone.style.borderColor = 'green';
-        });
-
-        dropZone.addEventListener('dragleave', function () {
-            dropZone.style.borderColor = '#ccc';
-        });
-
-        dropZone.addEventListener('drop', function (event) {
-            event.preventDefault();
-            dropZone.style.borderColor = '#ccc';
-
-            var files = event.dataTransfer.files;
-            fileInput.files = files;
-            document.getElementById('uploadForm').submit();
-        });
-
-        document.getElementById('uploadForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            var formData = new FormData();
-            formData.append('file', fileInput.files[0]);
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/admin/upload', true);
-
-            xhr.upload.addEventListener('progress', function (event) {
-                var percent = (event.loaded / event.total) * 100;
-                updateProgressBars(percent);
-            });
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    document.getElementById('response').innerHTML = '<p>Upload successful!</p>';
-                    resetProgressBars('success');
-                } else {
-                    document.getElementById('response').innerHTML = '<p>Upload failed. Please try again.</p>';
-                    resetProgressBars('failed');
-                }
-            };
-            showProgressBars(++index);
-            xhr.send(formData);
-        });
-
-    </script>
+</script>
 </body>
 
 </html>

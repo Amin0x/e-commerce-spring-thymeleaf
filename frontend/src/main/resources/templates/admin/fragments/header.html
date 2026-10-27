@@ -5,62 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../../../static/admin/main.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .search-input{
-            
-        }
-        .search-button{
-           
-        }
-    </style>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
     <header th:fragment="header">
-        <section class="top-header">
-            <div class="header-left d-flex">
-                <div class="logo d-flex justify-content-center">
-                    <img th:src="@{/public/imgs/logo2.png}" src="../../../static/public/imgs/logo2.png" alt="Logo" class="logo-img">
+        <section class="top-header px-4 py-3 bg-white border-b border-gray-200">
+            <div class="header-left flex items-center">
+                <div class="logo flex items-center justify-center mr-6">
+                    <img th:src="@{/public/imgs/logo2.png}" src="../../../static/public/imgs/logo2.png" alt="Logo" class="logo-img h-8">
                 </div>
-                <div class="menu d-flex">
-                    <div class="menu-item" style="position: relative;"><a href="/admin" style="display: inline-block; padding: 8px 12px;">Home</a></div>
+                <div class="menu flex items-center gap-4">
+                    <div class="menu-item" style="position: relative;">
+                        <a href="/admin" class="px-3 py-2 text-gray-700 hover:text-blue-600 rounded">Home</a>
+                    </div>
                 </div>
             </div>
-            <div class="search-container">
-                <form action="/admin/search" method="get">
-                    <div class="search">
-                        <i class="bi bi-search" style="position: absolute; left: 10px; color: #999;"></i>
-                        <input type="text" name="search" placeholder="Search..." class="search-input">
-                        <button type="submit" class="search-button"><i class="bi bi-search"></i>a</button>
+            <div class="search-container flex-1 max-w-md mx-auto">
+                <form action="/admin/search" method="get" class="relative">
+                    <div class="search relative">
+                        <i class="bi bi-search absolute left-3 top-2/4 -mt-2 text-gray-400"></i>
+                        <input type="text" name="search" placeholder="Search..." class="search-input form-control pl-10">
+                        <button type="submit" class="search-button absolute right-2 top-2/4 -mt-2 p-1 text-gray-400 hover:text-blue-600"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
             </div>
-            <div class="notification-wrap">
-                <div class="notification">
-                    <a href="#">
+            <div class="notification-wrap flex items-center gap-4">
+                <div class="notification relative">
+                    <a href="#" class="relative">
                         <div class="notification-image">
-                            <img th:src="@{/public/imgs/notification.png}" src="../../../static/public/imgs/notification.png" alt="Notification" class="notification-img">
-                            <span>5</span>
+                            <img th:src="@{/public/imgs/notification.png}" src="../../../static/public/imgs/notification.png" alt="Notification" class="notification-img w-6 h-6">
+                            <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">5</span>
                         </div>
                     </a>
-                    <div class="notification-dropdown">
-                        <div class="notification-body">
-                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 1</div>
-                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 2</div>
-                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 3</div>
-                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 4</div>
-                            <div class="notification-item" style="padding: 4px 8px; font-size: 14px;">Notification 5</div>
+                    <div class="notification-dropdown absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg hidden">
+                        <div class="notification-body p-2">
+                            <div class="notification-item px-3 py-2 text-sm border-b border-gray-100 last:border-b-0">Notification 1</div>
+                            <div class="notification-item px-3 py-2 text-sm border-b border-gray-100 last:border-b-0">Notification 2</div>
+                            <div class="notification-item px-3 py-2 text-sm border-b border-gray-100 last:border-b-0">Notification 3</div>
+                            <div class="notification-item px-3 py-2 text-sm border-b border-gray-100 last:border-b-0">Notification 4</div>
+                            <div class="notification-item px-3 py-2 text-sm border-b border-gray-100">Notification 5</div>
                         </div>
                     </div>
                 </div>
-                <div class="user-info">
-                    <div th:if="${user}" class="user-dropdown">
-                        <span th:text="${user?.firstName}">amin</span>
-                        <a href="#" class="user-avatar">
-                            <img th:src="@{/public/imgs/user-avatar.png}" src="../../../static/public/imgs/user-avatar.png" alt="User Avatar" class="user-avatar">
+                <div class="user-info flex items-center gap-3">
+                    <div th:if="${user}" class="user-dropdown relative">
+                        <span th:text="${user?.firstName}" class="text-sm font-medium text-gray-700 hidden sm:inline">amin</span>
+                        <a href="#" class="user-avatar relative">
+                            <img th:src="@{/public/imgs/user-avatar.png}" src="../../../static/public/imgs/user-avatar.png" alt="User Avatar" class="user-avatar w-8 h-8 rounded-full border border-gray-200">
                         </a>
-                        <div class="user-dropdown-menu">
-                            <a href="/logout" class="dropdown-item">Logout</a>
+                        <div class="user-dropdown-menu absolute right-0 mt-2 w-24 bg-white border border-gray-200 rounded shadow-lg hidden">
+                            <a href="/logout" class="dropdown-item block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
                         </div>
                     </div>
                 </div>

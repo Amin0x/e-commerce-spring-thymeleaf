@@ -6,30 +6,32 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="author" th:content="${pageAuthor}" />
     <meta name="description" th:content="${pageDescription}" />
-    <title th:text="${pageTitle}">Title</title>
+    <title th:text="${pageTitle}">Country List</title>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
+    <link th:href="@{/admin/main.css}" href="../../static/css/admin/main.css" rel="stylesheet">
 </head>
-<body>
-<h1 class="title">Country List</h1>
+<body class="p-6">
+<h1 class="title text-2xl font-bold text-gray-900 mb-6">Country List</h1>
 
-<table>
-    <thead>
+<table class="w-full text-left border-collapse border border-gray-300">
+    <thead class="bg-gray-100">
     <tr>
-        <th>ID</th>
-        <th>Country Name</th>
-        <th>Name (Ar)</th>
-        <th>Enabled</th>
-        <th>Actions</th>
+        <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">ID</th>
+        <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Country Name</th>
+        <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Name (Ar)</th>
+        <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Enabled</th>
+        <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Actions</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="country : ${countries}">
-        <td th:text="${country.id}">ID</td>
-        <td th:text="${country.name}">Country Name</td>
-        <td th:text="${country.nameAr}">Name (Ar)</td>
-        <td th:text="${country.enabled}">1</td>
-        <td>
-            <a th:href="|/admin/address/country/edit?id=${country.id}|">Edit</a>
-            <a href="javascript:void(0)" th:date-delete-id="${country.id}">Delete</a>
+    <tr th:each="country : ${countries}" class="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
+        <td class="px-4 py-2 text-sm" th:text="${country.id}">ID</td>
+        <td class="px-4 py-2 text-sm" th:text="${country.name}">Country Name</td>
+        <td class="px-4 py-2 text-sm" th:text="${country.nameAr}">Name (Ar)</td>
+        <td class="px-4 py-2 text-sm" th:text="${country.enabled}">1</td>
+        <td class="px-4 py-2 text-sm">
+            <a th:href="|/admin/address/country/edit?id=${country.id}|" class="text-blue-600 hover:underline text-sm">Edit</a>
+            <a href="javascript:void(0)" th:date-delete-id="${country.id}" class="ml-4 text-red-600 hover:underline text-sm">Delete</a>
         </td>
     </tr>
     </tbody>

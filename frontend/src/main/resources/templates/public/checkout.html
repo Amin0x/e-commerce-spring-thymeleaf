@@ -3,71 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta name="description" content="Home page description for your website.">
-    <meta name="author" content="Your Name or Company Name">
-    <meta name="keywords" content="home, page, example, bootstrap, website">
+
+    <meta name="description" content="@{description}" content="Home page description for your website.">
+    <meta name="author" content="@{author}" content="Your Name or Company Name">
+    <meta name="keywords" content="@{keywords}" content="home, page, example, website">
     <title>Checkout Page</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link th:href="@{/css/bootstrap.min.css}"
-        href="../../static/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link th:href="@{/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
+    <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
 </head>
 <body dir="rtl">
     <div class="wrapper">
-        <main class="cart-container">        
-            <h1 class="title">الدفع الامن</h1>
-            <section class="cart-card">
-                <h4 class="title">تفاصبل السلة</h4>
+        <main class="cart-container px-4 py-6">
+            <h1 class="title text-2xl font-bold text-gray-800 mb-6">الدفع الامن</h1>
+            <section class="cart-card card mb-6">
+                <h4 class="title text-lg font-semibold text-gray-800 mb-4">تفاصبل السلة</h4>
                 <div class="order-summary" th:each="item : ${cart.items}">
-                <div class="item">
+                <div class="item flex justify-between py-2 border-b border-gray-100">
                     <span th:text="${item.productName}">Product Name</span>
                     <span th:text="${item.quantity}">الكمية:9</span>
                     <span th:text="${item.price}">100 جنيه</span>
                 </div>
                 </div>
-                <div class="total">
+                <div class="total pt-4 border-t border-gray-200 font-semibold text-right">
                 المجموع:<span th:text="${cart.totalPrice}">900 جنيه</span>
                 </div>
             </section>
-    
-            <form th:action="@{/checkout}" th:object="${checkoutForm}" method="post">
-              <section class="cart-card">
-                <h4 class="title">التواصل</h4>
+
+            <form th:action="@{/checkout}" method="post">
+              <section class="cart-card card mb-6">
+                <h4 class="title text-lg font-semibold text-gray-800 mb-4">التواصل</h4>
                 <div class="form-group">
-                    <label for="firstName" class="form-label">الاسم الاول</label>
+                    <label for="firstName" class="form-label block text-sm font-medium text-gray-700 mb-1">الاسم الاول</label>
                     <input type="text" id="firstName" name="firstName" class="form-control" th:field="*{firstName}" required>
                 </div>
                 <div class="form-group">
-                    <label for="lastName" class="form-label">الاسم الاخير</label>
+                    <label for="lastName" class="form-label block text-sm font-medium text-gray-700 mb-1">الاسم الاخير</label>
                     <input type="text" id="lastName" name="lastName" class="form-control" th:field="*{lastName}" required>
                 </div>
                 <div class="form-group">
-                  <label for="contact" class="form-label">الايميل او رقم الهاتف</label>
+                  <label for="contact" class="form-label block text-sm font-medium text-gray-700 mb-1">الايميل او رقم الهاتف</label>
                   <input type="text" id="contact" name="contact" class="form-control" th:field="*{contact}" required>
-                  <small class="form-text text-muted">Provide either your email address or phone number.</small>
+                  <small class="form-text text-xs text-gray-500">Provide either your email address or phone number.</small>
                 </div>
               </section>
-    
-              <section class="cart-card">
-                <h4 class="title">العنوان</h4>
+
+              <section class="cart-card card mb-6">
+                <h4 class="title text-lg font-semibold text-gray-800 mb-4">العنوان</h4>
                 <div class="form-group">
-                    <label for="streetname" class="form-label">الشارع\الحي</label>
+                    <label for="streetname" class="form-label block text-sm font-medium text-gray-700 mb-1">الشارع\الحي</label>
                     <input type="text" id="streetname" name="streetname" class="form-control" th:field="*{firstName}" required>
                 </div>
                 <div class="form-group">
-                    <label for="city" class="form-label">المدينة</label>
+                    <label for="city" class="form-label block text-sm font-medium text-gray-700 mb-1">المدينة</label>
                     <input type="text" id="city" name="city" class="form-control" th:field="*{city}" required>
                 </div>
                 <div class="form-group">
-                  <label for="shipingPhone" class="form-label">رقم الهاتف</label>
+                  <label for="shipingPhone" class="form-label block text-sm font-medium text-gray-700 mb-1">رقم الهاتف</label>
                   <input type="text" id="shipingPhone" name="shipingPhone" placeholder="رقم الهاتف" class="form-control" th:field="*{shipingPhone}" required>
-                  <small class="form-text text-muted">0*********</small>
+                  <small class="form-text text-xs text-gray-500">0*********</small>
                 </div>
               </section>
-    
-              <section class="cart-card billing-information">
-                <h4 class="title">الفاتورة</h4>
+
+              <section class="cart-card card mb-6 billing-information">
+                <h4 class="title text-lg font-semibold text-gray-800 mb-4">الفاتورة</h4>
                 <div class="form-group">
                     <label for="billingName">الاسم</label>
                     <input type="text" class="form-control" id="billingName" name="billingName" required>
@@ -85,9 +84,9 @@
                     <input type="text" class="form-control" id="billingPhone" name="billingPhone" placeholder="رقم الهاتف">
                 </div>
               </section>
-    
-              <section class="cart-card payment-details">
-                <h4 class="title">تفاصيل الدفع</h4>
+
+              <section class="cart-card card payment-details">
+                <h4 class="title text-lg font-semibold text-gray-800 mb-4">تفاصيل الدفع</h4>
                 <div class="form-group">
                     <label for="cardNumber">رقم البطاقة</label>
                     <input type="text" class="form-control" id="cardNumber" name="cardNumber" required>
@@ -100,16 +99,14 @@
                     <label for="cardCVC">CVC</label>
                     <input type="text" class="form-control" id="cardCVC" name="cardCVC" required>
                 </div>
-    
-                <button type="submit" class="button-31">دفع</button>
+
+                <button type="submit" class="button-31 btn btn-primary w-full mt-4">دفع</button>
               </section>
             </form>
-            <div th:replace="public/fragments/footer :: footer"></div>
+            <div th:replace="fragments/footer :: footer"></div>
         </main>
     </div>
-    
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

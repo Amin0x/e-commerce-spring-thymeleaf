@@ -4,25 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Successful</title>
-    <link rel="stylesheet" href="../../static/public/css/style.css">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
-    <div class="wrapper">
-        <div th:repalce="~{fragments/header::header}"></div>
-        <div class="content-container payment-success">
+    <div class="wrapper min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div th:replace="~{public/fragments/footer :: footer}"></div>
+        <div class="content-container payment-success max-w-md w-full text-center mx-auto p-4 bg-white rounded shadow">
             <div class="payment-container">
-                <div class="icon">
+                <div class="icon mx-auto mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 11l3 3L22 4"></path>
                         <circle cx="12" cy="12" r="10"></circle>
                     </svg>
                 </div>
-                <h1>Payment Successful</h1>
-                <p>Your payment has been successfully processed. Thank you for your purchase!</p>
-                <a href="/" class="btn">Go to Home</a>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Payment Successful</h1>
+                <p class="text-gray-600 mb-6">Your payment has been successfully processed. Thank you for your purchase!</p>
+                <a href="/" class="btn btn-primary">Go to Home</a>
             </div>
         </div>
-        <div th:repalce="~{fragments/footer::footer}"></div>
     </div>
 </body>
 </html>

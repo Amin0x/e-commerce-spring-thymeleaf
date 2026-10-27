@@ -2,34 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Slider Fragment</title>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
     <div th:fragment="slider">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" th:src="@{/images/slide1.jpg}" alt="First slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" th:src="@{/images/slide2.jpg}" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" th:src="@{/images/slide3.jpg}" alt="Third slide">
+        <div class="relative">
+            <div class="flex items-center justify-between">
+                <ol class="flex gap-2" aria-label="Carousel indicators">
+                    <li><button class="w-2 h-2 rounded-full bg-blue-600" aria-current="true" aria-label="Slide 1"></button></li>
+                    <li><button class="w-2 h-2 rounded-full bg-gray-300" aria-label="Slide 2"></button></li>
+                    <li><button class="w-2 h-2 rounded-full bg-gray-300" aria-label="Slide 3"></button></li>
+                </ol>
+            </div>
+            <div class="overflow-hidden rounded-lg border border-gray-200">
+                <div class="flex transition-transform duration-500 ease-in-out" id="slider-track">
+                    <div class="min-w-full flex-shrink-0">
+                        <img class="block w-full h-auto" th:src="@{/images/slide1.jpg}" alt="First slide">
+                    </div>
+                    <div class="min-w-full flex-shrink-0 hidden">
+                        <img class="block w-full h-auto" th:src="@{/images/slide2.jpg}" alt="Second slide">
+                    </div>
+                    <div class="min-w-full flex-shrink-0 hidden">
+                        <img class="block w-full h-auto" th:src="@{/images/slide3.jpg}" alt="Third slide">
+                    </div>
                 </div>
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+            <div class="flex items-center justify-between mt-3 gap-2">
+                <button class="btn btn-primary px-4 py-1 text-xs" aria-label="Previous">&#10094;</button>
+                <button class="btn btn-primary px-4 py-1 text-xs" aria-label="Next">&#10095;</button>
+            </div>
         </div>
     </div>
 </body>

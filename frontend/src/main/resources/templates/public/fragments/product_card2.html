@@ -4,290 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body{
-
-	background-color: #eee;
-}
-.container{
-	width: 900px;
-}
-
-.card2_container .card{
-
-	background-color: #fff;
-	border:none;
-	border-radius: 10px;
-	width: 190px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
-}
-
-.card2_container .image-container{
-
-	position: relative;
-}
-
-.card2_container .thumbnail-image{
-	border-radius: 10px !important;
-}
-
-
-.card2_container .discount{
-
-	background-color: red;
-	padding-top: 1px;
-	padding-bottom: 1px;
-	padding-left: 4px;
-	padding-right: 4px;
-	font-size: 10px;
-	border-radius: 6px;
-	color: #fff;
-}
-
-.card2_container .wishlist{
-
-	height: 25px;
-	width: 25px;
-	background-color: #eee;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 50%;
-	box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.card2_container .first{
-
-	position: absolute;
-	width: 100%;
-	    padding: 9px;
-}
-
-
-.card2_container .dress-name{
-	font-size: 13px;
-	font-weight: bold;
-	width: 75%;
-}
-
-
-.card2_container .new-price{
-	font-size: 13px;
-	font-weight: bold;
-	color: red;
-	
-}
-.card2_container .old-price{
-	font-size: 8px;
-	font-weight: bold;
-	color: grey;
-}
-
-
-.card2_container .btn{
-	width: 14px;
-	height: 14px;
-	border-radius: 50%;
-	padding: 3px;
-}
-
-.card2_container .creme{
-	background-color: #fff;
-	border: 2px solid grey;
-	
-
-}
-.card2_container .creme:hover {
-	border: 3px solid grey;
-}
-
-.card2_container .creme:focus {
-	background-color: grey;
-
-}
-
-
-.card2_container .red{
-	background-color: #fff;
-	border: 2px solid red;
-	
-}
-
-
-.card2_container .red:hover {
-	border: 3px solid red;
-}
-.card2_container .red:focus {
-	background-color: red;
-}
-
-
-
-.card2_container .blue{
-	background-color: #fff;
-	border: 2px solid #40C4FF;
-}
-
-.card2_container .blue:hover {
-	border: 3px solid #40C4FF;
-}
-.card2_container .blue:focus {
-	background-color: #40C4FF;
-}
-.card2_container .darkblue{
-	background-color: #fff;
-	border: 2px solid #01579B;
-}
-.card2_container .darkblue:hover {
-	border: 3px solid #01579B;
-}
-.card2_container .darkblue:focus {
-	background-color: #01579B;
-}
-.card2_container .yellow{
-	background-color: #fff;
-	border: 2px solid #FFCA28;
-}
-.card2_container .yellow:hover {
-	border-radius: 3px solid #FFCA28;
-}
-.card2_container .yellow:focus {
-	background-color: #FFCA28;
-}
-
-
-.card2_container .item-size{
-	width: 15px;
-	height: 15px;
-	border-radius: 50%;
-	background: #fff;
-	border: 1px solid grey;
-	color: grey;
-	font-size: 10px;
-	text-align: center;
-	align-items: center;
-	display: flex;
-	justify-content: center;
-}
-
-
-.card2_container .rating-star{
-	font-size: 10px !important;
-}
-.card2_container .rating-number{
-	font-size: 10px;
-	color: grey;
-
-}
-.card2_container .buy{
-	font-size: 12px;
-	color: purple;
-	font-weight: 500;
-}
-
-.card2_container .voutchers{
-	background-color: #fff;
-	border:none;
-	border-radius: 10px;
-	width: 190px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	overflow: hidden;
-
-}
-.card2_container .voutcher-divider{
-
-	display: flex;
-
-}
-.card2_container .voutcher-left{
-	width: 60%
-}
-.card2_container .voutcher-name{
-	color: grey;
-	font-size: 9px;
-	font-weight: 500;
-}
-.card2_container .voutcher-code{
-	color: red;
-	font-size: 11px;
-	font-weight: bold;
-}
-.card2_container .voutcher-right{
-	width: 40%;	 
-	background-color: purple;
-	color: #fff;
-}
-
-.card2_container .discount-percent{
-	font-size: 12px;
-	font-weight: bold;
-	position: relative;
-	top: 5px;
-}
-.card2_container .off{
-	font-size: 14px;
-	position: relative;
-	bottom: 5px;
-}
-
-    </style>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
 
-<div class="container card2_container mt-5" th:fragment="productCardList2(products)">
-    <div class="row">
-        <div class="col-md-3" th:each="product : ${products}" >
-            <div class="card">
-                <div class="image-container">
-                    <div class="first">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="discount" th:text="'-' + ${product.discount} + '%'">-25%</span>
-                            <span class="wishlist"><i class="fa fa-heart-o"></i></span>
-                        </div>
+<div class="container card2_container mx-auto px-4 mt-6 max-w-[900px]" th:fragment="productCardList2(products)">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div th:each="product : ${products}">
+            <div class="card bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="image-container relative h-48 overflow-hidden">
+                    <div class="first absolute inset-0 flex justify-between items-center p-3 bg-black/10">
+                        <span class="discount bg-red-600 text-white text-[10px] px-2 py-0.5 rounded" th:text="'-' + ${product.discount} + '%'">-25%</span>
+                        <span class="wishlist w-6 h-6 bg-gray-200 flex items-center justify-center rounded-full shadow-sm">
+                            <i class="fa fa-heart-o text-gray-600 text-[10px]"></i>
+                        </span>
                     </div>
-                    <img th:src="@{${product.imageUrl}}" class="img-fluid rounded thumbnail-image" alt="Product Image">
+                    <img th:src="@{${product.imageUrl}}" class="w-full h-full object-cover rounded-none" alt="Product Image">
                 </div>
-                <div class="product-detail-container p-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="dress-name" th:text="${product.name}">Product Name</h5>
-                        <div class="d-flex flex-column mb-2">
-                            <span class="new-price" th:text="'$' + ${product.newPrice}">$3.99</span>
-                            <small class="old-price text-right" th:text="'$' + ${product.oldPrice}">$5.99</small>
+                <div class="product-detail-container p-3">
+                    <div class="flex justify-between items-center">
+                        <h5 class="dress-name text-sm font-bold leading-tight line-clamp-2" th:text="${product.name}">Product Name</h5>
+                        <div class="flex flex-col mb-2 text-right">
+                            <span class="new-price text-sm font-bold text-red-600" th:text="'$' + ${product.newPrice}">$3.99</span>
+                            <small class="old-price text-xs text-gray-500" th:text="'$' + ${product.oldPrice}">$5.99</small>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center pt-1">
-                        <div class="color-select d-flex">
-                            <input type="button" name="grey" class="btn creme">
-                            <input type="button" name="red" class="btn red ml-2">
-                            <input type="button" name="blue" class="btn blue ml-2">
+                    <div class="flex justify-between items-center pt-2">
+                        <div class="color-select flex gap-1">
+                            <input type="button" name="grey" class="btn w-4 h-4 rounded-full border-2 border-gray-400">
+                            <input type="button" name="red" class="btn w-4 h-4 rounded-full border-2 border-red-500 ml-1">
+                            <input type="button" name="blue" class="btn w-4 h-4 rounded-full border-2 border-blue-500 ml-1">
                         </div>
-                        <div class="d-flex">
-                            <span class="item-size mr-2 btn" type="button">S</span>
-                            <span class="item-size mr-2 btn" type="button">M</span>
-                            <span class="item-size btn" type="button">L</span>
+                        <div class="flex gap-1">
+                            <span class="item-size w-4 h-4 border border-gray-300 rounded-full text-xs flex items-center justify-center text-gray-600">S</span>
+                            <span class="item-size w-4 h-4 border border-gray-300 rounded-full text-xs flex items-center justify-center text-gray-600">M</span>
+                            <span class="item-size w-4 h-4 border border-gray-300 rounded-full text-xs flex items-center justify-center text-gray-600">L</span>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center pt-1">
-                        <div>
-                            <i class="fa fa-star-o rating-star"></i>
-                            <span class="rating-number" th:text="${product.rating}">4.8</span>
+                    <div class="flex justify-between items-center pt-2">
+                        <div class="flex items-center gap-1">
+                            <i class="fa fa-star-o text-xs text-gray-400"></i>
+                            <span class="rating-number text-xs text-gray-600" th:text="${product.rating}">4.8</span>
                         </div>
-                        <span class="buy">BUY +</span>
+                        <span class="buy text-xs text-purple-600 font-medium">BUY +</span>
                     </div>
                 </div>
             </div>
-            <div class="mt-3">
-                <div class="card voutchers">
-                    <div class="voutcher-divider">
-                        <div class="voutcher-left text-center">
-                            <span class="voutcher-name" th:text="${product.voucherName}">Monday Happy</span>
-                            <h5 class="voutcher-code" th:text="'#' + ${product.voucherCode}">#MONHPY</h5>
+            <div class="mt-4">
+                <div class="card bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="flex">
+                        <div class="voutcher-left text-center w-3/5 p-3">
+                            <span class="voutcher-name text-gray-600 text-[9px] font-medium block" th:text="${product.voucherName}">Monday Happy</span>
+                            <h5 class="voutcher-code text-red-600 text-xs font-bold" th:text="'#' + ${product.voucherCode}">#MONHPY</h5>
                         </div>
-                        <div class="voutcher-right text-center border-left">
-                            <h5 class="discount-percent" th:text="${product.voucherDiscount + '%'}">20%</h5>
-                            <span class="off">Off</span>
+                        <div class="voutcher-right bg-purple-600 text-white text-center w-2/5 flex flex-col justify-center items-center gap-1 p-3">
+                            <h5 class="discount-percent text-sm font-bold" th:text="${product.voucherDiscount + '%'}">20%</h5>
+                            <span class="off text-xs">Off</span>
                         </div>
                     </div>
                 </div>
@@ -296,7 +68,5 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

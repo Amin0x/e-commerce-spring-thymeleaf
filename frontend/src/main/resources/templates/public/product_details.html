@@ -7,68 +7,68 @@
     <!-- SEO Meta Tags -->
     <meta name="description" content="Home page description for your website.">
     <meta name="author" content="Your Name or Company Name">
-    <meta name="keywords" content="home, page, example, bootstrap, website">
+    <meta name="keywords" content="home, page, example, website">
     <title>Product Details</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link th:href="@{/public/css/bootstrap.min.css}" href="../../static/public/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
     <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
 </head>
 
 <body>
     <main class="wrapper">
         <nav th:replace="~{public/fragments/navbar :: navbar}" class="navbar-wrp"></nav>
-        <section class="product-details">
+        <section class="product-details px-4 py-6">
             <section th:replace="public/search_fragment::searchHeader">
 
             </section>
 
             <section class="product-info" id="productInfo">
-                <h2 class="product-name" th:text="${product.name}">
+                <h2 class="product-name text-xl font-bold text-gray-800 mb-2" th:text="${product.name}">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veniam, dolor?
                 </h2>
-                <div class="product-brand"><a href="#" class="brand-link">Lorem, ipsum dolor.</a></div>
-                <div class="product-info__details">
-                    <div class="product-image-wrap">
+                <div class="product-brand"><a href="#" class="brand-link text-blue-600 hover:underline">Lorem, ipsum dolor.</a></div>
+                <div class="product-info__details flex flex-col md:flex-row gap-6">
+                    <div class="product-image-wrap flex-1">
                         <div class="product-image text-center">
-                            <img th:src="@{'/uploads/images/'+ ${product.image}}" th:alt="product.name" class="img-fluid">
+                            <img th:src="@{'/uploads/images/'+ ${product.image}}" th:alt="product.name" class="img-fluid w-full max-w-[400px] h-auto">
                         </div>
                     </div>
-                    <div class="product-attribs">
-                        <div class="product-price">
-                            <p class="price d-inline-block"><span th:text="${product.price}">122</span> جنيه</p>
-                            <p class="price-old d-inline-block"><span th:text="${product.price}">155</span> جنيه</p>
-                            <p class="price-discount d-inline-block"><span th:text="${discountPercent}">5%</span> خصم</p>
+                    <div class="product-attribs flex-1">
+                        <div class="product-price mb-4">
+                            <p class="price inline-block flex items-baseline gap-1"><span th:text="${product.price}">122</span> <span class="text-gray-500 text-sm">جنيه</span></p>
+                            <p class="price-old inline-block flex items-baseline gap-1 text-gray-400 line-through mt-1"><span th:text="${product.price}">155</span> <span class="text-gray-500 text-sm">جنيه</span></p>
+                            <p class="price-discount inline-block text-red-600 font-semibold mt-1"><span th:text="${discountPercent}">5%</span> <span class="text-gray-600">خصم</span></p>
                         </div>
-                        <div class="review-rate">
-                            <i class="fas fa-star"></i> <span th:text="${reviewAvg}">4.5</span> (<span th:text="${reviewsCount}">283</span> مراجعة)
+                        <div class="review-rate mb-4 flex items-center gap-2 text-sm">
+                            <i class="fas fa-star text-yellow-500"></i> <span th:text="${reviewAvg}">4.5</span> (<span th:text="${reviewsCount}">283</span> <span class="text-gray-500">مراجعة</span>)
                         </div>
-                        <div class="product-description">
-                            <h4 class="description-title">الوصف</h4>
-                            <p class="description-body" th:text="${product.description}">
+                        <div class="product-description mb-6">
+                            <h4 class="description-title font-semibold text-gray-800 mb-2">الوصف</h4>
+                            <p class="description-body text-gray-700 leading-relaxed" th:text="${product.description}">
                                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam ipsa commodi molestias.
                             </p>
                         </div>
                         <div class="add-to-cart">
-                            <button th:data-add-cart="${product.uuid}" class="button-31 add-to-cart">اضافة للعربة</button>
+                            <button th:data-add-cart="${product.uuid}" class="button-31 add-to-cart btn btn-primary">اضافة للعربة</button>
                         </div>
                     </div>
                 </div>
             </section>
-            <section th:if="${#lists.isEmpty(similarProducts) == false}" class="similar-products">
-                <h4>منتجات مشابه</h4>
-                <div class="similar-products-container">
-                    <article class="product-card" th:each="similarProduct : ${similarProducts}">
-                        <div class="product-item">
+            <section th:if="${#lists.isEmpty(similarProducts) == false}" class="similar-products mt-8">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">منتجات مشابه</h4>
+                <div class="similar-products-container grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <article class="product-card card" th:each="similarProduct : ${similarProducts}">
+                        <div class="product-item card-body">
                             <div class="image">
-                                <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img10.jpg" alt="Similar Product Image">
+                                <img th:src="@{${similarProduct.imageUrl}}" src="../../static/public/imgs/img10.jpg" alt="Similar Product Image" class="w-full h-40 object-cover">
                             </div>
                             <div class="product-item-btm">
-                                <div th:text="${similarProduct.name}" class="title">
+                                <div th:text="${similarProduct.name}" class="title font-semibold text-gray-800 mb-2">
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, debitis?
                                 </div>
                                 <div class="price-container">
                                     <p class="price"><span th:text="${similarProduct.price}">1599</span> SDG</p>
-                                    <p class="discount-price"><span th:text="${similarProduct.price}">1599</span> SDG</p>
+                                    <p class="discount-price text-gray-400 text-sm line-through"><span th:text="${similarProduct.price}">1599</span> SDG</p>
                                 </div>
                             </div>
                         </div>
@@ -76,33 +76,32 @@
                 </div>
             </section>
 
-
-            <section th:if="${#lists.isEmpty(peopleSeeProducts) == false}" class="people-see">
-                <div class="title"><h4></h4></div>
-                <div class="flex-row all-products">
-                    <div class="product-card">
-                        <div class="product">
+            <section th:if="${#lists.isEmpty(peopleSeeProducts) == false}" class="people-see mt-8">
+                <div class="title mb-4"><h4 class="font-semibold text-gray-800"></h4></div>
+                <div class="flex-row all-products grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="product-card card">
+                        <div class="product card-body">
                             <div class="product-image">
-                                <a href="#" class="image">
-                                    <img class="img-1" src="../../static/public/imgs/img10.jpg">                                    
+                                <a href="#" class="image block">
+                                    <img class="img-1 w-full h-40 object-cover" src="../../static/public/imgs/img10.jpg">
                                 </a>
-                                <ul class="product-links">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-random"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                <ul class="product-links flex justify-center gap-2 mt-2">
+                                    <li><a href="#" class="text-gray-600 hover:text-blue-600"><i class="fa fa-heart"></i></a></li>
+                                    <li><a href="#" class="text-gray-600 hover:text-blue-600"><i class="fa fa-random"></i></a></li>
+                                    <li><a href="#" class="text-gray-600 hover:text-blue-600"><i class="fa fa-shopping-cart"></i></a></li>
                                 </ul>
-                                <a href="#" class="product-view"><i class="fa fa-search"></i></a>
+                                <a href="#" class="product-view block text-center text-blue-600 hover:underline mt-2"><i class="fa fa-search"></i></a>
                             </div>
-                            <div class="product-info">
-                                <h3 class="title"><a href="#">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repudiandae commodi ad odit.</a></h3>
-                                <div class="price">$65.99</div>
-                                <ul class="rating">
+                            <div class="product-info mt-3">
+                                <h3 class="title font-semibold text-gray-800"><a href="#" class="text-gray-800 hover:text-blue-600">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repudiandae commodi ad odit.</a></h3>
+                                <div class="price text-gray-600">$65.99</div>
+                                <ul class="rating flex gap-1 text-yellow-500 text-sm">
                                     <li class="fas fa-star"></li>
                                     <li class="fas fa-star"></li>
                                     <li class="fas fa-star"></li>
                                     <li class="fas fa-star"></li>
-                                    <li class="fas fa-star disable"></li>
-                                    <li class="disable">(1 reviews)</li>
+                                    <li class="fas fa-star disable text-gray-300"></li>
+                                    <li class="disable text-gray-500">(1 reviews)</li>
                                 </ul>
                             </div>
                         </div>
@@ -111,37 +110,37 @@
             </section>
 
 
-            <section th:if="false" class="user-reviews">
-                <div class="title">
-                    <h4>المراجعات</h4>
+            <section th:if="false" class="user-reviews mt-8">
+                <div class="title mb-4">
+                    <h4 class="font-semibold text-gray-800">المراجعات</h4>
                 </div>
                 <article th:each="review : ${product.reviews}">
-                    <div class="review-item">
-                        <h5 class="review__user" th:text="${review.userName}">احمد علي</h5>
-                        <div class="rating">
+                    <div class="review-item mb-4 p-4 border border-gray-200 rounded">
+                        <h5 class="review__user font-semibold text-gray-800" th:text="${review.userName}">احمد علي</h5>
+                        <div class="rating flex gap-1 text-yellow-500 text-sm mt-1">
                             <p class="fas fa-star"></p>
                             <p class="fas fa-star"></p>
                             <p class="fas fa-star"></p>
                             <p class="fas fa-star"></p>
-                            <p class="fas fa-star disable"></p>
-                            <p class="disable">Lorem ipsum dolor sit, amet consectetur</p>
+                            <p class="fas fa-star disable text-gray-300"></p>
+                            <p class="disable text-gray-500">Lorem ipsum dolor sit, amet consectetur</p>
                         </div>
-                        <p class="review__content" th:text="${review.comment}">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum tempore dicta aliquam repellendus quis! Quisquam exercitationem reiciendis modi facilis non, rerum architecto culpa necessitatibus, praesentium eum nulla ipsum alias enim?</p>
-                        <p class="review__date" th:text="${review.date}">15/03/2024 05:30 PM</p>
+                        <p class="review__content text-gray-700 mt-2" th:text="${review.comment}">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum tempore dicta aliquam repellendus quis! Quisquam exercitationem reiciendis modi facilis non, rerum architecto culpa necessitatibus, praesentium eum nulla ipsum alias enim?</p>
+                        <p class="review__date text-xs text-gray-500 mt-1" th:text="${review.date}">15/03/2024 05:30 PM</p>
                     </div>
                 </article>
-                <div class="review-form">
-                    <h4>اضافة مراجعة</h4>
+                <div class="review-form mt-6">
+                    <h4 class="font-semibold text-gray-800 mb-3">اضافة مراجعة</h4>
                     <form th:action="@{/product/${product.id}/review}" method="post">
-                        <div class="form-group">
-                            <label for="userName">الاسم:</label>
+                        <div class="form-group mb-3">
+                            <label for="userName" class="form-label block text-sm font-medium text-gray-700 mb-1">الاسم:</label>
                             <input type="text" class="form-control" id="userName" name="userName">
                         </div>
-                        <div class="form-group">
-                            <label for="comment">التعليق:</label>
+                        <div class="form-group mb-3">
+                            <label for="comment" class="form-label block text-sm font-medium text-gray-700 mb-1">التعليق:</label>
                             <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
                         </div>
-                        <button type="submit" class="button-31 mt-3" style="width: fit-content;">ارسال</button>
+                        <button type="submit" class="button-31 btn btn-primary mt-3 w-fit">ارسال</button>
                     </form>
                 </div>
             </section>
@@ -150,7 +149,6 @@
         <footer th:replace="~{public/fragments/footer :: footer}" class="mt-3"></footer>
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../../static/public/js/main.js" th:src="@{/public/js/main.js}"></script>
 </body>
 

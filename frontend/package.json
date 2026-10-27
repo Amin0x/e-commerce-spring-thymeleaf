@@ -1,0 +1,15 @@
+{
+  "name": "ecommerce",
+  "version": "0.0.1-SNAPSHOT",
+  "private": true,
+  "description": "Tailwind CSS build pipeline for the e-commerce Thymeleaf frontend",
+  "scripts": {
+    "css:build": "postcss src/main/resources/static/css/source.css -o src/main/resources/static/public/css/tailwind.css"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.17"
+  }
+}

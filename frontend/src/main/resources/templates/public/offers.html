@@ -6,86 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta th:content="${pageDescription}" name="description" content="Home page description for your website.">
     <meta th:content="${pageAuthor}" name="author" content="Your Name or Company Name">
-    <meta th:content="${pageKeywords}" name="keywords" content="home, page, example, bootstrap, website">
+    <meta th:content="${pageKeywords}" name="keywords" content="home, page, example, website">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <title>Document</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="../../static/public/css/bootstrap.rtl.min.css" th:href="@{/public/css/bootstrap.rtl.min.css}" rel="stylesheet">
-    <link href="../../static/public/css/style.css" th:href="@{/public/css/style.css}" rel="stylesheet">
-    <style>
-        .offers-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .offer {
-            margin: 10px;
-        }
-
-        .offer-card {
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .offer-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .offer-body {
-            padding: 10px;
-            flex-grow: 1;
-        }
-
-        .title {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .text {
-            font-size: 16px;
-            margin: 0;
-        }
-
-        .offer-button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            text-align: center;
-            background-color: #12401d;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        .offer-button:hover {
-            cursor: pointer;
-            background-color: #0c2e14;
-        }
-    </style>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
+    <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <div class="wrapper">  
+    <div class="wrapper">
         <div th:replace="public/fragments/navbar :: navbar"></div>
-        <div class="content" id="content">
-            <h1>العروض</h1>
-            <div class="offers-container">
-                <div class="offer" th:each="offer : ${offers}">
-                    <div class="offer-card">
-                        <img th:src="${offer.imageUrl}" class="offer-img" alt="Offer Image">
-                        <div class="offer-body">
-                            <h5 class="title" th:text="${offer.title}">Offer Title</h5>
-                            <p class="text" th:text="${offer.description}">Offer Description</p>
-                            <a th:href="@{/offer/{id}(id=${offer.id})}" class="offer-button">View Details</a>
-                        </div>
+        <div class="content px-4 py-6 max-w-5xl mx-auto" id="content">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">العروض</h1>
+            <div class="offers-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="offer card" th:each="offer : ${offers}">
+                    <img th:src="${offer.imageUrl}" class="offer-img card-img-top w-full h-48 object-cover" alt="Offer Image">
+                    <div class="offer-body card-body">
+                        <h5 class="title font-semibold text-gray-800" th:text="${offer.title}">Offer Title</h5>
+                        <p class="text text-gray-700 mb-4" th:text="${offer.description}">Offer Description</p>
+                        <a th:href="@{/offer/{id}(id=${offer.id})}" class="offer-button btn btn-primary block text-center">View Details</a>
                     </div>
                 </div>
             </div>

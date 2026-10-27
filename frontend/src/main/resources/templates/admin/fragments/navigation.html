@@ -5,127 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../static/admin/main.css">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
-    <aside class="navigation" th:fragment="navigation">
-        <nav class="sidebar">
-            <div class="brand">
-                <img th:src="@{/public/imgs/logo.jpg}" src="../../../static/public/imgs/logo.jpg" alt="Admin Logo" class="logo">
-                <p class="title">Admin Control Panel</p>
+    <aside class="navigation h-screen bg-gray-900 text-white flex-shrink-0 fixed inset-y-0 left-0 z-20 hidden md:block" th:fragment="navigation">
+        <nav class="sidebar h-full flex flex-col">
+            <div class="brand p-4 flex items-center gap-3 border-b border-gray-700">
+                <img th:src="@{/public/imgs/logo.jpg}" src="../../../static/public/imgs/logo.jpg" alt="Admin Logo" class="logo w-8 h-8">
+                <p class="title text-lg font-bold">Admin Control Panel</p>
             </div>
-            <ul class="nav-list">
-                <li class="menu-item"><a href="#" th:href="@{/admin}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+            <ul class="nav-list flex-1 overflow-y-auto p-2 space-y-1">
+                <li class="menu-item"><a href="#" th:href="@{/admin}" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-house w-5 h-5" viewBox="0 0 16 16">
                         <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
                     </svg>
                     <span>Home</span></a>
                 </li>
-                <li class="menu-item"><a href="#" th:href="@{/admin/users}">
-                    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                         stroke="#fff">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <circle cx="12" cy="6" r="4" stroke="#fff" stroke-width="1.5"></circle>
-                            <path d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.7909 19 17C19 17.3453 18.9234 17.6804 18.7795 18"
-                                  stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path>
-                        </g>
-                    </svg>
-                    <span>Users</span></a>
-                    <div class="submenu">
-                        <div class="menu-item"><a href="#" th:href="@{/admin/users}">All Users</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/users/roles}">User Roles</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/users/permissions}">Create User</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/users/activities}">User Activities</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/users/notifications}">User Notifications</a></div>
+                <li class="menu-item group">
+                    <a href="#" th:href="@{/admin/users}" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white group-hover:border-l-4 group-hover:border-blue-500 pl-3 relative">
+                        <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#fff">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <circle cx="12" cy="6" r="4" stroke="#fff" stroke-width="1.5"></circle>
+                                <path d="M15 20.6151C14.0907 20.8619 13.0736 21 12 21C8.13401 21 5 19.2091 5 17C5 14.7909 8.13401 13 12 13C15.866 13 19 14.7909 19 17C19 17.3453 18.9234 17.6804 18.7795 18" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path>
+                            </g>
+                        </svg>
+                        <span>Users</span></a>
+                    <div class="submenu pl-4 border-l-2 border-gray-700 ml-2">
+                        <div class="menu-item"><a href="#" th:href="@{/admin/users}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">All Users</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/users/roles}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">User Roles</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/users/permissions}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Create User</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/users/activities}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">User Activities</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/users/notifications}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">User Notifications</a></div>
                     </div>
                 </li>
-                <li class="menu-item"><a href="#" th:href="@{/admin/products}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-layout-wtf" viewBox="0 0 16 16">
-                        <path d="M5 1v8H1V1zM1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm13 2v5H9V2zM9 1a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM5 13v2H3v-2zm-2-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1zm12-1v2H9v-2zm-6-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1z"/>
-                    </svg>
-                    <span>Products</span></a>
-                    <div class="submenu">
-                        <div class="menu-item"><a href="#" th:href="@{/admin/products}">All Products</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/products/categories}">Product Categories</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/products/brands}">Product Brands</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/products/attributes}">Product Attributes</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/products/reviews}">Product Reviews</a></div>
+                <li class="menu-item group">
+                    <a href="#" th:href="@{/admin/products}" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white group-hover:border-l-4 group-hover:border-blue-500 pl-3 relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-layout-wtf w-5 h-5" viewBox="0 0 16 16">
+                            <path d="M5 1v8H1V1zM1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm13 2v5H9V2zM9 1a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM5 13v2H3v-2zm-2-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1zm12-1v2H9v-2zm-6-1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2a1 1 0 0 0 1-1z"/>
+                        </svg>
+                        <span>Products</span></a>
+                    <div class="submenu pl-4 border-l-2 border-gray-700 ml-2">
+                        <div class="menu-item"><a href="#" th:href="@{/admin/products}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">All Products</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/products/categories}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Product Categories</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/products/brands}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Product Brands</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/products/attributes}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Product Attributes</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/products/reviews}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Product Reviews</a></div>
                     </div>
                 </li>
-                <li class="menu-item"><a href="#" th:href="@{/admin/categories}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-list-nested" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M4.5 11.5A.5.5 0 0 1 5 11h10a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5m-2-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m-2-4A.5.5 0 0 1 1 3h10a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5"/>
-                    </svg>
-                    <span>Categories</span></a>
-                    <div class="submenu">
-                        <div class="menu-item"><a href="#" th:href="@{/admin/categories}">All Categories</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/categories/subcategories}">Subcategories</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/categories/attributes}">Category Attributes</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/categories/reviews}">Category Reviews</a></div>
+                <li class="menu-item group">
+                    <a href="#" th:href="@{/admin/categories}" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white group-hover:border-l-4 group-hover:border-blue-500 pl-3 relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-list-nested w-5 h-5" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.5 11.5A.5.5 0 0 1 5 11h10a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5m-2-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m-2-4A.5.5 0 0 1 1 3h10a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                        <span>Categories</span></a>
+                    <div class="submenu pl-4 border-l-2 border-gray-700 ml-2">
+                        <div class="menu-item"><a href="#" th:href="@{/admin/categories}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">All Categories</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/categories/subcategories}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Subcategories</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/categories/attributes}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Category Attributes</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/categories/reviews}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Category Reviews</a></div>
                     </div>
                 </li>
-                <li class="menu-item"><a href="#" th:href="@{/admin/carts}">
-                    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                              stroke="#fff" stroke-width="1.5"/>
-                        <path d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z"
-                              stroke="#fff" stroke-width="1.5"/>
-                        <path d="M2 3L2.26121 3.09184C3.5628 3.54945 4.2136 3.77826 4.58584 4.32298C4.95808 4.86771 4.95808 5.59126 4.95808 7.03836V9.76C4.95808 12.7016 5.02132 13.6723 5.88772 14.5862C6.75412 15.5 8.14857 15.5 10.9375 15.5H12M16.2404 15.5C17.8014 15.5 18.5819 15.5 19.1336 15.0504C19.6853 14.6008 19.8429 13.8364 20.158 12.3075L20.6578 9.88275C21.0049 8.14369 21.1784 7.27417 20.7345 6.69708C20.2906 6.12 18.7738 6.12 17.0888 6.12H11.0235M4.95808 6.12H7"
-                              stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                    <span>Carts</span></a>
-                    <div class="submenu">
-                        <div class="menu-item"><a href="#" th:href="@{/admin/carts}">All Carts</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/carts/checkout}">Checkout</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/carts/transactions}">Transactions</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/carts/discounts}">Discounts</a></div>
+                <li class="menu-item group">
+                    <a href="#" th:href="@{/admin/carts}" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white group-hover:border-l-4 group-hover:border-blue-500 pl-3 relative">
+                        <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z" stroke="#fff" stroke-width="1.5"/>
+                            <path d="M16.5 18.0001C17.3284 18.0001 18 18.6716 18 19.5001C18 20.3285 17.3284 21.0001 16.5 21.0001C15.6716 21.0001 15 20.3285 15 19.5001C15 18.6716 15.6716 18.0001 16.5 18.0001Z" stroke="#fff" stroke-width="1.5"/>
+                            <path d="M2 3L2.26121 3.09184C3.5628 3.54945 4.2136 3.77826 4.58584 4.32298C4.95808 4.86771 4.95808 5.59126 4.95808 7.03836V9.76C4.95808 12.7016 5.02132 13.6723 5.88772 14.5862C6.75412 15.5 8.14857 15.5 10.9375 15.5H12M16.2404 15.5C17.8014 15.5 18.5819 15.5 19.1336 15.0504C19.6853 14.6008 19.8429 13.8364 20.158 12.3075L20.6578 9.88275C21.0049 8.14369 21.1784 7.27417 20.7345 6.69708C20.2906 6.12 18.7738 6.12 17.0888 6.12H11.0235M4.95808 6.12H7" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Carts</span></a>
+                    <div class="submenu pl-4 border-l-2 border-gray-700 ml-2">
+                        <div class="menu-item"><a href="#" th:href="@{/admin/carts}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">All Carts</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/carts/checkout}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Checkout</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/carts/transactions}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Transactions</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/carts/discounts}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Discounts</a></div>
                     </div>
                 </li>
-                <li class="menu-item"><a href="#" th:href="@{/admin/orders}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5"/>
-                    </svg>
-                    <span>Orders</span></a>
-                    <div class="submenu">
-                        <div class="menu-item"><a href="#" th:href="@{/admin/orders}">All Orders</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/orders/returns}">Order Returns</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/orders/transactions}">Order Transactions</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/orders/notifications}">Order Notifications</a></div>
-                        <div class="menu-item"><a href="#" th:href="@{/admin/orders/activities}">Order Activities</a></div>
+                <li class="menu-item group">
+                    <a href="#" th:href="@{/admin/orders}" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white group-hover:border-l-4 group-hover:border-blue-500 pl-3 relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-graph-up-arrow w-5 h-5" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                        <span>Orders</span></a>
+                    <div class="submenu pl-4 border-l-2 border-gray-700 ml-2">
+                        <div class="menu-item"><a href="#" th:href="@{/admin/orders}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">All Orders</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/orders/returns}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Order Returns</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/orders/transactions}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Order Transactions</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/orders/notifications}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Order Notifications</a></div>
+                        <div class="menu-item"><a href="#" th:href="@{/admin/orders/activities}" class="block px-3 py-1 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded">Order Activities</a></div>
                     </div>
                 </li>
-                <li class="menu-item"><a href="#" th:href="@{/admin/create}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-database-add" viewBox="0 0 16 16">
+                <li class="menu-item"><a href="#" th:href="@{/admin/create}" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-database-add w-5 h-5" viewBox="0 0 16 16">
                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
                         <path d="M12.096 6.223A5 5 0 0 0 13 5.698V7c0 .289-.213.654-.753 1.007a4.5 4.5 0 0 1 1.753.25V4c0-1.007-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1s-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4v9c0 1.007.875 1.755 1.904 2.223C4.978 15.71 6.427 16 8 16c.536 0 1.058-.034 1.555-.097a4.5 4.5 0 0 1-.813-.927Q8.378 15 8 15c-1.464 0-2.766-.27-3.682-.687C3.356 13.875 3 13.373 3 13v-1.302c.271.202.58.378.904.525C4.978 12.71 6.427 13 8 13h.027a4.6 4.6 0 0 1 0-1H8c-1.464 0-2.766-.27-3.682-.687C3.356 10.875 3 10.373 3 10V8.698c.271.202.58.378.904.525C4.978 9.71 6.427 10 8 10q.393 0 .774-.024a4.5 4.5 0 0 1 1.102-1.132C9.298 8.944 8.666 9 8 9c-1.464 0-2.766-.27-3.682-.687C3.356 7.875 3 7.373 3 7V5.698c.271.202.58.378.904.525C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777M3 4c0-.374.356-.875 1.318-1.313C5.234 2.271 6.536 2 8 2s2.766.27 3.682.687C12.644 3.125 13 3.627 13 4c0 .374-.356.875-1.318 1.313C10.766 5.729 9.464 6 8 6s-2.766-.27-3.682-.687C3.356 4.875 3 4.373 3 4"/>
                     </svg>
                     <span>Create</span></a>
                 </li>
-                <li class="menu-item">
-                    <a href="#" th:href="@{/admin/settings}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                <li class="menu-item group">
+                    <a href="#" th:href="@{/admin/settings}" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white group-hover:border-l-4 group-hover:border-blue-500 pl-3 relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-gear w-5 h-5" viewBox="0 0 16 16">
                             <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
-                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6 .42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
                         </svg>
                         <span>Settings</span>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="#" th:href="@{/logout}">
-                        <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                            <g id="SVGRepo_iconCarrier">
-                                <path d="M14.9453 1.25C13.5778 1.24998 12.4754 1.24996 11.6085 1.36652C10.7084 1.48754 9.95048 1.74643 9.34857 2.34835C8.82363 2.87328 8.55839 3.51836 8.41916 4.27635C8.28387 5.01291 8.25799 5.9143 8.25196 6.99583C8.24966 7.41003 8.58357 7.74768 8.99778 7.74999C9.41199 7.7523 9.74964 7.41838 9.75194 7.00418C9.75803 5.91068 9.78643 5.1356 9.89448 4.54735C9.99859 3.98054 10.1658 3.65246 10.4092 3.40901C10.686 3.13225 11.0746 2.9518 11.8083 2.85315C12.5637 2.75159 13.5648 2.75 15.0002 2.75H16.0002C17.4356 2.75 18.4367 2.75159 19.1921 2.85315C19.9259 2.9518 20.3144 3.13225 20.5912 3.40901C20.868 3.68577 21.0484 4.07435 21.1471 4.80812C21.2486 5.56347 21.2502 6.56459 21.2502 8V16C21.2502 17.4354 21.2486 18.4365 21.1471 19.1919C21.0484 19.9257 20.868 20.3142 20.5912 20.591C20.3144 20.8678 19.9259 21.0482 19.1921 21.1469C18.4367 21.2484 17.4356 21.25 16.0002 21.25H15.0002C13.5648 21.25 12.5637 21.2484 11.8083 21.1469C11.0746 21.0482 10.686 20.8678 10.4092 20.591C10.1658 20.3475 9.99859 20.0195 9.89448 19.4527C9.78643 18.8644 9.75803 18.0893 9.75194 16.9958C9.74964 16.5816 9.41199 16.2477 8.99778 16.25C8.58357 16.2523 8.24966 16.59 8.25196 17.0042C8.25799 18.0857 8.28387 18.9871 8.41916 19.7236C8.55839 20.4816 8.82363 21.1267 9.34857 21.6517C9.95048 22.2536 10.7084 22.5125 11.6085 22.6335C12.4754 22.75 13.5778 22.75 14.9453 22.75H16.0551C17.4227 22.75 18.525 22.75 19.392 22.6335C20.2921 22.5125 21.0499 22.2536 21.6519 21.6517C22.2538 21.0497 22.5127 20.2919 22.6337 19.3918C22.7503 18.5248 22.7502 17.4225 22.7502 16.0549V7.94513C22.7502 6.57754 22.7503 5.47522 22.6337 4.60825C22.5127 3.70814 22.2538 2.95027 21.6519 2.34835C21.0499 1.74643 20.2921 1.48754 19.392 1.36652C18.525 1.24996 17.4227 1.24998 16.0551 1.25H14.9453Z"
-                                    fill="#fff"></path>
-                                <path d="M15 11.25C15.4142 11.25 15.75 11.5858 15.75 12C15.75 12.4142 15.4142 12.75 15 12.75H4.02744L5.98809 14.4306C6.30259 14.7001 6.33901 15.1736 6.06944 15.4881C5.79988 15.8026 5.3264 15.839 5.01191 15.5694L1.51191 12.5694C1.34567 12.427 1.25 12.2189 1.25 12C1.25 11.7811 1.34567 11.573 1.51191 11.4306L5.01191 8.43056C5.3264 8.16099 5.79988 8.19741 6.06944 8.51191C6.33901 8.8264 6.30259 9.29988 5.98809 9.56944L4.02744 11.25H15Z"
-                                    fill="#fff"></path>
-                            </g>
-                        </svg>
-                        <span>Logout</span>
-                    </a>
+                <li class="menu-item"><a href="#" th:href="@{/logout}" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-red-900/20 text-gray-300 hover:text-red-200">
+                    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M14.9453 1.25C13.5778 1.24998 12.4754 1.24996 11.6085 1.36652C10.7084 1.48754 9.95048 1.74643 9.34857 2.34835C8.82363 2.87328 8.55839 3.51836 8.41916 4.27635C8.28387 5.01291 8.25799 5.9143 8.25196 6.99583C8.24966 7.41003 8.58357 7.74768 8.99778 7.74999C9.41199 7.7523 9.74964 7.41838 9.75194 7.00418C9.75803 5.91068 9.78643 5.1356 9.89448 4.54735C9.99859 3.98054 10.1658 3.65246 10.4092 3.40901C10.686 3.13225 11.0746 2.9518 11.8083 2.85315C12.5637 2.75159 13.5648 2.75 15.0002 2.75H16.0002C17.4356 2.75 18.4367 2.75159 19.1921 2.85315C19.9259 2.9518 20.3144 3.13225 20.5912 3.40901C20.868 3.68577 21.0484 4.07435 21.1471 4.80812C21.2486 5.56347 21.2502 6.56459 21.2502 8V16C21.2502 17.4354 21.2486 18.4365 21.1471 19.1919C21.0484 19.9257 20.868 20.3142 20.5912 20.591C20.3144 20.8678 19.9259 21.0482 19.1921 21.1469C18.4367 21.2484 17.4356 21.25 16.0002 21.25H15.0002C13.5648 21.25 12.5637 21.2484 11.8083 21.1469C11.0746 21.0482 10.686 20.8678 10.4092 20.591C10.1658 20.3475 9.99859 20.0195 9.89448 19.4527C9.78643 18.8644 9.75803 18.0893 9.75194 16.9958C9.74964 16.5816 9.41199 16.2477 8.99778 16.25C8.58357 16.2523 8.24966 16.59 8.25196 17.0042C8.25799 18.0857 8.28387 18.9871 8.41916 19.7236C8.55839 20.4816 8.82363 21.1267 9.34857 21.6517C9.95048 22.2536 10.7084 22.5125 11.6085 22.6335C12.4754 22.75 13.5778 22.75 14.9453 22.75H16.0551C17.4227 22.75 18.525 22.75 19.392 22.6335C20.2921 22.5125 21.0499 22.2536 21.6519 21.6517C22.2538 21.0497 22.5127 20.2919 22.6337 19.3918C22.7503 18.5248 22.7502 17.4225 22.7502 16.0549V7.94513C22.7502 6.57754 22.7503 5.47522 22.6337 4.60825C22.5127 3.70814 22.2538 2.95027 21.6519 2.34835C21.0499 1.74643 20.2921 1.48754 19.392 1.36652C18.525 1.24996 17.4227 1.24998 16.0551 1.25H14.9453Z" fill="#fff"></path>
+                            <path d="M15 11.25C15.4142 11.25 15.75 11.5858 15.75 12C15.75 12.4142 15.4142 12.75 15 12.75H4.02744L5.98809 14.4306C6.30259 14.7001 6.33901 15.1736 6.06944 15.4881C5.79988 15.8026 5.3264 15.839 5.01191 15.5694L1.51191 12.5694C1.34567 12.427 1.25 12.2189 1.25 12C1.25 11.7811 1.34567 11.573 1.51191 11.4306L5.01191 8.43056C5.3264 8.16099 5.79988 8.19741 6.06944 8.51191C6.33901 8.8264 6.30259 9.29988 5.98809 9.56944L4.02744 11.25H15Z" fill="#fff"></path>
+                        </g>
+                    </svg>
+                    <span>Logout</span>
                 </li>
             </ul>
         </nav>

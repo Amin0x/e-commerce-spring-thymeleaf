@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
-    <div class="wrapper">
+    <div class="wrapper px-4 py-6 bg-gray-50 min-h-screen">
         <header class="header">
             <nav th:replace="~{public/fragments/navbar :: navbar}" class="navbar-wrp"></nav>
         </header>
-        <main class="content">
-            <h1>help</h1>
+        <main class="content max-w-lg mx-auto">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">help</h1>
         </main>
-        <footer class="footer"></footer>
+        <footer th:replace="~{public/fragments/footer :: footer}" class="mt-6"></footer>
     </div>
 </body>
 </html>

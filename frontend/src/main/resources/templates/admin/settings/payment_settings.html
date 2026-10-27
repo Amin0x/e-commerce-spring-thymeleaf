@@ -2,101 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${pageTitle}">Title</title>
-    <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-            .settings-form {
-                max-width: 600px;
-                margin: 20px auto;
-                padding: 20px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                background-color: #f9f9f9;
-            }
-            .form-group {
-                margin-bottom: 15px;
-            }
-            .form-label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: bold;
-            }
-            .form-input, .form-textarea {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 3px;
-                box-sizing: border-box;
-                outline: none;
-            }
-            .form-input:focus, .form-textarea:focus {
-                border-color: #007bff;
-            }
-            .form-button {
-                background-color: #28a745;
-                color: white;
-                padding: 10px 15px;
-                border: none;
-                border-radius: 3px;
-                cursor: pointer;
-            }
-            .form-button:hover {
-                background-color: #0056b3;
-            }
-            header {
-                background-color: #28a745;
-                color: white;
-                padding: 10px 0;
-                text-align: center;
-            }
-        </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Payment Settings</title>
+    <link th:href="@{/public/css/tailwind.css}" href="/static/public/css/tailwind.css" rel="stylesheet">
 </head>
-<body>
+
+<body class="bg-gray-100 min-h-screen">
     <div class="wrapper">
-        <main class="content">
-            <div class="content-page-container payment-settings-container">
-                <header>
-                    <h1>Payment Settings</h1>
-                    <nav>
-                        <a href="/admin/settings/general" style="color: white; margin-right: 20px;">General Settings</a>
-                        <a href="/admin/settings/payment" style="color: white;">Payment Settings</a>
+        <main class="content p-6">
+            <div class="content-page-container payment-settings-container max-w-xl mx-auto">
+                <header class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">Payment Settings</h1>
+                    <nav class="flex gap-4 mt-2">
+                        <a href="/admin/settings/general" class="text-sm text-blue-600 hover:underline">General Settings</a>
+                        <a href="/admin/settings/payment" class="text-sm font-medium text-gray-900">Payment Settings</a>
                     </nav>
                 </header>
-                <form action="/admin/settings/payment" method="post" class="settings-form">
+                <form action="/admin/settings/payment" method="post" class="bg-white p-6 border border-gray-200 rounded shadow-sm space-y-4 settings-form">
                     <div class="form-group">
-                        <label for="paymentGateway" class="form-label">Payment Gateway:</label>
-                        <select id="paymentGateway" name="paymentGateway" required class="form-input">
+                        <label for="paymentGateway" class="block text-sm font-medium text-gray-700 mb-1">Payment Gateway:</label>
+                        <select id="paymentGateway" name="paymentGateway" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                             <option value="paypal">PayPal</option>
                             <option value="stripe">Stripe</option>
                             <option value="square">Square</option>
-                            <!-- Add more gateways as needed -->
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="apiKey" class="form-label">API Key:</label>
-                        <input type="text" id="apiKey" name="apiKey" required class="form-input">
+                        <label for="apiKey" class="block text-sm font-medium text-gray-700 mb-1">API Key:</label>
+                        <input type="text" id="apiKey" name="apiKey" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                     </div>
                     <div class="form-group">
-                        <label for="apiSecret" class="form-label">API Secret:</label>
-                        <input type="text" id="apiSecret" name="apiSecret" required class="form-input">
+                        <label for="apiSecret" class="block text-sm font-medium text-gray-700 mb-1">API Secret:</label>
+                        <input type="text" id="apiSecret" name="apiSecret" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                     </div>
                     <div class="form-group">
-                        <label for="currency" class="form-label">Currency:</label>
-                        <input type="text" id="currency" name="currency" required class="form-input">
+                        <label for="currency" class="block text-sm font-medium text-gray-700 mb-1">Currency:</label>
+                        <input type="text" id="currency" name="currency" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                     </div>
                     <div class="form-group">
-                        <label for="testMode" class="form-label">Test Mode:</label>
-                        <select id="testMode" name="testMode" required class="form-input">
+                        <label for="testMode" class="block text-sm font-medium text-gray-700 mb-1">Test Mode:</label>
+                        <select id="testMode" name="testMode" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                             <option value="true">Enabled</option>
                             <option value="false">Disabled</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="form-button">Save Payment Settings</button>
+                        <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">Save Payment Settings</button>
                     </div>
                 </form>
             </div>

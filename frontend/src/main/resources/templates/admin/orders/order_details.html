@@ -7,7 +7,7 @@
     <meta name="author" th:content="${pageAuthor}" />
     <meta name="description" th:content="${pageDescription}" />
     <title th:text="${pageTitle}">Order Details</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .content-page-container {
@@ -38,66 +38,70 @@
     </style>
 </head>
 <body>
-    <div class="page-wrapper">
+    <div class="page-wrapper p-6">
     <div class="wrapper">
         <main class="content-page-container order-details" style="max-width: 1200px; margin: 0 auto; padding: 0 18px; background-color: #f5f5f5;">
-            <div class="shortcut-container">
-                <a href="orders.html" class="shortcut shortcut-link">View All Orders</a>
-                <a href="new-order.html" class="shortcut shortcut-link">Create New Order</a>
-                <a href="pending-orders.html" class="shortcut shortcut-link">Pending Orders</a>
-                <a href="completed-orders.html" class="shortcut shortcut-link">Completed Orders</a>
-                <a href="order-reports.html" class="shortcut shortcut-link">Order Reports</a>
+            <div class="shortcut-container flex flex-wrap gap-2 mb-6">
+                <a href="orders.html" class="shortcut px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 shortcut-link">View All Orders</a>
+                <a href="new-order.html" class="shortcut px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 shortcut-link">Create New Order</a>
+                <a href="pending-orders.html" class="shortcut px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 shortcut-link">Pending Orders</a>
+                <a href="completed-orders.html" class="shortcut px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 shortcut-link">Completed Orders</a>
+                <a href="order-reports.html" class="shortcut px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 shortcut-link">Order Reports</a>
             </div>
-            <h1 class="mt-3">Order Details</h1>
-            <div class="hline-sm"></div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Order Details</h1>
+            <div class="hline-sm w-full border-t border-gray-200 mb-6"></div>
             <div>
-                <h4>Items</h4>
-                <table class="table table-striped">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">Items</h4>
+                <table class="w-full text-left border-collapse border border-gray-300">
+                    <thead class="bg-gray-100">
                     <tr>
-                        <th>Order ID</th>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
+                        <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Order ID</th>
+                        <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Product Name</th>
+                        <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Quantity</th>
+                        <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Price</th>
                     </tr>
-                    <tr th:each="item, iter : ${orderItems}">
-                        <td th:text="${iter.index}">12345</td>
-                        <td th:text="${item.product?.name}">Product A</td>
-                        <td th:text="${item.quantity}">2</td>
-                        <td th:text="${item.price}">$20.00</td>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                    <tr th:each="item, iter : ${orderItems}" class="hover:bg-gray-50">
+                        <td class="px-4 py-2 text-sm" th:text="${iter.index}">12345</td>
+                        <td class="px-4 py-2 text-sm" th:text="${item.product?.name}">Product A</td>
+                        <td class="px-4 py-2 text-sm" th:text="${item.quantity}">2</td>
+                        <td class="px-4 py-2 text-sm" th:text="${item.price}">$20.00</td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
-            <div class="order-summary">
-                <h4>Summary</h4>
-                <p>Subtotal: <span th:text="${order.totalAmount}">$30.00</span></p>
-                <p>Tax: <span th:text="${order.tax}">$3.00</span></p>
-                <p>Shipping: <span th:text="${order.shipping}">$5.00</span></p>
-                <p>Total: <span th:text="${total}">$38.00</span></p>
+            <div class="order-summary bg-white border border-gray-200 rounded p-4 shadow-sm mt-6">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">Summary</h4>
+                <p class="text-sm">Subtotal: <span class="font-bold" th:text="${order.totalAmount}">$30.00</span></p>
+                <p class="text-sm">Tax: <span class="font-bold" th:text="${order.tax}">$3.00</span></p>
+                <p class="text-sm">Shipping: <span class="font-bold" th:text="${order.shipping}">$5.00</span></p>
+                <p class="text-sm">Total: <span class="font-bold text-lg" th:text="${total}">$38.00</span></p>
             </div>
-            <div class="order-status">
-                <h2>Order Status</h2>
-                <p>Status: <span th:text="${order.status}">Shipped</span></p>
-                <p>Estimated Delivery: <span th:text="${estimatedDelivery}">3-5 business days</span></p>
+            <div class="order-status bg-white border border-gray-200 rounded p-4 shadow-sm mt-6">
+                <h2 class="text-lg font-bold text-gray-800 mb-2">Order Status</h2>
+                <p class="text-sm">Status: <span class="font-bold" th:text="${order.status}">Shipped</span></p>
+                <p class="text-sm">Estimated Delivery: <span class="font-bold" th:text="${estimatedDelivery}">3-5 business days</span></p>
             </div>
-            <div class="customer-information">
-                <h2>Customer Information</h2>
-                <p>Name: <span th:text="${order.customer?.firstName}+' '+${order.customer?.lastName}">John Doe</span></p>
-                <p>Email: <span th:text="${order.customer?.email}">john.doe@example.com</span></p>
-                <p>Address: <span th:text="${customerAddress}">123 Main St, Anytown, USA</span></p>
+            <div class="customer-information bg-white border border-gray-200 rounded p-4 shadow-sm mt-6">
+                <h2 class="text-lg font-bold text-gray-800 mb-2">Customer Information</h2>
+                <p class="text-sm">Name: <span class="font-bold" th:text="${order.customer?.firstName}+' '+${order.customer?.lastName}">John Doe</span></p>
+                <p class="text-sm">Email: <span class="font-bold" th:text="${order.customer?.email}">john.doe@example.com</span></p>
+                <p class="text-sm">Address: <span class="font-bold" th:text="${customerAddress}">123 Main St, Anytown, USA</span></p>
             </div>
-            <div class="payment-information">
-                <h2>Payment Information</h2>
-                <p>Payment Method: <span th:text="${order.paymentMethod}">Credit Card</span></p>
-                <p>Card Number: <span th:text="${order.cardNumber}">**** **** **** 1234</span></p>
-                <p>Transaction ID: <span th:text="${order.transactionId}">TXN123456789</span></p>
-                <p>Payment Status: <span th:text="${order.paymentStatus}">Completed</span></p>
+            <div class="payment-information bg-white border border-gray-200 rounded p-4 shadow-sm mt-6">
+                <h2 class="text-lg font-bold text-gray-800 mb-2">Payment Information</h2>
+                <p class="text-sm">Payment Method: <span class="font-bold" th:text="${order.paymentMethod}">Credit Card</span></p>
+                <p class="text-sm">Card Number: <span class="font-bold" th:text="${order.cardNumber}">**** **** **** 1234</span></p>
+                <p class="text-sm">Transaction ID: <span class="font-bold" th:text="${order.transactionId}">TXN123456789</span></p>
+                <p class="text-sm">Payment Status: <span class="font-bold" th:text="${order.paymentStatus}">Completed</span></p>
             </div>
-            <div class="shipping-details">
-                <h2>Shipping Details</h2>
-                <p>Carrier: <span th:text="${carrier}">UPS</span></p>
-                <p>Tracking Number: <span th:text="${trackingNumber}">1Z999AA10123456784</span></p>
-                <p>Shipping Date: <span th:text="${#temporals.format(order.shippingDate, 'E dd MMMM yyyy h:m:s a')}">2023-10-01</span></p>
-                <p>Estimated Arrival: <span th:text="${estimatedArrival}">2023-10-05</span></p>
+            <div class="shipping-details bg-white border border-gray-200 rounded p-4 shadow-sm mt-6">
+                <h2 class="text-lg font-bold text-gray-800 mb-2">Shipping Details</h2>
+                <p class="text-sm">Carrier: <span class="font-bold" th:text="${carrier}">UPS</span></p>
+                <p class="text-sm">Tracking Number: <span class="font-bold" th:text="${trackingNumber}">1Z999AA10123456784</span></p>
+                <p class="text-sm">Shipping Date: <span class="font-bold" th:text="${#temporals.format(order.shippingDate, 'E dd MMMM yyyy h:m:s a')}">2023-10-01</span></p>
+                <p class="text-sm">Estimated Arrival: <span class="font-bold" th:text="${estimatedArrival}">2023-10-05</span></p>
             </div>
         </main>
     </div>

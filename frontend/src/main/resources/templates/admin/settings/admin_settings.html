@@ -1,96 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex,nofollow">
+    <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Admin settings page for managing e-commerce platform settings.">
     <meta name="keywords" content="admin, settings, e-commerce, management">
     <meta name="author" content="Your Name">
     <title th:text="${pageTitle}">Admin Settings - E-commerce Platform</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/path/to/your/styles.css">
+    <link th:href="@{/public/css/tailwind.css}" href="/static/public/css/tailwind.css" rel="stylesheet">
 </head>
-<body>
-    <header>
-        
+
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-white border-b border-gray-200 py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <span class="text-xl font-bold text-gray-900">Admin Settings</span>
+        </div>
     </header>
     <div class="wrapper">
         <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
-        <main class="content">
-            <div class="content-page-container admin-setting-home">
-                <h1 class="txt-title" style="font-size: 22px;">Admin Settings</h1>
-                <section>
-                    <h2 class="txt-subtitle-l" style="font-size: 16px;">General Settings</h2>
-                    <form action="/admin/settings/save" method="post">
+        <main class="content p-6">
+            <div class="content-page-container admin-setting-home max-w-4xl mx-auto">
+                <h1 class="text-2xl font-bold text-gray-900 mb-8">Admin Settings</h1>
+                <section class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">General Settings</h2>
+                    <form action="/admin/settings/save" method="post" class="space-y-4 bg-white p-6 border border-gray-200 rounded shadow-sm">
                         <div class="form-group">
-                            <label for="siteName">Site Name:</label>
-                            <input type="text" id="siteName" name="siteName" class="form-control" required>
+                            <label for="siteName" class="block text-sm font-medium text-gray-700">Site Name:</label>
+                            <input type="text" id="siteName" name="siteName" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                         </div>
                         <div class="form-group">
-                            <label for="siteUrl">Site URL:</label>
-                            <input type="url" id="siteUrl" name="siteUrl" class="form-control" required>
+                            <label for="siteUrl" class="block text-sm font-medium text-gray-700">Site URL:</label>
+                            <input type="url" id="siteUrl" name="siteUrl" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                         </div>
                         <div class="form-group">
-                            <label for="adminEmail">Admin Email:</label>
-                            <input type="email" id="adminEmail" name="adminEmail" class="form-control" required>
+                            <label for="adminEmail" class="block text-sm font-medium text-gray-700">Admin Email:</label>
+                            <input type="email" id="adminEmail" name="adminEmail" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                         </div>
                         <div class="form-group">
-                            <label for="itemsPerPage">Items Per Page:</label>
-                            <input type="number" id="itemsPerPage" name="itemsPerPage" class="form-control" min="1" required>
+                            <label for="itemsPerPage" class="block text-sm font-medium text-gray-700">Items Per Page:</label>
+                            <input type="number" id="itemsPerPage" name="itemsPerPage" class="form-control w-full px-3 py-2 border border-gray-300 rounded" min="1" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">Save Settings</button>
                     </form>
                 </section>
-                <section>
-                    <h2>Security Settings</h2>
-                    <form action="/admin/settings/save" method="post">
+                <section class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Security Settings</h2>
+                    <form action="/admin/settings/save" method="post" class="space-y-4 bg-white p-6 border border-gray-200 rounded shadow-sm">
                         <div class="form-group">
-                            <label for="passwordLength">Password Length:</label>
-                            <input type="number" id="passwordLength" name="passwordLength" class="form-control" min="8" required>
+                            <label for="passwordLength" class="block text-sm font-medium text-gray-700">Password Length:</label>
+                            <input type="number" id="passwordLength" name="passwordLength" class="form-control w-full px-3 py-2 border border-gray-300 rounded" min="8" required>
                         </div>
                         <div class="form-group">
-                            <label for="passwordComplexity">Password Complexity:</label>
-                            <select id="passwordComplexity" name="passwordComplexity" class="form-control" required>
+                            <label for="passwordComplexity" class="block text-sm font-medium text-gray-700">Password Complexity:</label>
+                            <select id="passwordComplexity" name="passwordComplexity" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
                                 <option value="high">High</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="passwordExpiration">Password Expiration:</label>
-                            <input type="number" id="passwordExpiration" name="passwordExpiration" class="form-control" min="1" required>
+                            <label for="passwordExpiration" class="block text-sm font-medium text-gray-700">Password Expiration:</label>
+                            <input type="number" id="passwordExpiration" name="passwordExpiration" class="form-control w-full px-3 py-2 border border-gray-300 rounded" min="1" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">Save Settings</button>
                     </form>
                 </section>
-                <section>
-                    <h2>Notification Settings</h2>
-                    <form action="/admin/settings/save" method="post">
+                <section class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Notification Settings</h2>
+                    <form action="/admin/settings/save" method="post" class="space-y-4 bg-white p-6 border border-gray-200 rounded shadow-sm">
                         <div class="form-group">
-                            <label for="emailNotifications">Email Notifications:</label>
-                            <select id="emailNotifications" name="emailNotifications" class="form-control" required>
+                            <label for="emailNotifications" class="block text-sm font-medium text-gray-700">Email Notifications:</label>
+                            <select id="emailNotifications" name="emailNotifications" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                                 <option value="on">On</option>
                                 <option value="off">Off</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="smsNotifications">SMS Notifications:</label>
-                            <select id="smsNotifications" name="smsNotifications" class="form-control" required>
+                            <label for="smsNotifications" class="block text-sm font-medium text-gray-700">SMS Notifications:</label>
+                            <select id="smsNotifications" name="smsNotifications" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                                 <option value="on">On</option>
                                 <option value="off">Off</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">Save Settings</button>
                     </form>
                 </section>
             </div>
         </main>
     </div>
     <footer th:replace="~{admin/fragments/footer::footer}"></footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

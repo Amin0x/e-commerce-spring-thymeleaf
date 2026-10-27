@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
@@ -9,76 +9,79 @@
     <meta name="author" content="AMIN">
     <meta name="description" content="Admin Report Home">
     <title th:text="${pageTitle}">Admin Report Home</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../../static/admin/main.css">
     <link rel="stylesheet" href="../../static/admin/rport_style.css">
 </head>
 
 <body>
+<div class="page-wrapper p-6">
     <header class="admin-header"></header>
-    <h1>Admin Report Home</h1>
-    </header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link" href="/admin/reports/sales">Sales Reports</a></li>
-            <li class="nav-item"><a class="nav-link" href="/admin/reports/inventory">Inventory Reports</a></li>
-            <li class="nav-item"><a class="nav-link" href="/admin/reports/customers">Customer Reports</a></li>
-            <li class="nav-item"><a class="nav-link" href="/admin/reports/orders">Order Reports</a></li>
-        </ul>
-    </nav>
-    <main>
-        <section class="generate-reports">
-            <h2>Generate Reports</h2>
-            <p>Select a report type from the navigation menu to generate the corresponding report.</p>
-        </section>
-        <section class="report-section">
-            <h2 class="report-title">Reports</h2>
-            <div class="tabs">
-                <button class="tablinks" onclick="openReport(event, 'Sales')">Sales Report</button>
-                <button class="tablinks" onclick="openReport(event, 'Orders')">Order Report</button>
-                <button class="tablinks" onclick="openReport(event, 'Inventory')">Inventory Report</button>
-                <button class="tablinks" onclick="openReport(event, 'Customers')">Customer Report</button>
-            </div>
-            <div id="Sales" class="tabcontent">
-                <h3 class="tabcontent-title">Sales Report</h3>
-                <p class="tabcontent-description">Details of sales report will be displayed here.</p>
-            </div>
-            <div id="Orders" class="tabcontent">
-                <h3 class="tabcontent-title">Order Report</h3>
-                <p class="tabcontent-description">Details of order report will be displayed here.</p>
-            </div>
-        </section>
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">Admin Report Home</h1>
+</header>
+<nav class="navbar flex flex-col md:flex-row gap-4 p-4 bg-white border border-gray-200 rounded shadow-sm mb-6">
+    <ul class="navbar-nav flex flex-col md:flex-row gap-2 list-none p-0 m-0">
+        <li class="nav-item"><a class="nav-link px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" href="/admin/reports/sales">Sales Reports</a></li>
+        <li class="nav-item"><a class="nav-link px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" href="/admin/reports/inventory">Inventory Reports</a></li>
+        <li class="nav-item"><a class="nav-link px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" href="/admin/reports/customers">Customer Reports</a></li>
+        <li class="nav-item"><a class="nav-link px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" href="/admin/reports/orders">Order Reports</a></li>
+    </ul>
+</nav>
+<main class="content">
+    <section class="generate-reports mb-6">
+        <h2 class="text-lg font-bold text-gray-800 mb-2">Generate Reports</h2>
+        <p class="text-gray-600">Select a report type from the navigation menu to generate the corresponding report.</p>
+    </section>
+    <section class="report-section mb-6">
+        <h2 class="report-title text-lg font-bold text-gray-800 mb-4">Reports</h2>
+        <div class="tabs flex flex-wrap gap-2 mb-4">
+            <button class="tablinks px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" onclick="openReport(event, 'Sales')">Sales Report</button>
+            <button class="tablinks px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" onclick="openReport(event, 'Orders')">Order Report</button>
+            <button class="tablinks px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" onclick="openReport(event, 'Inventory')">Inventory Report</button>
+            <button class="tablinks px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" onclick="openReport(event, 'Customers')">Customer Report</button>
+        </div>
+        <div id="Sales" class="tabcontent">
+            <h3 class="tabcontent-title text-md font-semibold text-gray-700 mb-2">Sales Report</h3>
+            <p class="tabcontent-description text-gray-600">Details of sales report will be displayed here.</p>
+        </div>
+        <div id="Orders" class="tabcontent">
+            <h3 class="tabcontent-title text-md font-semibold text-gray-700 mb-2">Order Report</h3>
+            <p class="tabcontent-description text-gray-600">Details of order report will be displayed here.</p>
+        </div>
+    </section>
 
-        <script>
-            function openReport(evt, reportName) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                tablinks = document.getElementsByClassName("tablinks");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-                document.getElementById(reportName).style.display = "block";
-                evt.currentTarget.className += " active";
+    <script>
+        function openReport(evt, reportName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
             }
-        </script>
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(reportName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
 
-        <style>
-            .tabcontent {
-                display: none;
-            }
+    <style>
+        .tabcontent {
+            display: none;
+        }
 
-            .tablinks.active {
-                background-color: #ccc;
-            }
-        </style>
-    </main>
-    <footer>
-        <p>&copy; 2023 E-Commerce Admin</p>
-    </footer>
+        .tablinks.active {
+            background-color: #ccc;
+        }
+    </style>
+</main>
+<footer>
+    <p class="text-center text-gray-600 text-sm">&copy; 2023 E-Commerce Admin</p>
+</footer>
+</div>
+
 </body>
 
 </html>

@@ -1,49 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" dir="rtl">
+<html xmlns:th="http://www.www.thymeleaf.org" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Home page description for your website.">
     <meta name="author" content="Your Name or Company Name">
-    <meta name="keywords" content="home, page, example, bootstrap, website">
+    <meta name="keywords" content="home, page, example, website">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Signup</title>
-    <link rel="stylesheet" th:href="@{/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css}"
-        href="../../static/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/public/css/style.css}" href="../../static/public/css/style.css">
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="signup-container">
-            <h2 class="title">التسجيل</h2>
+    <div class="wrapper min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div class="signup-container card w-full max-w-md">
+            <h2 class="title text-2xl font-bold text-gray-800 text-center mb-6">التسجيل</h2>
             <form th:action="@{/signup}" method="post" id="signupForm">
-                <div class="email">
-                    <label for="email" class="input-label">الايميل:</label>
-                    <input type="email" name="email" class="input" id="email">
+                <div class="email form-group mb-4">
+                    <label for="email" class="input-label block text-sm font-medium text-gray-700 mb-1">الايميل:</label>
+                    <input type="email" name="email" class="form-control input" id="email">
                     <div class="error" id="emailErr"></div>
                 </div>
-                <div class="password">
-                    <label for="password" class="input-label">كلمة المرور:</label>
-                    <input type="password" name="password" class="input" id="password">
+                <div class="password form-group mb-4">
+                    <label for="password" class="input-label block text-sm font-medium text-gray-700 mb-1">كلمة المرور:</label>
+                    <input type="password" name="password" class="form-control input" id="password">
                     <div class="error" id="passwordErr"></div>
                 </div>
-                <div class="confirm-password">
-                    <label for="confirmPassword" class="input-label">تاكيد كلمة المرور:</label>
-                    <input type="password" class="input" name="confirmPassword" id="confirmPassword">
+                <div class="confirm-password form-group mb-6">
+                    <label for="confirmPassword" class="input-label block text-sm font-medium text-gray-700 mb-1">تاكيد كلمة المرور:</label>
+                    <input type="password" class="form-control input" name="confirmPassword" id="confirmPassword">
                     <div class="error" id="confirmPasswordErr"></div>
                 </div>
-                <button type="submit" class="button-send">ارسال</button>
+                <button type="submit" class="button-send btn btn-primary w-full">ارسال</button>
             </form>
         </div>
     </div>
 
     <script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../static/public/js/jquery-3.7.1.min.js"></script>
-    <script th:src="@{/public/js/bootstrap.bundle.min.js}" src="../../static/public/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/public/js/main.js}" src="../../static/public/js/main.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function (e) {           
-
+        document.addEventListener("DOMContentLoaded", function (e) {
 
             document.getElementById('email').addEventListener('change', function (e) {
                 this.classList.remove('error');
@@ -55,7 +54,7 @@
 
             document.getElementById('confirmPassword').addEventListener('change', function (e) {
                 this.classList.remove('error');
-            });
+            })
         })
 
         SignupForm.init();

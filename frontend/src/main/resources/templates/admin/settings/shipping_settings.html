@@ -2,114 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${pageTitle}">Title</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-        }
-        header h1 {
-            margin: 0;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-right: 20px;
-        }
-        .settings-form {
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-input {
-            width: 100%;
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        .form-input:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-        .form-button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-        }
-        .form-button:hover {
-            background-color: #218838;
-        }
-        .form-button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        .form-button:disabled:hover {
-            background-color: #ccc;
-        }
-        .form-button:active {
-            background-color: #218838;
-        }
-
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Shipping Settings</title>
+    <link th:href="@{/public/css/tailwind.css}" href="/static/public/css/tailwind.css" rel="stylesheet">
 </head>
-<body>
+
+<body class="bg-gray-100 min-h-screen">
 <div class="wrapper">
-    <main class="content">
-        <div class="content-page-container">
-            <header>
-                <h1>Shipping Settings</h1>
-                <nav>
-                    <a href="/admin/settings/general" style="margin-right: 20px;">General Settings</a>
-                    <a href="/admin/settings/payment" style="margin-right: 20px;">Payment Settings</a>
-                    <a href="/admin/settings/shipping">Shipping Settings</a>
+    <main class="content p-6">
+        <div class="content-page-container max-w-xl mx-auto">
+            <header class="mb-6 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-900">Shipping Settings</h1>
+                <nav class="flex gap-4">
+                    <a href="/admin/settings/general" class="text-sm text-blue-600 hover:underline">General Settings</a>
+                    <a href="/admin/settings/payment" class="text-sm text-blue-600 hover:underline">Payment Settings</a>
+                    <a href="/admin/settings/shipping" class="text-sm font-medium text-gray-900">Shipping Settings</a>
                 </nav>
             </header>
-            <form action="/admin/settings/shipping" method="post" class="settings-form">
+            <form action="/admin/settings/shipping" method="post" class="bg-white p-6 border border-gray-200 rounded shadow-sm space-y-4 settings-form">
                 <div class="form-group">
-                    <label for="shippingMethod" class="form-label">Shipping Method:</label>
-                    <select id="shippingMethod" name="shippingMethod" required class="form-input">
+                    <label for="shippingMethod" class="block text-sm font-medium text-gray-700 mb-1">Shipping Method:</label>
+                    <select id="shippingMethod" name="shippingMethod" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                         <option value="standard">Standard</option>
                         <option value="express">Express</option>
                         <option value="overnight">Overnight</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="flatRate" class="form-label">Flat Rate:</label>
-                    <input type="number" id="flatRate" name="flatRate" required class="form-input" step="0.01">
+                    <label for="flatRate" class="block text-sm font-medium text-gray-700 mb-1">Flat Rate:</label>
+                    <input type="number" id="flatRate" name="flatRate" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required step="0.01">
                 </div>
                 <div class="form-group">
-                    <label for="freeShippingThreshold" class="form-label">Free Shipping Threshold:</label>
-                    <input type="number" id="freeShippingThreshold" name="freeShippingThreshold" required class="form-input" step="0.01">
+                    <label for="freeShippingThreshold" class="block text-sm font-medium text-gray-700 mb-1">Free Shipping Threshold:</label>
+                    <input type="number" id="freeShippingThreshold" name="freeShippingThreshold" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required step="0.01">
                 </div>
                 <div class="form-group">
-                    <label for="handlingFee" class="form-label">Handling Fee:</label>
-                    <input type="number" id="handlingFee" name="handlingFee" required class="form-input" step="0.01">
+                    <label for="handlingFee" class="block text-sm font-medium text-gray-700 mb-1">Handling Fee:</label>
+                    <input type="number" id="handlingFee" name="handlingFee" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required step="0.01">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="form-button">Save Shipping Settings</button>
+                    <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">Save Shipping Settings</button>
                 </div>
             </form>
         </div>

@@ -1,14 +1,29 @@
-<div th:fragment="banner">
-  <div class="container">
-    <div class="wrapper">
-      <div class="banner-image"> </div>
-      <h1> Toyota Supra</h1>
-      <p>Lorem ipsum dolor sit amet, <br/>
-        consectetur adipiscing elit.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Fragment</title>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
+</head>
+<body>
+
+<div th:fragment="banner" class="px-4 py-8 relative overflow-hidden">
+  <div class="container mx-auto">
+    <div class="wrapper flex flex-col md:flex-row items-center gap-6">
+      <div class="banner-image bg-gray-200 aspect-video rounded-lg mb-4 md:mb-0 md:w-1/2"> </div>
+      <div class="flex-1 text-center md:text-left md:pl-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2"> Toyota Supra</h1>
+        <p class="text-gray-600 mb-6">Lorem ipsum dolor sit amet, <br/>
+          consectetur adipiscing elit.</p>
+      </div>
     </div>
-    <div class="button-wrapper"> 
-      <button class="btn outline">DETAILS</button>
-      <button class="btn fill">BUY NOW</button>
+    <div class="button-wrapper flex justify-center md:justify-start gap-3">
+      <button class="btn btn-outline-primary px-6 py-2">DETAILS</button>
+      <button class="btn btn-primary px-6 py-2">BUY NOW</button>
     </div>
   </div>
 </div>
+
+</body>
+</html>

@@ -1,74 +1,67 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <meta name="author" th:content="${pageAuthor}" />
     <meta name="description" th:content="${pageDescription}" />
     <title th:text="${pageTitle}">City List</title>
-    <style>
-        button[type="submit"]:hover {
-            background-color: darkgreen;            
-        }
-    </style>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
+    <link th:href="@{/admin/main.css}" href="../../static/css/admin/main.css" rel="stylesheet">
 </head>
-<body>
-    <h1>City List</h1>
-    <div style="text-align: right; margin-bottom: 20px;">
-        <a href="/admin/address/cities/create" style="text-decoration: none; color: white; background-color: green; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.2s;">
+<body class="p-6">
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">City List</h1>
+    <div class="mb-6 text-right">
+        <a href="/admin/address/cities/create" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm font-medium transition-colors">
             <span>Add City</span>
         </a>
     </div>
-    
+
     <!-- Filters -->
-     <div style="margin-bottom: 20px;">
-         <form id="citiesListForm" method="GET" th:action="@{/admin/address/cities}">
-            <div style="display: flex; align-items: center;">
-                <div style="margin-right: 10px; display: inline-flex; align-items: center;">
-                    <span style="font-size: 16px; margin-right: 5px; vertical-align: middle;">Country:</span>
-                    <select id="country" name="country" style="outline: none; line-height: 20px; background-color: transparent; font-size: 16px; padding: 5px 10px; border: 1px solid #ccc; border-radius: 5px; width: 200px;">
-                        <option value="">Select Country</option>
-                        <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}" 
-                                th:attr="selected=(${country.id} == ${currentCountryId} ? 'selected' : null)"></option>
-                    </select>
-                </div>
-                <button type="submit" style="outline: none; line-height: 20px;background-color: green; color: white; border: none; padding: 6px 20px; cursor: pointer; border-radius: 5px; transition: transform 0.2s, background-color 0.2s;">
-                    Filter
-                </button>
+    <div class="mb-6">
+        <form id="citiesListForm" method="GET" th:action="@{/admin/address/cities}" class="flex flex-col sm:flex-row gap-4 items-end">
+            <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+                <span class="text-sm font-medium text-gray-700 sm:whitespace-nowrap">Country:</span>
+                <select id="country" name="country" class="w-full sm:w-64 px-3 py-2 border border-gray-300 rounded bg-transparent text-sm focus:outline-none focus:border-blue-500">
+                    <option value="">Select Country</option>
+                    <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"
+                            th:attr="selected=(${country.id} == ${currentCountryId} ? 'selected' : null)"></option>
+                </select>
             </div>
-         </form>
-     </div>
+            <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors transform active:scale-95">
+                Filter
+            </button>
+        </form>
+    </div>
 
     <!-- City List -->
-    <table border="1" style="width: 100%; border-collapse: collapse; text-align: left;">
-        <thead style="background-color: #f2f2f2; text-align: left;">
+    <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse border border-gray-300">
+        <thead class="bg-gray-100">
             <tr>
-            <th style="padding: 10px; border: 1px solid #ddd;">City Name</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">City Name Arabic</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">State</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">Country</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">Status</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">Actions</th>
+            <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">City Name</th>
+            <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">City Name Arabic</th>
+            <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">State</th>
+            <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Country</th>
+            <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Status</th>
+            <th class="px-4 py-2 border border-gray-300 text-sm font-semibold text-gray-600">Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="city : ${cities}">
-            <td th:text="${city.name}"></td>
-            <td th:text="${city.nameAr}"></td>
-            <td th:text="${city.state}"></td>
-            <td th:text="${city.country?.name}"></td>
-            <td th:text="${city.status?.name}"></td>
-            <td>
-                <a th:href="@{/admin/address/city/{id}/edit(id=${city.id})}" 
-                   style="text-decoration: none; color: white; background-color: blue; padding: 5px 10px; border-radius: 5px; margin-right: 5px; display: inline-block; text-align: center;cursor: pointer; transition: background-color 0.2s;"
-                   onmouseover="this.style.backgroundColor='darkblue';" 
-                   onmouseout="this.style.backgroundColor='blue';">
+            <tr th:each="city : ${cities}" class="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
+            <td class="px-4 py-2 text-sm" th:text="${city.name}"></td>
+            <td class="px-4 py-2 text-sm" th:text="${city.nameAr}"></td>
+            <td class="px-4 py-2 text-sm" th:text="${city.state}"></td>
+            <td class="px-4 py-2 text-sm" th:text="${city.country?.name}"></td>
+            <td class="px-4 py-2 text-sm" th:text="${city.status?.name}"></td>
+            <td class="px-4 py-2 text-sm">
+                <a th:href="@{/admin/address/city/{id}/edit(id=${city.id})}"
+                   class="px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 transition-colors mr-2 inline-block">
                     Edit
                 </a>
-                <a th:href="@{/admin/address/city/delete/{id}(id=${city.id})}" 
-                   style="text-decoration: none; color: white; background-color: red; padding: 5px 10px; border-radius: 5px; display: inline-block; text-align: center;cursor: pointer; transition: background-color 0.2s;"
-                   onmouseover="this.style.backgroundColor='darkred';" 
-                   onmouseout="this.style.backgroundColor='red';"
+                <a th:href="@{/admin/address/city/delete/{id}(id=${city.id})}"
+                   class="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors inline-block"
                    onclick="return confirm('Are you sure you want to delete this city?');">
                     Delete
                 </a>
@@ -76,15 +69,16 @@
             </tr>
         </tbody>
     </table>
+    </div>
     <script>
         // JavaScript to handle the filter form submission and state dropdown population
         document.addEventListener('DOMContentLoaded', function() {
-            const countrySelect = document.getElementById('country');            
+            const countrySelect = document.getElementById('country');
 
             countrySelect.addEventListener('change', function() {
                 const countryId = this.value;
-                
-               if(countryId !== "" && countryId !== null) {
+
+                if(countryId !== "" && countryId !== null) {
                     // Fetch states based on selected country
                     window.location.href = '/admin/address/city/list?country=' + countryId;
                 } else {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title th:text="${pageTitle}">Edit User</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/public/css/tailwind.css}" href="../../../static/public/css/tailwind.css" rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
 
 </head>
@@ -16,72 +16,72 @@
         <aside th:replace="~{admin/fragments/navigation :: navigation}"></aside>
         <main class="content">
             <header th:replace="~{admin/fragments/header :: header}"></header>
-            <div class="edit-form">
-                <h1 class="title">Edit User</h1>
-                <form th:action="@{/admin/users/{id}(id=${user.id})}" th:object="${user}" method="post">
+            <div class="edit-form p-6 max-w-lg">
+                <h1 class="title text-xl font-bold text-gray-900 mb-6">Edit User</h1>
+                <form th:action="@{/admin/users/{id}(id=${user.id})}" th:object="${user}" method="post" class="space-y-4">
                     <div class="mb-3" th:if="${#errors.hasErrors()}" th:object="${errors}">
-                        <div th:if="${#fields.hasErrors('firstName')}" class="text-danger" th:errors="*{firstName}"></div>
-                        <div th:if="${#fields.hasErrors('lastName')}" class="text-danger" th:errors="*{lastName}"></div>
-                        <div th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></div>
-                        <div th:if="${#fields.hasErrors('role')}" class="text-danger" th:errors="*{role}"></div>
-                        <div th:if="${#fields.hasErrors('status')}" class="text-danger" th:errors="*{status}"></div>
-                        <div th:if="${#fields.hasErrors('enabled')}" class="text-danger" th:errors="*{enabled}"></div>
+                        <div th:if="${#fields.hasErrors('firstName')}" class="text-red-600 text-sm" th:errors="*{firstName}"></div>
+                        <div th:if="${#fields.hasErrors('lastName')}" class="text-red-600 text-sm" th:errors="*{lastName}"></div>
+                        <div th:if="${#fields.hasErrors('email')}" class="text-red-600 text-sm" th:errors="*{email}"></div>
+                        <div th:if="${#fields.hasErrors('role')}" class="text-red-600 text-sm" th:errors="*{role}"></div>
+                        <div th:if="${#fields.hasErrors('status')}" class="text-red-600 text-sm" th:errors="*{status}"></div>
+                        <div th:if="${#fields.hasErrors('enabled')}" class="text-red-600 text-sm" th:errors="*{enabled}"></div>
                     </div>
-    
+
                     <input type="hidden" th:field="*{id}" />
                     <div class="mb-3" th:text="*{username}"></div>
-    
+
                     <div class="mb-3">
-                        <label for="firstName" class="form-label">First Name</label>
-                        <input type="text" id="firstName" th:field="*{firstName}" class="form-control"/>
-                        <div class="messages"></div>
+                        <label for="firstName" class="form-label block text-sm font-medium text-gray-700">First Name</label>
+                        <input type="text" id="firstName" th:field="*{firstName}" class="form-control w-full px-3 py-2 border border-gray-300 rounded"/>
+                        <div class="messages text-red-600 text-sm mt-1"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="lastName" class="form-label">Last Name</label>
-                        <input type="text" id="lastName" th:field="*{lastName}" class="form-control"/>
-                        <div class="messages"></div>
+                        <label for="lastName" class="form-label block text-sm font-medium text-gray-700">Last Name</label>
+                        <input type="text" id="lastName" th:field="*{lastName}" class="form-control w-full px-3 py-2 border border-gray-300 rounded"/>
+                        <div class="messages text-red-600 text-sm mt-1"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" th:field="*{email}" class="form-control"/>
-                        <div class="messages"></div>
+                        <label for="email" class="form-label block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" th:field="*{email}" class="form-control w-full px-3 py-2 border border-gray-300 rounded"/>
+                        <div class="messages text-red-600 text-sm mt-1"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select id="role" th:field="*{role}" class="form-select">
+                        <label for="role" class="form-label block text-sm font-medium text-gray-700">Role</label>
+                        <select id="role" th:field="*{role}" class="form-select w-full px-3 py-2 border border-gray-300 rounded">
                             <option value="USER" th:selected="*{role} == 'USER'">User</option>
                             <option value="ADMIN" th:selected="*{role} == 'ADMIN'">Admin</option>
                             <option value="MODERATOR" th:selected="*{role} == 'MODERATOR'">Moderator</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="status" class="form-label">Status</label>
-                        <select id="status" th:field="*{status}" class="form-select">
+                        <label for="status" class="form-label block text-sm font-medium text-gray-700">Status</label>
+                        <select id="status" th:field="*{status}" class="form-select w-full px-3 py-2 border border-gray-300 rounded">
                             <option value="ACTIVE" th:selected="*{status} == 'ACTIVE'">Active</option>
                             <option value="BLOCKED" th:selected="*{status} == 'BLOCKED'">Blocked</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="enabled" class="form-label">Enabled</label>
-                        <select id="enabled" th:field="*{enabled}" class="form-select">
+                        <label for="enabled" class="form-label block text-sm font-medium text-gray-700">Enabled</label>
+                        <select id="enabled" th:field="*{enabled}" class="form-select w-full px-3 py-2 border border-gray-300 rounded">
                             <option value="true" th:selected="*{enabled} == true">Yes</option>
                             <option value="false" th:selected="*{enabled} == false">No</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password (Leave blank to keep current password)</label>
-                        <input type="password" id="password" th:field="*{password}" class="form-control"/>
-                        <div class="messages"></div>
+                        <label for="password" class="form-label block text-sm font-medium text-gray-700">Password (Leave blank to keep current password)</label>
+                        <input type="password" id="password" th:field="*{password}" class="form-control w-full px-3 py-2 border border-gray-300 rounded"/>
+                        <div class="messages text-red-600 text-sm mt-1"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="avatar" class="form-label">Avatar</label>
-                        <input type="file" id="avatar" name="avatar" class="form-control" accept="image/*">
-                        <div class="messages"></div>
+                        <label for="avatar" class="form-label block text-sm font-medium text-gray-700">Avatar</label>
+                        <input type="file" id="avatar" name="avatar" class="form-control w-full px-3 py-2 border border-gray-300 rounded" accept="image/*">
+                        <div class="messages text-red-600 text-sm mt-1"></div>
                     </div>
-    
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-primary me-3">Save Changes</button>
-                        <a href="/user/list" class="btn btn-secondary">Cancel</a>
+
+                    <div class="mb-3 flex gap-3">
+                        <button type="submit" class="btn btn-primary px-4 py-2">Save Changes</button>
+                        <a th:href="@{/admin/users/all}" class="btn btn-secondary px-4 py-2">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -89,7 +89,5 @@
     </div>
 </div>
 
-<!-- Bootstrap 5 JS (Optional, for additional functionality like dropdowns, etc.) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -7,48 +7,47 @@
     <meta name="author" th:content="${pageAuthor}" />
     <meta name="description" th:content="${pageDescription}" />
     <title th:text="${pageTitle}">Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
     <link href="../../../static/admin/main.css" th:href="@{/admin/main.css}" rel="stylesheet">
     <style>
 
-    
     </style>
 </head>
 <body>
-<div class="wrapper">
+<div class="wrapper p-6">
     <aside th:replace="~{admin/fragments/navigation::navigation}"></aside>
     <div class="content category-create-form">
         <header th:replace="~{admin/fragments/header :: header}"></header>
-        <div class="form-wrap">
-            <h1 class="title">Create Category</h1>
-            <form th:action="@{/admin/categories}" method="post" enctype="multipart/form-data">
+        <div class="form-wrap max-w-lg">
+            <h1 class="title text-xl font-bold text-gray-900 mb-6">Create Category</h1>
+            <form th:action="@{/admin/categories}" method="post" enctype="multipart/form-data" class="space-y-4">
                 <div id="formMessage" class="form-message">
                     <div id="formMessageText"></div>
-                </div>                
-                <div class="input-container">
-                    <label for="name">Name:</label>
-                    <input type="text" class="text-input" id="name" name="name">
                 </div>
                 <div class="input-container">
-                    <label for="description">Description:</label>
-                    <textarea class="text-input" id="description" name="description" rows="4"></textarea>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name:</label>
+                    <input type="text" class="text-input w-full px-3 py-2 border border-gray-300 rounded" id="name" name="name">
                 </div>
                 <div class="input-container">
-                    <label for="parent">Parent Category:</label>
-                    <select class="text-input" id="parent" name="parentId">
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description:</label>
+                    <textarea class="text-input w-full px-3 py-2 border border-gray-300 rounded" id="description" name="description" rows="4"></textarea>
+                </div>
+                <div class="input-container">
+                    <label for="parent" class="block text-sm font-medium text-gray-700">Parent Category:</label>
+                    <select class="text-input w-full px-3 py-2 border border-gray-300 rounded" id="parent" name="parentId">
                         <option value="">None</option>
                         <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                     </select>
                 </div>
                 <div class="input-container image-input">
-                    <label for="image">Upload Image:</label>
-                    <input type="file" name="image" id="image" class="file-input" accept="image/*" onchange="previewImage(event)">                    
+                    <label for="image" class="block text-sm font-medium text-gray-700">Upload Image:</label>
+                    <input type="file" name="image" id="image" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="image/*" onchange="previewImage(event)">
                 </div>
                 <div class="image-priview">
-                    <img  id="imagePreview" class="image-priview__image" src="#" alt="Image Preview">
+                    <img id="imagePreview" class="image-priview__image mt-2 max-h-48 rounded border border-gray-200" src="#" alt="Image Preview">
                 </div>
                 <div class="input-container">
-                    <button type="button" id="submitButton" class="button-37">Submit</button>
+                    <button type="button" id="submitButton" class="button-37 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">Submit</button>
                 </div>
             </form>
         </div>
@@ -56,7 +55,7 @@
 </div>
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
 
-<script src="../../../static/admin/js/main.js" th:src="@{/admin/js/main.js}"></script>
+<script th:src="@{/admin/js/main.js}" src="../../../static/admin/js/main.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         categoriesCreateForm();

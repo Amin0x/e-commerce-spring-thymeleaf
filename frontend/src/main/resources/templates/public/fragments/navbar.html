@@ -3,13 +3,9 @@
 
 <head>
     <title>Navbar Fragment</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../../static/public/css/bootstrap-5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../../static/public/css/style.css">
-    <style>
-        
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
+    <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
 </head>
 
 <body dir="rtl">
@@ -17,93 +13,93 @@
         <div class="notification-bar" id="notification" th:if="${notification} != null">
             <p th:text="${notification}">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, natus. Nesciunt tempore nobis id hic. Nobis quaerat qui quibusdam repellendus!</p>
         </div>
-        <div class="w-100" id="navbar">
-            <div class="nav-content">
-                <div class="logo flex-grow-0">
+        <div class="w-full" id="navbar">
+            <div class="nav-content navbar flex flex-wrap items-center justify-between px-4 py-3 bg-white border-b border-gray-300">
+                <div class="logo flex-shrink-0">
                     <div>
                         <a href="/">
                             <img width="32" height="32" th:src="@{/public/imgs/logo2.png}" src="../../static/public/imgs/logo2.png" alt="Logo">
                         </a>
                     </div>
                 </div>
-                <div class="nav-menu">
-                    <ul class="menu-container">
-                        <li class="menu-item"><a class="menu-link" href="/">الرئيسية</a></li>
-                        <li class="menu-item"><a class="menu-link" href="/products">المنتجات</a></li>
-                        <li class="menu-item"><a class="menu-link" href="/offers">العروض</a></li>
-                        <li class="menu-item"><a class="menu-link" href="/products/bestselling">الاكثر مبيعا</a></li>
-                        <li class="menu-item">
-                            <a class="menu-link dropdown" href="#" id="dropdownButton">الاقسام</a>
-                            <ul class="menu-container submenu" id="categoryMenu">
-                                <li class="menu-item"><a class="menu-link" href="#">Lorem, ipsum.</a></li>
-                                <li class="menu-item"><a class="menu-link" href="#">Lorem, ipsum dolor.</a></li>
-                                <li class="menu-item"><a class="menu-link" href="#">Lorem, ipsum dolor.</a></li>
-                                <li class="menu-item"><a class="menu-link" href="#">Lorem, ipsum dolor.</a></li>
-                                <li class="menu-item"><a class="menu-link" href="#">Lorem, ipsum dolor.</a></li>
+                <div class="nav-menu flex-1 flex justify-center">
+                    <ul class="menu-container flex gap-2 rtl:justify-center">
+                        <li class="menu-item"><a class="menu-link nav-link" href="/">الرئيسية</a></li>
+                        <li class="menu-item"><a class="menu-link nav-link" href="/products">المنتجات</a></li>
+                        <li class="menu-item"><a class="menu-link nav-link" href="/offers">العروض</a></li>
+                        <li class="menu-item"><a class="menu-link nav-link" href="/products/bestselling">الاكثر مبيعا</a></li>
+                        <li class="menu-item relative group">
+                            <a class="menu-link nav-link" href="#" id="dropdownButton">الاقسام</a>
+                            <ul class="menu-container submenu absolute top-full right-0 mt-1 w-48 hidden z-50 border border-gray-300 rounded bg-white shadow-lg rtl:left-0 rtl:right-auto" id="categoryMenu">
+                                <li class="menu-item"><a class="menu-link dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Lorem, ipsum.</a></li>
+                                <li class="menu-item"><a class="menu-link dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Lorem, ipsum dolor.</a></li>
+                                <li class="menu-item"><a class="menu-link dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Lorem, ipsum dolor.</a></li>
+                                <li class="menu-item"><a class="menu-link dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Lorem, ipsum dolor.</a></li>
+                                <li class="menu-item"><a class="menu-link dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Lorem, ipsum dolor.</a></li>
                             </ul>
-                        </li>                        
+                        </li>
                     </ul>
                 </div>
-                <div class="nav-search"></div>
-                
-                <div class="cart">
-                    <a href="/cart" id="dropdownCartButton">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-8 w-8 text-gray-600">
+                <div class="nav-search hidden md:block"></div>
+
+                <div class="cart relative flex-shrink-0">
+                    <a href="/cart" id="dropdownCartButton" class="nav-link flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 text-gray-600">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                         </svg>
-                        <span class="cart__badge" id="cartItemsCount">0</span>
+                        <span class="cart__badge bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full" id="cartItemsCount">0</span>
                     </a>
-                    <div th:if="false" class="cart__dropdown" id="dropdownCart">
+                    <div class="cart__dropdown absolute top-full right-0 mt-2 w-64 hidden z-50 border border-gray-300 rounded bg-white shadow-lg" id="dropdownCart">
                         <div class="cart__dropdown-content" id="dropdownCartContent">
-                            <div class="cart__dropdown-item">
-                                <img class="cart__dropdown-item-img" width="50" height="50" th:src="@{/public/imgs/product1.jpg}" src="/static/public/imgs/product1.jpg" alt="Product">
+                            <div class="cart__dropdown-item p-4 border-b border-gray-100 last:border-b-0">
+                                <img class="cart__dropdown-item-img w-12 h-12 rounded" th:src="@{/public/imgs/product1.jpg}" src="/static/public/imgs/product1.jpg" alt="Product">
                                 <div class="cart__dropdown-item-info">
-                                    <h4 class="cart__dropdown-item-title">Product Title</h4>
-                                    <p class="cart__dropdown-item-price">$99.99</p>
-                                    <span class="cart__dropdown-item-quantity">Quantity: 1</span>
-                                    <button class="btn btn-sm btn-danger cart__dropdown-item-remove">Remove</button>
+                                    <h4 class="cart__dropdown-item-title font-semibold">Product Title</h4>
+                                    <p class="cart__dropdown-item-price text-gray-600">$99.99</p>
+                                    <span class="cart__dropdown-item-quantity text-sm text-gray-500">Quantity: 1</span>
+                                    <button class="btn btn-danger btn-sm cart__dropdown-item-remove mt-2">Remove</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="cart__dropdown-total">
-                            <h4>Total:</h4>
-                            <p>$99.99</p>
-                            <a href="#" class="btn btn-primary w-100">Checkout</a>
-                            <div class="cart__dropdown-actions">
-                                <button class="btn btn-sm btn-primary cart__dropdown-update">Update Cart</button>
-                                <button class="btn btn-sm btn-danger cart__dropdown-clear">Clear Cart</button>
+                        <div class="cart__dropdown-total p-4 border-t border-gray-100 bg-gray-50">
+                            <h4 class="font-semibold text-gray-800">Total:</h4>
+                            <p class="font-bold text-blue-600">$99.99</p>
+                            <a href="#" class="btn btn-primary w-full mt-2">Checkout</a>
+                            <div class="cart__dropdown-actions flex gap-2 mt-2">
+                                <button class="btn btn-sm btn-primary flex-1 cart__dropdown-update">Update Cart</button>
+                                <button class="btn btn-sm btn-danger flex-1 cart__dropdown-clear">Clear Cart</button>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
-                <div class="profile">                    
-                    <a class="button dropdown" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img th:src="@{/public/imgs/user-avatar.png}" src="../../../static/public/imgs/user-avatar.png" alt="User Avatar">
-                    </a>                   
-                    <div class="profile-menu profile-menu-right" id="dropdownMenu">
-                        <a class="dropdown-item" href="#">Profile</a>
-                        <a class="dropdown-item" href="#">Logout</a>
+                <div class="profile relative flex-shrink-0">
+                    <a class="button flex items-center gap-2 nav-link" id="dropdownMenuButton">
+                        <img th:src="@{/public/imgs/user-avatar.png}" src="../../../static/public/imgs/user-avatar.png" alt="User Avatar" class="w-8 h-8 rounded-full">
+                    </a>
+                    <div class="profile-menu absolute top-full right-0 mt-1 w-56 hidden z-50 border border-gray-300 rounded bg-white shadow-lg rtl:left-0 rtl:right-auto" id="dropdownMenu">
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Profile</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Logout</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Help</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Help</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">About Us</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">About Us</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Contact Us</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Contact Us</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Terms & Conditions</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Terms &amp; Conditions</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Privacy Policy</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Payment Options</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">FAQ</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Shipping &amp; Delivery</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Return Policy</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Returns &amp; Exchanges</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Shipping & Delivery</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">FAQ</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Payment Options</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Return Policy</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Returns & Exchanges</a>
+                        <a class="dropdown-item block w-full px-4 py-2 text-gray-700 hover:bg-gray-100 text-left" href="#">Privacy Policy</a>
                     </div>
                 </div>
             </div>

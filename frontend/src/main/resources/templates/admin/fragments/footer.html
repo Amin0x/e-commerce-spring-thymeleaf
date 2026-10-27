@@ -4,27 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>footer</title>
-    <style>
-        .footer{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 0;
-        }
-        .footer{
-            background-color: black;
-            color: #fff;
-            font-size: 1rem;
-            line-height: 20px;
-        }
-        .footer p {
-            margin: 0;
-        }
-    </style>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
-    <footer class="footer" th:fragment="footer">
-        <p>&copy; 2024 Alamin. All rights reserved.</p>
+    <footer class="footer bg-black text-white text-center py-3" th:fragment="footer">
+        <p class="m-0">&copy; 2024 Alamin. All rights reserved.</p>
     </footer>
 </body>
 </html>

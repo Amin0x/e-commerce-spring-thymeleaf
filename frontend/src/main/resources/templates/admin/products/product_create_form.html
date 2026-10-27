@@ -7,200 +7,209 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="author" th:content="${pageAuthor}" />
     <meta name="description" th:content="${pageDescription}" />
-    <meta name="theme-color" content="#ffffff">
-    <link rel="preload" href="../../../static/public/css/bootstrap.min.css" as="style">
-    <link rel="preload" href="../../../static/admin/main.css" as="style">
-    <link rel="preload" href="../../../static/public/js/jquery-3.7.1.min.js" as="script">
-    <link rel="preload" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" as="script">
     <title th:text="${pageTitle}">Create Product</title>
-    <link th:if="false" th:href="@{'/public/css/bootstrap.min.css'}" href="../../../static/public/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/admin/main.css}" href="../../../static/admin/main.css" rel="stylesheet">
 </head>
 
 <body>
 <div class="page-wrapper">
-    <div class="wrapper">
+    <div class="wrapper p-6">
         <div th:replace="~{admin/fragments/navigation :: navigation}"></div>
         <main class="content">
             <header th:replace="~{admin/fragments/header :: header}"></header>
-            <div class="content-page-container create-product-container">
-                <h2>Create New Product</h2>
-                <div class="box-round p-3">
-                    <div class="form-box">
+            <div class="content-page-container create-product-container max-w-4xl mx-auto">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">Create New Product</h2>
+                <div class="box-round bg-white border border-gray-200 rounded p-6 shadow-sm">
+                    <div class="form-box space-y-6">
                         <form th:action="@{/admin/products}" id="createProduct">
-                            <div class="product-info">
-                                <div class="name input-section">
-                                    <label for="name">Name:</label>
-                                    <input type="text" class="name-input" name="name" th:value="${name}" id="name">
-                                    <div class="error-message" id="nameError"></div>
-                                </div>
-                                <div class="description input-section">
-                                    <label for="description">Description:</label>
-                                    <textarea class="description-input" th:value="${description}" name="description"
-                                              id="description" rows="3"></textarea>
-                                    <div class="error-message" id="descriptionError"></div>
-                                </div>
-                                <div class="product-row input-section">
-                                    <div class="price">
-                                        <label for="price">Price:</label>
-                                        <input type="number" name="price" class="price-input" th:value="${price}"
-                                               id="price">
-                                        <div class="error-message" id="priceError"></div>
+                            <div class="product-info space-y-6">
+                                <div class="name input-section grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label for="name" class="block text-sm font-medium text-gray-700">Name:</label>
+                                        <input type="text" class="form-control w-full px-3 py-2 border border-gray-300 rounded" name="name" th:value="${name}" id="name">
+                                        <div class="error-message" id="nameError" class="text-red-600 text-sm"></div>
                                     </div>
-                                    <div class="stock">
-                                        <label for="stock">Stock:</label>
-                                        <input type="number" name="stock" class="stock-input" th:vlaue="${stock}" id="stock"
-                                               value="0">
-                                        <div class="error-message" id="stockError"></div>
+                                    <div class="space-y-2">
+                                        <label for="description" class="block text-sm font-medium text-gray-700">Description:</label>
+                                        <textarea class="form-control w-full px-3 py-2 border border-gray-300 rounded" name="description" th:value="${description}" id="description" rows="3"></textarea>
+                                        <div class="error-message" id="descriptionError" class="text-red-600 text-sm"></div>
+                                    </div>
+                                </div>
+                                <div class="product-row input-section grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label for="price" class="block text-sm font-medium text-gray-700">Price:</label>
+                                        <input type="number" name="price" class="form-control w-full px-3 py-2 border border-gray-300 rounded" th:value="${price}" id="price">
+                                        <div class="error-message" id="priceError" class="text-red-600 text-sm"></div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label for="stock" class="block text-sm font-medium text-gray-700">Stock:</label>
+                                        <input type="number" name="stock" class="form-control w-full px-3 py-2 border border-gray-300 rounded" th:value="${stock}" id="stock" value="0">
+                                        <div class="error-message" id="stockError" class="text-red-600 text-sm"></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="product-category">
-                                <div class="category">
-                                    <label for="categoryInput">Category:</label>
-                                    <input type="text" name="categoryInput" class="control-input" id="categoryInput"
-                                           autocomplete="off">
-                                    <div class="error-message" id="categoryError"></div>
-                                    <div id="category" class="category-dropdown">
-                                        <p data-value="">Root</p>
-                                        <p th:each="category : ${categories}" th:data-value="${category.id}"
-                                           th:text="${category.name}">Category</p>
+                                <div class="space-y-2">
+                                    <label for="categoryInput" class="block text-sm font-medium text-gray-700">Category:</label>
+                                    <input type="text" name="categoryInput" class="form-control w-full px-3 py-2 border border-gray-300 rounded" id="categoryInput" autocomplete="off">
+                                    <div class="error-message" id="categoryError" class="text-red-600 text-sm"></div>
+                                    <div id="category" class="category-dropdown mt-2">
+                                        <p data-value="" class="cursor-pointer p-2 bg-gray-100 rounded hover:bg-gray-200">Root</p>
+                                        <p th:each="category : ${categories}" th:data-value="${category.id}" th:text="${category.name}" class="cursor-pointer p-2 hover:bg-gray-100 rounded">Category</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-brand input-section">
-                                <label for="brand">Brand:</label>
-                                <input type="text" name="brand" class="input-brand" th:vlaue="${brand}" id="brand">
-                                <div class="error-message" id="brandError"></div>
+                            <div class="product-brand input-section space-y-2">
+                                <label for="brand" class="block text-sm font-medium text-gray-700">Brand:</label>
+                                <input type="text" name="brand" class="form-control w-full px-3 py-2 border border-gray-300 rounded" th:value="${brand}" id="brand">
+                                <div class="error-message" id="brandError" class="text-red-600 text-sm"></div>
                             </div>
-                            <div class="product-enabled input-section">
-                                <div class="active-checkbox">
-                                    <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}">
-                                    <label for="enabled">Enabled</label>
+                            <div class="product-enabled input-section grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                                <div class="active-checkbox space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <input type="checkbox" id="enabled" name="enabled" th:value="${enabled}" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                                        <label for="enabled" class="text-sm font-medium text-gray-700">Enabled</label>
+                                    </div>
                                 </div>
-                                <div class="enabled-checkbox">
-                                    <input type="checkbox" id="active" name="active" th:value="${active}">
-                                    <label for="active">Active</label>
-                                </div>
-                            </div>
-                            <div class="product-primary-img input-section">
-                                <div class="">
-                                    <div class="title">Primary Image:</div>
-                                    <div id="primaryImagePreview" class="d-flex flex-wrap primary-image-preview"></div>
-                                    <input type="file" id="filePrimeryImage" name="filePrimeryImage"
-                                           class="file-primery-image">
-                                    <div class="error-message" id="filePrimeryImageError"></div>
-                                    <button type="button" class="button-37" id="addMainImage">Add Primary Image</button>
+                                <div class="enabled-checkbox space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <input type="checkbox" id="active" name="active" th:value="${active}" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                                        <label for="active" class="text-sm font-medium text-gray-700">Active</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="product-images input-section">
+                            <div class="product-primary-img input-section space-y-2">
                                 <div>
-                                    <div>Add Product Images:</div>
-                                    <div id="imagesPreview" class="d-flex flex-wrap"></div>
-                                    <input type="file" id="fileImages" name="fileImages" style="display: none;" multiple>
-                                    <div class="error-message" id="fileImagesError"></div>
-                                    <button type="button" class="button-37" id="uploadImage">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                             fill="currentColor">
+                                    <div class="title text-sm font-medium text-gray-700">Primary Image:</div>
+                                    <div id="primaryImagePreview" class="d-flex flex-wrap primary-image-preview gap-2 mt-2"></div>
+                                    <input type="file" id="filePrimeryImage" name="filePrimeryImage" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="image/*">
+                                    <div class="error-message" id="filePrimeryImageError" class="text-red-600 text-sm"></div>
+                                    <button type="button" class="button-37 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" id="addMainImage">Add Primary Image</button>
+                                </div>
+                            </div>
+                            <div class="product-images input-section space-y-2">
+                                <div>
+                                    <div class="text-sm font-medium text-gray-700">Add Product Images:</div>
+                                    <div id="imagesPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
+                                    <input type="file" id="fileImages" name="fileImages" class="hidden" multiple>
+                                    <div class="error-message" id="fileImagesError" class="text-red-600 text-sm"></div>
+                                    <button type="button" class="button-37 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" id="uploadImage">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                                             <path d="M12 0C5.372 0 0 5.372 0 12c0 6.628 5.372 12 12 12s12-5.372 12-12c0-6.628-5.372-12-12-12zm0 21.8c-5.423 0-9.8-4.377-9.8-9.8 0-5.423 4.377-9.8 9.8-9.8 5.423 0 9.8 4.377 9.8 9.8 0 5.423-4.377 9.8-9.8 9.8zM11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z"/>
                                         </svg>
-                                    </button>    
+                                    </button>
                                 </div>
                             </div>
-                            <button type="submit" class="button-37 submit-button" id="submitButton">Create Product</button>
+                            <button type="submit" class="button-37 submit-button w-auto px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors" id="submitButton">Create Product</button>
                         </form>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    <footer th:replace="~{admin/fragments/footer::footer}"></footer>    
+    <footer th:replace="~{admin/fragments/footer::footer}"></footer>
 </div>
 
-<script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../../static/public/js/jquery-3.7.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-
-    $(document).ready(function () {
+    document.addEventListener('DOMContentLoaded', function () {
         let productImage = [];
         let productPrimaryImage = '';
 
-        $('#createProduct').on('submit', function (e) {
+        const createProduct = document.getElementById('createProduct');
+        const submitButton = document.getElementById('submitButton');
+        const imagesPreview = document.getElementById('imagesPreview');
+        const primaryImagePreview = document.getElementById('primaryImagePreview');
+
+        createProduct.addEventListener('submit', async function (e) {
             e.preventDefault();
-            $('submitButton').attr('disabled', 'disabled');
-            let formData = new FormData(document.getElementById('createProduct'));
+            submitButton.disabled = true;
+            const formData = new FormData(createProduct);
             formData.delete('fileImages');
             formData.delete('filePrimeryImage');
             for (let index = 0; index < productImage.length; index++) {
                 const file = productImage[index];
-                formData.append("images" , file);
+                formData.append("images", file);
             }
             formData.append("primaryImage", productPrimaryImage);
-            formData.set("enabled", $("#enabled").is(":checked")? "true":"false");
-            formData.set("active", $("#active").is(":checked")? "true":"false");
+            formData.set("enabled", document.getElementById('enabled').checked ? "true" : "false");
+            formData.set("active", document.getElementById('active').checked ? "true" : "false");
 
-            $.ajax({
-                url: "/admin/products/createProduct",
-                method: "post",
-                data: formData,
-                success: function (response) {
-                    let categories = response.data;
-                    $('#createProduct')[0].reset();
-                    $('submitButton').removeAttr('disabled');
-                    productImage = [];
-                    productPrimaryImage = '';
-                    $('#imagesPreview').empty();
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr.responseText);
-                    const errors = xhr.responseJSON.errors;
-                    $('submitButton').removeAttr('disabled');
+            const csrfHeader = document.querySelector("meta[name='_csrf_header']");
+            const csrfToken = document.querySelector("meta[name='_csrf']");
+            const headers = {};
+            if (csrfHeader && csrfToken) {
+                headers[csrfHeader.getAttribute('content')] = csrfToken.getAttribute('content');
+            }
+
+            try {
+                const response = await fetch("/admin/products/createProduct", {
+                    method: "POST",
+                    headers: headers,
+                    body: formData,
+                });
+                if (!response.ok) {
+                    const data = await response.json();
+                    const errors = data?.errors;
+                    submitButton.disabled = false;
                     if (errors !== undefined) {
-                        $.each(errors, function (key, value) {
-                            const errorElement = $("#" + key + "Error");
-                            errorElement.text(value[0]);
+                        Object.entries(errors).forEach(([key, value]) => {
+                            const errorElement = document.getElementById(key + "Error");
+                            if (errorElement) {
+                                errorElement.textContent = value[0];
+                            }
                         });
                     } else {
                         console.log("No errors found in the response.");
                     }
-                },
-                contentType: /*"application/json"*/ false,
-                processData: false,
-                cache: false,
-            });
+                    return;
+                }
+                createProduct.reset();
+                submitButton.disabled = false;
+                productImage = [];
+                productPrimaryImage = '';
+                imagesPreview.innerHTML = '';
+            } catch (error) {
+                console.log(error);
+                submitButton.disabled = false;
+            }
         });
 
-
-
-        $('#filePrimeryImage').on('change', function () {
+        const filePrimeryImage = document.getElementById('filePrimeryImage');
+        filePrimeryImage.addEventListener('change', function () {
             const file = this.files[0];
             if (file === undefined || file.type === undefined || file.type.indexOf('image') === -1) {
                 return;
             }
             const reader = new FileReader();
             reader.onload = function (event) {
-                const img = $('<img>');
-                const btn = $('<button>');
-                btn.on('click', function () {
-                    $(this).parent().empty();
-                });
-                btn.text('x').attr('id', "deletePrimaryImage");
-                img.attr( "src", event.target.result);
-                $('#primaryImagePreview').empty();
-                $('#primaryImagePreview').append(img).append(btn);
+                const img = document.createElement('img');
+                img.src = event.target.result;
+                img.className = 'w-24 h-24 object-fit-cover rounded border border-gray-200';
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.id = 'deletePrimaryImage';
+                btn.textContent = 'x';
+                btn.className = 'text-red-600 hover:text-red-800 font-bold';
+                btn.onclick = function () {
+                    this.parentElement.innerHTML = '';
+                };
+                primaryImagePreview.innerHTML = '';
+                primaryImagePreview.appendChild(img);
+                primaryImagePreview.appendChild(btn);
             };
             reader.readAsDataURL(file);
             productPrimaryImage = file;
         });
 
-        $('#fileImages').on('change', function () {
-            var files = this.files;
+        const fileImages = document.getElementById('fileImages');
+        fileImages.addEventListener('change', function () {
+            const files = this.files;
             console.log("upload image");
-            $.each(files, function (i, file) {
-                var reader = new FileReader();
+            Array.from(files).forEach(function (file) {
+                const reader = new FileReader();
                 reader.onload = function (e) {
                     console.log("read file successfully");
-                    $('#imagesPreview').append(`<img src="${reader.result}" alt="${file.name}" class="img-thumbnail" style="width: 100px; height: 100px; margin-right: 10px;">`);
+                    document.getElementById('imagesPreview').insertAdjacentHTML('beforeend', `<img src="${reader.result}" alt="${file.name}" class="w-20 h-20 object-fit-cover rounded border border-gray-200">`);
                 };
                 console.log('Reading file:', file.name);
                 reader.readAsDataURL(file);
@@ -208,57 +217,60 @@
             });
         });
 
-
-        $('#addMainImage').on('click', function () {
-            const fv = $('#filePrimeryImage').val;
-            if (fv !== '') {
-                $('#filePrimeryImage').val('');
+        const addMainImage = document.getElementById('addMainImage');
+        addMainImage.addEventListener('click', function () {
+            if (document.getElementById('filePrimeryImage').value !== '') {
+                document.getElementById('filePrimeryImage').value = '';
             }
-            $('#filePrimeryImage').click();
+            document.getElementById('filePrimeryImage').click();
         });
 
-        $('#uploadImage').on('click', function () {
-            $('#fileImages').click();
+        const uploadImage = document.getElementById('uploadImage');
+        uploadImage.addEventListener('click', function () {
+            document.getElementById('fileImages').click();
         });
 
-        window.addEventListener('click', function (event) {
-            $('#category').removeClass('active');
+        document.addEventListener('click', function (event) {
+            if (!event.target.closest('#categoryInput') && !event.target.closest('#category')) {
+                document.getElementById('category').classList.remove('active');
+            }
         });
 
-        $('#categoryInput').on('keydown', function(event) {
+        const categoryInput = document.getElementById('categoryInput');
+        const categoryElm = document.getElementById('category');
+        categoryInput.addEventListener('keydown', function (event) {
             event.preventDefault();
-            let  category = event.target.value;
-            if (category == '') {
+            const category = event.target.value;
+            if (category === '') {
                 return false;
             }
-
-            $.get('/admin/categories/search/' + category)
-                .done(function(data) {
+            fetch('/admin/categories/search/' + category)
+                .then(function (response) { return response.json(); })
+                .then(function (data) {
                     console.log(data);
-                    const $catElm = $('#category');
-                    $catElm.empty();
+                    categoryElm.innerHTML = '';
                     if (data !== undefined) {
-                        data.map(function(element) {
-                            const $opt = $('<p></p>');
-                            $opt.attr("data-value", element.id);
-                            $opt.text(element.name);
-                            $catElm.append($opt);
-
-                            if (!$catElm.hasClass("category")) {
-                                $catElm.addClass("active");
+                        data.map(function (element) {
+                            const opt = document.createElement('p');
+                            opt.setAttribute('data-value', element.id);
+                            opt.textContent = element.name;
+                            opt.className = 'cursor-pointer p-2 hover:bg-gray-100 rounded';
+                            categoryElm.appendChild(opt);
+                            if (!categoryElm.classList.contains('category')) {
+                                categoryElm.classList.add('active');
                             }
-
-                            $("p[data-value]").on('click', function() {
-                                $('#categoryInput').val($(this).data("value"));
-                                $catElm.removeClass("active");
+                            document.querySelectorAll('p[data-value]').forEach(function (p) {
+                                p.onclick = function () {
+                                    categoryInput.value = p.getAttribute('data-value');
+                                    categoryElm.classList.remove('active');
+                                };
                             });
                         });
                     }
                 })
-                .fail(function() {
+                .catch(function () {
                     console.log('Error fetch category');
                 });
-
         });
     });
 

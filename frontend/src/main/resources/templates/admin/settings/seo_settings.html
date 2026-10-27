@@ -2,151 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${pageTitle}">Title</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-        }
-
-        nav {
-            margin: 20px 0;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-        }
-
-        nav a:hover {
-            background-color: #575757;
-        }
-
-        .settings-form {
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-            outline: none;
-        }
-        .form-input:focus {
-            border-color: #007bff;
-        }
-
-        .form-button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .form-button:hover {
-            background-color: #218838;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">SEO Settings</title>
+    <link th:href="@{/public/css/tailwind.css}" href="/static/public/css/tailwind.css" rel="stylesheet">
 </head>
-<body>
+
+<body class="bg-gray-100 min-h-screen">
 <div class="page-wrapper">
     <div class="wrapper">
-        <main class="content">
-            <div class="content-page-container">
-                <header>
-                    <h1>SEO Settings</h1>
-                    <nav>
-                        <a href="/admin/settings/general" style="margin-right: 20px;">General Settings</a>
-                        <a href="/admin/settings/payment" style="margin-right: 20px;">Payment Settings</a>
-                        <a href="/admin/settings/shipping" style="margin-right: 20px;">Shipping Settings</a>
-                        <a href="/admin/settings/seo">SEO Settings</a>
+        <main class="content p-6">
+            <div class="content-page-container max-w-xl mx-auto">
+                <header class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900">SEO Settings</h1>
+                    <nav class="flex flex-wrap gap-4 mt-2">
+                        <a href="/admin/settings/general" class="text-sm text-blue-600 hover:underline">General Settings</a>
+                        <a href="/admin/settings/payment" class="text-sm text-blue-600 hover:underline">Payment Settings</a>
+                        <a href="/admin/settings/shipping" class="text-sm text-blue-600 hover:underline">Shipping Settings</a>
+                        <a href="/admin/settings/seo" class="text-sm font-medium text-gray-900">SEO Settings</a>
                     </nav>
                 </header>
-                <form action="/admin/settings/seo" method="post" class="settings-form">
+                <form action="/admin/settings/seo" method="post" class="bg-white p-6 border border-gray-200 rounded shadow-sm space-y-4 settings-form">
                     <div class="form-group">
-                        <label for="metaTitle" class="form-label">Meta Title:</label>
-                        <input type="text" id="metaTitle" name="metaTitle" required class="form-input">
+                        <label for="metaTitle" class="block text-sm font-medium text-gray-700 mb-1">Meta Title:</label>
+                        <input type="text" id="metaTitle" name="metaTitle" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                     </div>
                     <div class="form-group">
-                        <label for="metaDescription" class="form-label">Meta Description:</label>
-                        <textarea id="metaDescription" name="metaDescription" required class="form-input" rows="4"></textarea>
+                        <label for="metaDescription" class="block text-sm font-medium text-gray-700 mb-1">Meta Description:</label>
+                        <textarea id="metaDescription" name="metaDescription" rows="4" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="metaKeywords" class="form-label">Meta Keywords:</label>
-                        <input type="text" id="metaKeywords" name="metaKeywords" required class="form-input">
+                        <label for="metaKeywords" class="block text-sm font-medium text-gray-700 mb-1">Meta Keywords:</label>
+                        <input type="text" id="metaKeywords" name="metaKeywords" class="form-control w-full px-3 py-2 border border-gray-300 rounded" required>
                     </div>
                     <div class="form-group">
-                        <label for="robotsTxt" class="form-label">Robots.txt Content:</label>
-                        <textarea id="robotsTxt" name="robotsTxt" class="form-input" rows="6"></textarea>
+                        <label for="robotsTxt" class="block text-sm font-medium text-gray-700 mb-1">Robots.txt Content:</label>
+                        <textarea id="robotsTxt" name="robotsTxt" rows="6" class="form-control w-full px-3 py-2 border border-gray-300 rounded"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="sitemapUrl" class="form-label">Sitemap URL:</label>
-                        <input type="url" id="sitemapUrl" name="sitemapUrl" class="form-input">
+                        <label for="sitemapUrl" class="block text-sm font-medium text-gray-700 mb-1">Sitemap URL:</label>
+                        <input type="url" id="sitemapUrl" name="sitemapUrl" class="form-control w-full px-3 py-2 border border-gray-300 rounded">
                     </div>
                     <div class="form-group">
-                        <label for="canonicalUrl" class="form-label">Canonical URL:</label>
-                        <input type="url" id="canonicalUrl" name="canonicalUrl" class="form-input">
+                        <label for="canonicalUrl" class="block text-sm font-medium text-gray-700 mb-1">Canonical URL:</label>
+                        <input type="url" id="canonicalUrl" name="canonicalUrl" class="form-control w-full px-3 py-2 border border-gray-300 rounded">
                     </div>
                     <div class="form-group">
-                        <label for="ogTitle" class="form-label">Open Graph Title:</label>
-                        <input type="text" id="ogTitle" name="ogTitle" class="form-input">
+                        <label for="ogTitle" class="block text-sm font-medium text-gray-700 mb-1">Open Graph Title:</label>
+                        <input type="text" id="ogTitle" name="ogTitle" class="form-control w-full px-3 py-2 border border-gray-300 rounded">
                     </div>
                     <div class="form-group">
-                        <label for="ogDescription" class="form-label">Open Graph Description:</label>
-                        <textarea id="ogDescription" name="ogDescription" class="form-input" rows="4"></textarea>
+                        <label for="ogDescription" class="block text-sm font-medium text-gray-700 mb-1">Open Graph Description:</label>
+                        <textarea id="ogDescription" name="ogDescription" rows="4" class="form-control w-full px-3 py-2 border border-gray-300 rounded"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="ogImage" class="form-label">Open Graph Image URL:</label>
-                        <input type="url" id="ogImage" name="ogImage" class="form-input">
+                        <label for="ogImage" class="block text-sm font-medium text-gray-700 mb-1">Open Graph Image URL:</label>
+                        <input type="url" id="ogImage" name="ogImage" class="form-control w-full px-3 py-2 border border-gray-300 rounded">
                     </div>
                     <div class="form-group">
-                        <label for="twitterCard" class="form-label">Twitter Card Type:</label>
-                        <input type="text" id="twitterCard" name="twitterCard" class="form-input">
+                        <label for="twitterCard" class="block text-sm font-medium text-gray-700 mb-1">Twitter Card Type:</label>
+                        <input type="text" id="twitterCard" name="twitterCard" class="form-control w-full px-3 py-2 border border-gray-300 rounded">
                     </div>
                     <div class="form-group">
-                        <label for="twitterTitle" class="form-label">Twitter Title:</label>
-                        <input type="text" id="twitterTitle" name="twitterTitle" class="form-input">
+                        <label for="twitterTitle" class="block text-sm font-medium text-gray-700 mb-1">Twitter Title:</label>
+                        <input type="text" id="twitterTitle" name="twitterTitle" class="form-control w-full px-3 py-2 border border-gray-300 rounded">
                     </div>
                     <div class="form-group">
-                        <label for="twitterDescription" class="form-label">Twitter Description:</label>
-                        <textarea id="twitterDescription" name="twitterDescription" class="form-input" rows="4"></textarea>
+                        <label for="twitterDescription" class="block text-sm font-medium text-gray-700 mb-1">Twitter Description:</label>
+                        <textarea id="twitterDescription" name="twitterDescription" rows="4" class="form-control w-full px-3 py-2 border border-gray-300 rounded"></textarea>
                     </div>
-    
                     <div class="form-group">
-                        <button type="submit" class="form-button">Save SEO Settings</button>
+                        <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">Save SEO Settings</button>
                     </div>
                 </form>
             </div>

@@ -22,8 +22,8 @@
     <title th:text="${pageTitle}">Home</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="../../static/public/css/bootstrap.rtl.min.css" th:href="@{/public/css/bootstrap.rtl.min.css}" rel="stylesheet">
-    <link href="../../static/public/css/style.css" th:href="@{/public/css/style.css}" rel="stylesheet">
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
+    <link th:href="@{/public/css/style.css}" href="../../static/public/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -46,103 +46,108 @@
             <div th:replace="~{public/fragments/categories :: categories}"></div>
             <section th:if="${#lists.isEmpty(mustSellingProducts) == false}" class="top-products products-container">
                 <div class="section-title">
-                    <h4 class="title">المنتجات الأكثر مبيعا</h4>
+                    <h4 class="title text-lg font-bold text-gray-900 mb-4">المنتجات الأكثر مبيعا</h4>
                 </div>
-                <div th:replace="~{public/fragments/productCardList3 :: productCardList3(${mustSellingProducts})}">
-
-                </div>
+                <div th:replace="~{public/fragments/productCardList3 :: productCardList3(${mustSellingProducts})}"></div>
             </section>
-            <section class="all-products products-container">
-                <div class="section-title"><h4 class="title">أحدث المنتجات</h4></div>
-                <div class="products">
-                    <div th:each="product : ${products}" class="product-card-b">
-                        <div class="product-image">
-                            <a class="circle-container" th:data-heart="${product.id}">
-                                <i class="far fa-heart"></i>
+            <section class="all-products products-container mb-8">
+                <div class="section-title mb-4">
+                    <h4 class="title text-lg font-bold text-gray-900">أحدث المنتجات</h4>
+                </div>
+                <div class="products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div th:each="product : ${products}" class="product-card-b group">
+                        <div class="product-image relative overflow-hidden rounded-lg">
+                            <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm" th:data-heart="${product.id}">
+                                <i class="far fa-heart text-gray-600 hover:text-red-600 transition-colors text-lg"></i>
                             </a>
-                            <a th:href="@{/products/{id}(id=${product.slug})}" href="#">
+                            <a th:href="@{/products/{id}(id=${product.slug})}" href="#" class="block">
                                 <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
-                                    class="product-img" alt="Product Image" src="">
+                                    class="product-img w-full h-48 object-fit-cover" alt="Product Image" src="">
                             </a>
+                            <div th:if="${product.new}" class="product-new absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-semibold">جديد</div>
                         </div>
-                        <div class="product-details">
-                            <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
-                            <div>
-                                <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
-                                <div th:if="(${product.price} &lt; ${product.basePrice})" class="price-discount">
+                        <div class="product-details mt-2">
+                            <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title text-sm font-bold text-gray-900 truncate block">Product Title</div>
+                            <div class="mt-1">
+                                <div class="price text-sm font-semibold text-gray-800" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
+                                <div th:if="(${product.price} &lt; ${product.basePrice})" class="price-discount text-xs text-gray-500 line-through">
                                     <span th:text="|${#numbers.formatInteger(product.basePrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="add-to-cart">
-                            <button type="button" class="button-31" th:data-add-cart="${product.uuid}">اضافة للعربة</button>
+                        <div class="add-to-cart mt-2">
+                            <button type="button" class="button-31 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm" th:data-add-cart="${product.uuid}">اضافة للعربة</button>
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="all-products products-container">
-                <div class="section-title"><h4 class="title">كل المنتجات</h4></div>
-                <div class="products">
-                    <div th:each="product : ${products}" class="product-card-b">
-                        <div class="product-image">
-                            <a class="circle-container" th:data-heart="${product.id}">
-                                <i class="far fa-heart"></i>
+            <section class="all-products products-container mb-8">
+                <div class="section-title mb-4">
+                    <h4 class="title text-lg font-bold text-gray-900">كل المنتجات</h4>
+                </div>
+                <div class="products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div th:each="product : ${products}" class="product-card-b group">
+                        <div class="product-image relative overflow-hidden rounded-lg">
+                            <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm" th:data-heart="${product.id}">
+                                <i class="far fa-heart text-gray-600 hover:text-red-600 transition-colors text-lg"></i>
                             </a>
-                            <a th:href="@{/products/{id}(id=${product.slug})}" href="#">
+                            <a th:href="@{/products/{id}(id=${product.slug})}" href="#" class="block">
                                 <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
-                                    class="product-img" alt="Product Image" src="">
+                                    class="product-img w-full h-48 object-fit-cover" alt="Product Image" src="">
                             </a>
+                            <div th:if="${product.new}" class="product-new absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-semibold">جديد</div>
                         </div>
-                        <div class="product-details">
-                            <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
-                            <div>
-                                <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
-                                <div th:if="(${product.price} &lt; ${product.basePrice})" class="price-discount">
+                        <div class="product-details mt-2">
+                            <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title text-sm font-bold text-gray-900 truncate block">Product Title</div>
+                            <div class="mt-1">
+                                <div class="price text-sm font-semibold text-gray-800" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
+                                <div th:if="(${product.price} &lt; ${product.basePrice})" class="price-discount text-xs text-gray-500 line-through">
                                     <span th:text="|${#numbers.formatInteger(product.basePrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="add-to-cart">
-                            <button type="button" class="button-31" th:data-add-cart="${product.uuid}">اضافة للعربة</button>
+                        <div class="add-to-cart mt-2">
+                            <button type="button" class="button-31 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm" th:data-add-cart="${product.uuid}">اضافة للعربة</button>
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="all-products products-container">
-                <div class="section-title"><h4 class="title">كل المنتجات</h4></div>
-                <div class="products">
-                    <div th:each="product : ${products}" class="product-card-b">
-                        <div class="product-image">
-                            <a class="circle-container" th:data-heart="${product.id}">
-                                <i class="far fa-heart"></i>
+            <section class="all-products products-container mb-8">
+                <div class="section-title mb-4">
+                    <h4 class="title text-lg font-bold text-gray-900">كل المنتجات</h4>
+                </div>
+                <div class="products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div th:each="product : ${products}" class="product-card-b group">
+                        <div class="product-image relative overflow-hidden rounded-lg">
+                            <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm" th:data-heart="${product.id}">
+                                <i class="far fa-heart text-gray-600 hover:text-red-600 transition-colors text-lg"></i>
                             </a>
-                            <a th:href="@{/products/{id}(id=${product.slug})}" href="#">
+                            <a th:href="@{/products/{id}(id=${product.slug})}" href="#" class="block">
                                 <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
-                                    class="product-img" alt="Product Image" src="">
+                                    class="product-img w-full h-48 object-fit-cover" alt="Product Image" src="">
                             </a>
+                            <div th:if="${product.new}" class="product-new absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-semibold">جديد</div>
                         </div>
-                        <div class="product-details">
-                            <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title fw-bold"> Product Title</div>
-                            <div>
-                                <div class="price" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
-                                <div th:if="(${product.price} &lt; ${product.basePrice})" class="price-discount">
+                        <div class="product-details mt-2">
+                            <div th:text="${#strings.abbreviate(product.name, 40)}" class="product-title text-sm font-bold text-gray-900 truncate block">Product Title</div>
+                            <div class="mt-1">
+                                <div class="price text-sm font-semibold text-gray-800" th:text="|${#numbers.formatInteger(product.price, 1, 'COMMA')} جنيه|">$49.99  ج.س </div>
+                                <div th:if="(${product.price} &lt; ${product.basePrice})" class="price-discount text-xs text-gray-500 line-through">
                                     <span th:text="|${#numbers.formatInteger(product.basePrice, 1, 'COMMA')} جنيه|">$49.99 ج.س</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="add-to-cart">
-                            <button type="button" class="button-31" th:data-add-cart="${product.uuid}">اضافة للعربة</button>
+                        <div class="add-to-cart mt-2">
+                            <button type="button" class="button-31 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm" th:data-add-cart="${product.uuid}">اضافة للعربة</button>
                         </div>
                     </div>
                 </div>
             </section>
         </main>
         <section th:replace="public/fragments/subscription::subscribeForm"></section>
-        <footer th:replace="~{public/fragments/footer :: footer}" class="mt-3"></footer>
+        <footer th:replace="~{public/fragments/footer :: footer}" class="mt-6"></footer>
     </div>
-    <script th:src="@{'/public/js/jquery-3.7.1.min.js'}" src="../../static/public/js/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../static/public/js/jquery-3.7.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3uENzmM7KC2Rr/r9BOpPGj9jfS6/3ejV+kzU+V6qMzZbbB" crossorigin="anonymous"></script>
     <script src="../../static/public/js/main.js" th:src="@{/public/js/main.js}"></script>
 <script>
     initSubscriptionForm();

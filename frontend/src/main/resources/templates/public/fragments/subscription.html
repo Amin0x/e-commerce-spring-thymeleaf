@@ -1,33 +1,29 @@
-<!-- src/main/resources/templates/fragments.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fragments</title>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
-  <style>
-
-  </style>
+    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
 
 <!-- Define the subscription form as a fragment -->
-<section class="subscribe" th:fragment="subscribeForm">
-  <div class="subscribe-content">
-      <div class="image"><i class="fas fa-envelope"></i></div>
-      <p class="subscription-title">الاشتراك</p>
-      <p class="subscription-desc">اشترك في القائمة البريدية لتلقي اخر الاخبار والعروض.</p>
+<section class="subscribe px-4 py-8 bg-gray-50" th:fragment="subscribeForm">
+  <div class="subscribe-content max-w-md mx-auto text-center">
+      <div class="image mx-auto mb-3"><i class="fas fa-envelope text-blue-600 text-2xl"></i></div>
+      <p class="subscription-title text-lg font-bold text-gray-800 mb-1">الاشتراك</p>
+      <p class="subscription-desc text-sm text-gray-600 mb-4">اشترك في القائمة البريدية لتلقي اخر الاخبار والعروض.</p>
+      <form id="subscribeForm">
+          <div class="subscription-form flex flex-col gap-2">
+            <input class="name text-field form-control" type="text" id="name" name="name" placeholder="الاسم">
+            <input class="email text-field form-control" type="text" id="email" name="email" placeholder="الايميل">
+            <div class="message" id="message"></div>
+            <button class="subscribe-btn btn btn-primary" type="button" id="subscribeButton">اشتراك</button>
+          </div>
+      </form>
   </div>
-  <form id="subscribeForm">
-      <div class="subscription-form">
-        <input class="name text-field" type="text" id="name" name="name" placeholder="الاسم">
-        <input class="email text-field" type="text" id="email" name="email" placeholder="الايميل">
-        <div class="message" id="message"></div>
-        <button class="subscribe-btn" type="button" id="subscribeButton">اشتراك</button>
-      </div>
-  </form>
 </section>
 </body>
 </html>
