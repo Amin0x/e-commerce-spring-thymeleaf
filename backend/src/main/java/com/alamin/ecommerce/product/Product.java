@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.product;
 
 import com.alamin.ecommerce.category.Category;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +26,7 @@ public class Product {
     @Column(unique = true, nullable = false)
     private String barcode;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Brand brand;
 
     private String model;
@@ -83,9 +84,11 @@ public class Product {
     private Category category;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JsonManagedReference
     private List<ProductImage> productImages = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonManagedReference("product-price")
     private List<ProductPrice> productPrices = new ArrayList<>();
 
     // Default constructor

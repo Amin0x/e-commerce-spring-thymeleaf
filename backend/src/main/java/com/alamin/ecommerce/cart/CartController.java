@@ -1,6 +1,6 @@
 package com.alamin.ecommerce.cart;
 
-import com.alamin.ecommerce.product.Product;
+import com.alamin.ecommerce.product.ProductDto;
 import com.alamin.ecommerce.product.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class CartController {
                                      @AuthenticationPrincipal UserDetails principal) {
         String cartKey = request.getHeader("X-Cart-Key");
         String username = principal == null ? null : principal.getUsername();
-        Product product = productService.getProductByUuid(productId)
+        ProductDto product = productService.getProductByUuid(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
         Cart cart = cartService.addCartItem(product, cartKey, username);
         return ResponseEntity.ok(cart);

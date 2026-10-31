@@ -1,41 +1,13 @@
 package com.alamin.ecommerce.frontend.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * Mirrored copy of the backend {@link com.alamin.ecommerce.user.AuthRequest}
- * sent to {@code POST /api/auth/login}.
+ * Frontend REST login request. Mirrored in the backend module as an identical
+ * DTO so both modules share the contract without a shared module.
  */
-public class AuthRequest {
-
-    @NotBlank(message = "Username is required")
-    private String username;
-
-    @NotBlank(message = "Password is required")
-    private String password;
-
-    public AuthRequest() {
-    }
-
-    public AuthRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+public record AuthRequest(
+    @NotBlank(message = "Username is required") String username,
+    @NotBlank(message = "Password is required") String password
+) {
 }

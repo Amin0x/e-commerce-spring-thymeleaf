@@ -2,68 +2,71 @@ package com.alamin.ecommerce.product;
 
 import com.alamin.ecommerce.cart.Cart;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    List<Product> getRandomProductsByCategory(Long category, int size);
+    List<ProductDto> getRandomProductsByCategory(Long category, int size);
 
-    List<Product> getNewArrivalProducts();
+    List<ProductDto> getNewArrivalProducts();
 
-    Page<Product> getAllProducts(PageRequest pageable);
+    Page<ProductDto> getAllProducts(Pageable pageable);
 
     // Get product by ID
-    Optional<Product> getProductById(Long id);
+    Optional<ProductDto> getProductById(Long id);
 
     // Update product
-    Product updateProduct(Long id, Product updatedProduct);
+    ProductDto updateProduct(Long id, ProductRequest updatedProduct);
 
     // Delete product by ID
     void deleteProduct(Long id);
 
+    // Internal save for entity (used by service layer)
+    ProductDto save(Product product);
+
     List<ProductImage> uploadImage(MultipartFile file, Long id);
 
-    Product save(Product product);
+    ProductDto save(ProductRequest product);
 
-    Page<Product> getAllProducts(int page, int size, String sortBy, boolean asc);
+    Page<ProductDto> getAllProducts(int page, int size, String sortBy, boolean asc);
 
-    List<Product> findByCategory(String category);
+    List<ProductDto> findByCategory(String category);
 
-    Optional<Product> findById(Long id);
+    Optional<ProductDto> findById(Long id);
 
     boolean existsById(Long id);
 
     void deleteById(Long id);
 
-    List<Product> getBestSellingProducts(int size);
+    List<ProductDto> getBestSellingProducts(int size);
 
-    List<Product> getSimilarProducts(Product product);
+    List<ProductDto> getSimilarProducts(ProductDto product);
 
-    void deleteProductImage(Product product, Long id);
+    void deleteProductImage(ProductDto product, Long id);
 
-    Product createProduct(ProductForm pf);
+    ProductDto createProduct(ProductForm pf);
 
     // todo delete old image file
-    Product updatePrimaryImage(Long id, MultipartFile file);
+    ProductDto updatePrimaryImage(Long id, MultipartFile file);
 
-    List<Product> getRandomProducts(int size);
+    List<ProductDto> getRandomProducts(int size);
 
     long getProductsCount();
 
     long getTotalSoldCount();
 
-    List<Product> getTopUnsoldProducts();
+    List<ProductDto> getTopUnsoldProducts();
 
     long getTotalRevenue();
 
     long getTotalUnsold();
 
-    List<Product> getLastAddedProducts(int count);
+    List<ProductDto> getLastAddedProducts(int count);
 
-    List<Product> getLastAddedProductsRandom(int count);
+    List<ProductDto> getLastAddedProductsRandom(int count);
 
     List<ProductReview> getProductReviews(Long productId);
 
@@ -95,7 +98,7 @@ public interface ProductService {
 
     long getShipping(Cart cart);
 
-    Optional<Product> getProductBySlug(String id);
+    Optional<ProductDto> getProductBySlug(String id);
 
-    Optional<Product> getProductByUuid(String productId);
+    Optional<ProductDto> getProductByUuid(String productId);
 }

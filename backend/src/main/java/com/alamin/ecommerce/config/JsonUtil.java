@@ -1,6 +1,6 @@
 package com.alamin.ecommerce.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Tiny JSON serialization helper used by the REST authentication entry point

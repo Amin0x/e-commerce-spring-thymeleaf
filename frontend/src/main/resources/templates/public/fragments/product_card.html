@@ -14,7 +14,9 @@
         <div class="card relative p-3">
             <div class="image relative h-48 overflow-hidden rounded-lg">
                 <div class="icon absolute top-2 left-2">
-                    <i class="far fa-heart text-gray-500 cursor-pointer hover:text-red-500"></i>
+                    <svg class="w-5 h-5 text-gray-500 cursor-pointer hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
                 </div>
                 <img th:src="@{${product.image}}" src="https://via.placeholder.com/150" class="product-img w-full h-full object-cover" alt="Product Image" th:alt="${product.name}">
                 <span th:if="true" class="product-new absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">New</span>
@@ -24,7 +26,7 @@
                 <h5 th:text="${product.name}" class="product-title text-lg font-bold">Product Title</h5>
                 <p th:text="${product.price}" class="product-price text-blue-600 font-semibold"><strong>$49.99</strong></p>
                 <p th:if="(${product.price} < ${product.initPrice})" th:text="${product.initPrice}" class="product-discount text-gray-500 text-sm line-through"><strong>$49.99</strong></p>
-                <button th:data-add-to-cart="${product.id}" data-quantity="1" type="button" role="button" class="button-37 add-cart btn btn-primary mt-2 w-full">Add to Cart</button>
+                <button th:data-add-to-cart="${product.productId}" data-quantity="1" type="button" role="button" class="button-37 add-cart btn btn-primary mt-2 w-full">Add to Cart</button>
             </div>
         </div>
     </div>

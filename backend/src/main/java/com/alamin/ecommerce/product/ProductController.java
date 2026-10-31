@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.product;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,7 +24,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> list(
+    public ResponseEntity<List<ProductDto>> list(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size,
             @RequestParam(defaultValue = "created") String sortBy,
@@ -37,28 +38,35 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Long id) {
+    public ResponseEntity<ProductDto> getById(@PathVariable Long id) {
         return productService.getProductById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/by-uuid/{uuid}")
-    public ResponseEntity<Product> getByUuid(@PathVariable String uuid) {
+    public ResponseEntity<ProductDto> getByUuid(@PathVariable String uuid) {
         return productService.getProductByUuid(uuid)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/by-slug/{slug}")
+    public ResponseEntity<ProductDto> getBySlug(@PathVariable String slug) {
+        return productService.getProductBySlug(slug)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody ProductForm form) {
-        Product created = productService.createProduct(form);
+    public ResponseEntity<ProductDto> create(@Valid @RequestBody ProductRequest request) {
+        ProductDto created = productService.save(request);
         return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id,
-                                          @RequestBody Product updatedProduct) {
+    public ResponseEntity<ProductDto> update(@PathVariable Long id,
+                                             @Valid @RequestBody ProductRequest updatedProduct) {
         return ResponseEntity.ok(productService.updateProduct(id, updatedProduct));
     }
 
@@ -69,23 +77,23 @@ public class ProductController {
     }
 
     @GetMapping("/random")
-    public ResponseEntity<List<Product>> random(@RequestParam(defaultValue = "12") int size) {
+    public ResponseEntity<List<ProductDto>> random(@RequestParam(defaultValue = "12") int size) {
         return ResponseEntity.ok(productService.getRandomProducts(size));
     }
 
     @GetMapping("/best-selling")
-    public ResponseEntity<List<Product>> bestSelling(@RequestParam(defaultValue = "12") int size) {
+    public ResponseEntity<List<ProductDto>> bestSelling(@RequestParam(defaultValue = "12") int size) {
         return ResponseEntity.ok(productService.getBestSellingProducts(size));
     }
 
     @GetMapping("/new-arrivals")
-    public ResponseEntity<List<Product>> newArrivals(@RequestParam(defaultValue = "12") int size) {
+    public ResponseEntity<List<ProductDto>> newArrivals(@RequestParam(defaultValue = "12") int size) {
         return ResponseEntity.ok(productService.getLastAddedProducts(size));
     }
 
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<Product>> byCategory(@PathVariable Long categoryId,
-                                                    @RequestParam(defaultValue = "12") int size) {
+    public ResponseEntity<List<ProductDto>> byCategory(@PathVariable Long categoryId,
+                                                       @RequestParam(defaultValue = "12") int size) {
         return ResponseEntity.ok(productService.getRandomProductsByCategory(categoryId, size));
     }
 

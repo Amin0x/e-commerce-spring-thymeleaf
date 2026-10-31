@@ -73,20 +73,25 @@ const SignupForm = (function(){
     }
 
     function handleSignupFormSubmit(e) {
-        e.preventDefault();
-    
+        const username = document.getElementById('username');
         const email = document.getElementById('email');
         const password = document.getElementById('password');
         const confirmPassword = document.getElementById('confirmPassword');
 
         let isValid = true;
-    
+
+        if (username.value === '') {
+            username.classList.add('error');
+            document.getElementById('usernameErr').innerText = "Username is required";
+            isValid = false;
+        }
+
         if (password.value.length < 3 || password.value === '') {
             password.classList.add('error');
             document.getElementById('passwordErr').innerText = "Password must be at least 8 characters long";
             isValid = false;
         }
-    
+
         if (password.value !== confirmPassword.value || confirmPassword.value == '') {
             confirmPassword.classList.add('error');
             document.getElementById('confirmPasswordErr').innerText = "Passwords do not match";
@@ -107,36 +112,9 @@ const SignupForm = (function(){
         }
 
         if(isValid == false){
+            e.preventDefault();
             return;
         }
-    
-        const data = { 
-            username: email.value, 
-            password: password.value,
-            confirmPassword: confirmPassword.value 
-        };
-
-        const url = '/auth/register';
-        const token = $("meta[name='_csrf']").attr("content");
-        const header = $("meta[name='_csrf_header']").attr("content");
-
-        fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', [header]: token },
-            body: JSON.stringify(data),
-        }).then(response => {
-            if (response.status === 200) {
-                return response.json()
-            }
-    
-            return Promise.reject(response.statusText)
-        })
-        .then(data => {
-            console.log(data);
-            if (data.status === "success") {
-                window.location.href = data.url;
-            }
-        })
     }
 
     return {

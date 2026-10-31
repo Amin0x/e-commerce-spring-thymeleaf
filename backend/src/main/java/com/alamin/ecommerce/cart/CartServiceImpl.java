@@ -1,6 +1,8 @@
 package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.product.Product;
+import com.alamin.ecommerce.product.ProductDto;
+import com.alamin.ecommerce.product.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,12 +24,14 @@ import java.util.Optional;
 public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
-
     private final CartItemRepository cartItemRepository;
+    private final ProductRepository productRepository;
 
-    public CartServiceImpl(CartRepository cartRepository, CartItemRepository cartItemRepository) {
+    public CartServiceImpl(CartRepository cartRepository, CartItemRepository cartItemRepository,
+                           ProductRepository productRepository) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -54,15 +58,19 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart addCartItem(Product item, String cartKey, String username) {
+    public Cart addCartItem(ProductDto item, String cartKey, String username) {
         Cart cart = resolveOrCreateCart(cartKey, username);
+
+        // Fetch the Product entity for JPA relationship
+        Product product = productRepository.findById(item.productId())
+                .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + item.productId()));
 
         boolean found = false;
         for (var ci : cart.getCartItems()) {
-            if (Objects.equals(ci.getProduct().getId(), item.getId())) {
+            if (Objects.equals(ci.getProduct().getId(), product.getId())) {
                 ci.setQuantity(ci.getQuantity() + 1);
                 ci.setTotal(ci.getQuantity() * ci.getPrice());
-                ci.setPrice(item.getPrice());
+                ci.setPrice(product.getPrice());
                 found = true;
             }
         }
@@ -70,10 +78,10 @@ public class CartServiceImpl implements CartService {
         if (!found) {
             CartItem cartItem = new CartItem();
             cartItem.setCart(cart);
-            cartItem.setProduct(item);
+            cartItem.setProduct(product);
             cartItem.setQuantity(1);
-            cartItem.setPrice(item.getPrice());
-            cartItem.setTotal(item.getPrice() * cartItem.getQuantity());
+            cartItem.setPrice(product.getPrice());
+            cartItem.setTotal(product.getPrice() * cartItem.getQuantity());
 
             cart.getCartItems().add(cartItem);
         }

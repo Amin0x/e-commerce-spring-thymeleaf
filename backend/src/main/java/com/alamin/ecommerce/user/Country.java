@@ -1,6 +1,5 @@
 package com.alamin.ecommerce.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -22,7 +21,6 @@ public class Country {
     @Column(name = "name_ar", nullable = false, unique = true)
     private String nameAr;
     private Boolean enabled;
-    @JsonIgnore
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private List<State> states = new ArrayList<>();
 

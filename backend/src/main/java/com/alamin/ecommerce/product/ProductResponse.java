@@ -17,6 +17,6 @@ public record ProductResponse (
         List<String> images,
         String image,
         String discount,
-        boolean isNew
+        Boolean isNew
 ) {
 }

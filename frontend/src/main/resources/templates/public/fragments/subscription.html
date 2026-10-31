@@ -1,29 +1,95 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fragments</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
-    <link th:href="@{/public/css/tailwind.css}" href="../../static/public/css/tailwind.css" rel="stylesheet">
+    <link th:href="@{/public/css/tailwind.css}" href="/../../static/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
 
 <!-- Define the subscription form as a fragment -->
-<section class="subscribe px-4 py-8 bg-gray-50" th:fragment="subscribeForm">
-  <div class="subscribe-content max-w-md mx-auto text-center">
-      <div class="image mx-auto mb-3"><i class="fas fa-envelope text-blue-600 text-2xl"></i></div>
-      <p class="subscription-title text-lg font-bold text-gray-800 mb-1">الاشتراك</p>
-      <p class="subscription-desc text-sm text-gray-600 mb-4">اشترك في القائمة البريدية لتلقي اخر الاخبار والعروض.</p>
-      <form id="subscribeForm">
-          <div class="subscription-form flex flex-col gap-2">
-            <input class="name text-field form-control" type="text" id="name" name="name" placeholder="الاسم">
-            <input class="email text-field form-control" type="text" id="email" name="email" placeholder="الايميل">
-            <div class="message" id="message"></div>
-            <button class="subscribe-btn btn btn-primary" type="button" id="subscribeButton">اشتراك</button>
-          </div>
-      </form>
-  </div>
+<section class="bg-gray-50 py-12 sm:py-16" th:fragment="subscribeForm">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="rounded-2xl bg-white border border-gray-100 shadow-sm p-8 sm:p-12 text-center">
+                <!-- Icon -->
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-50 mb-6">
+                    <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+
+                <!-- Title -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                    اشترك في نشرتنا البريدية
+                </h2>
+
+                <!-- Description -->
+                <p class="text-gray-600 text-lg sm:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
+                    احصل على أحدث العروض، الخصومات الحصرية، والمنتجات الجديدة مباشرة في صندوق بريدك الإلكتروني
+                </p>
+
+                <!-- Form -->
+                <form id="subscribeForm" class="w-full max-w-md mx-auto" novalidate>
+                    <div class="space-y-4 sm:space-y-0 sm:flex sm:space-x-3 sm:space-y-0">
+                        <!-- Name Input -->
+                        <div class="flex-1 min-w-0">
+                            <label for="name" class="sr-only">الاسم</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="الاسم"
+                                class="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                                aria-label="الاسم"
+                                required
+                            >
+                        </div>
+
+                        <!-- Email Input -->
+                        <div class="flex-1 min-w-0">
+                            <label for="email" class="sr-only">البريد الإلكتروني</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="البريد الإلكتروني"
+                                class="w-full px-5 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                                aria-label="البريد الإلكتروني"
+                                required
+                            >
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button
+                            type="submit"
+                            id="subscribeButton"
+                            class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-indigo-600 text-white font-semibold text-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center gap-2"
+                            disabled
+                        >
+                            <span>اشتراك</span>
+                            <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Message Area -->
+                    <div id="message" class="mt-4 h-6" aria-live="polite"></div>
+
+                    <!-- Privacy Note -->
+                    <p class="mt-6 text-gray-500 text-sm flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 text-indigo-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                        نحترم خصوصيتك. لن نشارك بريدك الإلكتروني مع أي طرف ثالث.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
 </section>
+
 </body>
 </html>

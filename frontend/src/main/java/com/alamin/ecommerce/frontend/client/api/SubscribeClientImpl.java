@@ -21,7 +21,7 @@ public class SubscribeClientImpl implements SubscribeClient {
 
     @Override
     public Map<String, Object> subscribe(String email, String name) {
-        var uri = UriComponentsBuilder.fromHttpUrl(backendBaseUrl + "/api/subscribe")
+        var uri = UriComponentsBuilder.fromUriString(backendBaseUrl + "/api/subscribe")
                 .queryParam("email", email)
                 .queryParam("name", name == null ? "" : name)
                 .build().toUri();
@@ -31,7 +31,7 @@ public class SubscribeClientImpl implements SubscribeClient {
 
     @Override
     public Map<String, Object> unsubscribe(String email) {
-        var uri = UriComponentsBuilder.fromHttpUrl(backendBaseUrl + "/api/subscribe/unsubscribe")
+        var uri = UriComponentsBuilder.fromUriString(backendBaseUrl + "/api/subscribe/unsubscribe")
                 .queryParam("email", email)
                 .build().toUri();
         ResponseEntity<Map> response = restTemplate.postForEntity(uri, null, Map.class);
@@ -40,7 +40,7 @@ public class SubscribeClientImpl implements SubscribeClient {
 
     @Override
     public Map<String, Object> verifyEmail(String email, String token) {
-        var uri = UriComponentsBuilder.fromHttpUrl(backendBaseUrl + "/api/subscribe/verify")
+        var uri = UriComponentsBuilder.fromUriString(backendBaseUrl + "/api/subscribe/verify")
                 .queryParam("email", email)
                 .queryParam("token", token)
                 .build().toUri();

@@ -31,7 +31,7 @@ public class AdminUserClientImpl implements AdminUserClient {
 
     @Override
     public PageDto<UserDto> list(int page, int size) {
-        var uri = UriComponentsBuilder.fromHttpUrl(backendBaseUrl + USERS_URL)
+        var uri = UriComponentsBuilder.fromUriString(backendBaseUrl + USERS_URL)
                 .queryParam("page", page)
                 .queryParam("size", size)
                 .build().toUri();

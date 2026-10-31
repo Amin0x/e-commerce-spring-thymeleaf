@@ -21,14 +21,15 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         List<Category> findRootCategories();
 
         @Query(value = """
-                        SELECT *
-                        FROM tbl_categories AS c
-                        WHERE c.parent_id = :parentId""", nativeQuery = true)
+                        SELECT c
+                        FROM Category c
+                        WHERE c.parent.id = :parentId""")
         List<Category> findSubCategoriesByParent(@Param("parentId") Long parentId);
 
         @Query(value = """
                         SELECT *
                         FROM tbl_categories AS c
+                        WHERE c.active = true
                         ORDER BY RAND()
                         LIMIT 12""", nativeQuery = true)
         List<Category> findRandomCategories();
@@ -49,10 +50,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         List<Category> searchCategoryByName(String search);
 
         @Query(value = """
-                        SELECT c
-                        FROM Category c
-                        WHERE c.active = :active
-                        AND c.enabled = :enabled""", nativeQuery = true)
+                        SELECT *
+                        FROM tbl_categories AS c
+                        WHERE c.active = :active""", nativeQuery = true)
         List<Category> getCategoriesByActiveAndEnabled(boolean active, boolean enabled);
 
         @Query(value = """
@@ -105,7 +105,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
         @Query(value = """
                         SELECT c
                         FROM Category c
-                        WHERE c.parent IS NULL""")
+                        WHERE c.parent IS NULL
+                        AND c.active = true""")
         List<Category> getTopCategories();
 
         boolean existsBySlug(String slug);       

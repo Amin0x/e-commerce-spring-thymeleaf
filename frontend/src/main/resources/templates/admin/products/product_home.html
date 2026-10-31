@@ -81,9 +81,9 @@
                     <table class="w-full text-left border-collapse">
                         <tbody class="divide-y divide-gray-200">
                         <tr th:each="product : ${topSoldProducts}" class="last:border-b-0 hover:bg-gray-50">
-                            <td class="px-4 py-2 text-sm"><span th:text="${product.id}"></span></td>
+                            <td class="px-4 py-2 text-sm"><span th:text="${product.productId}"></span></td>
                             <td class="px-4 py-2 text-sm">
-                                <a th:href="@{/admin/products/{id}(id=${product.id})}" th:text="${product.name}" class="text-blue-600 hover:underline">Product Name</a>
+                                <a th:href="@{/admin/products/{id}(id=${product.productId})}" th:text="${product.name}" class="text-blue-600 hover:underline">Product Name</a>
                             </td>
                             <td class="px-4 py-2 text-sm"><span th:text="${product.totalSold}">0</span></td>
                         </tr>

@@ -1,8 +1,8 @@
 package com.alamin.ecommerce.product;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
@@ -18,9 +18,9 @@ public class ProductImage {
     private String title;
     private LocalDateTime createdAt;
 
-    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
     public Product getProduct() {

@@ -50,9 +50,9 @@ class ProductServiceImplTest {
         List<Product> mockProducts = List.of(new Product(), new Product());
         when(productRepository.findRandomProductsByCategory(categoryId, size)).thenReturn(mockProducts);
 
-        List<Product> result = productService.getRandomProductsByCategory(categoryId, size);
+        List<ProductDto> result = productService.getRandomProductsByCategory(categoryId, size);
 
-        assertEquals(mockProducts, result);
+        assertEquals(2, result.size());
         verify(productRepository, times(1)).findRandomProductsByCategory(categoryId, size);
     }
 
@@ -61,9 +61,9 @@ class ProductServiceImplTest {
         List<Product> mockProducts = List.of(new Product(), new Product());
         when(productRepository.findNewArrivalProducts()).thenReturn(mockProducts);
 
-        List<Product> result = productService.getNewArrivalProducts();
+        List<ProductDto> result = productService.getNewArrivalProducts();
 
-        assertEquals(mockProducts, result);
+        assertEquals(2, result.size());
         verify(productRepository, times(1)).findNewArrivalProducts();
     }
 
@@ -77,9 +77,9 @@ class ProductServiceImplTest {
         Page<Product> mockPage = new PageImpl<>(List.of(new Product(), new Product()));
         when(productRepository.findAll(any(Pageable.class))).thenReturn(mockPage);
 
-        Page<Product> result = productService.getAllProducts(page, size, sortBy, ascending);
+        Page<ProductDto> result = productService.getAllProducts(page, size, sortBy, ascending);
 
-        assertEquals(mockPage, result);
+        assertEquals(2, result.getContent().size());
         verify(productRepository, times(1)).findAll(any(Pageable.class));
     }
 
@@ -89,10 +89,9 @@ class ProductServiceImplTest {
         Product mockProduct = new Product();
         when(productRepository.findById(productId)).thenReturn(Optional.of(mockProduct));
 
-        Optional<Product> result = productService.getProductById(productId);
+        Optional<ProductDto> result = productService.getProductById(productId);
 
         assertTrue(result.isPresent());
-        assertEquals(mockProduct, result.get());
         verify(productRepository, times(1)).findById(productId);
     }
 
@@ -100,14 +99,13 @@ class ProductServiceImplTest {
     void testUpdateProduct() {
         Long productId = 1L;
         Product existingProduct = new Product();
-        Product updatedProduct = new Product();
-        updatedProduct.setName("Updated Name");
+        ProductRequest updatedProductRequest = new ProductRequest("Updated Name", null, null, null, null, null, null, null, null, null, null, null, null);
         when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
         when(productRepository.save(existingProduct)).thenReturn(existingProduct);
 
-        Product result = productService.updateProduct(productId, updatedProduct);
+        ProductDto result = productService.updateProduct(productId, updatedProductRequest);
 
-        assertEquals(existingProduct, result);
+        assertNotNull(result);
         assertEquals("Updated Name", existingProduct.getName());
         verify(productRepository, times(1)).findById(productId);
         verify(productRepository, times(1)).save(existingProduct);
@@ -118,6 +116,7 @@ class ProductServiceImplTest {
         Long productId = 1L;
         Product existingProduct = new Product();
         when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+        when(productRepository.save(any(Product.class))).thenReturn(existingProduct);
 
         productService.deleteProduct(productId);
 
@@ -125,7 +124,7 @@ class ProductServiceImplTest {
         assertFalse(existingProduct.getEnabled());
         assertNotNull(existingProduct.getDeleted());
         verify(productRepository, times(1)).findById(productId);
-        verify(productRepository, times(1)).save(existingProduct);
+        verify(productRepository, times(1)).save(any(Product.class));
     }
 
     @Test
@@ -135,6 +134,7 @@ class ProductServiceImplTest {
         Product product = new Product();
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(fileUploadService.uploadFile(file)).thenReturn("uploaded-file.jpg");
+        when(productRepository.save(any(Product.class))).thenReturn(product);
 
         List<ProductImage> result = productService.uploadImage(file, productId);
 
@@ -142,17 +142,19 @@ class ProductServiceImplTest {
         assertEquals("uploaded-file.jpg", result.get(0).getImage());
         verify(productRepository, times(1)).findById(productId);
         verify(fileUploadService, times(1)).uploadFile(file);
+        verify(productRepository, times(1)).save(any(Product.class));
     }
 
     @Test
     void testSaveProduct() {
-        Product product = new Product();
-        when(productRepository.save(product)).thenReturn(product);
+        ProductRequest productRequest = new ProductRequest("Test Product", null, 1000, null, null, null, null, null, null, null, null, null, null);
+        Product savedProduct = new Product();
+        when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
 
-        Product result = productService.save(product);
+        ProductDto result = productService.save(productRequest);
 
-        assertEquals(product, result);
-        verify(productRepository, times(1)).save(product);
+        assertNotNull(result);
+        verify(productRepository, times(1)).save(any(Product.class));
     }
 
     @Test
@@ -161,9 +163,9 @@ class ProductServiceImplTest {
         List<Product> mockProducts = List.of(new Product(), new Product());
         when(productRepository.findByCategory(category)).thenReturn(mockProducts);
 
-        List<Product> result = productService.findByCategory(category);
+        List<ProductDto> result = productService.findByCategory(category);
 
-        assertEquals(mockProducts, result);
+        assertEquals(2, result.size());
         verify(productRepository, times(1)).findByCategory(category);
     }
 

@@ -49,22 +49,37 @@ public class AddressController {
 
     @GetMapping("/cities/state/{stateId}")
     public ResponseEntity<List<City>> citiesByState(@PathVariable Integer stateId) {
-        return ResponseEntity.ok(addressService.getCityByState(stateId));
+        return ResponseEntity.ok(addressService.getCities(stateId));
     }
 
     @PostMapping("/countries")
     public ResponseEntity<Country> createCountry(@RequestBody Country country) {
-        return ResponseEntity.ok(addressService.createOrUpdateCountry(country));
+        return ResponseEntity.ok(addressService.createCountry(country));
+    }
+
+    @PutMapping("/countries")
+    public ResponseEntity<Country> updateCountry(@RequestBody Country country) {
+        return ResponseEntity.ok(addressService.updateCountry(country));
     }
 
     @PostMapping("/states")
     public ResponseEntity<State> createState(@RequestBody StateDto stateDto) {
-        return ResponseEntity.ok(addressService.createOrUpdateState(stateDto));
+        return ResponseEntity.ok(addressService.createState(stateDto));
+    }
+
+    @PutMapping("/states")
+    public ResponseEntity<State> updateState(@RequestBody StateDto stateDto) {
+        return ResponseEntity.ok(addressService.updateState(stateDto));
     }
 
     @PostMapping("/cities")
-    public ResponseEntity<City> createCity(@RequestBody CityFormDto cityFormDto) {
-        return ResponseEntity.ok(addressService.createCity(cityFormDto));
+    public ResponseEntity<City> createCity(@RequestBody CityRequest cityRequest) {
+        return ResponseEntity.ok(addressService.createCity(cityRequest));
+    }
+
+    @PutMapping("/cities")
+    public ResponseEntity<City> updateCity(@RequestBody CityRequest cityRequest) {
+        return ResponseEntity.ok(addressService.updateCity(cityRequest));
     }
 
     @DeleteMapping("/countries/{id}")

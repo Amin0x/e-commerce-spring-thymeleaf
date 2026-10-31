@@ -46,10 +46,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        var userOpt = userService.getUserByName(request.getUsername());
+        var userOpt = userService.getUserByName(request.username());
         if (userOpt.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
@@ -68,21 +68,21 @@ public class AuthController {
     /** Register a new user (defaults to USER role). */
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
-        if (userRepository.getUserByUsername(request.getUsername()).isPresent()) {
-            throw new ResourceAlreadyExistsException("Username already taken: " + request.getUsername());
+        if (userRepository.getUserByUsername(request.username()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Username already taken: " + request.username());
         }
-        if (request.getEmail() != null && userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new ResourceAlreadyExistsException("Email already taken: " + request.getEmail());
+        if (request.email() != null && userRepository.findByEmail(request.email()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Email already taken: " + request.email());
         }
 
         // Self-registration is always USER. Role assignment for others is an
         // admin-only operation (handled by AdminUserController), never a
         // client-controlled field here — prevents privilege escalation.
         User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setUsername(request.username());
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRole("USER");
-        user.setEmail(request.getEmail());
+        user.setEmail(request.email());
         user.setEnabled(true);
         user.setStatus("NOT_VERIFIED");
         user.setUuid(java.util.UUID.randomUUID().toString().replace("-", ""));

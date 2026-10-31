@@ -31,7 +31,7 @@
                         <p th:text="${product.price}" class="product-price text-gray-600"><strong>$49.99</strong></p>
                         <p th:if="(${product.price} &lt; ${product.initPrice})" th:text="${product.initPrice}" class="product-discount text-sm text-gray-400 line-through"><strong>$49.99</strong></p>
                     </div>
-                    <button th:data-add-to-cart="${product.id}" data-quantity="1" type="button" role="button" class="button-37 add-cart btn btn-primary w-full mt-4">اضافة الي السلة</button>
+                    <button th:data-add-to-cart="${product.productId}" data-quantity="1" type="button" role="button" class="button-37 add-cart btn btn-primary w-full mt-4">اضافة الي السلة</button>
                 </div>
             </div>
         </section>

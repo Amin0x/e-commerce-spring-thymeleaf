@@ -1,6 +1,6 @@
 package com.alamin.ecommerce.cart;
 
-import com.alamin.ecommerce.product.Product;
+import com.alamin.ecommerce.product.ProductDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,7 +17,7 @@ public interface CartService {
 
     void deleteCart(Long id);
 
-    Cart addCartItem(Product item, String cartKey, String username);
+    Cart addCartItem(ProductDto item, String cartKey, String username);
 
     Cart removeCartItem(Long id, String cartKey, String username);
 

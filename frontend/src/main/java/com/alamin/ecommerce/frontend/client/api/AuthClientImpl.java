@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.frontend.client.api;
 
+import com.alamin.ecommerce.frontend.dto.AuthRequest;
 import com.alamin.ecommerce.frontend.dto.AuthResponse;
 import com.alamin.ecommerce.frontend.dto.RegisterRequest;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class AuthClientImpl implements AuthClient {
 
     @Override
     public AuthResponse login(String username, String password) {
-        AuthRequestBody body = new AuthRequestBody(username, password);
+        AuthRequest body = new AuthRequest(username, password);
         ResponseEntity<AuthResponse> response = restTemplate.postForEntity(
                 backendBaseUrl + "/api/auth/login", body, AuthResponse.class);
         AuthResponse authResponse = response.getBody();
@@ -45,8 +46,9 @@ public class AuthClientImpl implements AuthClient {
     }
 
     @Override
-    public AuthResponse register(String username, String password, String email) {
-        RegisterRequest body = new RegisterRequest(username, password, email);
+    public AuthResponse register(String username, String password, String confirmPassword,
+                                 String email, String role) {
+        RegisterRequest body = new RegisterRequest(username, password, confirmPassword, email, role);
         ResponseEntity<AuthResponse> response = restTemplate.postForEntity(
                 backendBaseUrl + "/api/auth/register", body, AuthResponse.class);
         AuthResponse authResponse = response.getBody();
@@ -95,25 +97,6 @@ public class AuthClientImpl implements AuthClient {
             return ((ServletRequestAttributes) attrs).getRequest().getSession(create);
         } catch (IllegalStateException e) {
             return null;
-        }
-    }
-
-    /** Minimal login request body (mirrors backend {@code AuthRequest}). */
-    private static class AuthRequestBody {
-        private final String username;
-        private final String password;
-
-        AuthRequestBody(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getPassword() {
-            return password;
         }
     }
 }

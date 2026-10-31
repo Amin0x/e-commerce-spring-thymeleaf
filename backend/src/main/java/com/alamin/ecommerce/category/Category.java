@@ -1,6 +1,5 @@
 package com.alamin.ecommerce.category;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -23,11 +22,9 @@ public class Category {
     private String description;
     private String  imageUrl;
     private Boolean active;
-    private Boolean enabled;
     private LocalDateTime created;
     private LocalDateTime updated;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_id")
     private Category parent;
@@ -43,7 +40,6 @@ public class Category {
         this.description = description;
         this.parent = parent;
         this.active = false;
-        this.enabled = false;
         this.created = LocalDateTime.now();
         this.updated = LocalDateTime.now();
         this.imageUrl = imageUrl;

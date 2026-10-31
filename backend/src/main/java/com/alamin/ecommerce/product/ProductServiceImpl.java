@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -37,40 +38,52 @@ public class ProductServiceImpl implements ProductService {
         this.productPriceRepository = productPriceRepository;
     }
 
+    private ProductDto toDto(Product product) {
+        return ProductDto.from(product);
+    }
+
+    private List<ProductDto> toDtoList(List<Product> products) {
+        return products != null ? products.stream().map(this::toDto).collect(Collectors.toList()) : List.of();
+    }
+
+    private Page<ProductDto> toDtoPage(Page<Product> products) {
+        return products != null ? products.map(this::toDto) : Page.empty();
+    }
+
     @Override
-    public List<Product> getRandomProductsByCategory(Long category, int size) {
+    public List<ProductDto> getRandomProductsByCategory(Long category, int size) {
         if (size < 5) size = 5;
 
         if (category == null) throw new ResourceNotFoundException("null category name");
 
-        return productRepository.findRandomProductsByCategory(category, size);
+        return toDtoList(productRepository.findRandomProductsByCategory(category, size));
     }
 
     @Override
-    public List<Product> getNewArrivalProducts() {
-        return productRepository.findNewArrivalProducts();
+    public List<ProductDto> getNewArrivalProducts() {
+        return toDtoList(productRepository.findNewArrivalProducts());
     }
 
     @Override
-    public Page<Product> getAllProducts(PageRequest pageable) {
+    public Page<ProductDto> getAllProducts(Pageable pageable) {
         if (pageable == null) throw new ResourceNotFoundException("null pageable object");
-        return productRepository.findAll(pageable);
+        return toDtoPage(productRepository.findAll(pageable));
     }
 
     // Get product by ID
     @Override
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
+    public Optional<ProductDto> getProductById(Long id) {
+        return productRepository.findById(id).map(this::toDto);
     }
 
     @Override
-    public Optional<Product> getProductByUuid(String productId) {
-        return productRepository.findByUuid(productId);
+    public Optional<ProductDto> getProductByUuid(String productId) {
+        return productRepository.findByUuid(productId).map(this::toDto);
     }
 
     // Update product
     @Override
-    public Product updateProduct(Long id, Product updatedProduct) {
+    public ProductDto updateProduct(Long id, ProductRequest updatedProduct) {
         Optional<Product> existingProductOpt = productRepository.findById(id);
         if (existingProductOpt.isEmpty()) {
             throw new IllegalArgumentException("Product with ID " + id + " not found");
@@ -78,19 +91,22 @@ public class ProductServiceImpl implements ProductService {
 
         Product existingProduct = existingProductOpt.get();
 
-        existingProduct.setName(updatedProduct.getName());
-        existingProduct.setDescription(updatedProduct.getDescription());
-        existingProduct.setCategory(updatedProduct.getCategory());
-        existingProduct.setPrice(updatedProduct.getPrice());
-        existingProduct.setBasePrice(updatedProduct.getBasePrice());
-        existingProduct.setPriceUSD(updatedProduct.getPriceUSD());
-        existingProduct.setStock(updatedProduct.getStock());
-        existingProduct.setActive(updatedProduct.getActive());
-        existingProduct.setEnabled(updatedProduct.getEnabled());
-        existingProduct.setSlug(createSlug(updatedProduct.getName()));
+        // Update fields from request
+        existingProduct.setName(updatedProduct.name());
+        existingProduct.setDescription(updatedProduct.description());
+        if (updatedProduct.categoryId() != null) {
+            existingProduct.setCategory(categoryService.getCategoryById(updatedProduct.categoryId()).orElse(null));
+        }
+        existingProduct.setPrice(updatedProduct.price());
+        existingProduct.setBasePrice(updatedProduct.basePrice());
+        existingProduct.setPriceUSD(updatedProduct.priceUSD());
+        existingProduct.setStock(updatedProduct.stock());
+        existingProduct.setActive(updatedProduct.active());
+        existingProduct.setEnabled(updatedProduct.enabled());
+        existingProduct.setSlug(createSlug(updatedProduct.name()));
 
         // Save the updated product
-        return productRepository.save(existingProduct);
+        return toDto(productRepository.save(existingProduct));
     }
 
     // Delete product by ID
@@ -132,36 +148,89 @@ public class ProductServiceImpl implements ProductService {
         productImage.setCreatedAt(LocalDateTime.now());
 
         product.addImage(productImage);
-        Product save = save(product);
+        Product save = productRepository.save(product);
 
         return save.getProductImages();
     }
 
     @Override
-    public Product save(Product product) {
-        if (product == null){
+    public ProductDto save(ProductRequest productRequest) {
+        if (productRequest == null){
             throw new RuntimeException("Product not found");
         }
-        return productRepository.save(product);
+        // Convert Request to entity, save, and return DTO
+        Product product = toEntity(productRequest);
+        return toDto(productRepository.save(product));
     }
 
     @Override
-    public Page<Product> getAllProducts(int page, int size, String sortBy, boolean asc) {
+    public ProductDto save(Product product) {
+        if (product == null) {
+            throw new RuntimeException("Product not found");
+        }
+        return toDto(productRepository.save(product));
+    }
+
+    private Product toEntity(ProductRequest request) {
+        Product product = new Product();
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+        product.setBasePrice(request.basePrice());
+        product.setPriceUSD(request.priceUSD());
+        product.setSku(request.sku());
+        product.setStock(request.stock());
+        product.setTotalSold(request.totalSold() != null ? request.totalSold() : 0);
+        product.setViewCount(request.viewCount() != null ? request.viewCount() : 0);
+        product.setActive(request.active() != null ? request.active() : true);
+        product.setEnabled(request.enabled() != null ? request.enabled() : true);
+        product.setSlug(createSlug(request.name()));
+        if (request.categoryId() != null) {
+            product.setCategory(categoryService.getCategoryById(request.categoryId()).orElse(null));
+        }
+        return product;
+    }
+
+    private Product toEntity(ProductDto dto) {
+        Product product = new Product();
+        product.setId(dto.productId());
+        product.setUuid(dto.uuid());
+        product.setName(dto.name());
+        product.setDescription(dto.description());
+        product.setPrice(dto.price());
+        product.setBasePrice(dto.basePrice());
+        product.setPriceUSD(dto.priceUSD());
+        product.setSku(dto.sku());
+        product.setStock(dto.stock());
+        product.setTotalSold(dto.totalSold());
+        product.setViewCount(dto.viewCount());
+        product.setActive(dto.active());
+        product.setEnabled(dto.enabled());
+        product.setImage(dto.image());
+        product.setSlug(dto.slug());
+        // Category would need to be fetched separately if needed
+        return product;
+    }
+
+    @Override
+    public Page<ProductDto> getAllProducts(int page, int size, String sortBy, boolean asc) {
         if (page < 0 || size < 1) throw new IllegalArgumentException("page size :" + size + " is 0 or negative");
-        if (page == 0) return getAllProducts(PageRequest.of(0, size, Sort.by("orderDate").descending()));
-        return getAllProducts(PageRequest.of(page, size, Sort.by("orderDate").descending()));
+        Sort sort = Sort.by(sortBy);
+        if (!asc) sort = sort.descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return getAllProducts(pageable);
     }
 
     @Override
-    public List<Product> findByCategory(String category) {
+    public List<ProductDto> findByCategory(String category) {
         if (category == null){
             throw new RuntimeException("Product not found");
         }
-        return productRepository.findByCategory(category);
+        return toDtoList(productRepository.findByCategory(category));
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
+    public Optional<ProductDto> findById(Long id) {
         if (id == null){
             throw new RuntimeException("Product not found");
         }
@@ -185,34 +254,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getBestSellingProducts(int size) {
+    public List<ProductDto> getBestSellingProducts(int size) {
         if(size < 1)
             throw new IllegalArgumentException("page size :" + size + " is 0 or negative");
 
-        return productRepository.getBestSellingProducts(Pageable.ofSize(size));
+        return toDtoList(productRepository.getBestSellingProducts(Pageable.ofSize(size)));
     }
 
     @Override
-    public List<Product> getSimilarProducts(Product product) {
-        if (product == null || product.getId() == null)
+    public List<ProductDto> getSimilarProducts(ProductDto product) {
+        if (product == null || product.productId() == null)
             throw new ResourceNotFoundException("cant get similar products");
 
-        return productRepository.getSimilarProducts(product.getId(), product.getName(), PageRequest.ofSize(30));
+        return toDtoList(productRepository.getSimilarProducts(product.productId(), product.name(), PageRequest.ofSize(30)));
     }
 
     @Override
-    public void deleteProductImage(Product product, Long id) {
-        if (id == null || product == null)
+    public void deleteProductImage(ProductDto productDto, Long id) {
+        if (id == null || productDto == null)
             throw new IllegalArgumentException("null object");
 
+        Product product = productRepository.findById(productDto.productId()).orElseThrow();
         ProductImage productImage = productImageRepository.findById(id).orElseThrow();
         product.getProductImages().remove(productImage);
-        save(product);
+        productRepository.save(product);
         //productImageRepository.deleteById(id);
     }
 
     @Override
-    public Product createProduct(ProductForm pf) {
+    public ProductDto createProduct(ProductForm pf) {
         if (pf == null)
             throw new IllegalArgumentException("null object");
 
@@ -251,23 +321,23 @@ public class ProductServiceImpl implements ProductService {
 
         String fn = fileUploadService.uploadFile(pf.primaryImage());
         product.setImage(fn);
-        return save(product);
+        return toDto(productRepository.save(product));
     }
 
     // todo delete old image file
     @Override
-    public Product updatePrimaryImage(Long id, MultipartFile file) {
+    public ProductDto updatePrimaryImage(Long id, MultipartFile file) {
         Product product = productRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("product not with id:" + id));
-       
+
         String fn = fileUploadService.uploadFile(file);
         product.setImage(fn);
-        return save(product);
+        return toDto(productRepository.save(product));
     }
 
     @Override
-    public List<Product> getRandomProducts(int size) {
-        return productRepository.findRandomProductsEnabled(size);
+    public List<ProductDto> getRandomProducts(int size) {
+        return toDtoList(productRepository.findRandomProductsEnabled(size));
     }
 
     @Override
@@ -281,7 +351,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getTopUnsoldProducts() {
+    public List<ProductDto> getTopUnsoldProducts() {
         return null;
     }
 
@@ -296,13 +366,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getLastAddedProducts(int count) {
-        return productRepository.getLastAddedProducts(Pageable.ofSize(count));
+    public List<ProductDto> getLastAddedProducts(int count) {
+        return toDtoList(productRepository.getLastAddedProducts(Pageable.ofSize(count)));
     }
 
     @Override
-    public List<Product> getLastAddedProductsRandom(int count) {
-        return productRepository.getLastAddedProductsRandom(Pageable.ofSize(count));
+    public List<ProductDto> getLastAddedProductsRandom(int count) {
+        return toDtoList(productRepository.getLastAddedProductsRandom(Pageable.ofSize(count)));
     }
 
     @Override
@@ -420,12 +490,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> getProductBySlug(String id) {
+    public Optional<ProductDto> getProductBySlug(String id) {
         if (id == null || id.isEmpty()) {
             throw new ResourceNotFoundException("bad reguest param");
         }
 
-        return productRepository.findBySlug(id);
+        return productRepository.findBySlug(id).map(this::toDto);
     }
 
 }

@@ -103,4 +103,19 @@ public class HomeController {
         model.addAttribute("pageTitle", "ألأسئلة الشائعة");
         return "public/return_policy";
     }
+
+    @GetMapping("/return_policy")
+    public String policyPageUnderscore(Model model) {
+        return policyPage(model);
+    }
+
+    @GetMapping("/help")
+    public String helpPage(Model model) {
+        model.addAttribute("notification", "");
+        model.addAttribute("pageDescription", "");
+        model.addAttribute("pageAuthor", "");
+        model.addAttribute("pageKeywords", "");
+        model.addAttribute("pageTitle", "المساعدة");
+        return "public/help";
+    }
 }

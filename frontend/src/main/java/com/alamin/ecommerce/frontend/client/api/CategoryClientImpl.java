@@ -50,7 +50,7 @@ public class CategoryClientImpl implements CategoryClient {
 
     @Override
     public List<CategoryDto> active(boolean active) {
-        var uri = UriComponentsBuilder.fromHttpUrl(backendBaseUrl + "/api/categories/active")
+        var uri = UriComponentsBuilder.fromUriString(backendBaseUrl + "/api/categories/active")
                 .queryParam("active", active).build().toUri();
         return restTemplate.exchange(uri, org.springframework.http.HttpMethod.GET, null,
                 CATEGORY_LIST).getBody();
@@ -64,7 +64,7 @@ public class CategoryClientImpl implements CategoryClient {
 
     @Override
     public List<CategoryDto> search(String q) {
-        var uri = UriComponentsBuilder.fromHttpUrl(backendBaseUrl + "/api/categories/search")
+        var uri = UriComponentsBuilder.fromUriString(backendBaseUrl + "/api/categories/search")
                 .queryParam("q", q).build().toUri();
         return restTemplate.exchange(uri, org.springframework.http.HttpMethod.GET, null,
                 CATEGORY_LIST).getBody();

@@ -57,8 +57,10 @@
                 <div class="products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     <div th:each="product : ${products}" class="product-card-b group">
                         <div class="product-image relative overflow-hidden rounded-lg">
-                            <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm" th:data-heart="${product.id}">
-                                <i class="far fa-heart text-gray-600 hover:text-red-600 transition-colors text-lg"></i>
+                            <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm" th:data-heart="${product.productId}" aria-label="Add to favorites">
+                                <svg class="w-5 h-5 text-gray-600 hover:text-red-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
                             </a>
                             <a th:href="@{/products/{id}(id=${product.slug})}" href="#" class="block">
                                 <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
@@ -88,8 +90,10 @@
                 <div class="products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     <div th:each="product : ${products}" class="product-card-b group">
                         <div class="product-image relative overflow-hidden rounded-lg">
-                            <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm" th:data-heart="${product.id}">
-                                <i class="far fa-heart text-gray-600 hover:text-red-600 transition-colors text-lg"></i>
+                            <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm" th:data-heart="${product.productId}" aria-label="Add to favorites">
+                                <svg class="w-5 h-5 text-gray-600 hover:text-red-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
                             </a>
                             <a th:href="@{/products/{id}(id=${product.slug})}" href="#" class="block">
                                 <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
@@ -119,8 +123,10 @@
                 <div class="products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     <div th:each="product : ${products}" class="product-card-b group">
                         <div class="product-image relative overflow-hidden rounded-lg">
-                            <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm" th:data-heart="${product.id}">
-                                <i class="far fa-heart text-gray-600 hover:text-red-600 transition-colors text-lg"></i>
+                            <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm" th:data-heart="${product.productId}" aria-label="Add to favorites">
+                                <svg class="w-5 h-5 text-gray-600 hover:text-red-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
                             </a>
                             <a th:href="@{/products/{id}(id=${product.slug})}" href="#" class="block">
                                 <img th:src="${ (product.image == null? '/public/imgs/img14.jpg':'/uploads/images/' + product.image) }"
@@ -144,7 +150,7 @@
                 </div>
             </section>
         </main>
-        <section th:replace="public/fragments/subscription::subscribeForm"></section>
+        <section th:replace="~{public/fragments/subscription::subscribeForm}"></section>
         <footer th:replace="~{public/fragments/footer :: footer}" class="mt-6"></footer>
     </div>
     <script th:src="@{/public/js/jquery-3.7.1.min.js}" src="../../static/public/js/jquery-3.7.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3uENzmM7KC2Rr/r9BOpPGj9jfS6/3ejV+kzU+V6qMzZbbB" crossorigin="anonymous"></script>

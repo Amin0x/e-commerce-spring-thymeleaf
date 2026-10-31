@@ -27,7 +27,7 @@
               <a th:href="@{/products/{id}(id=${product.slug})}" href="#" class="block">
                 <img th:src="${product.image}" class="product-image w-full h-full object-fit-cover object-center" alt="Product Image" src="">
               </a>
-              <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm rtl:left-auto rtl:right-2" th:data-heart="${product.id}">
+              <a class="circle-container absolute top-2 left-2 p-1 bg-white rounded-full shadow-sm rtl:left-auto rtl:right-2" th:data-heart="${product.productId}">
                 <i class="far fa-heart text-gray-600 group-hover:text-red-600 transition-colors text-xl"></i>
               </a>
               <span class="badge-container absolute top-2 right-2 rtl:right-auto rtl:left-2">
@@ -40,7 +40,7 @@
               <div th:if="(${product.price} &lt; ${product.basePrice})" class="product-discount text-sm text-gray-500 line-through rtl:text-right">
                 <span th:text="|${product.basePrice} جنيه|">$49.99 ج.س</span>
               </div>
-              <button type="button" class="button-31 mt-auto pt-4 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium" th:data-add-cart="${product.id}">اضافة للعربة</button>
+              <button type="button" class="button-31 mt-auto pt-4 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium" th:data-add-cart="${product.productId}">اضافة للعربة</button>
             </div>
           </div>
         </div>

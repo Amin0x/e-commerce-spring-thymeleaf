@@ -27,7 +27,7 @@ public class ProductClientImpl implements ProductClient {
 
     @Override
     public List<ProductDto> list(int page, int size, String sortBy, boolean asc) {
-        var uri = UriComponentsBuilder.fromHttpUrl(backendBaseUrl + "/api/products")
+        var uri = UriComponentsBuilder.fromUriString(backendBaseUrl + "/api/products")
                 .queryParam("page", page)
                 .queryParam("size", size)
                 .queryParam("sortBy", sortBy)
@@ -46,6 +46,12 @@ public class ProductClientImpl implements ProductClient {
     public ProductDto getByUuid(String uuid) {
         return restTemplate.getForObject(backendBaseUrl + "/api/products/by-uuid/{uuid}",
                 ProductDto.class, uuid);
+    }
+
+    @Override
+    public ProductDto getBySlug(String slug) {
+        return restTemplate.getForObject(backendBaseUrl + "/api/products/by-slug/{slug}",
+                ProductDto.class, slug);
     }
 
     @Override

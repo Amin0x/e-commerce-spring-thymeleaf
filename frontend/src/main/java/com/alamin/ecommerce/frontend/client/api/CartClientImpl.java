@@ -39,7 +39,7 @@ public class CartClientImpl implements CartClient {
     @Override
     public CartDto addItem(String productId, int quantity) {
         var uri = org.springframework.web.util.UriComponentsBuilder
-                .fromHttpUrl(backendBaseUrl + "/api/cart/items")
+                .fromUriString(backendBaseUrl + "/api/cart/items")
                 .queryParam("productId", productId)
                 .queryParam("quantity", quantity)
                 .build().toUri();

@@ -91,9 +91,20 @@ public class AuthController {
             return "public/signup";
         }
 
+        if (!signupForm.getPassword().equals(signupForm.getConfirmPassword())) {
+            model.addAttribute("errorMessage", "Passwords do not match");
+            return "public/signup";
+        }
+
         try {
+            // role is always null: the backend forces the USER role on
+            // self-registration and ignores any client-supplied value.
             AuthResponse response = authClient.register(
-                    signupForm.getUsername(), signupForm.getPassword(), signupForm.getEmail());
+                    signupForm.getUsername(),
+                    signupForm.getPassword(),
+                    signupForm.getConfirmPassword(),
+                    signupForm.getEmail(),
+                    null);
             if (response != null && response.getToken() != null) {
                 redirectAttributes.addFlashAttribute("message", "Account created successfully");
                 return "redirect:/auth/confirmation";

@@ -31,7 +31,7 @@ public class AdminOrderClientImpl implements AdminOrderClient {
 
     @Override
     public PageDto<OrderDto> list(int page, int size, int order, Integer sort) {
-        var uri = UriComponentsBuilder.fromHttpUrl(backendBaseUrl + ORDERS_URL)
+        var uri = UriComponentsBuilder.fromUriString(backendBaseUrl + ORDERS_URL)
                 .queryParam("page", page)
                 .queryParam("size", size)
                 .queryParam("order", order)

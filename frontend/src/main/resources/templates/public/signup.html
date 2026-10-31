@@ -18,7 +18,12 @@
     <div class="wrapper min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div class="signup-container card w-full max-w-md">
             <h2 class="title text-2xl font-bold text-gray-800 text-center mb-6">التسجيل</h2>
-            <form th:action="@{/signup}" method="post" id="signupForm">
+            <form th:action="@{/auth/register}" method="post" id="signupForm">
+                <div class="username form-group mb-4">
+                    <label for="username" class="input-label block text-sm font-medium text-gray-700 mb-1">اسم المتستخدم:</label>
+                    <input type="text" name="username" class="form-control input" id="username">
+                    <div class="error" id="usernameErr"></div>
+                </div>
                 <div class="email form-group mb-4">
                     <label for="email" class="input-label block text-sm font-medium text-gray-700 mb-1">الايميل:</label>
                     <input type="email" name="email" class="form-control input" id="email">
@@ -43,6 +48,10 @@
     <script th:src="@{/public/js/main.js}" src="../../static/public/js/main.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function (e) {
+
+            document.getElementById('username').addEventListener('change', function (e) {
+                this.classList.remove('error');
+            });
 
             document.getElementById('email').addEventListener('change', function (e) {
                 this.classList.remove('error');

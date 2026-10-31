@@ -1,5 +1,6 @@
 package com.alamin.ecommerce.product;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ public class ProductPrice {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference("product-price")
     private Product product;
 
     public Long getId() {

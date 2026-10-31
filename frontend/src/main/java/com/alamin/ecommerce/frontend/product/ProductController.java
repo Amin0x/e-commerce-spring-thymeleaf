@@ -34,17 +34,18 @@ public class ProductController {
             return "error/404";
         }
 
-        // NOTE: the backend exposes product lookup by id and by uuid, but not by
-        // slug. Links render ${product.slug} into /products/{id}, so the path
-        // value is treated as a uuid here. Add a /api/products/slug/{slug}
-        // backend endpoint to resolve slugs exactly.
-        ProductDto product = productClient.getByUuid(id);
+        // Try to find by slug first (links render ${product.slug} into /products/{id})
+        // Fall back to UUID for backward compatibility with old links.
+        ProductDto product = productClient.getBySlug(id);
+        if (product == null) {
+            product = productClient.getByUuid(id);
+        }
         if (product == null) {
             return "error/404";
         }
 
         List<ProductDto> similarProducts = productClient.random(8);
-        List<ReviewDto> reviews = productClient.getReviews(product.getId());
+        List<ReviewDto> reviews = productClient.getReviews(product.getProductId());
         long totalReviews = reviews == null ? 0 : reviews.size();
 
         long product5StarReviewsCount = reviews == null ? 0 : reviews.stream().filter(r -> r.getStar() == 5).count();

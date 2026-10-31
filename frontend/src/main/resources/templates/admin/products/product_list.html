@@ -62,7 +62,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                 <tr th:each="product, iter : ${products}" th:class="${iter.odd} ? 'bg-gray-50' : ''" class="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
-                    <td class="px-4 py-2 text-sm" th:text="${product.id}">1</td>
+                    <td class="px-4 py-2 text-sm" th:text="${product.productId}">1</td>
                     <td class="px-4 py-2 text-sm" th:text="${product.name}">Product Title</td>
                     <td class="px-4 py-2 text-sm" th:text="${product.price}">100.00</td>
                     <td class="px-4 py-2 text-sm" th:text="${product.priceUSD}">20.00</td>
@@ -71,8 +71,8 @@
                     <td class="px-4 py-2 text-sm" th:text="${product.stock}">200</td>
                     <td class="px-4 py-2 text-sm" th:text="${product.sku}">SKU1234</td>
                     <td class="px-4 py-2 text-sm flex gap-2">
-                        <a th:href="@{/admin/products/edit/{id}(id=${product.id})}" class="px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 transition-colors">Edit</a>
-                        <a th:href="@{/admin/products/delete/{id}(id=${product.id})}" class="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors">Delete</a>
+                        <a th:href="@{/admin/products/edit/{id}(id=${product.productId})}" class="px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 transition-colors">Edit</a>
+                        <a th:href="@{/admin/products/delete/{id}(id=${product.productId})}" class="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors">Delete</a>
                     </td>
                 </tr>
                 </tbody>

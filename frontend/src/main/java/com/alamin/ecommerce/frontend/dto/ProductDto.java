@@ -1,56 +1,47 @@
 package com.alamin.ecommerce.frontend.dto;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Mirrored copy of the backend {@link com.alamin.ecommerce.product.Product}
- * entity JSON shape. The frontend duplicates this DTO (no shared module) so each
+ * Mirrored copy of the backend {@link com.alamin.ecommerce.product.ProductDto}
+ * DTO. The frontend duplicates this DTO (no shared module) so each
  * module compiles independently; the contract is kept in sync via the JSON
  * fixtures in backend/src/test/resources/contracts and RestTemplate will
  * deserialize backend JSON directly into this class.
  */
 public class ProductDto {
 
-    private Long id;
+    private Long productId;
     private String uuid;
-    private String slug;
-    private String barcode;
-    private String model;
-    private String color;
-    private String size;
-    private String material;
-    private String style;
     private String name;
-    private String tags;
     private String description;
     private Integer price;
     private Integer basePrice;
     private Integer priceUSD;
     private String sku;
+    private String slug;
     private Integer stock;
     private Integer totalSold;
     private Integer viewCount;
     private Boolean active;
     private Boolean enabled;
     private String image;
-    private LocalDateTime created;
-    private LocalDateTime updated;
-    private LocalDateTime deleted;
-    private CategoryDto category;
     private List<ProductImage> productImages = new ArrayList<>();
-    private List<Object> productPrices = new ArrayList<>();
+    private Long categoryId;
+    private String categoryName;
+    private Boolean newArrive;
+    private Double percent;
 
     public ProductDto() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getUuid() {
@@ -61,76 +52,12 @@ public class ProductDto {
         this.uuid = uuid;
     }
 
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public String getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(String barcode) {
-        this.barcode = barcode;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public String getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(String material) {
-        this.material = material;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
     }
 
     public String getDescription() {
@@ -171,6 +98,14 @@ public class ProductDto {
 
     public void setSku(String sku) {
         this.sku = sku;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public Integer getStock() {
@@ -221,38 +156,6 @@ public class ProductDto {
         this.image = image;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(LocalDateTime updated) {
-        this.updated = updated;
-    }
-
-    public LocalDateTime getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(LocalDateTime deleted) {
-        this.deleted = deleted;
-    }
-
-    public CategoryDto getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryDto category) {
-        this.category = category;
-    }
-
     public List<ProductImage> getProductImages() {
         return productImages;
     }
@@ -261,11 +164,45 @@ public class ProductDto {
         this.productImages = productImages;
     }
 
-    public List<Object> getProductPrices() {
-        return productPrices;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setProductPrices(List<Object> productPrices) {
-        this.productPrices = productPrices;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("newArrive")
+    public Boolean getNewArrive() {
+        return newArrive;
+    }
+
+    public void setNewArrive(Boolean newArrive) {
+        this.newArrive = newArrive;
+    }
+
+    /**
+     * Thymeleaf-compatible getter for {@link #getNewArrive()}.
+     * Allows template expressions like {@code ${product.newArrive}} to work.
+     */
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    public Boolean getNew() {
+        return getNewArrive();
+    }
+
+    public Double getPercent() {
+        return percent;
+    }
+
+    public void setPercent(Double percent) {
+        this.percent = percent;
     }
 }

@@ -10,7 +10,7 @@ public interface AuthClient {
 
     AuthResponse login(String username, String password);
 
-    AuthResponse register(String username, String password, String email);
+    AuthResponse register(String username, String password, String confirmPassword, String email, String role);
 
     AuthResponse me();
 

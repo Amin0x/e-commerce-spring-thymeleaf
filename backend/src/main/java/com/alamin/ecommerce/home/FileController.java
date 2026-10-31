@@ -2,7 +2,9 @@ package com.alamin.ecommerce.home;
 
 import com.alamin.ecommerce.config.FileUploadService;
 import com.alamin.ecommerce.product.Product;
+import com.alamin.ecommerce.product.ProductDto;
 import com.alamin.ecommerce.product.ProductImage;
+import com.alamin.ecommerce.product.ProductRepository;
 import com.alamin.ecommerce.product.ProductService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +22,12 @@ import java.util.Map;
 public class FileController {
 
     private final ProductService productService;
+    private final ProductRepository productRepository;
     private final FileUploadService fileUploadService;
 
-    public FileController(ProductService productService, FileUploadService fileUploadService) {
+    public FileController(ProductService productService, ProductRepository productRepository, FileUploadService fileUploadService) {
         this.productService = productService;
+        this.productRepository = productRepository;
         this.fileUploadService = fileUploadService;
     }
 
@@ -47,7 +51,7 @@ public class FileController {
         if(file.getSize() > 5000 * 1024)
             throw new RuntimeException("file size exceed allowed size");
 
-        Product product = productService.getProductById(id).orElseThrow();
+        Product product = productRepository.findById(id).orElseThrow();
         Map<String, String> res = uploadFile(file);
         product.getProductImages().add(new ProductImage(res.get("url"), product));
         productService.save(product);

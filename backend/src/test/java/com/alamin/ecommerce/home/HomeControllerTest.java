@@ -39,21 +39,21 @@ class HomeControllerTest {
 
     @Test
     void testHome() {
-        List<Product> mockProducts = Collections.singletonList(new Product());
-        List<ProductDto> mockProductDtos = Collections.singletonList(new ProductDto(mockProducts.get(0)));
-        List<Product> mockNewProducts = Collections.singletonList(new Product());
+        List<ProductDto> mockProducts = Collections.singletonList(new ProductDto(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null));
+        List<ProductDto> mockNewProducts = Collections.singletonList(new ProductDto(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null));
+        List<ProductDto> mockBestSelling = Collections.singletonList(new ProductDto(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null));
         List<Category> mockCategories = Arrays.asList(new Category(), new Category());
 
         when(productService.getRandomProducts(12)).thenReturn(mockProducts);
         when(productService.getLastAddedProductsRandom(12)).thenReturn(mockNewProducts);
-        when(productService.getBestSellingProducts(12)).thenReturn(mockProducts);
+        when(productService.getBestSellingProducts(12)).thenReturn(mockBestSelling);
         when(categoryService.getRandomCategories()).thenReturn(mockCategories);
 
         String viewName = homeController.home(model);
 
-        verify(model).addAttribute("products", mockProductDtos);
+        verify(model).addAttribute("products", mockProducts);
         verify(model).addAttribute("newProducts", mockNewProducts);
-        verify(model).addAttribute("mustSellingProducts", mockProducts);
+        verify(model).addAttribute("mustSellingProducts", mockBestSelling);
         verify(model).addAttribute("categoryList", mockCategories);
         verify(model).addAttribute("notification", "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, natus. Nesciunt tempore nobis id hic. Nobis quaerat qui quibusdam repellendus!");
         verify(model).addAttribute("pageDescription", "");

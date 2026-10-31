@@ -5,6 +5,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.alamin.ecommerce.product.Product;
+import com.alamin.ecommerce.product.ProductDto;
+import com.alamin.ecommerce.product.ProductRepository;
 import com.alamin.ecommerce.user.User;
 import com.alamin.ecommerce.user.UserService;
 
@@ -13,12 +15,15 @@ import jakarta.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class CartServiceImplTest {
 
     @Mock
     private CartRepository cartRepository;
+
+    @Mock
+    private ProductRepository productRepository;
 
     @InjectMocks
     private CartServiceImpl cartService;
@@ -70,7 +75,7 @@ class CartServiceImplTest {
         when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
 
         // Act
-        Cart result = cartService.getCartBySession(mockSession);
+        Cart result = cartService.getCartBySession(sessionId);
 
         // Assert
         assertEquals(mockCart, result);
@@ -96,7 +101,7 @@ class CartServiceImplTest {
         when(cartRepository.getCartBySession(sessionId)).thenReturn(null);
 
         // Act
-        Cart result = cartService.getCartBySession(mockSession);
+        Cart result = cartService.getCartBySession(sessionId);
 
         // Assert
         assertEquals(null, result);
@@ -151,9 +156,12 @@ class CartServiceImplTest {
     @Test
     void testAddCartItem_NewCartForSession() {
         // Arrange
+        ProductDto mockProductDto = new ProductDto(1L, null, null, null, 100, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
         Product mockProduct = new Product();
         mockProduct.setId(1L);
         mockProduct.setPrice(100);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
 
         HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
         String sessionId = "session123";
@@ -163,15 +171,15 @@ class CartServiceImplTest {
 
         Cart newCart = new Cart();
         newCart.setSessionId(sessionId);
-        when(cartRepository.save(org.mockito.Mockito.any(Cart.class))).thenReturn(newCart);
+        when(cartRepository.save(any(Cart.class))).thenReturn(newCart);
 
         // Act
-        Cart result = cartService.addCartItem(mockProduct, mockSession, null);
+        Cart result = cartService.addCartItem(mockProductDto, sessionId, null);
 
         // Assert
         assertEquals(sessionId, result.getSessionId());
         assertEquals(1, result.getCartItems().size());
-        assertEquals(mockProduct.getId(), result.getCartItems().get(0).getProduct().getId());
+        assertEquals(mockProductDto.productId(), result.getCartItems().get(0).getProduct().getId());
         assertEquals(100, result.getCartItems().get(0).getPrice());
         assertEquals(100, result.getTotal());
     }
@@ -179,9 +187,12 @@ class CartServiceImplTest {
     @Test
     void testAddCartItem_ExistingCartForSession() {
         // Arrange
+        ProductDto mockProductDto = new ProductDto(1L, null, null, null, 100, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
         Product mockProduct = new Product();
         mockProduct.setId(1L);
         mockProduct.setPrice(100);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
 
         HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
         String sessionId = "session123";
@@ -194,12 +205,12 @@ class CartServiceImplTest {
         when(cartRepository.save(existingCart)).thenReturn(existingCart);
 
         // Act
-        Cart result = cartService.addCartItem(mockProduct, mockSession, null);
+        Cart result = cartService.addCartItem(mockProductDto, sessionId, null);
 
         // Assert
         assertEquals(sessionId, result.getSessionId());
         assertEquals(1, result.getCartItems().size());
-        assertEquals(mockProduct.getId(), result.getCartItems().get(0).getProduct().getId());
+        assertEquals(mockProductDto.productId(), result.getCartItems().get(0).getProduct().getId());
         assertEquals(100, result.getCartItems().get(0).getPrice());
         assertEquals(100, result.getTotal());
     }
@@ -207,9 +218,12 @@ class CartServiceImplTest {
     @Test
     void testAddCartItem_ExistingCartWithSameProduct() {
         // Arrange
+        ProductDto mockProductDto = new ProductDto(1L, null, null, null, 100, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
         Product mockProduct = new Product();
         mockProduct.setId(1L);
         mockProduct.setPrice(100);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
 
         HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
         String sessionId = "session123";
@@ -229,7 +243,7 @@ class CartServiceImplTest {
         when(cartRepository.save(existingCart)).thenReturn(existingCart);
 
         // Act
-        Cart result = cartService.addCartItem(mockProduct, mockSession, null);
+        Cart result = cartService.addCartItem(mockProductDto, sessionId, null);
 
         // Assert
         assertEquals(sessionId, result.getSessionId());
@@ -242,9 +256,12 @@ class CartServiceImplTest {
     @Test
     void testAddCartItem_NewCartForUser() {
         // Arrange
+        ProductDto mockProductDto = new ProductDto(1L, null, null, null, 100, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
         Product mockProduct = new Product();
         mockProduct.setId(1L);
         mockProduct.setPrice(100);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
 
         Principal mockPrincipal = org.mockito.Mockito.mock(Principal.class);
         String userId = "user123";
@@ -254,18 +271,19 @@ class CartServiceImplTest {
 
         Cart newCart = new Cart();
         newCart.setUserId(userId);
-        when(cartRepository.save(org.mockito.Mockito.any(Cart.class))).thenReturn(newCart);
+        when(cartRepository.save(any(Cart.class))).thenReturn(newCart);
 
         HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        when(mockSession.getId()).thenReturn("session123");
+        String sessionId = "session123";
+        when(mockSession.getId()).thenReturn(sessionId);
 
         // Act
-        Cart result = cartService.addCartItem(mockProduct, mockSession, mockPrincipal);
+        Cart result = cartService.addCartItem(mockProductDto, sessionId, userId);
 
         // Assert
         assertEquals(userId, result.getUserId());
         assertEquals(1, result.getCartItems().size());
-        assertEquals(mockProduct.getId(), result.getCartItems().get(0).getProduct().getId());
+        assertEquals(mockProductDto.productId(), result.getCartItems().get(0).getProduct().getId());
         assertEquals(100, result.getCartItems().get(0).getPrice());
         assertEquals(100, result.getTotal());
     }
@@ -289,7 +307,7 @@ class CartServiceImplTest {
         when(cartRepository.save(mockCart)).thenReturn(mockCart);
 
         // Act
-        Cart result = cartService.removeCartItem(cartItemId, mockSession, null);
+        Cart result = cartService.removeCartItem(cartItemId, sessionId, null);
 
         // Assert
         assertEquals(0, result.getCartItems().size());
@@ -311,7 +329,7 @@ class CartServiceImplTest {
         // Act & Assert
         RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
             RuntimeException.class,
-            () -> cartService.removeCartItem(cartItemId, mockSession, null)
+            () -> cartService.removeCartItem(cartItemId, sessionId, null)
         );
         assertEquals("Item not found in cart", exception.getMessage());
     }
@@ -339,7 +357,7 @@ class CartServiceImplTest {
         when(cartRepository.save(mockCart)).thenReturn(mockCart);
 
         // Act
-        Cart result = cartService.removeCartItem(cartItemId, null, mockPrincipal);
+        Cart result = cartService.removeCartItem(cartItemId, null, mockPrincipal.getName());
 
         // Assert
         assertEquals(0, result.getCartItems().size());
@@ -365,7 +383,7 @@ class CartServiceImplTest {
         // Act & Assert
         RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
             RuntimeException.class,
-            () -> cartService.removeCartItem(cartItemId, null, mockPrincipal)
+            () -> cartService.removeCartItem(cartItemId, null, userId)
         );
         assertEquals("Item not found in cart", exception.getMessage());
     }
@@ -445,7 +463,7 @@ class CartServiceImplTest {
         when(cartRepository.save(mockCart)).thenReturn(mockCart);
 
         // Act
-        Cart result = cartService.incrementCartItem(cartItemId, mockSession, null);
+        Cart result = cartService.incrementCartItem(cartItemId, sessionId, null);
 
         // Assert
         assertEquals(2, result.getCartItems().get(0).getQuantity());
@@ -467,7 +485,7 @@ class CartServiceImplTest {
         when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
 
         // Act
-        Cart result = cartService.incrementCartItem(cartItemId, mockSession, null);
+        Cart result = cartService.incrementCartItem(cartItemId, sessionId, null);
 
         // Assert
         assertEquals(0, result.getCartItems().size());
@@ -487,7 +505,7 @@ class CartServiceImplTest {
         // Act & Assert
         RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
             RuntimeException.class,
-            () -> cartService.incrementCartItem(cartItemId, mockSession, null)
+            () -> cartService.incrementCartItem(cartItemId, sessionId, null)
         );
         assertEquals("Cart not found", exception.getMessage());
     }
@@ -514,7 +532,7 @@ class CartServiceImplTest {
         when(cartRepository.save(mockCart)).thenReturn(mockCart);
 
         // Act
-        Cart result = cartService.decrementCartItem(cartItemId, mockSession, null);
+        Cart result = cartService.decrementCartItem(cartItemId, sessionId, null);
 
         // Assert
         assertEquals(1, result.getCartItems().get(0).getQuantity());
@@ -545,7 +563,7 @@ class CartServiceImplTest {
         // Act & Assert
         RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
             RuntimeException.class,
-            () -> cartService.decrementCartItem(cartItemId, mockSession, null)
+            () -> cartService.decrementCartItem(cartItemId, sessionId, null)
         );
         assertEquals("quantity cant be less than one", exception.getMessage());
     }
@@ -564,7 +582,7 @@ class CartServiceImplTest {
         when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
 
         // Act
-        Cart result = cartService.decrementCartItem(cartItemId, mockSession, null);
+        Cart result = cartService.decrementCartItem(cartItemId, sessionId, null);
 
         // Assert
         assertEquals(0, result.getCartItems().size());
@@ -584,7 +602,7 @@ class CartServiceImplTest {
         // Act & Assert
         RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
             RuntimeException.class,
-            () -> cartService.decrementCartItem(cartItemId, mockSession, null)
+            () -> cartService.decrementCartItem(cartItemId, sessionId, null)
         );
         assertEquals("Cart not found", exception.getMessage());
     }

@@ -16,6 +16,8 @@ public interface ProductClient {
 
     ProductDto getByUuid(String uuid);
 
+    ProductDto getBySlug(String slug);
+
     List<ProductDto> random(int size);
 
     List<ProductDto> bestSelling(int size);

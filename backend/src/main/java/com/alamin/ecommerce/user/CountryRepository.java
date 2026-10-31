@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface CountryRepository extends JpaRepository<Country, Integer> {
     Optional<Country> findByName(String countryName);
     Optional<Country> findByNameAr(String countryNameAr);
+    Optional<Country> findByNameOrNameAr(String name, String nameAr);
 }

@@ -117,8 +117,8 @@ public class UserServiceImpl implements UserService {
     public User createUser(SignupForm signupForm) {
         log.info("signupForm: {}", signupForm);
         User user = new User();
-        user.setUsername(signupForm.getUsername());
-        user.setPassword(passwordEncoder.encode(signupForm.getPassword()));
+        user.setUsername(signupForm.username());
+        user.setPassword(passwordEncoder.encode(signupForm.password()));
         user.setRole("USER"); //defuel user role
         user.setEnabled(true);
         user.setStatus("NOT_VERIFIED");
