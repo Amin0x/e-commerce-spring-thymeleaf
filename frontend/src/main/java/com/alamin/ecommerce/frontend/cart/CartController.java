@@ -107,39 +107,18 @@ public class CartController {
         }
     }
 
-    @PostMapping("/carts/increment")
-    public ResponseEntity<Object> cartItemIncrement(@RequestParam Long id) {
+    @PostMapping("/carts/updateQuantity")
+    public ResponseEntity<Object> updateCartItemQuantity(@RequestParam Long id,
+                                                          @RequestParam int quantity) {
         Map<String, Object> data = new java.util.LinkedHashMap<>();
         try {
-            CartDto cart = cartClient.incrementItem(id);
+            CartDto cart = cartClient.updateItemQuantity(id, quantity);
             List<?> items = cart == null ? null : cart.getCartItems();
             data.put("cart", cart);
             data.put("shipping", 0);
             data.put("tax", 0);
             data.put("status", 200);
-            data.put("message", "item incremented successfully");
-            data.put("totalItems", items == null ? 0 : items.stream()
-                    .mapToInt(i -> ((com.alamin.ecommerce.frontend.dto.CartItemDto) i).getQuantity()).sum());
-            return ResponseEntity.ok(data);
-        } catch (Exception e) {
-            data.put("error", e.getMessage());
-            data.put("status", 400);
-            data.put("message", "something went wrong");
-            return ResponseEntity.badRequest().body(data);
-        }
-    }
-
-    @PostMapping("/carts/decrement")
-    public ResponseEntity<Object> cartItemDecrement(@RequestParam Long id) {
-        Map<String, Object> data = new java.util.LinkedHashMap<>();
-        try {
-            CartDto cart = cartClient.decrementItem(id);
-            List<?> items = cart == null ? null : cart.getCartItems();
-            data.put("cart", cart);
-            data.put("shipping", 0);
-            data.put("tax", 0);
-            data.put("status", 200);
-            data.put("message", "item decremented successfully");
+            data.put("message", "item quantity updated successfully");
             data.put("totalItems", items == null ? 0 : items.stream()
                     .mapToInt(i -> ((com.alamin.ecommerce.frontend.dto.CartItemDto) i).getQuantity()).sum());
             return ResponseEntity.ok(data);

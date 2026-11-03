@@ -23,7 +23,5 @@ public interface CartClient {
 
     CartDto removeItem(Long itemId);
 
-    CartDto incrementItem(Long itemId);
-
-    CartDto decrementItem(Long itemId);
+    CartDto updateItemQuantity(Long itemId, int quantity);
 }

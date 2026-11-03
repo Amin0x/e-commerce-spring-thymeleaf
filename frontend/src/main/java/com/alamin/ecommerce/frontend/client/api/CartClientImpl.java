@@ -53,14 +53,11 @@ public class CartClientImpl implements CartClient {
     }
 
     @Override
-    public CartDto incrementItem(Long itemId) {
-        return restTemplate.postForObject(
-                backendBaseUrl + "/api/cart/items/{id}/increment", null, CartDto.class, itemId);
-    }
-
-    @Override
-    public CartDto decrementItem(Long itemId) {
-        return restTemplate.postForObject(
-                backendBaseUrl + "/api/cart/items/{id}/decrement", null, CartDto.class, itemId);
+    public CartDto updateItemQuantity(Long itemId, int quantity) {
+        var uri = org.springframework.web.util.UriComponentsBuilder
+                .fromUriString(backendBaseUrl + "/api/cart/items/" + itemId)
+                .queryParam("quantity", quantity)
+                .build().toUri();
+        return restTemplate.patchForObject(uri, null, CartDto.class);
     }
 }
