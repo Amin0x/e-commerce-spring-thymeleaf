@@ -2,44 +2,43 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Use `gh-axi` for GitHub and `chrome-devtools-axi` for browser automation.
+
 ## Project overview
 
-Split e-commerce application built with Spring Boot 4.1.2, Thymeleaf, and MySQL. Two independently deployable Maven subprojects share this repository (git at root):
+Thymeleaf server-rendered frontend for an e-commerce application, built with Spring Boot 4.1.2.
+The REST backend lives in a **separate repository**:
+<https://github.com/Amin0x/e-commerce-backend> (port 8081).
+
+This repository contains a single Maven subproject:
 
 | Module | Package | Description | Port |
 |--------|---------|-------------|------|
-| `backend` | `com.alamin.ecommerce` | JSON REST API, Spring Security + JWT, Spring Data JPA + MySQL, Spring Mail, iText PDF | 8081 |
-| `frontend` | `com.alamin.ecommerce.frontend` | Thymeleaf server-rendered UI that calls the backend REST API via `RestTemplate` | 8080 |
+| `frontend` | `com.alamin.ecommerce.frontend` | Thymeleaf UI that calls the backend REST API via `RestTemplate` | 8080 |
 
-Build everything from the repo root:
+Build from the repo root:
 
 ```bash
-# Build both modules (skip tests)
+# Build (skip tests)
 ./mvnw package -DskipTests
 
-# Run tests for both modules
+# Run tests
 ./mvnw test
 
 # Run a single test class
-./mvnw test -Dtest=CategoryServiceImplTest
+./mvnw test -Dtest=FrontendContextTest
 
 # Run a single test method
-./mvnw test -Dtest=CategoryServiceImplTest#testMethodName
+./mvnw test -Dtest=FrontendContextTest#testMethodName
 
-# Run tests in one module only
-./mvnw test -pl backend
-./mvnw test -pl frontend
-
-# Run backend
-java -jar backend/target/backend.jar
-
-# Run frontend (separate terminal)
+# Run the frontend
 java -jar frontend/target/frontend.jar
 ```
 
-The frontend is reachable at `http://localhost:8080`; the backend API at `http://localhost:8081`.
+The frontend is reachable at `http://localhost:8080`; the backend API is expected at `http://localhost:8081`.
 
-Java version: the root POM targets Java 21; the backend module overrides to Java 26. The README notes JDK 17 or 21 are supported via the `java.version` Maven property (e.g. `./mvnw package -Djava.version=17`).
+Java version: the POM targets Java 21 by default; JDK 17 or 21 are supported via the `java.version`
+Maven property (e.g. `./mvnw package -Djava.version=17`).
 
 ## Build configuration notes
 
@@ -47,18 +46,18 @@ Java version: the root POM targets Java 21; the backend module overrides to Java
 - Maven wrapper: `./mvnw` (and `./mvnw.cmd` on Windows).
 - No lint/format plugin is configured; match the existing code style (Lombok `@RequiredArgsConstructor`, `@RestController`/`@Controller`, constructor injection).
 
-## Architecture — key cross-module boundaries
+## Architecture — key boundaries
 
 **Frontend → backend communication** (`frontend/src/main/java/com/alamin/ecommerce/frontend/client/`):
 
-- `ClientConfig` builds a single `RestTemplate` per frontend module, wired with `ClientAuthInterceptor`.
+- `ClientConfig` builds a single `RestTemplate`, wired with `ClientAuthInterceptor`.
 - `ClientAuthInterceptor` attaches `Authorization: Bearer <jwt>` (from the servlet session) and `X-Cart-Key` (stable per-session cart identity) to every outbound backend call.
-- API clients live under `client/api/` (interfaces + `*Impl` classes backed by `RestTemplate`): `AuthClient`, `ProductClient`, `CategoryClient`, `CartClient`, `AdminProductClient`, `AdminCategoryClient`, `AdminUserClient`, `AdminOrderClient`, `AdminStatisticsClient`, `SettingClient`, `SubscribeClient`, `AddressClient`. DTOs under `client/api/../dto/` mirror backend request/response shapes.
+- API clients live under `client/api/` (interfaces + `*Impl` classes backed by `RestTemplate`): `AuthClient`, `ProductClient`, `CategoryClient`, `CartClient`, `AdminProductClient`, `AdminCategoryClient`, `AdminUserClient`, `AdminOrderClient`, `AdminStatisticsClient`, `SettingClient`, `SubscribeClient`, `AddressClient`. DTOs under `dto/` mirror backend request/response shapes.
 - On successful login/register, `AuthClientImpl` stores the JWT + role in the HTTP session; the browser never sees the JWT.
 
 **Authentication split:**
 
-- **Backend** (`backend/.../config/SecurityConfig.java`): stateless JWT. `SessionCreationPolicy.STATELESS`, CSRF disabled, `JwtAuthenticationFilter` validates Bearer tokens ahead of the username/password filter, 401/403 returned as JSON via `RestAuthenticationEntryPoint` / `RestAccessDeniedHandler`. CORS restricted to the frontend origin (`app.cors.allowed-origins`). `@EnableMethodSecurity(prePostEnabled = true)`.
+- **Backend** (separate repository): stateless JWT, `SessionCreationPolicy.STATELESS`, CSRF disabled, CORS restricted to the frontend origin.
 - **Frontend** (`frontend/.../security/SecurityConfig.java`): session-backed. `SessionAuthenticationFilter` rebuilds the Spring Security context from the servlet session on each request (JWT + role stored by `AuthClientImpl`). Grants `ROLE_ADMIN` when the stored role is `ADMIN`, else `ROLE_ADMIN`-guarded `/admin/**` routes. CSRF disabled, stateless session management.
 
 **Data flow:**
@@ -70,16 +69,15 @@ Java version: the root POM targets Java 21; the backend module overrides to Java
 
 **Configuration:**
 
-- `backend/src/main/resources/application.properties` — port 8081, MySQL datasource (`jdbc:mysql://localhost:3306/amin_db_123`), `spring.jpa.hibernate.ddl-auto=update`, mail (SMTP Gmail), JWT secret/expiration, upload dir `C:/uploads/`, CORS origins.
 - `frontend/src/main/resources/application.properties` — port 8080, `backend.base-url=http://localhost:8081`.
 
 ## Tests
 
-- Backend tests: `backend/src/test/java/com/alamin/ecommerce/` (context, service, controller tests).
 - Frontend tests: `frontend/src/test/java/com/alamin/ecommerce/frontend/` (context test, client contract deserialization test).
+- Backend tests live in the separate backend repository.
 - No dedicated test runner beyond Maven Surefire; use `-Dtest=<ClassName>[#method]` to scope.
 
 ## What to avoid
 
-- Do not list every file or component — the structure above is discoverable from the module source trees.
+- Do not list every file or component — the structure above is discoverable from the source tree.
 - Do not add generic development advice; this file covers only repo-specific commands, architecture, and boundaries.

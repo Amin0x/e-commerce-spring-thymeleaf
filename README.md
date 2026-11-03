@@ -1,39 +1,16 @@
-# E-commerce (Spring Boot + Thymeleaf)
+# E-commerce (Thymeleaf frontend)
 
-Split into two independently deployable Maven subprojects:
+Thymeleaf server-rendered UI for the e-commerce application. It calls a separately
+deployed REST backend over HTTP.
 
-- **`backend/`** — REST API only, secured with Spring Security + JWT (port 8081).
-- **`frontend/`** — Thymeleaf server-rendered UI that calls the backend API (port 8080).
-
-Both modules share the repository root (git at root). Build everything from the root:
-
-```bash
-mvn package -Djava.version=17
-```
-
-## Modules
-
-| Module | Description | Port |
-|--------|-------------|------|
-| `backend` | JSON REST API, Spring Security JWT, MySQL, mail | 8081 |
-| `frontend` | Thymeleaf UI, session-based auth, REST client layer | 8080 |
+- **`frontend/`** — Thymeleaf UI, session-based auth, REST client layer (port 8080).
+- **Backend API** — maintained in a separate repository:
+  <https://github.com/Amin0x/e-commerce-backend> (port 8081).
 
 ## Requirements
 
 - JDK 17 or 21 (Maven `java.version` property controls the release target)
-- MySQL database (backend only)
-- SMTP server for mail (backend only)
-
-## Backend configuration
-
-| Property | Default | Notes |
-|----------|---------|-------|
-| `server.port` | `8081` | |
-| `app.jwt.secret` | required | ≥256 bits; overridable via `JWT_SECRET` env var |
-| `app.jwt.access-token-expiration` | `86400000` (24h) | ms |
-| `app.upload.dir` | `C:/uploads/` | |
-| `app.cors.allowed-origins` | `http://localhost:8080` | |
-| `spring.datasource.*` | — | MySQL connection |
+- A running backend API (see the repository linked above)
 
 ## Frontend configuration
 
@@ -54,14 +31,12 @@ mvn package -Djava.version=17
 ## Building and running
 
 ```bash
-# Build both modules
-mvn package -Djava.version=17 -DskipTests
+# Build the frontend
+./mvnw package -DskipTests
 
-# Run backend
-java -jar backend/target/backend.jar
-
-# Run frontend (in another terminal)
+# Run the frontend
 java -jar frontend/target/frontend.jar
 ```
 
-The frontend is reachable at `http://localhost:8080`; the backend API at `http://localhost:8081`.
+The frontend is reachable at `http://localhost:8080`; the backend API is expected at
+`http://localhost:8081`.

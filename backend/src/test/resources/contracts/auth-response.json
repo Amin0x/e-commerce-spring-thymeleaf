@@ -1,7 +1,0 @@
-{
-  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZSIsInJvbGUiOiJVU0VSIiwidWlkIjoiMTIzNDU2In0.signature",
-  "username": "alice",
-  "role": "USER",
-  "uid": "123456",
-  "message": "Login successful"
-}

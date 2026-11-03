@@ -15,7 +15,6 @@
     <description>e-commerce project for Spring</description>
     <packaging>pom</packaging>
     <modules>
-        <module>backend</module>
         <module>frontend</module>
     </modules>
     <url/>
