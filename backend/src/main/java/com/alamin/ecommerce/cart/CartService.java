@@ -7,25 +7,25 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface CartService {
-    Optional<Cart> getCartById(Long id);
+    Optional<CartDto> getCartById(Long id);
 
-    Cart getCartBySession(String cartKey);
+    CartDto getCartBySession(String cartKey);
 
-    Cart resolveOrCreateCart(String cartKey, String username);
+    CartDto getCartByUserId(String userId);
 
-    Cart saveCart(Cart cart);
+    CartDto saveCart(Cart cart);
 
     void deleteCart(Long id);
 
-    Cart addCartItem(ProductDto item, String cartKey, String username);
+    CartDto addCartItem(ProductDto item, String cartKey, String username);
 
-    Cart removeCartItem(Long id, String cartKey, String username);
+    CartDto removeCartItem(Long id, String cartKey, String username);
 
-    Page<Cart> findAll(Pageable pr);
+    Page<CartDto> findAll(Pageable pr);
 
     boolean existsById(Long id);
 
-    Cart incrementCartItem(Long id, String cartKey, String username);
+    CartDto updateCartItemQuantity(Long id, String cartKey, String username, int quantity);
 
-    Cart decrementCartItem(Long id, String cartKey, String username);
+    CartDto getOrCreateCart(String cartKey, String username);
 }

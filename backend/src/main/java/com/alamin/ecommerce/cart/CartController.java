@@ -4,7 +4,6 @@ import com.alamin.ecommerce.product.ProductDto;
 import com.alamin.ecommerce.product.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +30,7 @@ public class CartController {
                                      @AuthenticationPrincipal UserDetails principal) {
         String cartKey = request.getHeader("X-Cart-Key");
         String username = principal == null ? null : principal.getUsername();
-        Cart cart = cartService.resolveOrCreateCart(cartKey, username);
+        CartDto cart = cartService.getOrCreateCart(cartKey, username);
         return ResponseEntity.ok(cart);
     }
 
@@ -40,7 +39,7 @@ public class CartController {
                                           @AuthenticationPrincipal UserDetails principal) {
         String cartKey = request.getHeader("X-Cart-Key");
         String username = principal == null ? null : principal.getUsername();
-        Cart cart = cartService.resolveOrCreateCart(cartKey, username);
+        CartDto cart = cartService.getOrCreateCart(cartKey, username);
         return ResponseEntity.ok(cart.getCartItems());
     }
 
@@ -51,9 +50,13 @@ public class CartController {
                                      @AuthenticationPrincipal UserDetails principal) {
         String cartKey = request.getHeader("X-Cart-Key");
         String username = principal == null ? null : principal.getUsername();
+
+        // Ensure cart exists
+        cartService.getOrCreateCart(cartKey, username);
+
         ProductDto product = productService.getProductByUuid(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
-        Cart cart = cartService.addCartItem(product, cartKey, username);
+        CartDto cart = cartService.addCartItem(product, cartKey, username);
         return ResponseEntity.ok(cart);
     }
 
@@ -63,33 +66,27 @@ public class CartController {
                                         @AuthenticationPrincipal UserDetails principal) {
         String cartKey = request.getHeader("X-Cart-Key");
         String username = principal == null ? null : principal.getUsername();
-        Cart cart = cartService.removeCartItem(id, cartKey, username);
+
+        // Ensure cart exists
+        cartService.getOrCreateCart(cartKey, username);
+
+        CartDto cart = cartService.removeCartItem(id, cartKey, username);
         return ResponseEntity.ok(cart);
     }
 
-    @PostMapping("/items/{id}/increment")
-    public ResponseEntity<?> increment(@PathVariable Long id,
-                                       HttpServletRequest request,
-                                       @AuthenticationPrincipal UserDetails principal) {
+    @PatchMapping("/items/{id}")
+    public ResponseEntity<?> updateItemQuantity(@PathVariable Long id,
+                                                @RequestParam int quantity,
+                                                HttpServletRequest request,
+                                                @AuthenticationPrincipal UserDetails principal) {
         String cartKey = request.getHeader("X-Cart-Key");
         String username = principal == null ? null : principal.getUsername();
-        Cart cart = cartService.incrementCartItem(id, cartKey, username);
-        return ResponseEntity.ok(cart);
-    }
 
-    @PostMapping("/items/{id}/decrement")
-    public ResponseEntity<?> decrement(@PathVariable Long id,
-                                       HttpServletRequest request,
-                                       @AuthenticationPrincipal UserDetails principal) {
-        String cartKey = request.getHeader("X-Cart-Key");
-        String username = principal == null ? null : principal.getUsername();
-        Cart cart = cartService.decrementCartItem(id, cartKey, username);
-        return ResponseEntity.ok(cart);
-    }
+        // Ensure cart exists
+        cartService.getOrCreateCart(cartKey, username);
 
-    @GetMapping("/admin")
-    public ResponseEntity<?> listAll(Pageable pageable) {
-        return ResponseEntity.ok(cartService.findAll(pageable));
+        CartDto cart = cartService.updateCartItemQuantity(id, cartKey, username, quantity);
+        return ResponseEntity.ok(cart);
     }
 
 }

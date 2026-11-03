@@ -19,6 +19,9 @@ import java.util.Optional;
  * opaque server-issued key — never trusted raw caller input, which would be an
  * IDOR / identity-spoofing vector. The service performs no trust boundary itself;
  * controllers must validate ownership before delegating.
+ *
+ * <p>All cart-returning methods expose {@link CartDto} rather than the JPA entity
+ * so persistence concerns never leak out of the service layer.
  */
 @Service
 public class CartServiceImpl implements CartService {
@@ -35,21 +38,23 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Optional<Cart> getCartById(Long id) {
-        return cartRepository.findById(id);
+    public Optional<CartDto> getCartById(Long id) {
+        return cartRepository.findById(id).map(CartDto::new);
     }
 
     @Override
-    public Cart getCartBySession(String cartKey) {
-        if (cartKey == null || cartKey.isEmpty()) {
-            throw new IllegalArgumentException("cart key is required");
-        }
-        return cartRepository.getCartBySession(cartKey);
+    public CartDto getCartBySession(String cartKey) {
+        return new CartDto(requireCartBySession(cartKey));
     }
 
     @Override
-    public Cart saveCart(Cart cart) {
-        return cartRepository.save(cart);
+    public CartDto getCartByUserId(String userId) {
+        return new CartDto(requireCartByUserId(userId));
+    }
+
+    @Override
+    public CartDto saveCart(Cart cart) {
+        return new CartDto(cartRepository.save(cart));
     }
 
     @Override
@@ -58,8 +63,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart addCartItem(ProductDto item, String cartKey, String username) {
-        Cart cart = resolveOrCreateCart(cartKey, username);
+    public CartDto addCartItem(ProductDto item, String cartKey, String username) {
+        Cart cart = resolveCart(cartKey, username);
 
         // Fetch the Product entity for JPA relationship
         Product product = productRepository.findById(item.productId())
@@ -95,8 +100,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart removeCartItem(Long id, String cartKey, String username) {
-        Cart cart = resolveOrCreateCart(cartKey, username);
+    public CartDto removeCartItem(Long id, String cartKey, String username) {
+        Cart cart = resolveCart(cartKey, username);
 
         List<CartItem> cartItems = cart.getCartItems();
         boolean found = false;
@@ -115,8 +120,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Page<Cart> findAll(Pageable pr) {
-        return cartRepository.findAll(Objects.requireNonNullElseGet(pr, () -> PageRequest.ofSize(20)));
+    public Page<CartDto> findAll(Pageable pr) {
+        return cartRepository.findAll(Objects.requireNonNullElseGet(pr, () -> PageRequest.ofSize(20)))
+                .map(CartDto::new);
     }
 
     @Override
@@ -129,17 +135,25 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart incrementCartItem(Long id, String cartKey, String username) {
-        Cart cart = resolveOrCreateCart(cartKey, username);
-        if (cart == null) {
-            throw new RuntimeException("Cart not found");
+    public CartDto updateCartItemQuantity(Long id, String cartKey, String username, int quantity) {
+        if (quantity < 1) {
+            throw new IllegalArgumentException("Quantity must be at least 1");
         }
 
+        Cart cart = resolveCart(cartKey, username);
+
+        boolean found = false;
         for (var ci : cart.getCartItems()) {
             if (Objects.equals(ci.getId(), id)) {
-                ci.setQuantity(ci.getQuantity() + 1);
+                ci.setQuantity(quantity);
                 ci.setTotal(ci.getQuantity() * ci.getPrice());
+                found = true;
+                break;
             }
+        }
+
+        if (!found) {
+            throw new IllegalArgumentException("Cart item not found with id: " + id);
         }
 
         int total = 0;
@@ -151,49 +165,52 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart decrementCartItem(Long id, String cartKey, String username) {
-        Cart cart = resolveOrCreateCart(cartKey, username);
-        if (cart == null) {
-            throw new RuntimeException("Cart not found");
-        }
-
-        for (var ci : cart.getCartItems()) {
-            if (Objects.equals(ci.getId(), id)) {
-                if (ci.getQuantity() > 1) {
-                    ci.setQuantity(ci.getQuantity() - 1);
-                    ci.setTotal(ci.getQuantity() * ci.getPrice());
-                } else {
-                    throw new RuntimeException("quantity cant be less than one");
-                }
-            }
-        }
-
-        int total = 0;
-        for (var it : cart.getCartItems()) {
-            total += it.getQuantity() * it.getPrice();
-        }
-        cart.setTotal(total);
-        return saveCart(cart);
-    }
-
-    @Override
-    public Cart resolveOrCreateCart(String cartKey, String username) {
-        Cart cart;
+    public CartDto getOrCreateCart(String cartKey, String username) {
         if (username != null && !username.isEmpty()) {
-            cart = cartRepository.findByUserId(username);
-            if (cart == null) {
-                cart = new Cart();
+            try {
+                Cart existingCart = requireCartByUserId(username);
+                return new CartDto(cartRepository.findById(existingCart.getId()).orElse(existingCart));
+            } catch (IllegalStateException e) {
+                Cart cart = new Cart();
                 cart.setUserId(username);
                 cart.setSessionId(cartKey);
-                cart = cartRepository.save(cart);
+                return saveCart(cart);
             }
         } else {
-            cart = cartRepository.getCartBySession(cartKey);
-            if (cart == null) {
-                cart = new Cart();
+            try {
+                return new CartDto(requireCartBySession(cartKey));
+            } catch (IllegalStateException e) {
+                Cart cart = new Cart();
                 cart.setSessionId(cartKey);
-                cart = cartRepository.save(cart);
+                return saveCart(cart);
             }
+        }
+    }
+
+    private Cart resolveCart(String cartKey, String username) {
+        return (username != null && !username.isEmpty())
+                ? requireCartByUserId(username)
+                : requireCartBySession(cartKey);
+    }
+
+    private Cart requireCartBySession(String cartKey) {
+        if (cartKey == null || cartKey.isEmpty()) {
+            throw new IllegalArgumentException("cart key is required");
+        }
+        Cart cart = cartRepository.getCartBySession(cartKey);
+        if (cart == null) {
+            throw new IllegalStateException("Cart not found for session: " + cartKey);
+        }
+        return cart;
+    }
+
+    private Cart requireCartByUserId(String userId) {
+        if (userId == null || userId.isEmpty()) {
+            throw new IllegalArgumentException("user id is required");
+        }
+        Cart cart = cartRepository.findByUserId(userId);
+        if (cart == null) {
+            throw new IllegalStateException("Cart not found for user: " + userId);
         }
         return cart;
     }

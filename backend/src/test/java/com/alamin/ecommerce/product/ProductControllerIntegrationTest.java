@@ -2,6 +2,7 @@ package com.alamin.ecommerce.product;
 
 import com.alamin.ecommerce.exception.ProductNotFoundException;
 import com.alamin.ecommerce.config.JwtService;
+import com.alamin.ecommerce.product.ProductReview;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -332,5 +333,53 @@ class ProductControllerIntegrationTest {
 
         mockMvc.perform(delete("/api/products/999"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getProductReviews_exists_returnsReviews() throws Exception {
+        ProductReview review1 = new ProductReview();
+        review1.setId(1L);
+        review1.setReview("Great product!");
+        review1.setStar(5);
+        review1.setReviewType("VERIFIED_PURCHASE");
+        review1.setUserId(1L);
+        review1.setProductId(1L);
+        review1.setCreatedAt(java.time.LocalDateTime.now());
+        review1.setUpdatedAt(java.time.LocalDateTime.now());
+
+        ProductReview review2 = new ProductReview();
+        review2.setId(2L);
+        review2.setReview("Good value");
+        review2.setStar(4);
+        review2.setReviewType("VERIFIED_PURCHASE");
+        review2.setUserId(2L);
+        review2.setProductId(1L);
+        review2.setCreatedAt(java.time.LocalDateTime.now());
+        review2.setUpdatedAt(java.time.LocalDateTime.now());
+
+        when(productService.getProductReviews(1L)).thenReturn(List.of(review1, review2));
+
+        mockMvc.perform(get("/api/products/1/reviews"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].review").value("Great product!"))
+                .andExpect(jsonPath("$[0].star").value(5))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].review").value("Good value"))
+                .andExpect(jsonPath("$[1].star").value(4));
+    }
+
+    @Test
+    void getProductReviews_noReviews_returnsEmptyArray() throws Exception {
+        when(productService.getProductReviews(1L)).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/products/1/reviews"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(0));
     }
 }

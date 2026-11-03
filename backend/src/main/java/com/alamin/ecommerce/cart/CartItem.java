@@ -1,6 +1,7 @@
 package com.alamin.ecommerce.cart;
 
 import com.alamin.ecommerce.product.Product;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,6 +20,7 @@ public class CartItem {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cart_id")
+    @JsonBackReference
     private Cart cart;
 
     public Long getId() {

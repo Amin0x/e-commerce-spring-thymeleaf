@@ -1,21 +1,25 @@
 package com.alamin.ecommerce.cart;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import com.alamin.ecommerce.product.Product;
 import com.alamin.ecommerce.product.ProductDto;
 import com.alamin.ecommerce.product.ProductRepository;
-import com.alamin.ecommerce.user.User;
-import com.alamin.ecommerce.user.UserService;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
-import jakarta.servlet.http.HttpSession;
-
-import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class CartServiceImplTest {
 
@@ -23,230 +27,127 @@ class CartServiceImplTest {
     private CartRepository cartRepository;
 
     @Mock
+    private CartItemRepository cartItemRepository;
+
+    @Mock
     private ProductRepository productRepository;
 
     @InjectMocks
     private CartServiceImpl cartService;
-
-    @Mock
-    private UserService userService;
 
     public CartServiceImplTest() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testGetCartById_CartExists() {
-        // Arrange
-        Long cartId = 1L;
-        Cart mockCart = new Cart();
-        mockCart.setId(cartId);
-        when(cartRepository.findById(cartId)).thenReturn(Optional.of(mockCart));
+    void getCartById_cartExists_returnsDto() {
+        Cart cart = cart(1L, "session123", null);
+        cart.setTotal(150);
+        when(cartRepository.findById(1L)).thenReturn(Optional.of(cart));
 
-        // Act
-        Optional<Cart> result = cartService.getCartById(cartId);
+        Optional<CartDto> result = cartService.getCartById(1L);
 
-        // Assert
-        assertEquals(Optional.of(mockCart), result);
+        assertTrue(result.isPresent());
+        assertEquals(1L, result.get().getId());
+        assertEquals(150, result.get().getTotal());
     }
 
     @Test
-    void testGetCartById_CartDoesNotExist() {
-        // Arrange
-        Long cartId = 1L;
-        when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
+    void getCartById_cartDoesNotExist_returnsEmpty() {
+        when(cartRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Act
-        Optional<Cart> result = cartService.getCartById(cartId);
+        Optional<CartDto> result = cartService.getCartById(1L);
 
-        // Assert
-        assertEquals(Optional.empty(), result);
+        assertTrue(result.isEmpty());
     }
 
     @Test
-    void testGetCartBySession_SessionExists() {
-        // Arrange
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        Cart mockCart = new Cart();
-        mockCart.setSessionId(sessionId);
+    void getCartBySession_cartExists_returnsDto() {
+        Cart cart = cart(1L, "session123", null);
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
 
-        when(mockSession.getId()).thenReturn(sessionId);
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
+        CartDto result = cartService.getCartBySession("session123");
 
-        // Act
-        Cart result = cartService.getCartBySession(sessionId);
-
-        // Assert
-        assertEquals(mockCart, result);
+        assertEquals(1L, result.getId());
+        assertEquals("session123", result.getSessionId());
     }
 
     @Test
-    void testGetCartBySession_SessionIsNull() {
-        // Act & Assert
-        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            IllegalArgumentException.class,
-            () -> cartService.getCartBySession(null)
+    void getCartBySession_blankKey_throwsIllegalArgument() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> cartService.getCartBySession("")
         );
-        assertEquals("no user found", exception.getMessage());
+
+        assertTrue(exception.getMessage().contains("cart key"));
     }
 
     @Test
-    void testGetCartBySession_CartNotFound() {
-        // Arrange
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
+    void getCartBySession_notFound_throwsIllegalState() {
+        when(cartRepository.getCartBySession("session123")).thenReturn(null);
 
-        when(mockSession.getId()).thenReturn(sessionId);
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(null);
-
-        // Act
-        Cart result = cartService.getCartBySession(sessionId);
-
-        // Assert
-        assertEquals(null, result);
-    }
-
-    @Test
-    void testSaveCart_Success() {
-        // Arrange
-        Cart mockCart = new Cart();
-        mockCart.setId(1L);
-        when(cartRepository.save(mockCart)).thenReturn(mockCart);
-
-        // Act
-        Cart result = cartService.saveCart(mockCart);
-
-        // Assert
-        assertEquals(mockCart, result);
-    }
-
-    @Test
-    void testSaveCart_NullCart() {
-        // Act & Assert
-        NullPointerException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            NullPointerException.class,
-            () -> cartService.saveCart(null)
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> cartService.getCartBySession("session123")
         );
-        assertEquals("cart is marked non-null but is null", exception.getMessage());
+
+        assertTrue(exception.getMessage().contains("Cart not found"));
     }
 
     @Test
-    void testDeleteCart_Success() {
-        // Arrange
-        Long cartId = 1L;
+    void getCartByUserId_cartExists_returnsDto() {
+        Cart cart = cart(1L, null, "user123");
+        when(cartRepository.findByUserId("user123")).thenReturn(cart);
 
-        // Act
-        cartService.deleteCart(cartId);
+        CartDto result = cartService.getCartByUserId("user123");
 
-        // Assert
-        org.mockito.Mockito.verify(cartRepository).deleteById(cartId);
+        assertEquals(1L, result.getId());
+        assertEquals("user123", result.getUserId());
     }
 
     @Test
-    void testDeleteCart_NullId() {
-        // Act & Assert
-        NullPointerException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            NullPointerException.class,
-            () -> cartService.deleteCart(null)
+    void getCartByUserId_notFound_throwsIllegalState() {
+        when(cartRepository.findByUserId("user123")).thenReturn(null);
+
+        IllegalStateException exception = assertThrows(
+                IllegalStateException.class,
+                () -> cartService.getCartByUserId("user123")
         );
-        assertEquals("id is marked non-null but is null", exception.getMessage());
+
+        assertTrue(exception.getMessage().contains("Cart not found"));
     }
 
     @Test
-    void testAddCartItem_NewCartForSession() {
-        // Arrange
-        ProductDto mockProductDto = new ProductDto(1L, null, null, null, 100, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    void saveCart_returnsDto() {
+        Cart cart = cart(1L, "session123", null);
+        when(cartRepository.save(cart)).thenReturn(cart);
 
-        Product mockProduct = new Product();
-        mockProduct.setId(1L);
-        mockProduct.setPrice(100);
-        when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
+        CartDto result = cartService.saveCart(cart);
 
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
-
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(null);
-
-        Cart newCart = new Cart();
-        newCart.setSessionId(sessionId);
-        when(cartRepository.save(any(Cart.class))).thenReturn(newCart);
-
-        // Act
-        Cart result = cartService.addCartItem(mockProductDto, sessionId, null);
-
-        // Assert
-        assertEquals(sessionId, result.getSessionId());
-        assertEquals(1, result.getCartItems().size());
-        assertEquals(mockProductDto.productId(), result.getCartItems().get(0).getProduct().getId());
-        assertEquals(100, result.getCartItems().get(0).getPrice());
-        assertEquals(100, result.getTotal());
+        assertEquals(1L, result.getId());
+        assertEquals("session123", result.getSessionId());
     }
 
     @Test
-    void testAddCartItem_ExistingCartForSession() {
-        // Arrange
-        ProductDto mockProductDto = new ProductDto(1L, null, null, null, 100, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    void deleteCart_delegatesToRepository() {
+        cartService.deleteCart(1L);
 
-        Product mockProduct = new Product();
-        mockProduct.setId(1L);
-        mockProduct.setPrice(100);
-        when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
-
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
-
-        Cart existingCart = new Cart();
-        existingCart.setSessionId(sessionId);
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(existingCart);
-
-        when(cartRepository.save(existingCart)).thenReturn(existingCart);
-
-        // Act
-        Cart result = cartService.addCartItem(mockProductDto, sessionId, null);
-
-        // Assert
-        assertEquals(sessionId, result.getSessionId());
-        assertEquals(1, result.getCartItems().size());
-        assertEquals(mockProductDto.productId(), result.getCartItems().get(0).getProduct().getId());
-        assertEquals(100, result.getCartItems().get(0).getPrice());
-        assertEquals(100, result.getTotal());
+        verify(cartRepository).deleteById(1L);
     }
 
     @Test
-    void testAddCartItem_ExistingCartWithSameProduct() {
-        // Arrange
-        ProductDto mockProductDto = new ProductDto(1L, null, null, null, 100, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    void addCartItem_existingItemIncrementsQuantityAndTotal() {
+        Product product = product(1L, 100);
+        Cart cart = cart(1L, "session123", null);
+        CartItem item = cartItem(1L, product, 1, 100);
+        cart.getCartItems().add(item);
 
-        Product mockProduct = new Product();
-        mockProduct.setId(1L);
-        mockProduct.setPrice(100);
-        when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        when(cartRepository.save(cart)).thenReturn(cart);
 
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
+        CartDto result = cartService.addCartItem(productDto(1L), "session123", null);
 
-        Cart existingCart = new Cart();
-        existingCart.setSessionId(sessionId);
-
-        CartItem existingCartItem = new CartItem();
-        existingCartItem.setProduct(mockProduct);
-        existingCartItem.setQuantity(1);
-        existingCartItem.setPrice(100);
-        existingCartItem.setTotal(100);
-        existingCart.getCartItems().add(existingCartItem);
-
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(existingCart);
-        when(cartRepository.save(existingCart)).thenReturn(existingCart);
-
-        // Act
-        Cart result = cartService.addCartItem(mockProductDto, sessionId, null);
-
-        // Assert
-        assertEquals(sessionId, result.getSessionId());
         assertEquals(1, result.getCartItems().size());
         assertEquals(2, result.getCartItems().get(0).getQuantity());
         assertEquals(200, result.getCartItems().get(0).getTotal());
@@ -254,356 +155,240 @@ class CartServiceImplTest {
     }
 
     @Test
-    void testAddCartItem_NewCartForUser() {
-        // Arrange
-        ProductDto mockProductDto = new ProductDto(1L, null, null, null, 100, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    void addCartItem_newItemIsAdded() {
+        Product product = product(1L, 100);
+        Cart cart = cart(1L, "session123", null);
 
-        Product mockProduct = new Product();
-        mockProduct.setId(1L);
-        mockProduct.setPrice(100);
-        when(productRepository.findById(1L)).thenReturn(Optional.of(mockProduct));
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        when(cartRepository.save(cart)).thenReturn(cart);
 
-        Principal mockPrincipal = org.mockito.Mockito.mock(Principal.class);
-        String userId = "user123";
-        when(mockPrincipal.getName()).thenReturn(userId);
+        CartDto result = cartService.addCartItem(productDto(1L), "session123", null);
 
-        when(cartRepository.findByUserId(userId)).thenReturn(null);
-
-        Cart newCart = new Cart();
-        newCart.setUserId(userId);
-        when(cartRepository.save(any(Cart.class))).thenReturn(newCart);
-
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
-
-        // Act
-        Cart result = cartService.addCartItem(mockProductDto, sessionId, userId);
-
-        // Assert
-        assertEquals(userId, result.getUserId());
         assertEquals(1, result.getCartItems().size());
-        assertEquals(mockProductDto.productId(), result.getCartItems().get(0).getProduct().getId());
+        assertEquals(1, result.getCartItems().get(0).getQuantity());
         assertEquals(100, result.getCartItems().get(0).getPrice());
         assertEquals(100, result.getTotal());
     }
 
     @Test
-    void testRemoveCartItem_ItemExistsForSession() {
-        // Arrange
-        Long cartItemId = 1L;
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
+    void addCartItem_authenticatedUser_usesUserCart() {
+        Product product = product(1L, 100);
+        Cart cart = cart(1L, null, "user123");
 
-        Cart mockCart = new Cart();
-        mockCart.setSessionId(sessionId);
+        when(cartRepository.findByUserId("user123")).thenReturn(cart);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        when(cartRepository.save(cart)).thenReturn(cart);
 
-        CartItem mockCartItem = new CartItem();
-        mockCartItem.setId(cartItemId);
-        mockCart.getCartItems().add(mockCartItem);
+        CartDto result = cartService.addCartItem(productDto(1L), "session123", "user123");
 
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
-        when(cartRepository.save(mockCart)).thenReturn(mockCart);
+        assertEquals("user123", result.getUserId());
+        assertEquals(1, result.getCartItems().size());
+    }
 
-        // Act
-        Cart result = cartService.removeCartItem(cartItemId, sessionId, null);
+    @Test
+    void addCartItem_productNotFound_throwsIllegalArgument() {
+        Cart cart = cart(1L, "session123", null);
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
+        when(productRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Assert
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> cartService.addCartItem(productDto(1L), "session123", null)
+        );
+
+        assertTrue(exception.getMessage().contains("Product not found"));
+    }
+
+    @Test
+    void removeCartItem_existingItem_removesIt() {
+        Cart cart = cart(1L, "session123", null);
+        cart.getCartItems().add(cartItem(1L, product(1L, 100), 1, 100));
+
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
+        when(cartRepository.save(cart)).thenReturn(cart);
+
+        CartDto result = cartService.removeCartItem(1L, "session123", null);
+
         assertEquals(0, result.getCartItems().size());
     }
 
     @Test
-    void testRemoveCartItem_ItemDoesNotExistForSession() {
-        // Arrange
-        Long cartItemId = 1L;
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
+    void removeCartItem_missingItem_throwsRuntime() {
+        Cart cart = cart(1L, "session123", null);
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
 
-        Cart mockCart = new Cart();
-        mockCart.setSessionId(sessionId);
-
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
-
-        // Act & Assert
-        RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            RuntimeException.class,
-            () -> cartService.removeCartItem(cartItemId, sessionId, null)
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> cartService.removeCartItem(1L, "session123", null)
         );
+
         assertEquals("Item not found in cart", exception.getMessage());
     }
 
     @Test
-    void testRemoveCartItem_ItemExistsForUser() {
-        // Arrange
-        Long cartItemId = 1L;
-        Principal mockPrincipal = org.mockito.Mockito.mock(Principal.class);
-        String userId = "user123";
-        when(mockPrincipal.getName()).thenReturn(userId);
+    void findAll_mapsEntitiesToDtos() {
+        Cart cart = cart(1L, "session123", null);
+        Page<Cart> page = new PageImpl<>(List.of(cart), PageRequest.of(0, 10), 1);
+        when(cartRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        User mockUser = new User();
-        mockUser.setUsername(userId);
-        when(userService.getUserByName(userId)).thenReturn(Optional.of(mockUser));
+        Page<CartDto> result = cartService.findAll(PageRequest.of(0, 10));
 
-        Cart mockCart = new Cart();
-        mockCart.setUserId(userId);
-
-        CartItem mockCartItem = new CartItem();
-        mockCartItem.setId(cartItemId);
-        mockCart.getCartItems().add(mockCartItem);
-
-        when(cartRepository.getCartBySession(null)).thenReturn(null);
-        when(cartRepository.save(mockCart)).thenReturn(mockCart);
-
-        // Act
-        Cart result = cartService.removeCartItem(cartItemId, null, mockPrincipal.getName());
-
-        // Assert
-        assertEquals(0, result.getCartItems().size());
+        assertEquals(1, result.getTotalElements());
+        assertEquals(1L, result.getContent().get(0).getId());
     }
 
     @Test
-    void testRemoveCartItem_ItemDoesNotExistForUser() {
-        // Arrange
-        Long cartItemId = 1L;
-        Principal mockPrincipal = org.mockito.Mockito.mock(Principal.class);
-        String userId = "user123";
-        when(mockPrincipal.getName()).thenReturn(userId);
+    void existsById_cartExists_returnsTrue() {
+        when(cartRepository.existsById(1L)).thenReturn(true);
 
-        User mockUser = new User();
-        mockUser.setUsername(userId);
-        when(userService.getUserByName(userId)).thenReturn(Optional.of(mockUser));
+        assertTrue(cartService.existsById(1L));
+    }
 
-        Cart mockCart = new Cart();
-        mockCart.setUserId(userId);
+    @Test
+    void existsById_cartDoesNotExist_returnsFalse() {
+        when(cartRepository.existsById(1L)).thenReturn(false);
 
-        when(cartRepository.getCartBySession(null)).thenReturn(null);
+        assertEquals(false, cartService.existsById(1L));
+    }
 
-        // Act & Assert
-        RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            RuntimeException.class,
-            () -> cartService.removeCartItem(cartItemId, null, userId)
+    @Test
+    void existsById_repositoryThrows_wrapsException() {
+        when(cartRepository.existsById(1L)).thenThrow(new RuntimeException("Database error"));
+
+        RuntimeException exception = assertThrows(
+                RuntimeException.class,
+                () -> cartService.existsById(1L)
         );
-        assertEquals("Item not found in cart", exception.getMessage());
-    }
 
-    @Test
-    void testRemoveCartItem_SessionIsNull() {
-        // Arrange
-        Long cartItemId = 1L;
-
-        // Act & Assert
-        NullPointerException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            NullPointerException.class,
-            () -> cartService.removeCartItem(cartItemId, null, null)
-        );
-        assertEquals("Cannot invoke \"jakarta.servlet.http.HttpSession.getId()\" because \"session\" is null", exception.getMessage());
-    }
-
-    @Test
-    void testExistsById_CartExists() {
-        // Arrange
-        Long cartId = 1L;
-        when(cartRepository.existsById(cartId)).thenReturn(true);
-
-        // Act
-        boolean result = cartService.existsById(cartId);
-
-        // Assert
-        assertEquals(true, result);
-    }
-
-    @Test
-    void testExistsById_CartDoesNotExist() {
-        // Arrange
-        Long cartId = 1L;
-        when(cartRepository.existsById(cartId)).thenReturn(false);
-
-        // Act
-        boolean result = cartService.existsById(cartId);
-
-        // Assert
-        assertEquals(false, result);
-    }
-
-    @Test
-    void testExistsById_ExceptionThrown() {
-        // Arrange
-        Long cartId = 1L;
-        when(cartRepository.existsById(cartId)).thenThrow(new RuntimeException("Database error"));
-
-        // Act & Assert
-        RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            RuntimeException.class,
-            () -> cartService.existsById(cartId)
-        );
         assertEquals("java.lang.RuntimeException: Database error", exception.getMessage());
     }
 
     @Test
-    void testIncrementCartItem_ItemExists() {
-        // Arrange
-        Long cartItemId = 1L;
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
+    void updateCartItemQuantity_increaseQuantity() {
+        Cart cart = cart(1L, "session123", null);
+        cart.getCartItems().add(cartItem(1L, product(1L, 100), 1, 100));
 
-        Cart mockCart = new Cart();
-        mockCart.setSessionId(sessionId);
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
+        when(cartRepository.save(cart)).thenReturn(cart);
 
-        CartItem mockCartItem = new CartItem();
-        mockCartItem.setId(cartItemId);
-        mockCartItem.setQuantity(1);
-        mockCartItem.setPrice(100);
-        mockCartItem.setTotal(100);
-        mockCart.getCartItems().add(mockCartItem);
+        CartDto result = cartService.updateCartItemQuantity(1L, "session123", null, 2);
 
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
-        when(cartRepository.save(mockCart)).thenReturn(mockCart);
-
-        // Act
-        Cart result = cartService.incrementCartItem(cartItemId, sessionId, null);
-
-        // Assert
         assertEquals(2, result.getCartItems().get(0).getQuantity());
         assertEquals(200, result.getCartItems().get(0).getTotal());
         assertEquals(200, result.getTotal());
     }
 
     @Test
-    void testIncrementCartItem_ItemDoesNotExist() {
-        // Arrange
-        Long cartItemId = 1L;
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
+    void updateCartItemQuantity_decreaseQuantity() {
+        Cart cart = cart(1L, "session123", null);
+        cart.getCartItems().add(cartItem(1L, product(1L, 100), 3, 100));
+        cart.setTotal(300);
 
-        Cart mockCart = new Cart();
-        mockCart.setSessionId(sessionId);
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
+        when(cartRepository.save(cart)).thenReturn(cart);
 
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
+        CartDto result = cartService.updateCartItemQuantity(1L, "session123", null, 1);
 
-        // Act
-        Cart result = cartService.incrementCartItem(cartItemId, sessionId, null);
-
-        // Assert
-        assertEquals(0, result.getCartItems().size());
-        assertEquals(0, result.getTotal());
-    }
-
-    @Test
-    void testIncrementCartItem_CartNotFound() {
-        // Arrange
-        Long cartItemId = 1L;
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
-
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(null);
-
-        // Act & Assert
-        RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            RuntimeException.class,
-            () -> cartService.incrementCartItem(cartItemId, sessionId, null)
-        );
-        assertEquals("Cart not found", exception.getMessage());
-    }
-
-    @Test
-    void testDecrementCartItem_ItemExistsAndQuantityGreaterThanOne() {
-        // Arrange
-        Long cartItemId = 1L;
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
-
-        Cart mockCart = new Cart();
-        mockCart.setSessionId(sessionId);
-
-        CartItem mockCartItem = new CartItem();
-        mockCartItem.setId(cartItemId);
-        mockCartItem.setQuantity(2);
-        mockCartItem.setPrice(100);
-        mockCartItem.setTotal(200);
-        mockCart.getCartItems().add(mockCartItem);
-
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
-        when(cartRepository.save(mockCart)).thenReturn(mockCart);
-
-        // Act
-        Cart result = cartService.decrementCartItem(cartItemId, sessionId, null);
-
-        // Assert
         assertEquals(1, result.getCartItems().get(0).getQuantity());
         assertEquals(100, result.getCartItems().get(0).getTotal());
         assertEquals(100, result.getTotal());
     }
 
     @Test
-    void testDecrementCartItem_ItemExistsAndQuantityEqualsOne() {
-        // Arrange
-        Long cartItemId = 1L;
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
+    void updateCartItemQuantity_itemDoesNotExist_throwsIllegalArgument() {
+        Cart cart = cart(1L, "session123", null);
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
 
-        Cart mockCart = new Cart();
-        mockCart.setSessionId(sessionId);
-
-        CartItem mockCartItem = new CartItem();
-        mockCartItem.setId(cartItemId);
-        mockCartItem.setQuantity(1);
-        mockCartItem.setPrice(100);
-        mockCartItem.setTotal(100);
-        mockCart.getCartItems().add(mockCartItem);
-
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
-
-        // Act & Assert
-        RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            RuntimeException.class,
-            () -> cartService.decrementCartItem(cartItemId, sessionId, null)
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> cartService.updateCartItemQuantity(1L, "session123", null, 2)
         );
-        assertEquals("quantity cant be less than one", exception.getMessage());
+
+        assertTrue(exception.getMessage().contains("Cart item not found"));
     }
 
     @Test
-    void testDecrementCartItem_ItemDoesNotExist() {
-        // Arrange
-        Long cartItemId = 1L;
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
+    void updateCartItemQuantity_invalidQuantity_throwsIllegalArgument() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> cartService.updateCartItemQuantity(1L, "session123", null, 0)
+        );
 
-        Cart mockCart = new Cart();
-        mockCart.setSessionId(sessionId);
+        assertEquals("Quantity must be at least 1", exception.getMessage());
+    }
 
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(mockCart);
+    @Test
+    void getOrCreateCart_existingGuestCart_returnsDto() {
+        Cart cart = cart(1L, "session123", null);
+        when(cartRepository.getCartBySession("session123")).thenReturn(cart);
 
-        // Act
-        Cart result = cartService.decrementCartItem(cartItemId, sessionId, null);
+        CartDto result = cartService.getOrCreateCart("session123", null);
 
-        // Assert
-        assertEquals(0, result.getCartItems().size());
+        assertEquals(1L, result.getId());
+    }
+
+    @Test
+    void getOrCreateCart_newGuestCart_createsCart() {
+        when(cartRepository.getCartBySession("session123")).thenReturn(null);
+        when(cartRepository.save(any(Cart.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        CartDto result = cartService.getOrCreateCart("session123", null);
+
+        assertEquals("session123", result.getSessionId());
         assertEquals(0, result.getTotal());
     }
 
     @Test
-    void testDecrementCartItem_CartNotFound() {
-        // Arrange
-        Long cartItemId = 1L;
-        HttpSession mockSession = org.mockito.Mockito.mock(HttpSession.class);
-        String sessionId = "session123";
-        when(mockSession.getId()).thenReturn(sessionId);
+    void getOrCreateCart_existingUserCart_returnsDto() {
+        Cart cart = cart(5L, "session123", "user123");
+        when(cartRepository.findByUserId("user123")).thenReturn(cart);
+        when(cartRepository.findById(5L)).thenReturn(Optional.of(cart));
 
-        when(cartRepository.getCartBySession(sessionId)).thenReturn(null);
+        CartDto result = cartService.getOrCreateCart("session123", "user123");
 
-        // Act & Assert
-        RuntimeException exception = org.junit.jupiter.api.Assertions.assertThrows(
-            RuntimeException.class,
-            () -> cartService.decrementCartItem(cartItemId, sessionId, null)
-        );
-        assertEquals("Cart not found", exception.getMessage());
+        assertEquals(5L, result.getId());
+        assertEquals("user123", result.getUserId());
+    }
+
+    @Test
+    void getOrCreateCart_newUserCart_createsCart() {
+        when(cartRepository.findByUserId("user123")).thenReturn(null);
+        when(cartRepository.save(any(Cart.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        CartDto result = cartService.getOrCreateCart("session123", "user123");
+
+        assertEquals("user123", result.getUserId());
+        assertEquals("session123", result.getSessionId());
+    }
+
+    private Cart cart(Long id, String sessionId, String userId) {
+        Cart cart = new Cart();
+        cart.setId(id);
+        cart.setSessionId(sessionId);
+        cart.setUserId(userId);
+        return cart;
+    }
+
+    private CartItem cartItem(Long id, Product product, int quantity, int price) {
+        CartItem item = new CartItem();
+        item.setId(id);
+        item.setProduct(product);
+        item.setQuantity(quantity);
+        item.setPrice(price);
+        item.setTotal(quantity * price);
+        return item;
+    }
+
+    private Product product(Long id, int price) {
+        Product product = new Product();
+        product.setId(id);
+        product.setPrice(price);
+        return product;
+    }
+
+    private ProductDto productDto(Long id) {
+        return new ProductDto(id, null, null, null, 100, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null);
     }
 }
